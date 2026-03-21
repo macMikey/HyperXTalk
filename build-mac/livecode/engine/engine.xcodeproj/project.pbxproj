@@ -94,7 +94,7 @@
 				D2E2AF40D4169DB79321D0D2 /* PBXTargetDependency */,
 			);
 			name = "Run development";
-			productName = "LiveCode-Community";
+			productName = "HyperXTalk";
 		};
 /* End PBXAggregateTarget section */
 
@@ -151,7 +151,7 @@
 		3452B0A1DD6A3054428AA294 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3A6C181A1AB2B6376AEA190 /* WebKit.framework */; };
 		356708E42688AB674D07100F /* libskia_opt_hsw.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 06A31B8807FDF81482D4ABFA /* libskia_opt_hsw.a */; };
 		357630B8DB94FB8F8470C49E /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1D042857F01B945E7A531FC /* Carbon.framework */; };
-		35DDEE7DC4AE9B2FD936F106 /* revpdfprinter.bundle in Copy to $(BUILT_PRODUCTS_DIR)/LiveCode-Community.app/Contents/MacOS */ = {isa = PBXBuildFile; fileRef = 97A924D0B053CBDC95C8AA71 /* revpdfprinter.bundle */; };
+		35DDEE7DC4AE9B2FD936F106 /* revpdfprinter.bundle in Copy to $(BUILT_PRODUCTS_DIR)/HyperXTalk.app/Contents/MacOS */ = {isa = PBXBuildFile; fileRef = 97A924D0B053CBDC95C8AA71 /* revpdfprinter.bundle */; };
 		381C596EBF627DED9EC71679 /* libskia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 920CC1E0C49AE7EC6780132F /* libskia.a */; };
 		38F7AB6B927CCBF4C5686BA5 /* libskia_opt_sse42.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 95A2D6E11E3B6A9A56BEE1ED /* libskia_opt_sse42.a */; };
 		393C2A64B79C2D266C5D6533 /* StandaloneDoc.icns in Resources */ = {isa = PBXBuildFile; fileRef = 833F7C255BF7A37821B40CAE /* StandaloneDoc.icns */; };
@@ -178,7 +178,7 @@
 		4D7C0CF50848779FA6A54660 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94A9922D48175DA0E1D5BBDA /* main.cpp */; };
 		4D82EA48B82476123F4DF3D2 /* libcustomcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D54FAD2D1C6CE1BA74D58F1 /* libcustomcrypto.a */; };
 		4EF479DC8606810FCE566F2A /* libskia_opt_sse41.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E00CCC541D6B1442A2EBB852 /* libskia_opt_sse41.a */; };
-		50AFF74D8565253EF7321F0F /* LiveCode-Community.rsrc in Resources */ = {isa = PBXBuildFile; fileRef = D357A195CBB346F7CD4BD387 /* LiveCode-Community.rsrc */; };
+		50AFF74D8565253EF7321F0F /* HyperXTalk.rsrc in Resources */ = {isa = PBXBuildFile; fileRef = D357A195CBB346F7CD4BD387 /* HyperXTalk.rsrc */; };
 		50DD9D3E6104778F149B593D /* libbrowser.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 042B0B4AEE827523B371BD9C /* libbrowser.a */; };
 		51B726A04BB68CB36798BB3C /* libopenssl_stubs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B7C0E18C00FB578C6C8ED293 /* libopenssl_stubs.a */; };
 		5271766BE344B43F05ADD5A5 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47D2260307EB3E59175803F3 /* SystemConfiguration.framework */; };
@@ -217,7 +217,7 @@
 		7C1288E42E16A12889C952B6 /* engine_lcb_modules.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CECBD01ED4A616C388364D26 /* engine_lcb_modules.cpp */; };
 		7DC4D3B91C6BB58D584E7ACE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E04E5A11866B3B48AA3D410 /* Foundation.framework */; };
 		7E31843F055FFD8B03A3A9B5 /* libz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 883BFC54A45E6E269006C941 /* libz.a */; };
-		7E9052C3465EE53D4AF1AB4A /* LiveCode.icns in Resources */ = {isa = PBXBuildFile; fileRef = 971B88E19420F0A80A9906E8 /* LiveCode.icns */; };
+		7E9052C3465EE53D4AF1AB4A /* HyperXTalk.icns in Resources */ = {isa = PBXBuildFile; fileRef = 971B88E19420F0A80A9906E8 /* HyperXTalk.icns */; };
 		7EBFF2D6209EB11EEC1143CC /* libskia_opt_avx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E9FD0B8E2F04FE4C22DB170A /* libskia_opt_avx.a */; };
 		7ECB7561E38E15ABE7256912 /* libskia_opt_sse3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D6DF56CEFFA7F942A7C3374 /* libskia_opt_sse3.a */; };
 		7F693EB0A52FF005158DABEB /* libskia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 920CC1E0C49AE7EC6780132F /* libskia.a */; };
@@ -227,7 +227,7 @@
 		84033F0A683512E5F4854E03 /* libicutu.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F491936D472AE302E7924D /* libicutu.a */; };
 		84F1834405447D6618488A80 /* libFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 50836C43A6EBD90CD5CFB73A /* libFoundation.a */; };
 		852B03F6E8BEF23E9D7BD003 /* terminology.sdef in Resources */ = {isa = PBXBuildFile; fileRef = 38AA7DCFC6E5361FEE3EE60E /* terminology.sdef */; };
-		85A3934F9921FB4826EACB56 /* LiveCode-Community.rsrc in Resources */ = {isa = PBXBuildFile; fileRef = D357A195CBB346F7CD4BD387 /* LiveCode-Community.rsrc */; };
+		85A3934F9921FB4826EACB56 /* HyperXTalk.rsrc in Resources */ = {isa = PBXBuildFile; fileRef = D357A195CBB346F7CD4BD387 /* HyperXTalk.rsrc */; };
 		85D882097BA1E91586455765 /* libicudata.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7862EBA8C3F6165E618A27A4 /* libicudata.a */; };
 		869F989B482859462B036DA5 /* libbrowser.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 042B0B4AEE827523B371BD9C /* libbrowser.a */; };
 		8821BE8C8C71D13DDE9FE85D /* libsecurity-community.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43AF16C8E0B365F6DE5C1CD7 /* libsecurity-community.a */; };
@@ -243,12 +243,12 @@
 		8DA50D6423C2DF150804E1E8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FF5F84EC673493AF752ED34 /* CoreGraphics.framework */; };
 		8EBCF24BE77FB76E00C807A0 /* libskia_opt_sse3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D6DF56CEFFA7F942A7C3374 /* libskia_opt_sse3.a */; };
 		8F32C01973DB5E8048F8D4CC /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC44BDB13ECEE5596F184C94 /* CoreMedia.framework */; };
-		8F367F20D2615E8D54BF74EC /* LiveCode-Community.rsrc in Resources */ = {isa = PBXBuildFile; fileRef = D357A195CBB346F7CD4BD387 /* LiveCode-Community.rsrc */; };
+		8F367F20D2615E8D54BF74EC /* HyperXTalk.rsrc in Resources */ = {isa = PBXBuildFile; fileRef = D357A195CBB346F7CD4BD387 /* HyperXTalk.rsrc */; };
 		8FD99843BEBC03271BA6CE92 /* libcurl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E87CA7845C223C38DF1A7D30 /* libcurl.dylib */; };
 		90B371272CBC552B0FC6E7DB /* libpcre.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D4C0CF664D9090691A04E56 /* libpcre.a */; };
 		90DE5BED0696B8533CCD2D2E /* libkernel-server.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BB776BFD4BEC6B493B9AD8BF /* libkernel-server.a */; };
 		92BAACD6136003E2F1FD9A6D /* Localisation.strings in Resources */ = {isa = PBXBuildFile; fileRef = FF1ECF3BF79519BA821A3EF9 /* Localisation.strings */; };
-		948C74ACDB284712541493AB /* LiveCodeDoc.icns in Resources */ = {isa = PBXBuildFile; fileRef = 75CD036495320708B1251971 /* LiveCodeDoc.icns */; };
+		948C74ACDB284712541493AB /* HyperXTalkDoc.icns in Resources */ = {isa = PBXBuildFile; fileRef = 75CD036495320708B1251971 /* HyperXTalkDoc.icns */; };
 		94F3E4BCA408B0EC9533380B /* libskia_opt_hsw.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 06A31B8807FDF81482D4ABFA /* libskia_opt_hsw.a */; };
 		95BABDDCFCBB2756259C813B /* libkernel-server (host).a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A37F435378C203C6D5A2F0 /* libkernel-server (host).a */; };
 		9682AD85DF7893BD94D39E00 /* libkernel.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4858D912F1C4E0CA1293350 /* libkernel.a */; };
@@ -321,7 +321,7 @@
 		D98A451435092684FE32C4D7 /* libGraphics (host).a in Frameworks */ = {isa = PBXBuildFile; fileRef = 96021B41BFD0C6028795E025 /* libGraphics (host).a */; };
 		D9C07E32652A626D545C7B62 /* stacksecurity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 36DB9478D7E0DC0BF4E385CF /* stacksecurity.cpp */; };
 		DAC54718A3A353C853471DB9 /* libskia_opt_sse41.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E00CCC541D6B1442A2EBB852 /* libskia_opt_sse41.a */; };
-		DC0B7C65D1012C09FB51F216 /* revsecurity.dylib in Copy to $(BUILT_PRODUCTS_DIR)/LiveCode-Community.app/Contents/MacOS */ = {isa = PBXBuildFile; fileRef = F62803B18A3EAFE1D4A5916D /* revsecurity.dylib */; };
+		DC0B7C65D1012C09FB51F216 /* revsecurity.dylib in Copy to $(BUILT_PRODUCTS_DIR)/HyperXTalk.app/Contents/MacOS */ = {isa = PBXBuildFile; fileRef = F62803B18A3EAFE1D4A5916D /* revsecurity.dylib */; };
 		DCB00D964517AAD640D957A6 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9085221E561C3041C597767 /* Security.framework */; };
 		DCFF28413CB0634B58F5FBE9 /* libsecurity-community.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43AF16C8E0B365F6DE5C1CD7 /* libsecurity-community.a */; };
 		DE120FE3764774C3ACE57681 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A81BB630B5F0CF5E4C5F6036 /* JavaScriptCore.framework */; };
@@ -1919,16 +1919,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		BDBC868F5DF1453B1C70A682 /* Copy to $(BUILT_PRODUCTS_DIR)/LiveCode-Community.app/Contents/MacOS */ = {
+		BDBC868F5DF1453B1C70A682 /* Copy to $(BUILT_PRODUCTS_DIR)/HyperXTalk.app/Contents/MacOS */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = "LiveCode-Community.app/Contents/MacOS";
+			dstPath = "HyperXTalk.app/Contents/MacOS";
 			dstSubfolderSpec = 16;
 			files = (
-				DC0B7C65D1012C09FB51F216 /* revsecurity.dylib in Copy to $(BUILT_PRODUCTS_DIR)/LiveCode-Community.app/Contents/MacOS */,
-				35DDEE7DC4AE9B2FD936F106 /* revpdfprinter.bundle in Copy to $(BUILT_PRODUCTS_DIR)/LiveCode-Community.app/Contents/MacOS */,
+				DC0B7C65D1012C09FB51F216 /* revsecurity.dylib in Copy to $(BUILT_PRODUCTS_DIR)/HyperXTalk.app/Contents/MacOS */,
+				35DDEE7DC4AE9B2FD936F106 /* revpdfprinter.bundle in Copy to $(BUILT_PRODUCTS_DIR)/HyperXTalk.app/Contents/MacOS */,
 			);
-			name = "Copy to $(BUILT_PRODUCTS_DIR)/LiveCode-Community.app/Contents/MacOS";
+			name = "Copy to $(BUILT_PRODUCTS_DIR)/HyperXTalk.app/Contents/MacOS";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -1942,7 +1942,7 @@
 		0A906641753A45B51F0B9FDA /* automaticactivationactivationgroupbehavior.livecodescript */ = {isa = PBXFileReference; lastKnownFileType = text; path = automaticactivationactivationgroupbehavior.livecodescript; sourceTree = "<group>"; };
 		0B6B22ED67E4AC1F90A1E269 /* compress_data.pl */ = {isa = PBXFileReference; lastKnownFileType = text.script.perl; path = compress_data.pl; sourceTree = "<group>"; };
 		0D6DF56CEFFA7F942A7C3374 /* libskia_opt_sse3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libskia_opt_sse3.a; path = ../prebuilt/lib/mac/libskia_opt_sse3.a; sourceTree = "<group>"; };
-		17B4A71571D0DFF589ECC199 /* Standalone-Community.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Standalone-Community.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		17B4A71571D0DFF589ECC199 /* HyperXTalk-Standalone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "HyperXTalk-Standalone.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A4F6C204F0B3E37A1A14D82 /* kernel-development.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "kernel-development.xcodeproj"; path = "../build-mac/livecode/engine/kernel-development.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		1AA29B54954E4ADABECDF19F /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/Localisation.strings; sourceTree = "<group>"; };
 		1B067B6C66917E46D27F0DE8 /* environment.livecode */ = {isa = PBXFileReference; lastKnownFileType = text; path = environment.livecode; sourceTree = "<group>"; };
@@ -1982,7 +1982,7 @@
 		5A6AF4A0D2B8BBB33F87A49C /* yacc.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = yacc.gypi; path = ../config/yacc.gypi; sourceTree = "<group>"; };
 		5ADADA5638ECDF332D860ECE /* Installer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Installer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6141FA8DD76D0DE502493E71 /* libgif.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgif.a; path = ../prebuilt/lib/mac/libgif.a; sourceTree = "<group>"; };
-		62DB8B91FBA6B16BF9E37E83 /* LiveCode-Community.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "LiveCode-Community.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		62DB8B91FBA6B16BF9E37E83 /* HyperXTalk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "HyperXTalk.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		63837DE04702BC9C0F27C7EB /* emscripten-settings.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = "emscripten-settings.gypi"; path = "../config/emscripten-settings.gypi"; sourceTree = "<group>"; };
 		63943116AFF2CEEF1F507F51 /* unlicensedbkgndbehavior.livecodescript */ = {isa = PBXFileReference; lastKnownFileType = text; path = unlicensedbkgndbehavior.livecodescript; sourceTree = "<group>"; };
 		661DC5FE02163EB0C6DE4292 /* standalone.rc */ = {isa = PBXFileReference; lastKnownFileType = text; path = standalone.rc; sourceTree = "<group>"; };
@@ -1993,7 +1993,7 @@
 		6F5E918BA1698F4E2699FD22 /* automaticactivationprocessinggroupbehavior.livecodescript */ = {isa = PBXFileReference; lastKnownFileType = text; path = automaticactivationprocessinggroupbehavior.livecodescript; sourceTree = "<group>"; };
 		6FF5F84EC673493AF752ED34 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		730FE298B705F2E418D73504 /* revliburl.livecodescript */ = {isa = PBXFileReference; lastKnownFileType = text; path = revliburl.livecodescript; sourceTree = "<group>"; };
-		75CD036495320708B1251971 /* LiveCodeDoc.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = LiveCodeDoc.icns; sourceTree = "<group>"; };
+		75CD036495320708B1251971 /* HyperXTalkDoc.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = HyperXTalkDoc.icns; sourceTree = "<group>"; };
 		767DFB8435A651483D953EDE /* server-community-host */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "server-community-host"; sourceTree = BUILT_PRODUCTS_DIR; };
 		77CE41DF00E735EB6A5FC21D /* revpdfprinter.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = revpdfprinter.xcodeproj; path = "../build-mac/livecode/revpdfprinter/revpdfprinter.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		7832BFE0045DADF1B7CDB3ED /* server-community */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "server-community"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2025,7 +2025,7 @@
 		94A9922D48175DA0E1D5BBDA /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		95A2D6E11E3B6A9A56BEE1ED /* libskia_opt_sse42.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libskia_opt_sse42.a; path = ../prebuilt/lib/mac/libskia_opt_sse42.a; sourceTree = "<group>"; };
 		95F6C3ADC1799E3907E0EA95 /* Dutch */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Dutch; path = Dutch.lproj/Localisation.strings; sourceTree = "<group>"; };
-		971B88E19420F0A80A9906E8 /* LiveCode.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = LiveCode.icns; sourceTree = "<group>"; };
+		971B88E19420F0A80A9906E8 /* HyperXTalk.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = HyperXTalk.icns; sourceTree = "<group>"; };
 		97600AE6C9A51373EB9D7DC1 /* English */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localisation.strings; sourceTree = "<group>"; };
 		97A924D0B053CBDC95C8AA71 /* revpdfprinter.bundle */ = {isa = PBXFileReference; lastKnownFileType = wrapper.cfbundle; path = revpdfprinter.bundle; sourceTree = "<group>"; };
 		99AAF20E806D7D80BCF4D0D3 /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Japanese; path = Japanese.lproj/Localisation.strings; sourceTree = "<group>"; };
@@ -2058,7 +2058,7 @@
 		CF6FF9266510D41A0BE78063 /* libcustomssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcustomssl.a; path = ../prebuilt/lib/mac/libcustomssl.a; sourceTree = "<group>"; };
 		D2B52D24440498CE69EA1A85 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		D2EF524EEAACD9994850B8A5 /* installer.rc */ = {isa = PBXFileReference; lastKnownFileType = text; path = installer.rc; sourceTree = "<group>"; };
-		D357A195CBB346F7CD4BD387 /* LiveCode-Community.rsrc */ = {isa = PBXFileReference; lastKnownFileType = text; path = "LiveCode-Community.rsrc"; sourceTree = "<group>"; };
+		D357A195CBB346F7CD4BD387 /* HyperXTalk.rsrc */ = {isa = PBXFileReference; lastKnownFileType = text; path = "HyperXTalk.rsrc"; sourceTree = "<group>"; };
 		D4846353400FB8515E23F56E /* Italian */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Italian; path = Italian.lproj/Localisation.strings; sourceTree = "<group>"; };
 		D6CF378F685264511FC9E299 /* libopenssl.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libopenssl.xcodeproj; path = "../build-mac/livecode/prebuilt/libopenssl.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		D7FD602D914D9F7BC7639A74 /* libffi.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libffi.xcodeproj; path = "../build-mac/livecode/thirdparty/libffi/libffi.xcodeproj"; sourceTree = SOURCE_ROOT; };
@@ -2578,9 +2578,9 @@
 			isa = PBXGroup;
 			children = (
 				FD53611CBA54B6A3B4687F76 /* Installer.icns */,
-				D357A195CBB346F7CD4BD387 /* LiveCode-Community.rsrc */,
-				971B88E19420F0A80A9906E8 /* LiveCode.icns */,
-				75CD036495320708B1251971 /* LiveCodeDoc.icns */,
+				D357A195CBB346F7CD4BD387 /* HyperXTalk.rsrc */,
+				971B88E19420F0A80A9906E8 /* HyperXTalk.icns */,
+				75CD036495320708B1251971 /* HyperXTalkDoc.icns */,
 				FF1ECF3BF79519BA821A3EF9 /* Localisation.strings */,
 				DFDFB59A06CB83C8C197B055 /* Standalone.icns */,
 				833F7C255BF7A37821B40CAE /* StandaloneDoc.icns */,
@@ -2633,9 +2633,9 @@
 			children = (
 				7832BFE0045DADF1B7CDB3ED /* server-community */,
 				767DFB8435A651483D953EDE /* server-community-host */,
-				17B4A71571D0DFF589ECC199 /* Standalone-Community.app */,
+				17B4A71571D0DFF589ECC199 /* HyperXTalk-Standalone.app */,
 				5ADADA5638ECDF332D860ECE /* Installer.app */,
-				62DB8B91FBA6B16BF9E37E83 /* LiveCode-Community.app */,
+				62DB8B91FBA6B16BF9E37E83 /* HyperXTalk.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2868,7 +2868,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 849235BD620A0F4B1C0C0C0D /* Build configuration list for PBXNativeTarget "development" */;
 			buildPhases = (
-				BDBC868F5DF1453B1C70A682 /* Copy to $(BUILT_PRODUCTS_DIR)/LiveCode-Community.app/Contents/MacOS */,
+				BDBC868F5DF1453B1C70A682 /* Copy to $(BUILT_PRODUCTS_DIR)/HyperXTalk.app/Contents/MacOS */,
 				1129E7FD34B1C639D389C698 /* Resources */,
 				C1645AFB83A85F01C2FEE150 /* Sources */,
 				0FA5736E6E2C795F5F5193EB /* Frameworks */,
@@ -2919,8 +2919,8 @@
 				7538FC8CAFD3CD4B3A5A980C /* PBXTargetDependency */,
 			);
 			name = development;
-			productName = "LiveCode-Community";
-			productReference = 62DB8B91FBA6B16BF9E37E83 /* LiveCode-Community.app */;
+			productName = "HyperXTalk";
+			productReference = 62DB8B91FBA6B16BF9E37E83 /* HyperXTalk.app */;
 			productType = "com.apple.product-type.application";
 		};
 		96A4A071F3D2619F28F42506 /* standalone */ = {
@@ -2972,8 +2972,8 @@
 				D6B20B0E0C2097B719FD193B /* PBXTargetDependency */,
 			);
 			name = standalone;
-			productName = "Standalone-Community";
-			productReference = 17B4A71571D0DFF589ECC199 /* Standalone-Community.app */;
+			productName = "HyperXTalk-Standalone";
+			productReference = 17B4A71571D0DFF589ECC199 /* HyperXTalk-Standalone.app */;
 			productType = "com.apple.product-type.application";
 		};
 		ADFE0A0C9A417EB0BC7CB852 /* server */ = {
@@ -3337,9 +3337,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7E9052C3465EE53D4AF1AB4A /* LiveCode.icns in Resources */,
-				948C74ACDB284712541493AB /* LiveCodeDoc.icns in Resources */,
-				50AFF74D8565253EF7321F0F /* LiveCode-Community.rsrc in Resources */,
+				7E9052C3465EE53D4AF1AB4A /* HyperXTalk.icns in Resources */,
+				948C74ACDB284712541493AB /* HyperXTalkDoc.icns in Resources */,
+				50AFF74D8565253EF7321F0F /* HyperXTalk.rsrc in Resources */,
 				60D80CD50A36AFBDDA230E33 /* Localisation.strings in Resources */,
 				3CFCD4A8A89A0A913D1F852A /* terminology.sdef in Resources */,
 			);
@@ -3350,7 +3350,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CBB01B3BD9F4D60622EA147A /* Installer.icns in Resources */,
-				85A3934F9921FB4826EACB56 /* LiveCode-Community.rsrc in Resources */,
+				85A3934F9921FB4826EACB56 /* HyperXTalk.rsrc in Resources */,
 				92BAACD6136003E2F1FD9A6D /* Localisation.strings in Resources */,
 				C8D86735974BB298808FF0F4 /* terminology.sdef in Resources */,
 			);
@@ -3362,7 +3362,7 @@
 			files = (
 				A5AAC83DDD9640262FD09471 /* Standalone.icns in Resources */,
 				393C2A64B79C2D266C5D6533 /* StandaloneDoc.icns in Resources */,
-				8F367F20D2615E8D54BF74EC /* LiveCode-Community.rsrc in Resources */,
+				8F367F20D2615E8D54BF74EC /* HyperXTalk.rsrc in Resources */,
 				2288A435988DF295872CDA33 /* Localisation.strings in Resources */,
 				852B03F6E8BEF23E9D7BD003 /* terminology.sdef in Resources */,
 			);
@@ -3432,7 +3432,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export REV_TOOLS_PATH=\"${ProjectDir}..\\..\\..\\ide\"\nexec python -c \"import fcntl, subprocess, sys\nfile = open('$TMPDIR/GYP_serialize_test_runs', 'a')\nfcntl.flock(file.fileno(), fcntl.LOCK_EX)\nsys.exit(subprocess.call(sys.argv[1:]))\" \"${BUILT_PRODUCTS_DIR}/LiveCode-Community.exe\"\nexit 1\n";
+			shellScript = "export REV_TOOLS_PATH=\"${ProjectDir}..\\..\\..\\ide\"\nexec python -c \"import fcntl, subprocess, sys\nfile = open('$TMPDIR/GYP_serialize_test_runs', 'a')\nfcntl.flock(file.fileno(), fcntl.LOCK_EX)\nsys.exit(subprocess.call(sys.argv[1:]))\" \"${BUILT_PRODUCTS_DIR}/HyperXTalk.exe\"\nexit 1\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -4651,7 +4651,7 @@
 		11D1EC92A0A5325FCFDFA781 /* Fast */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				PRODUCT_NAME = "LiveCode-Community";
+				PRODUCT_NAME = "HyperXTalk";
 			};
 			name = Fast;
 		};
@@ -4712,7 +4712,7 @@
 					"-Wl,11.0",
 					"-Wl,11.0",
 				);
-				PRODUCT_NAME = "Standalone-Community";
+				PRODUCT_NAME = "HyperXTalk-Standalone";
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wextra",
@@ -5213,7 +5213,7 @@
 					"-Wl,11.0",
 					"-Wl,11.0",
 				);
-				PRODUCT_NAME = "Standalone-Community";
+				PRODUCT_NAME = "HyperXTalk-Standalone";
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wextra",
@@ -5754,7 +5754,7 @@
 					"-Wl,11.0",
 					"-Wl,11.0",
 				);
-				PRODUCT_NAME = "Standalone-Community";
+				PRODUCT_NAME = "HyperXTalk-Standalone";
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wextra",
@@ -6082,7 +6082,7 @@
 					"-Wl,11.0",
 					"-Wl,11.0",
 				);
-				PRODUCT_NAME = "LiveCode-Community";
+				PRODUCT_NAME = "HyperXTalk";
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wextra",
@@ -6145,7 +6145,7 @@
 		A0E3CBF732C83D517118C37A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				PRODUCT_NAME = "LiveCode-Community";
+				PRODUCT_NAME = "HyperXTalk";
 			};
 			name = Debug;
 		};
@@ -6604,7 +6604,7 @@
 					"-Wl,11.0",
 					"-Wl,11.0",
 				);
-				PRODUCT_NAME = "LiveCode-Community";
+				PRODUCT_NAME = "HyperXTalk";
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wextra",
@@ -6714,7 +6714,7 @@
 		D2BC71EB8E53464289F25900 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				PRODUCT_NAME = "LiveCode-Community";
+				PRODUCT_NAME = "HyperXTalk";
 			};
 			name = Release;
 		};
@@ -6782,7 +6782,7 @@
 					"-Wl,11.0",
 					"-Wl,11.0",
 				);
-				PRODUCT_NAME = "LiveCode-Community";
+				PRODUCT_NAME = "HyperXTalk";
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wextra",

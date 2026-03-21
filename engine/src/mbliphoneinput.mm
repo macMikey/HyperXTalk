@@ -49,7 +49,7 @@ UIView *MCIPhoneGetView(void);
 class MCiOSInputControl;
 
 // Note that we use the notifications, rather than delegate methods.
-@interface com_runrev_livecode_MCiOSInputDelegate : NSObject <UITextFieldDelegate, UITextViewDelegate>
+@interface com_hyperxtalk_hyperxtalk_MCiOSInputDelegate : NSObject <UITextFieldDelegate, UITextViewDelegate>
 {
 	MCiOSInputControl *m_instance;
 	bool m_didchange_pending;
@@ -78,7 +78,7 @@ class MCiOSInputControl;
 @end
 
 
-@interface com_runrev_livecode_MCiOSMultiLineDelegate : com_runrev_livecode_MCiOSInputDelegate <UIScrollViewDelegate>
+@interface com_hyperxtalk_hyperxtalk_MCiOSMultiLineDelegate : com_hyperxtalk_hyperxtalk_MCiOSInputDelegate <UIScrollViewDelegate>
 {
     UIView* m_view;
 	int32_t m_verticaltextalign;
@@ -148,12 +148,12 @@ public:
     
 	void HandleNotifyEvent(MCNameRef p_notification);
 
-	com_runrev_livecode_MCiOSInputDelegate *GetDelegate(void);
+	com_hyperxtalk_hyperxtalk_MCiOSInputDelegate *GetDelegate(void);
 	
 protected:
 	virtual ~MCiOSInputControl(void);
 	
-	com_runrev_livecode_MCiOSInputDelegate *m_delegate;
+	com_hyperxtalk_hyperxtalk_MCiOSInputDelegate *m_delegate;
 };
 
 // single line input control
@@ -1097,7 +1097,7 @@ void MCiOSInputControl::ExecFocus(MCExecContext &ctxt)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-com_runrev_livecode_MCiOSInputDelegate *MCiOSInputControl::GetDelegate(void)
+com_hyperxtalk_hyperxtalk_MCiOSInputDelegate *MCiOSInputControl::GetDelegate(void)
 {
 	return m_delegate;
 }
@@ -1144,8 +1144,8 @@ void MCiOSInputFieldControl::SetMaximumTextLength(MCExecContext& ctxt, uinteger_
 {
     if (m_delegate != nil)
     {
-       	com_runrev_livecode_MCiOSInputDelegate *t_delegate;
-        t_delegate = (com_runrev_livecode_MCiOSInputDelegate*)m_delegate;
+       	com_hyperxtalk_hyperxtalk_MCiOSInputDelegate *t_delegate;
+        t_delegate = (com_hyperxtalk_hyperxtalk_MCiOSInputDelegate*)m_delegate;
         
         [t_delegate setMaxTextLength: p_length];
         
@@ -1252,8 +1252,8 @@ void MCiOSInputFieldControl::GetMaximumTextLength(MCExecContext& ctxt, uinteger_
 {
     if (m_delegate != nil)
     {
-       	com_runrev_livecode_MCiOSInputDelegate *t_delegate;
-        t_delegate = (com_runrev_livecode_MCiOSInputDelegate*)m_delegate;
+       	com_hyperxtalk_hyperxtalk_MCiOSInputDelegate *t_delegate;
+        t_delegate = (com_hyperxtalk_hyperxtalk_MCiOSInputDelegate*)m_delegate;
         
         r_length = [t_delegate getMaxTextLength];
     }
@@ -1331,7 +1331,7 @@ UIView *MCiOSInputFieldControl::CreateView(void)
 	
 	[t_view setHidden: YES];
 	
-	m_delegate = [[com_runrev_livecode_MCiOSInputDelegate alloc] initWithInstance: this view: t_view];
+	m_delegate = [[com_hyperxtalk_hyperxtalk_MCiOSInputDelegate alloc] initWithInstance: this view: t_view];
 	[t_view setDelegate: m_delegate];
 	
 	return t_view;
@@ -1411,8 +1411,8 @@ void MCiOSMultiLineControl::SetVerticalTextAlign(MCExecContext& ctxt, MCNativeCo
 {
 	if (m_delegate != nil)
     {
-       	com_runrev_livecode_MCiOSMultiLineDelegate *t_delegate;
-        t_delegate = (com_runrev_livecode_MCiOSMultiLineDelegate*)m_delegate;
+       	com_hyperxtalk_hyperxtalk_MCiOSMultiLineDelegate *t_delegate;
+        t_delegate = (com_hyperxtalk_hyperxtalk_MCiOSMultiLineDelegate*)m_delegate;
         
         [t_delegate setVerticalTextAlign:(int32_t)p_align];
     }
@@ -1484,8 +1484,8 @@ void MCiOSMultiLineControl::GetDataDetectorTypes(MCExecContext& ctxt, MCNativeCo
 
 void MCiOSMultiLineControl::GetVerticalTextAlign(MCExecContext& ctxt, MCNativeControlInputVerticalAlign& r_align)
 {
-	com_runrev_livecode_MCiOSMultiLineDelegate *t_delegate;
-	t_delegate = (com_runrev_livecode_MCiOSMultiLineDelegate*)m_delegate;
+	com_hyperxtalk_hyperxtalk_MCiOSMultiLineDelegate *t_delegate;
+	t_delegate = (com_hyperxtalk_hyperxtalk_MCiOSMultiLineDelegate*)m_delegate;
  
     if (t_delegate)
         r_align = (MCNativeControlInputVerticalAlign)[t_delegate getVerticalTextAlign];
@@ -1989,7 +1989,7 @@ UIView *MCiOSMultiLineControl::CreateView(void)
 	
 	[t_view setHidden: YES];
 	
-	m_delegate = [[com_runrev_livecode_MCiOSMultiLineDelegate alloc] initWithInstance: this view: t_view];
+	m_delegate = [[com_hyperxtalk_hyperxtalk_MCiOSMultiLineDelegate alloc] initWithInstance: this view: t_view];
 	[t_view setDelegate: m_delegate];
 	
 	return t_view;
@@ -2077,7 +2077,7 @@ static struct { NSString *name; SEL selector; } s_input_notifications[] =
 
 ////////////////////////////////////////////////////////////////////////////////
 
-@implementation com_runrev_livecode_MCiOSInputDelegate
+@implementation com_hyperxtalk_hyperxtalk_MCiOSInputDelegate
 
 - (id)initWithInstance:(MCiOSInputControl*)instance view: (UIView *)view
 {
@@ -2265,7 +2265,7 @@ private:
 	MCiOSMultiLineControl *m_target;
 };
 
-@implementation com_runrev_livecode_MCiOSMultiLineDelegate
+@implementation com_hyperxtalk_hyperxtalk_MCiOSMultiLineDelegate
 
 - (id)initWithInstance:(MCiOSInputControl *)instance view:(UIView *)view
 {

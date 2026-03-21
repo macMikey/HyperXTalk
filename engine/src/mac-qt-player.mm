@@ -37,7 +37,7 @@
 
  class MCQTKitPlayer;
  
- @interface com_runrev_livecode_MCQTKitPlayerObserver: NSObject
+ @interface com_hyperxtalk_hyperxtalk_MCQTKitPlayerObserver: NSObject
  {
      MCQTKitPlayer *m_player;
  }
@@ -58,7 +58,7 @@
 
 @end
 
-@interface com_runrev_livecode_MCQTKitHelper : NSObject
+@interface com_hyperxtalk_hyperxtalk_MCQTKitHelper : NSObject
 
 + (void) dynamicallySubclassQTMovieView:(QTMovieView *)view ;
 - (NSView *) newHitTest: (NSPoint) aPoint;
@@ -120,7 +120,7 @@ private:
     QTTime m_last_current_time;
     QTTime m_buffered_time;
     
-    com_runrev_livecode_MCQTKitPlayerObserver *m_observer;
+    com_hyperxtalk_hyperxtalk_MCQTKitPlayerObserver *m_observer;
     
     MCPlatformPlayerDuration *m_markers;
     uindex_t m_marker_count;
@@ -145,7 +145,7 @@ private:
 
 ////////////////////////////////////////////////////////////////////////////////
 
-@implementation com_runrev_livecode_MCQTKitPlayerObserver
+@implementation com_hyperxtalk_hyperxtalk_MCQTKitPlayerObserver
 
 - (id)initWithPlayer: (MCQTKitPlayer *)player
 {
@@ -171,7 +171,7 @@ private:
 @end
 
 // PM-2015-05-27: [[ Bug 14349 ]] Dynamically subclass QTMovieView and override hitTest method to make mouse events respond to the superview
-@implementation com_runrev_livecode_MCQTKitHelper
+@implementation com_hyperxtalk_hyperxtalk_MCQTKitHelper
 
 // We cannot subclass QTMovieView statically, because we have to dynamically load QTKit
 + (void) dynamicallySubclassQTMovieView:(QTMovieView *)p_qt_movie_view
@@ -179,7 +179,7 @@ private:
     Class t_qt_movie_view_class = [p_qt_movie_view class];
     
     // Build the name of the new class
-    NSString *t_subclass_name = @"com_runrev_livecode_MCQTMovieView";
+    NSString *t_subclass_name = @"com_hyperxtalk_hyperxtalk_MCQTMovieView";
     Class t_subclass = NSClassFromString(t_subclass_name);
     
     // Look in the runtime to see if class of this name already exists
@@ -189,7 +189,7 @@ private:
         t_subclass = objc_allocateClassPair(t_qt_movie_view_class, [t_subclass_name UTF8String], 0);
         if (t_subclass != nil)
         {
-            IMP hitTest = class_getMethodImplementation([com_runrev_livecode_MCQTKitHelper class], @selector(newHitTest:));
+            IMP hitTest = class_getMethodImplementation([com_hyperxtalk_hyperxtalk_MCQTKitHelper class], @selector(newHitTest:));
             
             // Add the custom -hitTest method (called newHitTest) to the new subclass
             class_addMethod(t_subclass, @selector(hitTest:), hitTest, "v@:");
@@ -233,8 +233,8 @@ MCQTKitPlayer::MCQTKitPlayer(void)
 {
 	m_movie = [[NSClassFromString(@"QTMovie") movie] retain];
 	m_view = [[NSClassFromString(@"QTMovieView") alloc] initWithFrame: NSZeroRect];
-    [com_runrev_livecode_MCQTKitHelper dynamicallySubclassQTMovieView:m_view];
-	m_observer = [[com_runrev_livecode_MCQTKitPlayerObserver alloc] initWithPlayer: this];
+    [com_hyperxtalk_hyperxtalk_MCQTKitHelper dynamicallySubclassQTMovieView:m_view];
+	m_observer = [[com_hyperxtalk_hyperxtalk_MCQTKitPlayerObserver alloc] initWithPlayer: this];
     
 	m_current_frame = nil;
 	

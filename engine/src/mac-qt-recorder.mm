@@ -53,7 +53,7 @@
 
 class MCQTSoundRecorder;
 
-@interface com_runrev_livecode_MCQTSoundRecorderObserver: NSObject
+@interface com_hyperxtalk_hyperxtalk_MCQTSoundRecorderObserver: NSObject
 {
     MCQTSoundRecorder *m_recorder;
     BOOL m_stop_requested;
@@ -105,7 +105,7 @@ protected:
     SeqGrabComponent m_seq_grab;
     SGChannel m_channel;
 
-    com_runrev_livecode_MCQTSoundRecorderObserver *m_observer;
+    com_hyperxtalk_hyperxtalk_MCQTSoundRecorderObserver *m_observer;
 
     bool m_has_magic_cookie;
     
@@ -115,7 +115,7 @@ private:
 
 ////////////////////////////////////////////////////////////////////////////////
 
-@implementation com_runrev_livecode_MCQTSoundRecorderObserver
+@implementation com_hyperxtalk_hyperxtalk_MCQTSoundRecorderObserver
 
 - (id)initWithRecorder:(MCQTSoundRecorder *)recorder
 {
@@ -304,7 +304,7 @@ MCQTSoundRecorder::MCQTSoundRecorder(void)
     m_filename = nil;
     m_has_magic_cookie = false;
     
-    m_observer = [[com_runrev_livecode_MCQTSoundRecorderObserver alloc] initWithRecorder: this];
+    m_observer = [[com_hyperxtalk_hyperxtalk_MCQTSoundRecorderObserver alloc] initWithRecorder: this];
     
     OpenADefaultComponent(SeqGrabComponentType, 0, &m_seq_grab);
     SGInitialize(m_seq_grab);

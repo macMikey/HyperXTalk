@@ -521,7 +521,7 @@ static void post_message_to_engine(MCObject *p_target, NSString *p_message, void
 				t_parameters = t_new_parameter;
 
 			MCExecPoint ep;
-			[t_arg com_runrev_livecode_convertToLiveCode: &ep];
+			[t_arg com_hyperxtalk_hyperxtalk_convertToLiveCode: &ep];
 			t_new_parameter -> set_argument(ep);
 
 			t_last_parameter = t_new_parameter;
@@ -535,42 +535,42 @@ static void post_message_to_engine(MCObject *p_target, NSString *p_message, void
 
 ////////////////////
 
-@interface NSObject (com_runrev_livecode_MCIPhoneValueConversion)
+@interface NSObject (com_hyperxtalk_hyperxtalk_MCIPhoneValueConversion)
 
-- (void)com_runrev_livecode_convertToLiveCode: (MCExecPoint *)ep;
+- (void)com_hyperxtalk_hyperxtalk_convertToLiveCode: (MCExecPoint *)ep;
 
 @end
 
-@implementation NSObject (com_runrev_livecode_MCIPhoneValueConversion)
+@implementation NSObject (com_hyperxtalk_hyperxtalk_MCIPhoneValueConversion)
 
-- (void)com_runrev_livecode_convertToLiveCode: (MCExecPoint *)ep
+- (void)com_hyperxtalk_hyperxtalk_convertToLiveCode: (MCExecPoint *)ep
 {
 	ep -> copysvalue([[self description] cStringUsingEncoding: NSMacOSRomanStringEncoding]);
 }
 
 @end
 
-@implementation NSString (com_runrev_livecode_MCIPhoneValueConversion)
+@implementation NSString (com_hyperxtalk_hyperxtalk_MCIPhoneValueConversion)
 
-- (void)com_runrev_livecode_convertToLiveCode: (MCExecPoint *)ep
+- (void)com_hyperxtalk_hyperxtalk_convertToLiveCode: (MCExecPoint *)ep
 {
 	ep -> copysvalue([self cStringUsingEncoding: NSMacOSRomanStringEncoding]);
 }
 
 @end
 
-@implementation NSData (com_runrev_livecode_MCIPhoneValueConversion)
+@implementation NSData (com_hyperxtalk_hyperxtalk_MCIPhoneValueConversion)
 
-- (void)com_runrev_livecode_convertToLiveCode: (MCExecPoint *)ep
+- (void)com_hyperxtalk_hyperxtalk_convertToLiveCode: (MCExecPoint *)ep
 {
 	ep -> copysvalue((const char *)[self bytes], [self length]);
 }
 
 @end
 
-@implementation NSNumber (com_runrev_livecode_MCIPhoneValueConversion)
+@implementation NSNumber (com_hyperxtalk_hyperxtalk_MCIPhoneValueConversion)
 
-- (void)com_runrev_livecode_convertToLiveCode: (MCExecPoint *)ep
+- (void)com_hyperxtalk_hyperxtalk_convertToLiveCode: (MCExecPoint *)ep
 {
 	if (strcmp([self objCType], @encode(BOOL)) == 0)
 		ep -> setboolean([self boolValue]);
@@ -580,9 +580,9 @@ static void post_message_to_engine(MCObject *p_target, NSString *p_message, void
 
 @end
 
-/*@implementation NSArray (com_runrev_livecode_MCIPhoneValueConversion)
+/*@implementation NSArray (com_hyperxtalk_hyperxtalk_MCIPhoneValueConversion)
 
-- (void)com_runrev_livecode_convertToLiveCode: (MCExecPoint *)ep
+- (void)com_hyperxtalk_hyperxtalk_convertToLiveCode: (MCExecPoint *)ep
 {
 	
 }
@@ -591,7 +591,7 @@ static void post_message_to_engine(MCObject *p_target, NSString *p_message, void
 
 //////////
 
-@interface com_runrev_livecode_MCIPhoneEmbeddedView : com_runrev_livecode_MCIPhoneRootView
+@interface com_hyperxtalk_hyperxtalk_MCIPhoneEmbeddedView : com_hyperxtalk_hyperxtalk_MCIPhoneRootView
 {
 	bool m_running : 1;
 	
@@ -653,7 +653,7 @@ static void post_message_to_engine(MCObject *p_target, NSString *p_message, void
 
 @end
 
-@implementation com_runrev_livecode_MCIPhoneEmbeddedView
+@implementation com_hyperxtalk_hyperxtalk_MCIPhoneEmbeddedView
 
 ////////////////////
 
@@ -1021,12 +1021,12 @@ static void post_message_to_engine(MCObject *p_target, NSString *p_message, void
 
 @end
 
-static com_runrev_livecode_MCIPhoneEmbeddedView *s_view = nil;
+static com_hyperxtalk_hyperxtalk_MCIPhoneEmbeddedView *s_view = nil;
 
 UIView *LiveCodeGetView(void)
 {
 	if (s_view == nil)
-		s_view = [[com_runrev_livecode_MCIPhoneEmbeddedView alloc] init];
+		s_view = [[com_hyperxtalk_hyperxtalk_MCIPhoneEmbeddedView alloc] init];
 	return s_view;
 }
 

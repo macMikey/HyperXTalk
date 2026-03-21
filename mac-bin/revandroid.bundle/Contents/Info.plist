@@ -9,7 +9,7 @@
 	<key>CFBundleExecutable</key>
 	<string>revandroid</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.runrev.revandroid</string>
+	<string>com.hyperxtalk.revandroid</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>

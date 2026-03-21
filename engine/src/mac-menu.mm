@@ -1084,7 +1084,7 @@ struct MCPlatformMenu
 static MCPlatformMenuRef s_menubar = nil;
 
 // The delegate for the app menu.
-static com_runrev_livecode_MCAppMenuDelegate *s_app_menu_delegate = nil;
+static com_hyperxtalk_hyperxtalk_MCAppMenuDelegate *s_app_menu_delegate = nil;
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -1097,7 +1097,7 @@ enum MCShadowedItemTags
 
 ////////////////////////////////////////////////////////////////////////////////
 
-@implementation com_runrev_livecode_MCMenuDelegate
+@implementation com_hyperxtalk_hyperxtalk_MCMenuDelegate
 
 - (id)initWithPlatformMenuRef: (MCPlatformMenuRef)p_menu_ref
 {
@@ -1204,7 +1204,7 @@ enum MCShadowedItemTags
     bool t_quit_accelerator_present;
     t_quit_accelerator_present = false;
     if ([[t_item keyEquivalent] isEqualToString: @"q"])
-        t_quit_accelerator_present = [(com_runrev_livecode_MCMenuDelegate *)[[t_item menu] delegate] platformMenuRef] -> quit_item != nil;
+        t_quit_accelerator_present = [(com_hyperxtalk_hyperxtalk_MCMenuDelegate *)[[t_item menu] delegate] platformMenuRef] -> quit_item != nil;
     
 	if (s_menu_select_lock == 0 || t_quit_accelerator_present)
     {
@@ -1253,7 +1253,7 @@ enum MCShadowedItemTags
 
 @end
 
-@implementation com_runrev_livecode_MCAppMenuDelegate
+@implementation com_hyperxtalk_hyperxtalk_MCAppMenuDelegate
 
 - (id)init
 {
@@ -1377,13 +1377,13 @@ enum MCShadowedItemTags
 // result in 'menuSelect' messages, but instead propagate a keyDown/keyUp
 // message which the engine handles.
 
-@interface com_runrev_livecode_MCMenuHandlingKeys: NSMenu
+@interface com_hyperxtalk_hyperxtalk_MCMenuHandlingKeys: NSMenu
 
 - (BOOL)performKeyEquivalent: (NSEvent *)event;
 
 @end
 
-@compatibility_alias MCMenuHandlingKeys com_runrev_livecode_MCMenuHandlingKeys;
+@compatibility_alias MCMenuHandlingKeys com_hyperxtalk_hyperxtalk_MCMenuHandlingKeys;
 
 // SN-2014-12-16: [[ Bug 14185 ]] Functions to save and restore the selected quit state
 uint32_t s_quitting_state_count = 0;
@@ -1427,7 +1427,7 @@ void MCMacPlatformUnlockMenuSelect(void)
 	s_menu_select_lock -= 1;
 }
 
-@implementation com_runrev_livecode_MCMenuHandlingKeys
+@implementation com_hyperxtalk_hyperxtalk_MCMenuHandlingKeys
 
 - (BOOL)performKeyEquivalent: (NSEvent *)event
 {
@@ -1974,7 +1974,7 @@ static void MCPlatformStartUsingMenuAsMenubar(MCPlatformMenuRef p_menu)
 		return;
 	
 	if (s_app_menu_delegate == nil)
-		s_app_menu_delegate = [[com_runrev_livecode_MCAppMenuDelegate alloc] init];
+		s_app_menu_delegate = [[com_hyperxtalk_hyperxtalk_MCAppMenuDelegate alloc] init];
 	
 	// Initialize the application menu (which is always index 0). The application
 	// menu has structure:

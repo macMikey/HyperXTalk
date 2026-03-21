@@ -132,7 +132,7 @@ public:
 
 #import <Foundation/NSString.h>
 
-@interface NSString (com_runrev_livecode_NSStringAdditions)
+@interface NSString (com_hyperxtalk_hyperxtalk_NSStringAdditions)
 	- (const char *)nativeCString;
 @end
 

@@ -72,7 +72,7 @@ enum MCiOSPlayerStatus
 
 class MCiOSPlayerControl;
 
-@interface com_runrev_livecode_MCiOSPlayerDelegate : NSObject
+@interface com_hyperxtalk_hyperxtalk_MCiOSPlayerDelegate : NSObject
 {
 	MCiOSPlayerControl *m_instance;
 	AVPlayer *m_player;
@@ -104,7 +104,7 @@ class MCiOSPlayerControl;
 
 @end
 
-@compatibility_alias MCiOSPlayerDelegate com_runrev_livecode_MCiOSPlayerDelegate;
+@compatibility_alias MCiOSPlayerDelegate com_hyperxtalk_hyperxtalk_MCiOSPlayerDelegate;
 
 @interface com_livecode_engine_MCiOSAVPlayerViewController : AVPlayerViewController
 {
@@ -1297,7 +1297,7 @@ static NSString* s_player_keys[] =
 
 ////////////////////////////////////////////////////////////////////////////////
 
-@implementation com_runrev_livecode_MCiOSPlayerDelegate
+@implementation com_hyperxtalk_hyperxtalk_MCiOSPlayerDelegate
 
 - (id)initWithInstance:(MCiOSPlayerControl*)instance player:(AVPlayer*)player
 {

@@ -82,7 +82,7 @@ void MCIHandleFinishedPlayingSound(MCStringRef p_payload)
 }
 
 // HC-2011-10-20 [[ Media Picker ]] Added functionality to access iPod by accessing the AVFoundation.
-@interface com_runrev_livecode_MCSoundPlayerDelegate: NSObject
+@interface com_hyperxtalk_hyperxtalk_MCSoundPlayerDelegate: NSObject
 {
     AVAsset *m_asset;
 	AVPlayer *m_player;
@@ -99,7 +99,7 @@ void MCIHandleFinishedPlayingSound(MCStringRef p_payload)
 - (void)dealloc;
 @end
 
-static com_runrev_livecode_MCSoundPlayerDelegate *s_sound_player_delegate = nil;
+static com_hyperxtalk_hyperxtalk_MCSoundPlayerDelegate *s_sound_player_delegate = nil;
 static float s_sound_loudness = 1.0;
 static MCStringRef s_sound_file = nil;
 
@@ -115,7 +115,7 @@ bool MCSystemSoundFinalize()
 	return true;
 }
 
-@implementation com_runrev_livecode_MCSoundPlayerDelegate
+@implementation com_hyperxtalk_hyperxtalk_MCSoundPlayerDelegate
 
 -(id)init
 {
@@ -332,7 +332,7 @@ bool MCSystemPlaySound(MCStringRef p_sound, bool p_looping)
     if (t_success)
     { 
 		MCIPhoneRunBlockOnMainFiber(^(void) {
-			s_sound_player_delegate = [com_runrev_livecode_MCSoundPlayerDelegate alloc];
+			s_sound_player_delegate = [com_hyperxtalk_hyperxtalk_MCSoundPlayerDelegate alloc];
 			[s_sound_player_delegate init];
 			*t_success_ptr = [s_sound_player_delegate playSound:t_url looping: p_looping];
 		});
@@ -362,7 +362,7 @@ void MCSystemGetPlayingSound(MCStringRef &r_sound)
 
 struct MCSystemSoundChannel;
 
-@interface com_runrev_livecode_MCSystemSoundChannelDelegate : NSObject <AVAudioPlayerDelegate>
+@interface com_hyperxtalk_hyperxtalk_MCSystemSoundChannelDelegate : NSObject <AVAudioPlayerDelegate>
 {
 	MCSystemSoundChannel *m_channel;
 }
@@ -383,7 +383,7 @@ struct MCSystemSoundChannel
 {
 	MCSystemSoundChannel *next;
 	MCStringRef name;
-	com_runrev_livecode_MCSystemSoundChannelDelegate *delegate;
+	com_hyperxtalk_hyperxtalk_MCSystemSoundChannelDelegate *delegate;
 	MCSystemSoundPlayer current_player;
 	MCSystemSoundPlayer next_player;
 	bool paused;
@@ -432,7 +432,7 @@ static bool new_sound_channel(MCStringRef p_channel, MCSystemSoundChannel*& r_ch
 	
 	if (t_success)
 	{
-		t_channel -> delegate = [[com_runrev_livecode_MCSystemSoundChannelDelegate alloc] initWithSoundChannel: t_channel];
+		t_channel -> delegate = [[com_hyperxtalk_hyperxtalk_MCSystemSoundChannelDelegate alloc] initWithSoundChannel: t_channel];
 		if (t_channel -> delegate == nil)
 			t_success = false;
 	}
@@ -720,7 +720,7 @@ bool MCSystemListSoundChannels(MCStringRef& r_channels)
 
 extern void MCSoundPostSoundFinishedOnChannelMessage(MCStringRef p_channel, MCStringRef p_sound, MCObjectHandle p_object);
 
-@implementation com_runrev_livecode_MCSystemSoundChannelDelegate
+@implementation com_hyperxtalk_hyperxtalk_MCSystemSoundChannelDelegate
 
 - (id)initWithSoundChannel: (MCSystemSoundChannel *)channel
 {

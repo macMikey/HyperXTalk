@@ -882,9 +882,9 @@
 			children = (
 				34BA445F7749044493BCEE2E /* server-community */,
 				86A442137C3CFC0F19CD7589 /* server-community-host */,
-				9A2E91D7C49C4BB09CA651D5 /* Standalone-Community.app */,
+				9A2E91D7C49C4BB09CA651D5 /* HyperXTalk-Standalone.app */,
 				AC1EBAA327542CF49DACAAE0 /* Installer.app */,
-				AC8F3107B1FAA53F576C4F6F /* LiveCode-Community.app */,
+				AC8F3107B1FAA53F576C4F6F /* HyperXTalk.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1155,10 +1155,10 @@
 			remoteRef = 8E6F6F4E2F3424C89EA2CC64 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		9A2E91D7C49C4BB09CA651D5 /* Standalone-Community.app */ = {
+		9A2E91D7C49C4BB09CA651D5 /* HyperXTalk-Standalone.app */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.application;
-			path = "Standalone-Community.app";
+			path = "HyperXTalk-Standalone.app";
 			remoteRef = 1C3AAF5E3C152EFA7879DAF4 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -1169,10 +1169,10 @@
 			remoteRef = 9DA882EC517AD472768C89FE /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		AC8F3107B1FAA53F576C4F6F /* LiveCode-Community.app */ = {
+		AC8F3107B1FAA53F576C4F6F /* HyperXTalk.app */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.application;
-			path = "LiveCode-Community.app";
+			path = "HyperXTalk.app";
 			remoteRef = 61B7048E5A92EACB1F5AACDB /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};

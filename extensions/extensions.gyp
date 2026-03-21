@@ -87,7 +87,7 @@
 			
 			'dependencies':
 		    [
-        		# Requires a working LiveCode engine
+        		# Requires a working HyperXTalk engine
 		        '../engine/engine.gyp:server',
 				'../revzip/revzip.gyp:external-revzip-server',
 				'../revxml/revxml.gyp:external-revxml-server',		        

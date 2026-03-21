@@ -9,7 +9,7 @@
 	<key>CFBundleExecutable</key>
 	<string>reviphone</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.runrev.reviphone</string>
+	<string>com.hyperxtalk.reviphone</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>

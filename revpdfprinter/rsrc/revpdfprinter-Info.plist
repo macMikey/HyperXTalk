@@ -7,7 +7,7 @@
 	<key>CFBundleExecutable</key>
 	<string>revpdfprinter</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.runrev.revpdfprinter</string>
+	<string>com.hyperxtalk.revpdfprinter</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>

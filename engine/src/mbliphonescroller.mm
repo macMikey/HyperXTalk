@@ -45,7 +45,7 @@ extern UIView *MCIPhoneGetView(void);
 
 class MCiOSScrollerControl;
 
-@interface com_runrev_livecode_MCiOSScrollViewDelegate : NSObject <UIScrollViewDelegate>
+@interface com_hyperxtalk_hyperxtalk_MCiOSScrollViewDelegate : NSObject <UIScrollViewDelegate>
 {
 	MCiOSScrollerControl *m_instance;
 }
@@ -53,7 +53,7 @@ class MCiOSScrollerControl;
 - (id)initWithInstance:(MCiOSScrollerControl *)instance;
 @end
 
-@interface com_runrev_livecode_MCNativeViewEventForwarder : UIView
+@interface com_hyperxtalk_hyperxtalk_MCNativeViewEventForwarder : UIView
 {
 	UIView *m_target;
 	
@@ -140,8 +140,8 @@ protected:
 	virtual ~MCiOSScrollerControl(void);
 	
 private:
-	com_runrev_livecode_MCiOSScrollViewDelegate *m_delegate;
-	com_runrev_livecode_MCNativeViewEventForwarder *m_forwarder;
+	com_hyperxtalk_hyperxtalk_MCiOSScrollViewDelegate *m_delegate;
+	com_hyperxtalk_hyperxtalk_MCNativeViewEventForwarder *m_forwarder;
 	MCRectangle32 m_content_rect;
 };
 
@@ -762,9 +762,9 @@ UIView *MCiOSScrollerControl::CreateView(void)
 
 	[t_view setHidden: YES];
 	
-	m_delegate = [[com_runrev_livecode_MCiOSScrollViewDelegate alloc] initWithInstance: this];
+	m_delegate = [[com_hyperxtalk_hyperxtalk_MCiOSScrollViewDelegate alloc] initWithInstance: this];
 	[t_view setDelegate: m_delegate];
-	m_forwarder = [[com_runrev_livecode_MCNativeViewEventForwarder alloc] initWithFrame: CGRectMake(0,0,0,0)];
+	m_forwarder = [[com_hyperxtalk_hyperxtalk_MCNativeViewEventForwarder alloc] initWithFrame: CGRectMake(0,0,0,0)];
 	[t_view addSubview: m_forwarder];
 	
 	if (MCmajorosversion >= DELAYS_TOUCHES_WORKAROUND_MIN)
@@ -874,7 +874,7 @@ private:
 
 ////////////////////////////////////////////////////////////////////////////////
 
-@implementation com_runrev_livecode_MCiOSScrollViewDelegate
+@implementation com_hyperxtalk_hyperxtalk_MCiOSScrollViewDelegate
 
 - (id)initWithInstance:(MCiOSScrollerControl*)instance
 {
@@ -949,7 +949,7 @@ bool MCNativeScrollerControlCreate(MCNativeControl *&r_control)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-@implementation com_runrev_livecode_MCNativeViewEventForwarder
+@implementation com_hyperxtalk_hyperxtalk_MCNativeViewEventForwarder
 
 - (id) initWithFrame: (CGRect)withFrame
 {

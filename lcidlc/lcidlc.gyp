@@ -25,7 +25,7 @@
 
 			'sources':
 			[
-				'include/LiveCode.h',
+				'include/HyperXTalk.h',
 
         'src/Coder.h',
 				'src/Coder.cpp',

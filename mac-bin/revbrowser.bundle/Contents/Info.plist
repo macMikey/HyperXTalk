@@ -9,7 +9,7 @@
 	<key>CFBundleExecutable</key>
 	<string>revbrowser</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.runrev.revbrowser</string>
+	<string>com.hyperxtalk.revbrowser</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>

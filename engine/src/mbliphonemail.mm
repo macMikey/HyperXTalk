@@ -42,7 +42,7 @@ UIViewController *MCIPhoneGetViewController(void);
 
 ////////////////////////////////////////////////////////////////////////////////
 
-@interface com_runrev_livecode_MCIPhoneMailComposerDialog : MFMailComposeViewController <MFMailComposeViewControllerDelegate>
+@interface com_hyperxtalk_hyperxtalk_MCIPhoneMailComposerDialog : MFMailComposeViewController <MFMailComposeViewControllerDelegate>
 {
 	bool m_running;
 }
@@ -56,9 +56,9 @@ UIViewController *MCIPhoneGetViewController(void);
 
 @end
 
-static com_runrev_livecode_MCIPhoneMailComposerDialog *s_mail_composer_dialog = nil;
+static com_hyperxtalk_hyperxtalk_MCIPhoneMailComposerDialog *s_mail_composer_dialog = nil;
 
-@implementation com_runrev_livecode_MCIPhoneMailComposerDialog
+@implementation com_hyperxtalk_hyperxtalk_MCIPhoneMailComposerDialog
 
 - (bool)isRunning
 {
@@ -103,7 +103,7 @@ struct iphone_send_email_t
 	MCStringRef cc_addresses;
 	MCStringRef subject;
 	MCStringRef body;
-	com_runrev_livecode_MCIPhoneMailComposerDialog *dialog;
+	com_hyperxtalk_hyperxtalk_MCIPhoneMailComposerDialog *dialog;
 };
 
 static void iphone_send_email_prewait(void *p_context)
@@ -143,7 +143,7 @@ static void iphone_send_email_prewait(void *p_context)
 	iphone_send_email_t *ctxt;
 	ctxt = (iphone_send_email_t *)p_context;
 	
-	ctxt -> dialog = [[com_runrev_livecode_MCIPhoneMailComposerDialog alloc ] init];
+	ctxt -> dialog = [[com_hyperxtalk_hyperxtalk_MCIPhoneMailComposerDialog alloc ] init];
 	[ ctxt -> dialog setMailComposeDelegate: ctxt -> dialog ];
 	
 	NSArray *t_recipients;
@@ -219,7 +219,7 @@ struct compose_mail_t
 	MCMailType type;
 	MCAttachmentData *attachments;
 	uindex_t attachment_count;
-	com_runrev_livecode_MCIPhoneMailComposerDialog *dialog;
+	com_hyperxtalk_hyperxtalk_MCIPhoneMailComposerDialog *dialog;
 };
 
 static void compose_mail_prewait(void *p_context)
@@ -230,7 +230,7 @@ static void compose_mail_prewait(void *p_context)
 	bool t_success;
 	t_success = true;
 
-	ctxt -> dialog = [[com_runrev_livecode_MCIPhoneMailComposerDialog alloc ] init];
+	ctxt -> dialog = [[com_hyperxtalk_hyperxtalk_MCIPhoneMailComposerDialog alloc ] init];
 	[ ctxt -> dialog setMailComposeDelegate: ctxt -> dialog ];
 
 	if (ctxt -> attachments != nil)
@@ -368,7 +368,7 @@ void MCSystemSendMailWithAttachments(MCStringRef p_to, MCStringRef p_cc, MCStrin
 
 void MCSystemGetCanSendMail(bool& r_result)
 {
-	r_result = [com_runrev_livecode_MCIPhoneMailComposerDialog canSendMail];
+	r_result = [com_hyperxtalk_hyperxtalk_MCIPhoneMailComposerDialog canSendMail];
 }
 
 void MCSystemMailResult(MCStringRef& r_result)

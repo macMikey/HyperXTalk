@@ -18,7 +18,7 @@
 	
 				'mac_bundle_resources':
 				[
-					'rsrc/LiveCode-Community.rsrc',
+					'rsrc/HyperXTalk.rsrc',
 					'rsrc/Dutch.lproj/Localisation.strings',
 					'rsrc/English.lproj/Localisation.strings',
 					'rsrc/French.lproj/Localisation.strings',

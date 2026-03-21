@@ -59,7 +59,7 @@ static AVPlayerViewController *s_movie_player = nil;
 
 ////////////////////////////////////////////////////////////////////////////////
 
-@interface com_runrev_livecode_MCFullscreenMovieDelegate : NSObject
+@interface com_hyperxtalk_hyperxtalk_MCFullscreenMovieDelegate : NSObject
 {
 	bool m_running;
 	bool m_looping;
@@ -83,7 +83,7 @@ static AVPlayerViewController *s_movie_player = nil;
 
 @end
 
-@compatibility_alias MCFullscreenMovieDelegate com_runrev_livecode_MCFullscreenMovieDelegate;
+@compatibility_alias MCFullscreenMovieDelegate com_hyperxtalk_hyperxtalk_MCFullscreenMovieDelegate;
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -91,7 +91,7 @@ static MCFullscreenMovieDelegate *s_movie_player_delegate = nil;
 
 ////////////////////////////////////////////////////////////////////////////////
 
-@implementation com_runrev_livecode_MCFullscreenMovieDelegate
+@implementation com_hyperxtalk_hyperxtalk_MCFullscreenMovieDelegate
 
 // AL-2014-09-09: [[ Bug 13354 ]] Replace deprecated MPMoviePlayerContentPreloadDidFinishNotification
 - (id)initWithPlayer:(AVPlayer *)p_player startTime:(CMTime)startTime looping:(BOOL)looping

@@ -19,7 +19,7 @@
 		},
 
 		{
-			'target_name': 'LiveCode-all',
+			'target_name': 'HyperXTalk-all',
 			'type': 'none',
 			
 			'dependencies':
@@ -137,7 +137,7 @@
 			
 			'dependencies':
 			[
-				'LiveCode-all',
+				'HyperXTalk-all',
 			],
 			
 			'variables':
@@ -179,7 +179,7 @@
 			
 			'dependencies':
 			[
-				'LiveCode-all',
+				'HyperXTalk-all',
 				'debug-symbols',
 			],
 			

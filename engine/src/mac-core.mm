@@ -53,7 +53,7 @@ enum
 
 ////////////////////////////////////////////////////////////////////////////////
 
-@implementation com_runrev_livecode_MCApplication
+@implementation com_hyperxtalk_hyperxtalk_MCApplication
 
 - (void)sendEvent:(NSEvent *)p_event
 {
@@ -144,7 +144,7 @@ NSWindow *MCMacPlatformApplicationPseudoModalFor(void)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-@implementation com_runrev_livecode_MCPendingAppleEvent
+@implementation com_hyperxtalk_hyperxtalk_MCPendingAppleEvent
 
 - (id)initWithEvent: (const AppleEvent *)event andReply: (AppleEvent *)reply
 {
@@ -179,7 +179,7 @@ NSWindow *MCMacPlatformApplicationPseudoModalFor(void)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-@implementation com_runrev_livecode_MCApplicationDelegate
+@implementation com_hyperxtalk_hyperxtalk_MCApplicationDelegate
 
 //////////
 
@@ -472,7 +472,7 @@ static OSErr preDispatchAppleEvent(const AppleEvent *p_event, AppleEvent *p_repl
     {
         NSWindow *t_window;
         t_window = [NSApp windowWithWindowNumber: [t_window_id longValue]];
-        if (![t_window isKindOfClass: [com_runrev_livecode_MCPanel class]])
+        if (![t_window isKindOfClass: [com_hyperxtalk_hyperxtalk_MCPanel class]])
         {
             continue;
         }
@@ -495,7 +495,7 @@ static OSErr preDispatchAppleEvent(const AppleEvent *p_event, AppleEvent *p_repl
     {
         NSWindow *t_window;
         t_window = [NSApp windowWithWindowNumber: [t_window_id longValue]];
-        if (![t_window isKindOfClass: [com_runrev_livecode_MCPanel class]])
+        if (![t_window isKindOfClass: [com_hyperxtalk_hyperxtalk_MCPanel class]])
         {
             t_above_window_id = [t_window_id longValue];
             continue;
@@ -954,7 +954,7 @@ void MCMacPlatformScheduleCallback(void (*p_callback)(void *), void *p_context)
 
 typedef void (*MCPlatformDeathGripFreeCallback)(void *);
 
-@interface com_runrev_livecode_MCPlatformDeathGrip: NSObject
+@interface com_hyperxtalk_hyperxtalk_MCPlatformDeathGrip: NSObject
 {
 	void *m_pointer;
 	MCPlatformDeathGripFreeCallback m_free;
@@ -965,7 +965,7 @@ typedef void (*MCPlatformDeathGripFreeCallback)(void *);
 
 @end
 
-@implementation com_runrev_livecode_MCPlatformDeathGrip
+@implementation com_hyperxtalk_hyperxtalk_MCPlatformDeathGrip
 
 - (id)initWithPointer: (void *)pointer freeWith: (MCPlatformDeathGripFreeCallback)free
 {
@@ -999,7 +999,7 @@ void MCPlatformWindowDeathGrip(MCPlatformWindowRef p_window)
 	
 	// Now push an autorelease object onto the stack that will release the object
 	// after event dispatch.
-	[[[com_runrev_livecode_MCPlatformDeathGrip alloc] initWithPointer: p_window freeWith: (MCPlatformDeathGripFreeCallback)MCPlatformReleaseWindow] autorelease];
+	[[[com_hyperxtalk_hyperxtalk_MCPlatformDeathGrip alloc] initWithPointer: p_window freeWith: (MCPlatformDeathGripFreeCallback)MCPlatformReleaseWindow] autorelease];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1165,8 +1165,8 @@ void MCPlatformGetWindowAtPoint(MCPoint p_loc, MCPlatformWindowRef& r_window)
 	NSWindow *t_window;
 	t_window = [NSApp windowWithWindowNumber: t_number];
 	NSRect t_content_rect;
-    if (t_window != nil && [t_window conformsToProtocol:NSProtocolFromString(@"com_runrev_livecode_MCMovingFrame")])
-        t_content_rect = [(NSWindow <com_runrev_livecode_MCMovingFrame>*)t_window movingFrame];
+    if (t_window != nil && [t_window conformsToProtocol:NSProtocolFromString(@"com_hyperxtalk_hyperxtalk_MCMovingFrame")])
+        t_content_rect = [(NSWindow <com_hyperxtalk_hyperxtalk_MCMovingFrame>*)t_window movingFrame];
     else
         t_content_rect = [t_window frame];
     
@@ -2149,7 +2149,7 @@ int platform_main(int argc, char *argv[], char *envp[])
     
 	// Create the normal NSApplication object.
 	NSApplication *t_application;
-	t_application = [com_runrev_livecode_MCApplication sharedApplication];
+	t_application = [com_hyperxtalk_hyperxtalk_MCApplication sharedApplication];
 	
 	// Register for reconfigurations.
 	CGDisplayRegisterReconfigurationCallback(display_reconfiguration_callback, nil);
@@ -2187,8 +2187,8 @@ int platform_main(int argc, char *argv[], char *envp[])
 	t_new_envp[i] = nil;
 	
 	// Setup our delegate
-	com_runrev_livecode_MCApplicationDelegate *t_delegate;
-	t_delegate = [[com_runrev_livecode_MCApplicationDelegate alloc] initWithArgc: argc argv: t_new_argv envp: t_new_envp];
+	com_hyperxtalk_hyperxtalk_MCApplicationDelegate *t_delegate;
+	t_delegate = [[com_hyperxtalk_hyperxtalk_MCApplicationDelegate alloc] initWithArgc: argc argv: t_new_argv envp: t_new_envp];
 	
 	// Assign our delegate
 	[t_application setDelegate: t_delegate];

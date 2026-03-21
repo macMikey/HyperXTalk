@@ -83,7 +83,7 @@ static inline CGRect MCRectangleToCGRect(const MCRectangle &p_rect)
 
 - (void)switchToDisplayClass: (Class)displayClass;
 
-- (BOOL)com_runrev_livecode_passMotionEvents;
+- (BOOL)com_hyperxtalk_hyperxtalk_passMotionEvents;
 
 @end
 

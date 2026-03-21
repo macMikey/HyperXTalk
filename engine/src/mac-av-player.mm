@@ -47,7 +47,7 @@ void MCAVPlayerRemovePanningFilter(AVPlayer *p_player);
 
 class MCAVFoundationPlayer;
 
-@interface com_runrev_livecode_MCAVFoundationPlayerObserver: NSObject
+@interface com_hyperxtalk_hyperxtalk_MCAVFoundationPlayerObserver: NSObject
 {
     MCAVFoundationPlayer *m_av_player;
 }
@@ -67,7 +67,7 @@ class MCAVFoundationPlayer;
 
 @end
 
-@interface com_runrev_livecode_MCAVFoundationPlayerView : NSView
+@interface com_hyperxtalk_hyperxtalk_MCAVFoundationPlayerView : NSView
 
 - (void)dealloc;
 
@@ -145,7 +145,7 @@ private:
 	AVPlayer *m_player;
     AVPlayerItemVideoOutput *m_player_item_video_output;
     CVDisplayLinkRef m_display_link;
-    com_runrev_livecode_MCAVFoundationPlayerView *m_view;
+    com_hyperxtalk_hyperxtalk_MCAVFoundationPlayerView *m_view;
     uint32_t m_selection_start, m_selection_finish;
     uint32_t m_selection_duration;
     uint32_t m_buffered_time;
@@ -168,7 +168,7 @@ private:
     CMTime m_next_frame_time;
     CMTime m_observed_time;
     
-    com_runrev_livecode_MCAVFoundationPlayerObserver *m_observer;
+    com_hyperxtalk_hyperxtalk_MCAVFoundationPlayerObserver *m_observer;
     
     id m_time_observer_token;
     
@@ -194,7 +194,7 @@ private:
 
 ////////////////////////////////////////////////////////////////////////////////
 
-@implementation com_runrev_livecode_MCAVFoundationPlayerObserver
+@implementation com_hyperxtalk_hyperxtalk_MCAVFoundationPlayerObserver
 
 - (id)initWithPlayer: (MCAVFoundationPlayer *)player
 {
@@ -271,7 +271,7 @@ private:
 
 /////////////////////////////////////////////////////////////////////////////////
 
-@implementation com_runrev_livecode_MCAVFoundationPlayerView
+@implementation com_hyperxtalk_hyperxtalk_MCAVFoundationPlayerView
 
 - (void)dealloc
 {
@@ -316,8 +316,8 @@ MCAVFoundationPlayer::MCAVFoundationPlayer(void)
     //   an AVPlayer until we load, so that starts off as nil and we create a PlayerView
     //   with zero frame.
     m_player = nil;
-    m_view = [[com_runrev_livecode_MCAVFoundationPlayerView alloc] initWithFrame: NSZeroRect];
-	m_observer = [[com_runrev_livecode_MCAVFoundationPlayerObserver alloc] initWithPlayer: this];
+    m_view = [[com_hyperxtalk_hyperxtalk_MCAVFoundationPlayerView alloc] initWithFrame: NSZeroRect];
+	m_observer = [[com_hyperxtalk_hyperxtalk_MCAVFoundationPlayerObserver alloc] initWithPlayer: this];
     
     m_lock = [[NSLock alloc] init];
     

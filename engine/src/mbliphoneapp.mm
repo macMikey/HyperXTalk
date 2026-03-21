@@ -135,17 +135,17 @@ static UIDeviceOrientation patch_device_orientation(id self, SEL _cmd)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-@interface UIView (com_runrev_livecode_MCIPhoneUIViewUtilities)
+@interface UIView (com_hyperxtalk_hyperxtalk_MCIPhoneUIViewUtilities)
 
-- (UIView *)com_runrev_livecode_findFirstResponder;
+- (UIView *)com_hyperxtalk_hyperxtalk_findFirstResponder;
 
-- (BOOL)com_runrev_livecode_passMotionEvents;
+- (BOOL)com_hyperxtalk_hyperxtalk_passMotionEvents;
 
 @end
 
-@implementation UIView (com_runrev_livecode_MCIPhoneUIViewUtilities)
+@implementation UIView (com_hyperxtalk_hyperxtalk_MCIPhoneUIViewUtilities)
 
-- (UIView *)com_runrev_livecode_findFirstResponder
+- (UIView *)com_hyperxtalk_hyperxtalk_findFirstResponder
 {
     if ([self isFirstResponder])        
         return self;     
@@ -153,7 +153,7 @@ static UIDeviceOrientation patch_device_orientation(id self, SEL _cmd)
     for (UIView *t_subview in [self subviews])
 	{
         UIView *t_first_responder;
-		t_first_responder = [t_subview com_runrev_livecode_findFirstResponder];
+		t_first_responder = [t_subview com_hyperxtalk_hyperxtalk_findFirstResponder];
 		
         if (t_first_responder != nil)
 			return t_first_responder;
@@ -162,12 +162,12 @@ static UIDeviceOrientation patch_device_orientation(id self, SEL _cmd)
     return nil;
 }
 
-- (BOOL)com_runrev_livecode_passMotionEvents
+- (BOOL)com_hyperxtalk_hyperxtalk_passMotionEvents
 {
 	if ([self superview] == nil)
 		return NO;
 	
-	return [[self superview] com_runrev_livecode_passMotionEvents];
+	return [[self superview] com_hyperxtalk_hyperxtalk_passMotionEvents];
 }
 
 @end
@@ -849,7 +849,7 @@ void MCiOSFilePostProtectedDataUnavailableEvent();
         }
         else
         {
-            UIView *t_responder = [[m_main_controller rootView] com_runrev_livecode_findFirstResponder];
+            UIView *t_responder = [[m_main_controller rootView] com_hyperxtalk_hyperxtalk_findFirstResponder];
             if (t_responder == nil)
             {
                 return;
@@ -1084,7 +1084,7 @@ extern UIReturnKeyType MCInterfaceGetUIReturnKeyTypeFromExecEnum(MCInterfaceRetu
 	
 	// Otherwise, find the current first responder and force it to resign.
 	UIView *t_first_responder;
-	t_first_responder = [m_window com_runrev_livecode_findFirstResponder];
+	t_first_responder = [m_window com_hyperxtalk_hyperxtalk_findFirstResponder];
 	if (t_first_responder != nil)
 		[t_first_responder resignFirstResponder];
 	
@@ -1351,9 +1351,9 @@ extern UIReturnKeyType MCInterfaceGetUIReturnKeyTypeFromExecEnum(MCInterfaceRetu
 - (BOOL)passMotion
 {
 	UIView *t_responder;
-	t_responder = [self com_runrev_livecode_findFirstResponder];
+	t_responder = [self com_hyperxtalk_hyperxtalk_findFirstResponder];
 	if (t_responder != nil)
-		return [t_responder com_runrev_livecode_passMotionEvents];
+		return [t_responder com_hyperxtalk_hyperxtalk_passMotionEvents];
 	return NO;
 }
 
@@ -1873,7 +1873,7 @@ MC_DLLEXPORT_DEF int platform_main(int argc, char *argv[], char *envp[])
 
 	setup_simulator_hooks();
 	
-	t_exit_code = UIApplicationMain(argc, argv, nil, @"com_runrev_livecode_MCIPhoneApplication");
+	t_exit_code = UIApplicationMain(argc, argv, nil, @"com_hyperxtalk_hyperxtalk_MCIPhoneApplication");
 	
 	[t_pool release];
 	

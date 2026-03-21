@@ -221,7 +221,7 @@ UIWindow *MCIPhoneGetWindow(void);
 
 ////////////////////////////////////////////////////////////////////////////////
 
-@interface com_runrev_livecode_MCExportImageToAlbumDelegate : NSObject
+@interface com_hyperxtalk_hyperxtalk_MCExportImageToAlbumDelegate : NSObject
 {
 	bool m_finished;
 	bool m_successful;
@@ -232,7 +232,7 @@ UIWindow *MCIPhoneGetWindow(void);
 - (void)image: (UIImage *)image didFinishSavingWithError: (NSError *)error contextInfo: (void *)contextInfo;
 @end
 
-@implementation com_runrev_livecode_MCExportImageToAlbumDelegate
+@implementation com_hyperxtalk_hyperxtalk_MCExportImageToAlbumDelegate
 
 - (id)init
 {
@@ -269,7 +269,7 @@ UIWindow *MCIPhoneGetWindow(void);
 
 struct export_image_t
 {
-    com_runrev_livecode_MCExportImageToAlbumDelegate *delegate;
+    com_hyperxtalk_hyperxtalk_MCExportImageToAlbumDelegate *delegate;
     MCDataRef raw_data;
     // PM-2014-12-12: [[ Bug 13860 ]] Added support for exporting referenced images to album
     bool is_raw_data;
@@ -308,7 +308,7 @@ bool MCSystemExportImageToAlbum(MCStringRef& r_save_result, MCDataRef p_raw_data
 	export_image_t ctxt;
     ctxt . is_raw_data = p_is_raw_data;
     ctxt . raw_data = p_raw_data;
-	ctxt . delegate = [[com_runrev_livecode_MCExportImageToAlbumDelegate alloc] init];
+	ctxt . delegate = [[com_hyperxtalk_hyperxtalk_MCExportImageToAlbumDelegate alloc] init];
 
 	MCIPhoneRunOnMainFiber(export_image, &ctxt);
 

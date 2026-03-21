@@ -198,16 +198,16 @@ MCNativeLayer *MCNativeLayer::CreateNativeLayer(MCObject *p_object, void *p_nati
 //                the top-level window view by keeping its bounds the same as its frame.
 //                This allows us to place contents in terms of window coords without having to
 //                adjust for the location of the group container.
-@interface com_runrev_livecode_MCContainerView: UIView
+@interface com_hyperxtalk_hyperxtalk_MCContainerView: UIView
 
 - (void)setFrame:(CGRect)frame;
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event;
 
 @end
 
-@compatibility_alias MCContainerView com_runrev_livecode_MCContainerView;
+@compatibility_alias MCContainerView com_hyperxtalk_hyperxtalk_MCContainerView;
 
-@implementation com_runrev_livecode_MCContainerView
+@implementation com_hyperxtalk_hyperxtalk_MCContainerView
 
 - (void)setFrame:(CGRect)frame
 {

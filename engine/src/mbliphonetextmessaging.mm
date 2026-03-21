@@ -36,7 +36,7 @@ along with LiveCode.  If not see <http://www.gnu.org/licenses/>.  */
 
 UIViewController *MCIPhoneGetViewController(void);
 
-@interface com_runrev_livecode_MCIPhoneSmsComposerDialog : MFMessageComposeViewController <MFMessageComposeViewControllerDelegate>
+@interface com_hyperxtalk_hyperxtalk_MCIPhoneSmsComposerDialog : MFMessageComposeViewController <MFMessageComposeViewControllerDelegate>
 {
 	bool m_running;
 }
@@ -48,9 +48,9 @@ UIViewController *MCIPhoneGetViewController(void);
 - (void)postWait;
 @end
 
-static com_runrev_livecode_MCIPhoneSmsComposerDialog *s_sms_composer_dialog = nil;
+static com_hyperxtalk_hyperxtalk_MCIPhoneSmsComposerDialog *s_sms_composer_dialog = nil;
 
-@implementation com_runrev_livecode_MCIPhoneSmsComposerDialog
+@implementation com_hyperxtalk_hyperxtalk_MCIPhoneSmsComposerDialog
 
 - (bool)isRunning
 {
@@ -104,7 +104,7 @@ struct compose_text_message_t
 {
 	MCStringRef recipients;
 	MCStringRef body;
-	com_runrev_livecode_MCIPhoneSmsComposerDialog *dialog;
+	com_hyperxtalk_hyperxtalk_MCIPhoneSmsComposerDialog *dialog;
 	bool success;
 };
 
@@ -120,7 +120,7 @@ static void compose_text_message_prewait(void *p_context)
 		return;
 	}
 	
-	ctxt -> dialog = [[com_runrev_livecode_MCIPhoneSmsComposerDialog alloc] init];
+	ctxt -> dialog = [[com_hyperxtalk_hyperxtalk_MCIPhoneSmsComposerDialog alloc] init];
     [ctxt -> dialog setMessageComposeDelegate: ctxt -> dialog];
     [ctxt -> dialog setRecipients: [MCStringConvertToAutoreleasedNSString(ctxt -> recipients) componentsSeparatedByString:@","]];
     [ctxt -> dialog setBody: MCStringConvertToAutoreleasedNSString(ctxt -> body)];

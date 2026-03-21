@@ -67,7 +67,7 @@ real8 curtime;
 
 ////////////////////////////////////////////////////////////////////////////////
 
-@implementation NSString (com_runrev_livecode_NSStringAdditions)
+@implementation NSString (com_hyperxtalk_hyperxtalk_NSStringAdditions)
 	- (const char *)nativeCString
 	{
 		// The length of a native string is at most the length of the string.

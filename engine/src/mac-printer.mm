@@ -26,13 +26,13 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-@interface com_runrev_livecode_MCPrintDialogDelegate: NSObject
+@interface com_hyperxtalk_hyperxtalk_MCPrintDialogDelegate: NSObject
 
 - (void)printDialogDidEnd:(id)printDialog returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo;
 
 @end
 
-@compatibility_alias MCPrintDialogDelegate com_runrev_livecode_MCPrintDialogDelegate;
+@compatibility_alias MCPrintDialogDelegate com_hyperxtalk_hyperxtalk_MCPrintDialogDelegate;
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -52,7 +52,7 @@ struct MCMacPlatformPrintDialogNest
 
 ////////////////////////////////////////////////////////////////////////////////
 
-@implementation com_runrev_livecode_MCPrintDialogDelegate
+@implementation com_hyperxtalk_hyperxtalk_MCPrintDialogDelegate
 
 - (void)printDialogDidEnd:(id)printDialog returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
 {

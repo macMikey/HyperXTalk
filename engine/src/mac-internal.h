@@ -10,7 +10,7 @@ class MCMacPlatformSurface;
 
 ////////////////////////////////////////////////////////////////////////////////
 
-@interface com_runrev_livecode_MCPendingAppleEvent: NSObject
+@interface com_hyperxtalk_hyperxtalk_MCPendingAppleEvent: NSObject
 {
     AppleEvent m_event;
     AppleEvent m_reply;
@@ -21,9 +21,9 @@ class MCMacPlatformSurface;
 
 @end
 
-@compatibility_alias MCPendingAppleEvent com_runrev_livecode_MCPendingAppleEvent;
+@compatibility_alias MCPendingAppleEvent com_hyperxtalk_hyperxtalk_MCPendingAppleEvent;
 
-@interface com_runrev_livecode_MCApplicationDelegate: NSObject<NSApplicationDelegate>
+@interface com_hyperxtalk_hyperxtalk_MCApplicationDelegate: NSObject<NSApplicationDelegate>
 {
 	int m_argc;
 	MCStringRef *m_argv;
@@ -78,26 +78,26 @@ class MCMacPlatformSurface;
 
 @end
 
-@compatibility_alias MCApplicationDelegate com_runrev_livecode_MCApplicationDelegate;
+@compatibility_alias MCApplicationDelegate com_hyperxtalk_hyperxtalk_MCApplicationDelegate;
 
 ////////////////////////////////////////////////////////////////////////////////
 
 // MW-2014-04-22: [[ Bug 12259 ]] Override sendEvent so that we always get a chance
 //   at the MouseSync event.
-@interface com_runrev_livecode_MCApplication: NSApplication
+@interface com_hyperxtalk_hyperxtalk_MCApplication: NSApplication
 
 - (void)sendEvent:(NSEvent *)event;
 
 @end
 
-@protocol com_runrev_livecode_MCMovingFrame <NSObject>
+@protocol com_hyperxtalk_hyperxtalk_MCMovingFrame <NSObject>
 
 - (NSRect)movingFrame;
 - (void)setMovingFrame:(NSRect)p_moving_frame;
 
 @end
 
-@interface com_runrev_livecode_MCWindow: NSWindow <com_runrev_livecode_MCMovingFrame>
+@interface com_hyperxtalk_hyperxtalk_MCWindow: NSWindow <com_hyperxtalk_hyperxtalk_MCMovingFrame>
 {
 	bool m_can_become_key : 1;
     NSRect m_moving_frame;
@@ -117,7 +117,7 @@ class MCMacPlatformSurface;
 
 void MCMacPlatformWindowWindowMoved(NSWindow *p_self, MCPlatformWindowRef p_window);
 
-@interface com_runrev_livecode_MCPanel: NSPanel  <com_runrev_livecode_MCMovingFrame>
+@interface com_hyperxtalk_hyperxtalk_MCPanel: NSPanel  <com_hyperxtalk_hyperxtalk_MCMovingFrame>
 {
 	bool m_can_become_key : 1;
     bool m_is_popup : 1;
@@ -149,7 +149,7 @@ NSWindow *MCMacPlatformApplicationPseudoModalFor(void);
 // SN-2014-12-05: [[ Bug 14019 ]] Interface declaration moved to be available from mac-menu.mm
 
 // SN-2014-10-20: [[ Bug 13628 ]] ColorDelegate to react when the colour picker window is closed
-@interface com_runrev_livecode_MCColorPanelDelegate: NSObject<NSWindowDelegate>
+@interface com_hyperxtalk_hyperxtalk_MCColorPanelDelegate: NSObject<NSWindowDelegate>
 {
     NSButton *mCancelButton;
     NSButton *mOkButton;
@@ -177,11 +177,11 @@ NSWindow *MCMacPlatformApplicationPseudoModalFor(void);
 
 @end
 
-@compatibility_alias MCColorPanelDelegate com_runrev_livecode_MCColorPanelDelegate;
+@compatibility_alias MCColorPanelDelegate com_hyperxtalk_hyperxtalk_MCColorPanelDelegate;
 
 ////////////////////////////////////////////////////////////////////////////////
 
-@interface com_runrev_livecode_MCWindowDelegate: NSObject<NSWindowDelegate>
+@interface com_hyperxtalk_hyperxtalk_MCWindowDelegate: NSObject<NSWindowDelegate>
 {
 	MCMacPlatformWindow *m_window;
     
@@ -228,11 +228,11 @@ NSWindow *MCMacPlatformApplicationPseudoModalFor(void);
 
 @end
 
-@compatibility_alias MCWindowDelegate com_runrev_livecode_MCWindowDelegate;
+@compatibility_alias MCWindowDelegate com_hyperxtalk_hyperxtalk_MCWindowDelegate;
 
 ////////////////////////////////////////////////////////////////////////////////
 
-@interface com_runrev_livecode_MCWindowContainerView: NSView
+@interface com_hyperxtalk_hyperxtalk_MCWindowContainerView: NSView
 {
     MCMacPlatformWindow *m_window;
 }
@@ -243,9 +243,9 @@ NSWindow *MCMacPlatformApplicationPseudoModalFor(void);
 
 @end
 
-@compatibility_alias MCWindowContainerView com_runrev_livecode_MCWindowContainerView;
+@compatibility_alias MCWindowContainerView com_hyperxtalk_hyperxtalk_MCWindowContainerView;
 
-@interface com_runrev_livecode_MCWindowView: NSView<NSTextInputClient>
+@interface com_hyperxtalk_hyperxtalk_MCWindowView: NSView<NSTextInputClient>
 {
     MCMacPlatformWindow *m_window;
     
@@ -365,11 +365,11 @@ NSWindow *MCMacPlatformApplicationPseudoModalFor(void);
 
 @end
 
-@compatibility_alias MCWindowView com_runrev_livecode_MCWindowView;
+@compatibility_alias MCWindowView com_hyperxtalk_hyperxtalk_MCWindowView;
 
 ////////////////////////////////////////////////////////////////////////////////
 
-@interface com_runrev_livecode_MCMenuDelegate: NSObject<NSMenuDelegate>
+@interface com_hyperxtalk_hyperxtalk_MCMenuDelegate: NSObject<NSMenuDelegate>
 {
 	MCPlatformMenuRef m_menu;
 }
@@ -396,9 +396,9 @@ NSWindow *MCMacPlatformApplicationPseudoModalFor(void);
 
 @end
 
-@compatibility_alias MCMenuDelegate com_runrev_livecode_MCMenuDelegate;
+@compatibility_alias MCMenuDelegate com_hyperxtalk_hyperxtalk_MCMenuDelegate;
 
-@interface com_runrev_livecode_MCAppMenuDelegate: NSObject<NSMenuDelegate>
+@interface com_hyperxtalk_hyperxtalk_MCAppMenuDelegate: NSObject<NSMenuDelegate>
 
 - (id)init;
 - (void)dealloc;
@@ -421,7 +421,7 @@ NSWindow *MCMacPlatformApplicationPseudoModalFor(void);
 
 @end
 
-@compatibility_alias MCAppMenuDelegate com_runrev_livecode_MCAppMenuDelegate;
+@compatibility_alias MCAppMenuDelegate com_hyperxtalk_hyperxtalk_MCAppMenuDelegate;
 
 ////////////////////////////////////////////////////////////////////////////////
 

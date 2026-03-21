@@ -559,7 +559,7 @@ bool MCContactFindContact(MCStringRef p_person_name, MCStringRef &r_chosen)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-@interface com_runrev_livecode_MCIPhoneContactDelegate : NSObject
+@interface com_hyperxtalk_hyperxtalk_MCIPhoneContactDelegate : NSObject
 {
 	bool m_running, m_finished, m_success;
 	UINavigationController *m_navigation;
@@ -571,7 +571,7 @@ bool MCContactFindContact(MCStringRef p_person_name, MCStringRef &r_chosen)
 
 @end
 
-@implementation com_runrev_livecode_MCIPhoneContactDelegate
+@implementation com_hyperxtalk_hyperxtalk_MCIPhoneContactDelegate
 
 - (id)init
 {
@@ -630,7 +630,7 @@ bool MCContactFindContact(MCStringRef p_person_name, MCStringRef &r_chosen)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-@interface com_runrev_livecode_MCIPhonePickContactDelegate : com_runrev_livecode_MCIPhoneContactDelegate <ABPeoplePickerNavigationControllerDelegate>
+@interface com_hyperxtalk_hyperxtalk_MCIPhonePickContactDelegate : com_hyperxtalk_hyperxtalk_MCIPhoneContactDelegate <ABPeoplePickerNavigationControllerDelegate>
 {
     ABPeoplePickerNavigationController *m_pick_contact;
 }
@@ -640,7 +640,7 @@ bool MCContactFindContact(MCStringRef p_person_name, MCStringRef &r_chosen)
 
 @end
 
-@implementation com_runrev_livecode_MCIPhonePickContactDelegate
+@implementation com_hyperxtalk_hyperxtalk_MCIPhonePickContactDelegate
 
 - (id)init
 {
@@ -764,7 +764,7 @@ bool MCContactFindContact(MCStringRef p_person_name, MCStringRef &r_chosen)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-@interface com_runrev_livecode_MCIPhoneShowContactDelegate : com_runrev_livecode_MCIPhoneContactDelegate <ABPersonViewControllerDelegate>
+@interface com_hyperxtalk_hyperxtalk_MCIPhoneShowContactDelegate : com_hyperxtalk_hyperxtalk_MCIPhoneContactDelegate <ABPersonViewControllerDelegate>
 {
 	ABPersonViewController *m_view_contact;
 }
@@ -774,7 +774,7 @@ bool MCContactFindContact(MCStringRef p_person_name, MCStringRef &r_chosen)
 
 @end
 
-@implementation com_runrev_livecode_MCIPhoneShowContactDelegate
+@implementation com_hyperxtalk_hyperxtalk_MCIPhoneShowContactDelegate
 
 - (id)init
 {
@@ -901,7 +901,7 @@ bool MCContactFindContact(MCStringRef p_person_name, MCStringRef &r_chosen)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-@interface com_runrev_livecode_MCIPhoneCreateContactDelegate : com_runrev_livecode_MCIPhoneContactDelegate <ABNewPersonViewControllerDelegate>
+@interface com_hyperxtalk_hyperxtalk_MCIPhoneCreateContactDelegate : com_hyperxtalk_hyperxtalk_MCIPhoneContactDelegate <ABNewPersonViewControllerDelegate>
 {
 	ABNewPersonViewController *m_get_contact;
 }
@@ -911,7 +911,7 @@ bool MCContactFindContact(MCStringRef p_person_name, MCStringRef &r_chosen)
 
 @end
 
-@implementation com_runrev_livecode_MCIPhoneCreateContactDelegate
+@implementation com_hyperxtalk_hyperxtalk_MCIPhoneCreateContactDelegate
 
 - (id)init
 {
@@ -980,7 +980,7 @@ bool MCContactFindContact(MCStringRef p_person_name, MCStringRef &r_chosen)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-@interface com_runrev_livecode_MCIPhoneUpdateContactDelegate : com_runrev_livecode_MCIPhoneContactDelegate <ABUnknownPersonViewControllerDelegate>
+@interface com_hyperxtalk_hyperxtalk_MCIPhoneUpdateContactDelegate : com_hyperxtalk_hyperxtalk_MCIPhoneContactDelegate <ABUnknownPersonViewControllerDelegate>
 {
 	ABUnknownPersonViewController *m_update_contact;
 }
@@ -990,7 +990,7 @@ bool MCContactFindContact(MCStringRef p_person_name, MCStringRef &r_chosen)
 
 @end
 
-@implementation com_runrev_livecode_MCIPhoneUpdateContactDelegate
+@implementation com_hyperxtalk_hyperxtalk_MCIPhoneUpdateContactDelegate
 
 - (id)init
 {
@@ -1119,8 +1119,8 @@ bool MCSystemPickContact(int32_t& r_result) // ABPeoplePickerNavigationControlle
 {
     bool t_success = true;
 	
-    com_runrev_livecode_MCIPhonePickContactDelegate *t_pick_contact = nil;
-	t_success = nil != (t_pick_contact = [[com_runrev_livecode_MCIPhonePickContactDelegate alloc] init]);
+    com_hyperxtalk_hyperxtalk_MCIPhonePickContactDelegate *t_pick_contact = nil;
+	t_success = nil != (t_pick_contact = [[com_hyperxtalk_hyperxtalk_MCIPhonePickContactDelegate alloc] init]);
 	
 	if (t_success)
 		t_success = [t_pick_contact showPickContact: r_result];
@@ -1135,8 +1135,8 @@ bool MCSystemShowContact(int32_t p_contact_id, int32_t& r_result) // ABPersonVie
 {
     bool t_success = true;
 	
-    com_runrev_livecode_MCIPhoneShowContactDelegate *t_view_contact = nil;
-	t_success = nil != (t_view_contact = [[com_runrev_livecode_MCIPhoneShowContactDelegate alloc] init]);
+    com_hyperxtalk_hyperxtalk_MCIPhoneShowContactDelegate *t_view_contact = nil;
+	t_success = nil != (t_view_contact = [[com_hyperxtalk_hyperxtalk_MCIPhoneShowContactDelegate alloc] init]);
 	
 	if (t_success)
 		t_success = [t_view_contact showViewContact:p_contact_id withResult: r_result];
@@ -1151,8 +1151,8 @@ bool MCSystemCreateContact(int32_t& r_result) // ABNewPersonViewController
 {
     bool t_success = true;
 	
-    com_runrev_livecode_MCIPhoneCreateContactDelegate *t_create_contact = nil;
-	t_success = nil != (t_create_contact = [[com_runrev_livecode_MCIPhoneCreateContactDelegate alloc] init]);
+    com_hyperxtalk_hyperxtalk_MCIPhoneCreateContactDelegate *t_create_contact = nil;
+	t_success = nil != (t_create_contact = [[com_hyperxtalk_hyperxtalk_MCIPhoneCreateContactDelegate alloc] init]);
 	
 	if (t_success)
 		t_success = [t_create_contact showCreateContact:r_result];
@@ -1171,9 +1171,9 @@ bool MCSystemUpdateContact(MCArrayRef p_contact, MCStringRef p_title, MCStringRe
 	ABRecordRef t_contact = nil;
 	t_success = MCCreatePerson(p_contact, t_contact);
 
-	com_runrev_livecode_MCIPhoneUpdateContactDelegate *t_update_contact = nil;
+	com_hyperxtalk_hyperxtalk_MCIPhoneUpdateContactDelegate *t_update_contact = nil;
 	if (t_success)
-		t_success = nil != (t_update_contact = [[com_runrev_livecode_MCIPhoneUpdateContactDelegate alloc] init]);
+		t_success = nil != (t_update_contact = [[com_hyperxtalk_hyperxtalk_MCIPhoneUpdateContactDelegate alloc] init]);
 	if (t_success)
 		t_success = [t_update_contact showUpdateContact:t_contact
 											  withTitle:p_title withMessage:p_message withAlternateName:p_alternate_name

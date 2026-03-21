@@ -64,7 +64,7 @@ extern void X_main_loop(void);
 extern void send_startup_message(bool p_do_relaunch = true);
 extern void setup_simulator_hooks(void);
 
-@class com_runrev_livecode_MCIPhoneBreakWaitHelper;
+@class com_hyperxtalk_hyperxtalk_MCIPhoneBreakWaitHelper;
 
 extern CGBitmapInfo MCGPixelFormatToCGBitmapInfo(uint32_t p_pixel_format, bool p_alpha);
 extern bool MCImageGetCGColorSpace(CGColorSpaceRef &r_colorspace);
@@ -99,7 +99,7 @@ static MCFiberRef s_script_fiber = nil;
 // made.
 static bool s_break_wait_pending = false;
 // The helper object used to break the main wait loop.
-static com_runrev_livecode_MCIPhoneBreakWaitHelper *s_break_wait_helper = nil;
+static com_hyperxtalk_hyperxtalk_MCIPhoneBreakWaitHelper *s_break_wait_helper = nil;
 // The current depth of wait.
 static uindex_t s_wait_depth = 0;
 
@@ -966,7 +966,7 @@ enum
 	kMCExternalRunOnMainThreadJumpToEngine = 2 << 4,
 };
 
-@interface com_runrev_livecode_MCRunOnMainThreadHelper : NSObject
+@interface com_hyperxtalk_hyperxtalk_MCRunOnMainThreadHelper : NSObject
 {
 	void *m_callback;
 	void *m_callback_state;
@@ -978,7 +978,7 @@ enum
 
 @end
 
-@implementation com_runrev_livecode_MCRunOnMainThreadHelper
+@implementation com_hyperxtalk_hyperxtalk_MCRunOnMainThreadHelper
 
 - (id)initWithCallback:(void*)p_callback state:(void *)p_callback_state options:(int)p_options
 {
@@ -1074,8 +1074,8 @@ bool iphone_run_on_main_thread(void *p_callback, void *p_callback_state, int p_o
 	// thread.
 	if (!MCFiberIsCurrentThread(s_script_fiber) && !MCFiberIsCurrentThread(s_main_fiber))
 	{
-		com_runrev_livecode_MCRunOnMainThreadHelper *t_helper;
-		t_helper = [[com_runrev_livecode_MCRunOnMainThreadHelper alloc] initWithCallback: p_callback state: p_callback_state options: p_options];
+		com_hyperxtalk_hyperxtalk_MCRunOnMainThreadHelper *t_helper;
+		t_helper = [[com_hyperxtalk_hyperxtalk_MCRunOnMainThreadHelper alloc] initWithCallback: p_callback state: p_callback_state options: p_options];
 		
 		SEL t_selector;
 		if ((p_options & (kMCExternalRunOnMainThreadDeferred | kMCExternalRunOnMainThreadUnsafe)) == (kMCExternalRunOnMainThreadUnsafe | kMCExternalRunOnMainThreadImmediate))
@@ -1100,8 +1100,8 @@ bool iphone_run_on_main_thread(void *p_callback, void *p_callback_state, int p_o
 			return true;
 		}
 		
-		com_runrev_livecode_MCRunOnMainThreadHelper *t_helper;
-		t_helper = [[com_runrev_livecode_MCRunOnMainThreadHelper alloc] initWithCallback: p_callback state: p_callback_state options: p_options];
+		com_hyperxtalk_hyperxtalk_MCRunOnMainThreadHelper *t_helper;
+		t_helper = [[com_hyperxtalk_hyperxtalk_MCRunOnMainThreadHelper alloc] initWithCallback: p_callback state: p_callback_state options: p_options];
 		[t_helper performSelector: @selector(perform) withObject: nil afterDelay: 0];
 		return true;
 	}
@@ -1668,13 +1668,13 @@ void MCIPhoneHandlePerformRedraw(void)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-@interface com_runrev_livecode_MCIPhoneBreakWaitHelper : NSObject
+@interface com_hyperxtalk_hyperxtalk_MCIPhoneBreakWaitHelper : NSObject
 
 - (void)breakWait;
 
 @end
 
-@implementation com_runrev_livecode_MCIPhoneBreakWaitHelper
+@implementation com_hyperxtalk_hyperxtalk_MCIPhoneBreakWaitHelper
 
 - (void)breakWait
 {
@@ -1710,7 +1710,7 @@ void MCIPhoneBreakWait(void)
 		return;
 	
 	if (s_break_wait_helper == nil)
-		s_break_wait_helper = [[com_runrev_livecode_MCIPhoneBreakWaitHelper alloc] init];
+		s_break_wait_helper = [[com_hyperxtalk_hyperxtalk_MCIPhoneBreakWaitHelper alloc] init];
 
 	iphone_run_on_main_thread((void *)MCIPhoneDoBreakWaitOnCorrectThread, nil, kMCExternalRunOnMainThreadUnsafe | kMCExternalRunOnMainThreadImmediate);
 }
@@ -1737,7 +1737,7 @@ static bool MCIPhoneWait(double p_sleep)
 		}
     
 	if (s_break_wait_helper == nil)
-		s_break_wait_helper = [[com_runrev_livecode_MCIPhoneBreakWaitHelper alloc] init];
+		s_break_wait_helper = [[com_hyperxtalk_hyperxtalk_MCIPhoneBreakWaitHelper alloc] init];
 	
 	// Schedule the wait on the main fiber.
 	MCFiberCall(s_main_fiber, MCIPhoneDoScheduleWait, &p_sleep);

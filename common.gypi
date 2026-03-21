@@ -1,5 +1,5 @@
 {
-	# Common gyp inclusions for LiveCode
+	# Common gyp inclusions for HyperXTalk
 	'includes':
 	[
 		'config/arch.gypi',

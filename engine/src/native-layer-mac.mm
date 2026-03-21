@@ -259,13 +259,13 @@ MCNativeLayer* MCNativeLayer::CreateNativeLayer(MCObject *p_object, void *p_view
 
 //////////
 
-@interface com_runrev_livecode_MCContainerView: NSView
+@interface com_hyperxtalk_hyperxtalk_MCContainerView: NSView
 
 @end
 
-@compatibility_alias MCContainerView com_runrev_livecode_MCContainerView;
+@compatibility_alias MCContainerView com_hyperxtalk_hyperxtalk_MCContainerView;
 
-@implementation com_runrev_livecode_MCContainerView
+@implementation com_hyperxtalk_hyperxtalk_MCContainerView
 
 @end
 

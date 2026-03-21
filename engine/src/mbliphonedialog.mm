@@ -50,14 +50,14 @@ extern UITextView *MCIPhoneGetTextView(void);
 
 static bool s_in_modal = false;
 
-@interface com_runrev_livecode_MCModalDelegate : NSObject <UITextFieldDelegate>
+@interface com_hyperxtalk_hyperxtalk_MCModalDelegate : NSObject <UITextFieldDelegate>
 {
 	NSInteger m_index;
 	UIAlertView *m_view;
 }
 @end
 
-@implementation com_runrev_livecode_MCModalDelegate
+@implementation com_hyperxtalk_hyperxtalk_MCModalDelegate
 
 - (void)setView: (UIAlertView *)view
 {
@@ -104,7 +104,7 @@ struct popupanswerdialog_t
 	int32_t result;
 	
 	UIAlertView *alert_view;
-	com_runrev_livecode_MCModalDelegate *delegate;
+	com_hyperxtalk_hyperxtalk_MCModalDelegate *delegate;
 };
 
 static void dopopupanswerdialog_prewait(void *p_context)
@@ -119,7 +119,7 @@ static void dopopupanswerdialog_prewait(void *p_context)
 
     if (MCmajorosversion < MCOSVersionMake(8,0,0))
     {
-        ctxt -> delegate = [[com_runrev_livecode_MCModalDelegate alloc] init];
+        ctxt -> delegate = [[com_hyperxtalk_hyperxtalk_MCModalDelegate alloc] init];
         ctxt -> alert_view = [[UIAlertView alloc] initWithTitle:t_title message:t_prompt delegate:ctxt -> delegate cancelButtonTitle:nil otherButtonTitles:nil];
         
         if (ctxt -> button_count == 0)
@@ -222,7 +222,7 @@ int32_t MCScreenDC::popupanswerdialog(MCStringRef p_buttons[], uint32_t p_button
 #define kUITextFieldXPadding 12.0
 #define kUIAlertOffset 100.0
 
-@interface com_runrev_livecode_MCTextAlertView : UIAlertView
+@interface com_hyperxtalk_hyperxtalk_MCTextAlertView : UIAlertView
 {
 	NSInteger m_index;
 	UITextField *m_textResult;
@@ -237,7 +237,7 @@ int32_t MCScreenDC::popupanswerdialog(MCStringRef p_buttons[], uint32_t p_button
 
 @end
 
-@implementation com_runrev_livecode_MCTextAlertView
+@implementation com_hyperxtalk_hyperxtalk_MCTextAlertView
 
 // UIAlertView/TextAlertView delegate method(s) 
 - (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -406,8 +406,8 @@ struct popupaskdialog_t
 	bool hint;
 	MCStringRef result;
 	
-	com_runrev_livecode_MCTextAlertView *alert;
-	com_runrev_livecode_MCModalDelegate *delegate;
+	com_hyperxtalk_hyperxtalk_MCTextAlertView *alert;
+	com_hyperxtalk_hyperxtalk_MCModalDelegate *delegate;
 	UIAlertView *alert_view;
 	UITextField *text_field;
 };
@@ -428,13 +428,13 @@ static void dopopupaskdialog_prewait(void *p_context)
     
     if (MCmajorosversion < MCOSVersionMake(8,0,0))
     {
-        ctxt -> delegate = [[com_runrev_livecode_MCModalDelegate alloc] init];
+        ctxt -> delegate = [[com_hyperxtalk_hyperxtalk_MCModalDelegate alloc] init];
         
         UITextField *t_text_field;
         UIAlertView *t_alert;
         if (MCmajorosversion < MCOSVersionMake(5,0,0))
         {
-            ctxt-> alert = [[com_runrev_livecode_MCTextAlertView alloc] initWithTitle:t_title
+            ctxt-> alert = [[com_hyperxtalk_hyperxtalk_MCTextAlertView alloc] initWithTitle:t_title
                                                         message:t_message
                                                        delegate:ctxt -> delegate
                                                            type:ctxt -> type

@@ -98,13 +98,13 @@ static bool folder_path_from_initial_path(MCStringRef p_path, MCStringRef &r_fol
 
 ////////////////////////////////////////////////////////////////////////////////
 
-@interface com_runrev_livecode_MCOpenSaveDialogDelegate: NSObject
+@interface com_hyperxtalk_hyperxtalk_MCOpenSaveDialogDelegate: NSObject
 
 - (void)panelDidEnd:(id)printDialog returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo;
 
 @end
 
-@compatibility_alias MCOpenSaveDialogDelegate com_runrev_livecode_MCOpenSaveDialogDelegate;
+@compatibility_alias MCOpenSaveDialogDelegate com_hyperxtalk_hyperxtalk_MCOpenSaveDialogDelegate;
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -118,7 +118,7 @@ struct MCMacPlatformDialogNest
 
 ////////////////////////////////////////////////////////////////////////////////
 
-@implementation com_runrev_livecode_MCOpenSaveDialogDelegate
+@implementation com_hyperxtalk_hyperxtalk_MCOpenSaveDialogDelegate
 
 - (void)panelDidEnd:(id)printDialog returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
 {
@@ -324,7 +324,7 @@ static bool hfs_code_to_string(unsigned long p_code, char *r_string)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-@interface com_runrev_livecode_MCFileDialogAccessoryView : NSView<NSOpenSavePanelDelegate>
+@interface com_hyperxtalk_hyperxtalk_MCFileDialogAccessoryView : NSView<NSOpenSavePanelDelegate>
 {
 	NSTextField *m_label;
 	NSPopUpButton *m_options;
@@ -352,9 +352,9 @@ static bool hfs_code_to_string(unsigned long p_code, char *r_string)
 
 @end
 
-@compatibility_alias MCFileDialogAccessoryView com_runrev_livecode_MCFileDialogAccessoryView;
+@compatibility_alias MCFileDialogAccessoryView com_hyperxtalk_hyperxtalk_MCFileDialogAccessoryView;
 
-@implementation com_runrev_livecode_MCFileDialogAccessoryView
+@implementation com_hyperxtalk_hyperxtalk_MCFileDialogAccessoryView
 
 - (id)initWithPanel: (NSSavePanel *)panel
 {
@@ -699,7 +699,7 @@ static MCColorPanelDelegate* s_color_dialog_delegate;
 
 ////////////////////////////////////////////////////////////////////////////////
 
-@implementation com_runrev_livecode_MCColorPanelDelegate
+@implementation com_hyperxtalk_hyperxtalk_MCColorPanelDelegate
 
 -(id) initWithColorPanel: (NSColorPanel*) p_panel
              contentView: (NSView*) p_view
@@ -940,7 +940,7 @@ void MCPlatformBeginColorDialog(MCStringRef p_title, const MCColor& p_color)
     NSView* t_pickerView = [t_colorPicker contentView];
     
     s_color_dialog_result = kMCPlatformDialogResultContinue;
-    s_color_dialog_delegate = [[com_runrev_livecode_MCColorPanelDelegate alloc] initWithColorPanel:t_colorPicker
+    s_color_dialog_delegate = [[com_hyperxtalk_hyperxtalk_MCColorPanelDelegate alloc] initWithColorPanel:t_colorPicker
                                                                                        contentView:t_pickerView];
     
     // Set the color picker attributes

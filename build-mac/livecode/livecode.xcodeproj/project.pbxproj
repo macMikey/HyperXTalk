@@ -174,12 +174,12 @@
 		32880AD75488A9B4AF694EA6 /* lc-compile in Copy to mac-bin */ = {isa = PBXBuildFile; fileRef = C855E6841E54902E320F73FB /* lc-compile */; };
 		361DF275713DFEA66695ED04 /* lc-run in Copy to mac-bin */ = {isa = PBXBuildFile; fileRef = 04E07C6C61311488EC819A91 /* lc-run */; };
 		3BF2FCA5F3164A3C6961F2A3 /* dbmysql.bundle in Copy to mac-bin */ = {isa = PBXBuildFile; fileRef = CFFA4B1E07C64C3BE05E078E /* dbmysql.bundle */; };
-		3FB42299B5CE53B5091BBA41 /* Standalone-Community.app in Copy to mac-bin */ = {isa = PBXBuildFile; fileRef = 5D50E8854EE42DC24F50E41C /* Standalone-Community.app */; };
+		3FB42299B5CE53B5091BBA41 /* HyperXTalk-Standalone.app in Copy to mac-bin */ = {isa = PBXBuildFile; fileRef = 5D50E8854EE42DC24F50E41C /* HyperXTalk-Standalone.app */; };
 		4651E610629282F13AE13C68 /* revspeech.bundle.dSYM in Copy to mac-bin */ = {isa = PBXBuildFile; fileRef = E1A8E68E83E32CF41578519D /* revspeech.bundle.dSYM */; };
 		4B071A009FEDDC9670EBDFB1 /* revandroid.bundle.dSYM in Copy to mac-bin */ = {isa = PBXBuildFile; fileRef = 3CA285A8F9A1C3A4000301D8 /* revandroid.bundle.dSYM */; };
 		4DAACF7917C6FDC95EE3FB58 /* server-revxml.dylib in Copy to mac-bin */ = {isa = PBXBuildFile; fileRef = 61ED241C8E1B262F21D7E50E /* server-revxml.dylib */; };
 		5B127893F7FAD723AF3032AD /* server-revdb.dylib in Copy to mac-bin */ = {isa = PBXBuildFile; fileRef = EBEE25462176B4A3CAC9D9EA /* server-revdb.dylib */; };
-		65CDE9CEF7A8F4D2AB09C727 /* LiveCode-Community.app.dSYM in Copy to mac-bin */ = {isa = PBXBuildFile; fileRef = 93114916858F00B8456BD020 /* LiveCode-Community.app.dSYM */; };
+		65CDE9CEF7A8F4D2AB09C727 /* HyperXTalk.app.dSYM in Copy to mac-bin */ = {isa = PBXBuildFile; fileRef = 93114916858F00B8456BD020 /* HyperXTalk.app.dSYM */; };
 		6AA4AB689B648313E1DAADEB /* modules in Copy to mac-bin */ = {isa = PBXBuildFile; fileRef = 8F0466D39C69B9BA81C77742 /* modules */; };
 		6DDC3A4235FD1F1A9020AD37 /* server-revxml.dylib.dSYM in Copy to mac-bin */ = {isa = PBXBuildFile; fileRef = 6D65C78E5DB4E8E146A66F4A /* server-revxml.dylib.dSYM */; };
 		6E6E8950194D2DBCE1516152 /* revspeech.bundle in Copy to mac-bin */ = {isa = PBXBuildFile; fileRef = FFFA4F5D5C0EE1FF51E1A6C6 /* revspeech.bundle */; };
@@ -188,7 +188,7 @@
 		72D6DC14DEF3079839AA567E /* revsecurity.dylib in Copy to mac-bin */ = {isa = PBXBuildFile; fileRef = 115299E5A59D9ACF15DDCB08 /* revsecurity.dylib */; };
 		774EA2AD4E11736A2094EC19 /* reviphone.bundle.dSYM in Copy to mac-bin */ = {isa = PBXBuildFile; fileRef = 0E6666D7C3353C1A068BEB7D /* reviphone.bundle.dSYM */; };
 		83E3748667BCD75B95FD8A94 /* revxml.bundle in Copy to mac-bin */ = {isa = PBXBuildFile; fileRef = 46B831F6ACADD75EDEF91157 /* revxml.bundle */; };
-		8ED2E83B8A1430EDC4B52E30 /* Standalone-Community.app.dSYM in Copy to mac-bin */ = {isa = PBXBuildFile; fileRef = 665602F58BA8D61FCBF5BDB6 /* Standalone-Community.app.dSYM */; };
+		8ED2E83B8A1430EDC4B52E30 /* HyperXTalk-Standalone.app.dSYM in Copy to mac-bin */ = {isa = PBXBuildFile; fileRef = 665602F58BA8D61FCBF5BDB6 /* HyperXTalk-Standalone.app.dSYM */; };
 		90736CE85F81CF4FCFACFEBF /* server-revzip.dylib.dSYM in Copy to mac-bin */ = {isa = PBXBuildFile; fileRef = 782354144D1E96E0CC407B68 /* server-revzip.dylib.dSYM */; };
 		99AC1CBB348493668D6809BA /* dbpostgresql.bundle.dSYM in Copy to mac-bin */ = {isa = PBXBuildFile; fileRef = A73DF16D3985EBBD5D93D3A6 /* dbpostgresql.bundle.dSYM */; };
 		99E2AABABC27474167EC6B4F /* revxml.bundle.dSYM in Copy to mac-bin */ = {isa = PBXBuildFile; fileRef = BBFB21F7723ED5E596095DCD /* revxml.bundle.dSYM */; };
@@ -202,7 +202,7 @@
 		AC284FC783A3A4EB2C55C612 /* server-community.dSYM in Copy to mac-bin */ = {isa = PBXBuildFile; fileRef = 3C8F05D2F5EF600B9ABE5776 /* server-community.dSYM */; };
 		B016E4CF133793B833F14E61 /* dbsqlite.bundle.dSYM in Copy to mac-bin */ = {isa = PBXBuildFile; fileRef = 971879A2E63D95E67E4CDB27 /* dbsqlite.bundle.dSYM */; };
 		B4BECD30DB5FED492B97BFF4 /* revzip.bundle.dSYM in Copy to mac-bin */ = {isa = PBXBuildFile; fileRef = F5C0552E14AD8B57EAC8B0D6 /* revzip.bundle.dSYM */; };
-		C3BE392A7B71C20EE52F2CD8 /* LiveCode-Community.app in Copy to mac-bin */ = {isa = PBXBuildFile; fileRef = FF99EA602349925D7DAB02E9 /* LiveCode-Community.app */; };
+		C3BE392A7B71C20EE52F2CD8 /* HyperXTalk.app in Copy to mac-bin */ = {isa = PBXBuildFile; fileRef = FF99EA602349925D7DAB02E9 /* HyperXTalk.app */; };
 		C78AEF2CA8747B7BAA82C0F2 /* revpdfprinter.bundle.dSYM in Copy to mac-bin */ = {isa = PBXBuildFile; fileRef = E3A6AF370961C6C0A0CF1A8B /* revpdfprinter.bundle.dSYM */; };
 		CCDA2E22F37D32276BCA0FCF /* dbmysql.bundle.dSYM in Copy to mac-bin */ = {isa = PBXBuildFile; fileRef = 292729ED57E91A5C11CC87EA /* dbmysql.bundle.dSYM */; };
 		D074515084F5CF5E67062385 /* dbodbc.bundle.dSYM in Copy to mac-bin */ = {isa = PBXBuildFile; fileRef = E3E570E8228B0C9E9530950C /* dbodbc.bundle.dSYM */; };
@@ -1281,7 +1281,7 @@
 			dstPath = "$(SRCROOT)/mac-bin";
 			dstSubfolderSpec = 0;
 			files = (
-				3FB42299B5CE53B5091BBA41 /* Standalone-Community.app in Copy to mac-bin */,
+				3FB42299B5CE53B5091BBA41 /* HyperXTalk-Standalone.app in Copy to mac-bin */,
 				32880AD75488A9B4AF694EA6 /* lc-compile in Copy to mac-bin */,
 				0EEF8B9502CE726A4528B8CA /* lc-compile-ffi-java in Copy to mac-bin */,
 				361DF275713DFEA66695ED04 /* lc-run in Copy to mac-bin */,
@@ -1294,7 +1294,7 @@
 				DD5CC5B4375C3B0B280C8E19 /* dbsqlite.bundle in Copy to mac-bin */,
 				83E3748667BCD75B95FD8A94 /* revxml.bundle in Copy to mac-bin */,
 				D84715B3CE5893D9FC4D4DF3 /* revzip.bundle in Copy to mac-bin */,
-				C3BE392A7B71C20EE52F2CD8 /* LiveCode-Community.app in Copy to mac-bin */,
+				C3BE392A7B71C20EE52F2CD8 /* HyperXTalk.app in Copy to mac-bin */,
 				9CE686A8D30950796168736C /* revpdfprinter.bundle in Copy to mac-bin */,
 				FBA6D44401739A06DBB36FF4 /* Installer.app in Copy to mac-bin */,
 				E30FB143668FB8AF2FCC1D84 /* revbrowser.bundle in Copy to mac-bin */,
@@ -1311,7 +1311,7 @@
 				1DCD5E111EF16F6689647C56 /* server-dbsqlite.dylib in Copy to mac-bin */,
 				6AA4AB689B648313E1DAADEB /* modules in Copy to mac-bin */,
 				314BE9D85F1892C7F6741633 /* packaged_extensions in Copy to mac-bin */,
-				8ED2E83B8A1430EDC4B52E30 /* Standalone-Community.app.dSYM in Copy to mac-bin */,
+				8ED2E83B8A1430EDC4B52E30 /* HyperXTalk-Standalone.app.dSYM in Copy to mac-bin */,
 				E4446BCF9042E0A473F48505 /* lc-compile.dSYM in Copy to mac-bin */,
 				ED70E70EC67B1B5767A73A50 /* lc-compile-ffi-java.dSYM in Copy to mac-bin */,
 				0AF40042BF439C41E0EB92C7 /* lc-run.dSYM in Copy to mac-bin */,
@@ -1324,7 +1324,7 @@
 				B016E4CF133793B833F14E61 /* dbsqlite.bundle.dSYM in Copy to mac-bin */,
 				99E2AABABC27474167EC6B4F /* revxml.bundle.dSYM in Copy to mac-bin */,
 				B4BECD30DB5FED492B97BFF4 /* revzip.bundle.dSYM in Copy to mac-bin */,
-				65CDE9CEF7A8F4D2AB09C727 /* LiveCode-Community.app.dSYM in Copy to mac-bin */,
+				65CDE9CEF7A8F4D2AB09C727 /* HyperXTalk.app.dSYM in Copy to mac-bin */,
 				C78AEF2CA8747B7BAA82C0F2 /* revpdfprinter.bundle.dSYM in Copy to mac-bin */,
 				F408625EBC03551C4853760E /* Installer.app.dSYM in Copy to mac-bin */,
 				F062BF1AF6501FE6D344BB80 /* revbrowser.bundle.dSYM in Copy to mac-bin */,
@@ -1389,13 +1389,13 @@
 		5A011A65EE1DD91964A55AA3 /* livecode.gyp */ = {isa = PBXFileReference; explicitFileType = sourcecode; path = livecode.gyp; sourceTree = "<group>"; };
 		5B2600BE02EB3601A402F1A8 /* libpq.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libpq.xcodeproj; path = "build-mac/livecode/thirdparty/libpq/libpq.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		5D4445BE62AB094D878B7487 /* revxml.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = revxml.xcodeproj; path = "build-mac/livecode/revxml/revxml.xcodeproj"; sourceTree = SOURCE_ROOT; };
-		5D50E8854EE42DC24F50E41C /* Standalone-Community.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; path = "Standalone-Community.app"; sourceTree = "<group>"; };
+		5D50E8854EE42DC24F50E41C /* HyperXTalk-Standalone.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; path = "HyperXTalk-Standalone.app"; sourceTree = "<group>"; };
 		5E61869325CEBC8E6510EE6E /* extract-debug-symbols.sh */ = {isa = PBXFileReference; lastKnownFileType = text; path = "extract-debug-symbols.sh"; sourceTree = "<group>"; };
 		6068F6D7ABE87FFFC1ED37EF /* lcidlc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = lcidlc.xcodeproj; path = "build-mac/livecode/lcidlc/lcidlc.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		61ED241C8E1B262F21D7E50E /* server-revxml.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "server-revxml.dylib"; sourceTree = "<group>"; };
 		631EDAA4870DF046A47365F2 /* engine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = engine.xcodeproj; path = "build-mac/livecode/engine/engine.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		66170A2A7CB3B007E3294F40 /* libcairo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libcairo.xcodeproj; path = "build-mac/livecode/thirdparty/libcairo/libcairo.xcodeproj"; sourceTree = SOURCE_ROOT; };
-		665602F58BA8D61FCBF5BDB6 /* Standalone-Community.app.dSYM */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Standalone-Community.app.dSYM"; sourceTree = "<group>"; };
+		665602F58BA8D61FCBF5BDB6 /* HyperXTalk-Standalone.app.dSYM */ = {isa = PBXFileReference; lastKnownFileType = text; path = "HyperXTalk-Standalone.app.dSYM"; sourceTree = "<group>"; };
 		688132AD64FDB5C240A9C2F8 /* libfoundation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libfoundation.xcodeproj; path = "build-mac/livecode/libfoundation/libfoundation.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		6A6FE3050CAB99B57002B0EF /* server-dbsqlite.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "server-dbsqlite.dylib"; sourceTree = "<group>"; };
 		6D65C78E5DB4E8E146A66F4A /* server-revxml.dylib.dSYM */ = {isa = PBXFileReference; lastKnownFileType = text; path = "server-revxml.dylib.dSYM"; sourceTree = "<group>"; };
@@ -1419,7 +1419,7 @@
 		8F4EF17E549C8100D51ADAF7 /* lc-compile.dSYM */ = {isa = PBXFileReference; lastKnownFileType = text; path = "lc-compile.dSYM"; sourceTree = "<group>"; };
 		9125B595FF597CFFC8B9BFFE /* common.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; path = common.gypi; sourceTree = "<group>"; };
 		92E57C8BA3047C562B7EEBA1 /* exclusions.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = exclusions.gypi; path = config/exclusions.gypi; sourceTree = "<group>"; };
-		93114916858F00B8456BD020 /* LiveCode-Community.app.dSYM */ = {isa = PBXFileReference; lastKnownFileType = text; path = "LiveCode-Community.app.dSYM"; sourceTree = "<group>"; };
+		93114916858F00B8456BD020 /* HyperXTalk.app.dSYM */ = {isa = PBXFileReference; lastKnownFileType = text; path = "HyperXTalk.app.dSYM"; sourceTree = "<group>"; };
 		9595FF53F2D692EA299C4B19 /* installer-stub */ = {isa = PBXFileReference; lastKnownFileType = text; path = "installer-stub"; sourceTree = "<group>"; };
 		971879A2E63D95E67E4CDB27 /* dbsqlite.bundle.dSYM */ = {isa = PBXFileReference; lastKnownFileType = text; path = dbsqlite.bundle.dSYM; sourceTree = "<group>"; };
 		9820CE8E69A1F7F1891DFFFB /* emscripten-settings.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = "emscripten-settings.gypi"; path = "config/emscripten-settings.gypi"; sourceTree = "<group>"; };
@@ -1459,7 +1459,7 @@
 		FBAED9942197D1F96740F5FD /* configurations.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = configurations.gypi; path = config/configurations.gypi; sourceTree = "<group>"; };
 		FF47D75349E271B29140DB08 /* yacc.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = yacc.gypi; path = config/yacc.gypi; sourceTree = "<group>"; };
 		FF607CA367B4C732B821E04F /* debug_syms.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = debug_syms.gypi; path = config/debug_syms.gypi; sourceTree = "<group>"; };
-		FF99EA602349925D7DAB02E9 /* LiveCode-Community.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; path = "LiveCode-Community.app"; sourceTree = "<group>"; };
+		FF99EA602349925D7DAB02E9 /* HyperXTalk.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; path = "HyperXTalk.app"; sourceTree = "<group>"; };
 		FFFA4F5D5C0EE1FF51E1A6C6 /* revspeech.bundle */ = {isa = PBXFileReference; lastKnownFileType = wrapper.cfbundle; path = revspeech.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1596,10 +1596,10 @@
 			children = (
 				ABD02F3DB3C09B505BF732BB /* Installer.app */,
 				2AF83F789870843B61931AC0 /* Installer.app.dSYM */,
-				FF99EA602349925D7DAB02E9 /* LiveCode-Community.app */,
-				93114916858F00B8456BD020 /* LiveCode-Community.app.dSYM */,
-				5D50E8854EE42DC24F50E41C /* Standalone-Community.app */,
-				665602F58BA8D61FCBF5BDB6 /* Standalone-Community.app.dSYM */,
+				FF99EA602349925D7DAB02E9 /* HyperXTalk.app */,
+				93114916858F00B8456BD020 /* HyperXTalk.app.dSYM */,
+				5D50E8854EE42DC24F50E41C /* HyperXTalk-Standalone.app */,
+				665602F58BA8D61FCBF5BDB6 /* HyperXTalk-Standalone.app.dSYM */,
 				CFFA4B1E07C64C3BE05E078E /* dbmysql.bundle */,
 				292729ED57E91A5C11CC87EA /* dbmysql.bundle.dSYM */,
 				BAAE32E57313B3E18E70BEC2 /* dbodbc.bundle */,
@@ -1918,9 +1918,9 @@
 			children = (
 				7822C9CB0AEA3300E32D9EDE /* server-community */,
 				C9826B1BCF3A665263501918 /* server-community-host */,
-				058414EDF3A4170F619A67BF /* Standalone-Community.app */,
+				058414EDF3A4170F619A67BF /* HyperXTalk-Standalone.app */,
 				DF467990D94D1E25EED85CF1 /* Installer.app */,
-				3C2F16F5044764E43F95DDE5 /* LiveCode-Community.app */,
+				3C2F16F5044764E43F95DDE5 /* HyperXTalk.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2160,10 +2160,10 @@
 			remoteRef = 2145AEBDE9960A7A7BCF3D93 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		058414EDF3A4170F619A67BF /* Standalone-Community.app */ = {
+		058414EDF3A4170F619A67BF /* HyperXTalk-Standalone.app */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.application;
-			path = "Standalone-Community.app";
+			path = "HyperXTalk-Standalone.app";
 			remoteRef = F2DE84081865155CA7039072 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -2272,10 +2272,10 @@
 			remoteRef = 9909EA3B170A379E2C2D8329 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		3C2F16F5044764E43F95DDE5 /* LiveCode-Community.app */ = {
+		3C2F16F5044764E43F95DDE5 /* HyperXTalk.app */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.application;
-			path = "LiveCode-Community.app";
+			path = "HyperXTalk.app";
 			remoteRef = 47CE0A72138530293FD389A7 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -2687,7 +2687,7 @@
 			files = (
 			);
 			inputPaths = (
-				"$(BUILT_PRODUCTS_DIR)/Standalone-Community.app",
+				"$(BUILT_PRODUCTS_DIR)/HyperXTalk-Standalone.app",
 				"$(BUILT_PRODUCTS_DIR)/lc-compile",
 				"$(BUILT_PRODUCTS_DIR)/lc-compile-ffi-java",
 				"$(BUILT_PRODUCTS_DIR)/lc-run",
@@ -2700,7 +2700,7 @@
 				"$(BUILT_PRODUCTS_DIR)/dbsqlite.bundle",
 				"$(BUILT_PRODUCTS_DIR)/revxml.bundle",
 				"$(BUILT_PRODUCTS_DIR)/revzip.bundle",
-				"$(BUILT_PRODUCTS_DIR)/LiveCode-Community.app",
+				"$(BUILT_PRODUCTS_DIR)/HyperXTalk.app",
 				"$(BUILT_PRODUCTS_DIR)/revpdfprinter.bundle",
 				"$(BUILT_PRODUCTS_DIR)/Installer.app",
 				"$(BUILT_PRODUCTS_DIR)/revbrowser.bundle",
@@ -2719,7 +2719,7 @@
 			);
 			name = "Action \"extract-debug-symbols\"";
 			outputPaths = (
-				"$(BUILT_PRODUCTS_DIR)/Standalone-Community.app.dSYM",
+				"$(BUILT_PRODUCTS_DIR)/HyperXTalk-Standalone.app.dSYM",
 				"$(BUILT_PRODUCTS_DIR)/lc-compile.dSYM",
 				"$(BUILT_PRODUCTS_DIR)/lc-compile-ffi-java.dSYM",
 				"$(BUILT_PRODUCTS_DIR)/lc-run.dSYM",
@@ -2732,7 +2732,7 @@
 				"$(BUILT_PRODUCTS_DIR)/dbsqlite.bundle.dSYM",
 				"$(BUILT_PRODUCTS_DIR)/revxml.bundle.dSYM",
 				"$(BUILT_PRODUCTS_DIR)/revzip.bundle.dSYM",
-				"$(BUILT_PRODUCTS_DIR)/LiveCode-Community.app.dSYM",
+				"$(BUILT_PRODUCTS_DIR)/HyperXTalk.app.dSYM",
 				"$(BUILT_PRODUCTS_DIR)/revpdfprinter.bundle.dSYM",
 				"$(BUILT_PRODUCTS_DIR)/Installer.app.dSYM",
 				"$(BUILT_PRODUCTS_DIR)/revbrowser.bundle.dSYM",
@@ -2750,7 +2750,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo note: \"Extracting debug symbols\"\nexec env \"OBJCOPY=\" \"OBJDUMP=\" \"STRIP=\" tools/extract-debug-symbols.sh mac .dSYM \"${BUILT_PRODUCTS_DIR}/Standalone-Community.app\" \"${BUILT_PRODUCTS_DIR}/lc-compile\" \"${BUILT_PRODUCTS_DIR}/lc-compile-ffi-java\" \"${BUILT_PRODUCTS_DIR}/lc-run\" \"${BUILT_PRODUCTS_DIR}/server-community\" \"${BUILT_PRODUCTS_DIR}/server-revzip.dylib\" \"${BUILT_PRODUCTS_DIR}/server-revxml.dylib\" \"${BUILT_PRODUCTS_DIR}/revsecurity.dylib\" \"${BUILT_PRODUCTS_DIR}/revdb.bundle\" \"${BUILT_PRODUCTS_DIR}/dbmysql.bundle\" \"${BUILT_PRODUCTS_DIR}/dbsqlite.bundle\" \"${BUILT_PRODUCTS_DIR}/revxml.bundle\" \"${BUILT_PRODUCTS_DIR}/revzip.bundle\" \"${BUILT_PRODUCTS_DIR}/LiveCode-Community.app\" \"${BUILT_PRODUCTS_DIR}/revpdfprinter.bundle\" \"${BUILT_PRODUCTS_DIR}/Installer.app\" \"${BUILT_PRODUCTS_DIR}/revbrowser.bundle\" \"${BUILT_PRODUCTS_DIR}/dbodbc.bundle\" \"${BUILT_PRODUCTS_DIR}/dbpostgresql.bundle\" \"${BUILT_PRODUCTS_DIR}/revandroid.bundle\" \"${BUILT_PRODUCTS_DIR}/reviphone.bundle\" \"${BUILT_PRODUCTS_DIR}/revspeech.bundle\" \"${BUILT_PRODUCTS_DIR}/server-revdb.dylib\" \"${BUILT_PRODUCTS_DIR}/installer-stub\" \"${BUILT_PRODUCTS_DIR}/server-dbmysql.dylib\" \"${BUILT_PRODUCTS_DIR}/server-dbodbc.dylib\" \"${BUILT_PRODUCTS_DIR}/server-dbpostgresql.dylib\" \"${BUILT_PRODUCTS_DIR}/server-dbsqlite.dylib\"\nexit 1\n";
+			shellScript = "echo note: \"Extracting debug symbols\"\nexec env \"OBJCOPY=\" \"OBJDUMP=\" \"STRIP=\" tools/extract-debug-symbols.sh mac .dSYM \"${BUILT_PRODUCTS_DIR}/HyperXTalk-Standalone.app\" \"${BUILT_PRODUCTS_DIR}/lc-compile\" \"${BUILT_PRODUCTS_DIR}/lc-compile-ffi-java\" \"${BUILT_PRODUCTS_DIR}/lc-run\" \"${BUILT_PRODUCTS_DIR}/server-community\" \"${BUILT_PRODUCTS_DIR}/server-revzip.dylib\" \"${BUILT_PRODUCTS_DIR}/server-revxml.dylib\" \"${BUILT_PRODUCTS_DIR}/revsecurity.dylib\" \"${BUILT_PRODUCTS_DIR}/revdb.bundle\" \"${BUILT_PRODUCTS_DIR}/dbmysql.bundle\" \"${BUILT_PRODUCTS_DIR}/dbsqlite.bundle\" \"${BUILT_PRODUCTS_DIR}/revxml.bundle\" \"${BUILT_PRODUCTS_DIR}/revzip.bundle\" \"${BUILT_PRODUCTS_DIR}/HyperXTalk.app\" \"${BUILT_PRODUCTS_DIR}/revpdfprinter.bundle\" \"${BUILT_PRODUCTS_DIR}/Installer.app\" \"${BUILT_PRODUCTS_DIR}/revbrowser.bundle\" \"${BUILT_PRODUCTS_DIR}/dbodbc.bundle\" \"${BUILT_PRODUCTS_DIR}/dbpostgresql.bundle\" \"${BUILT_PRODUCTS_DIR}/revandroid.bundle\" \"${BUILT_PRODUCTS_DIR}/reviphone.bundle\" \"${BUILT_PRODUCTS_DIR}/revspeech.bundle\" \"${BUILT_PRODUCTS_DIR}/server-revdb.dylib\" \"${BUILT_PRODUCTS_DIR}/installer-stub\" \"${BUILT_PRODUCTS_DIR}/server-dbmysql.dylib\" \"${BUILT_PRODUCTS_DIR}/server-dbodbc.dylib\" \"${BUILT_PRODUCTS_DIR}/server-dbpostgresql.dylib\" \"${BUILT_PRODUCTS_DIR}/server-dbsqlite.dylib\"\nexit 1\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */

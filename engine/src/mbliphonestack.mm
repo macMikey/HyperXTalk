@@ -52,7 +52,7 @@ extern bool g_engine_manipulating_container;
 
 ////////////////////////////////////////////////////////////////////////////////
 
-@interface com_runrev_livecode_MCEffectDelegate : NSObject
+@interface com_hyperxtalk_hyperxtalk_MCEffectDelegate : NSObject
 {
 	BOOL m_finished;
 }
@@ -63,7 +63,7 @@ extern bool g_engine_manipulating_container;
 - (void) blockAnimationDidStop: (NSString *)animationID finished: (NSNumber *)finished context: (void*)context;
 @end
 
-@implementation com_runrev_livecode_MCEffectDelegate
+@implementation com_hyperxtalk_hyperxtalk_MCEffectDelegate
 - (void) animationDidStart: (CAAnimation *)theAnimation
 {
 }
@@ -311,7 +311,7 @@ struct effectrect_t
 	UIView *main_view;
 	UIView *composite_view;
 	UIView *background_view;
-	com_runrev_livecode_MCEffectDelegate *effect_delegate;
+	com_hyperxtalk_hyperxtalk_MCEffectDelegate *effect_delegate;
 	real8 duration;
 	UIViewAnimationTransition transition;
 };
@@ -362,7 +362,7 @@ static void effectrect_phase_2(void *p_context)
 	
 	ctxt -> duration = MCU_max(1, MCeffectrate / (ctxt -> effect->speed - VE_VERY)) / 1000.0;
 	
-	ctxt -> effect_delegate = [[com_runrev_livecode_MCEffectDelegate alloc] init];
+	ctxt -> effect_delegate = [[com_hyperxtalk_hyperxtalk_MCEffectDelegate alloc] init];
 	[ctxt -> effect_delegate setFinished:NO];
 	
 	ctxt -> composite_view = [ctxt -> main_view superview];

@@ -313,7 +313,7 @@ along with LiveCode.  If not see <http://www.gnu.org/licenses/>.  */
 
 //////////
 
-- (BOOL)com_runrev_livecode_passMotionEvents
+- (BOOL)com_hyperxtalk_hyperxtalk_passMotionEvents
 {
 	return NO;
 }

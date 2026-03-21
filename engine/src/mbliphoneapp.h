@@ -23,32 +23,32 @@ along with LiveCode.  If not see <http://www.gnu.org/licenses/>.  */
 
 ////////////////////////////////////////////////////////////////////////////////
 
-@class com_runrev_livecode_MCIPhoneApplication;
-#define MCIPhoneApplication com_runrev_livecode_MCIPhoneApplication
+@class com_hyperxtalk_hyperxtalk_MCIPhoneApplication;
+#define MCIPhoneApplication com_hyperxtalk_hyperxtalk_MCIPhoneApplication
 
-@class com_runrev_livecode_MCIPhoneWindow;
-#define MCIPhoneWindow com_runrev_livecode_MCIPhoneWindow
+@class com_hyperxtalk_hyperxtalk_MCIPhoneWindow;
+#define MCIPhoneWindow com_hyperxtalk_hyperxtalk_MCIPhoneWindow
 
-@class com_runrev_livecode_MCIPhoneStartupViewController;
-#define MCIPhoneStartupViewController com_runrev_livecode_MCIPhoneStartupViewController
+@class com_hyperxtalk_hyperxtalk_MCIPhoneStartupViewController;
+#define MCIPhoneStartupViewController com_hyperxtalk_hyperxtalk_MCIPhoneStartupViewController
 
-@class com_runrev_livecode_MCIPhoneMainViewController;
-#define MCIPhoneMainViewController com_runrev_livecode_MCIPhoneMainViewController
+@class com_hyperxtalk_hyperxtalk_MCIPhoneMainViewController;
+#define MCIPhoneMainViewController com_hyperxtalk_hyperxtalk_MCIPhoneMainViewController
 
-@class com_runrev_livecode_MCIPhoneRootView;
-#define MCIPhoneRootView com_runrev_livecode_MCIPhoneRootView
+@class com_hyperxtalk_hyperxtalk_MCIPhoneRootView;
+#define MCIPhoneRootView com_hyperxtalk_hyperxtalk_MCIPhoneRootView
 
-@class com_runrev_livecode_MCIPhoneMainView;
-#define MCIPhoneMainView com_runrev_livecode_MCIPhoneMainView
+@class com_hyperxtalk_hyperxtalk_MCIPhoneMainView;
+#define MCIPhoneMainView com_hyperxtalk_hyperxtalk_MCIPhoneMainView
 
-@class com_runrev_livecode_MCIPhoneDisplayView;
-#define MCIPhoneDisplayView com_runrev_livecode_MCIPhoneDisplayView
+@class com_hyperxtalk_hyperxtalk_MCIPhoneDisplayView;
+#define MCIPhoneDisplayView com_hyperxtalk_hyperxtalk_MCIPhoneDisplayView
 
-@class com_runrev_livecode_MCIPhoneUIKitDisplayView;
-#define MCIPhoneUIKitDisplayView com_runrev_livecode_MCIPhoneUIKitDisplayView
+@class com_hyperxtalk_hyperxtalk_MCIPhoneUIKitDisplayView;
+#define MCIPhoneUIKitDisplayView com_hyperxtalk_hyperxtalk_MCIPhoneUIKitDisplayView
 
-@class com_runrev_livecode_MCIPhoneOpenGLDisplayView;
-#define MCIPhoneOpenGLDisplayView com_runrev_livecode_MCIPhoneOpenGLDisplayView
+@class com_hyperxtalk_hyperxtalk_MCIPhoneOpenGLDisplayView;
+#define MCIPhoneOpenGLDisplayView com_hyperxtalk_hyperxtalk_MCIPhoneOpenGLDisplayView
 
 ////////////////////////////////////////////////////////////////////////////////
 

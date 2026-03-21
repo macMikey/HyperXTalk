@@ -89,12 +89,12 @@
 							'ldflags':
 							[
 								# Force the entry point to be included in the output
-								'-Wl,--undefined,Java_com_runrev_android_Engine_doCreate',
+								'-Wl,--undefined,Java_com_hyperxtalk_android_Engine_doCreate',
 								
 								# mblandroidlcb.cpp contains nothing other than the LCB Invocation Handler 
 								# native callback function, so force the symbol to be included as otherwise it
 								# will be discarded by the linker because nothing in the file is used statically
-								'-Wl,--undefined,Java_com_runrev_android_LCBInvocationHandler_doNativeListenerCallback',
+								'-Wl,--undefined,Java_com_hyperxtalk_android_LCBInvocationHandler_doNativeListenerCallback',
 							],
 						},
 					},

@@ -23,13 +23,13 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-@interface com_runrev_livecode_MCSoundDelegate: NSObject<NSSoundDelegate>
+@interface com_hyperxtalk_hyperxtalk_MCSoundDelegate: NSObject<NSSoundDelegate>
 
 - (void)sound: (NSSound *)sound didFinishPlaying:(BOOL)finishedPlaying;
 
 @end
 
-@implementation com_runrev_livecode_MCSoundDelegate
+@implementation com_hyperxtalk_hyperxtalk_MCSoundDelegate
 
 - (void)sound:(NSSound *)sound didFinishPlaying:(BOOL)finishedPlaying
 {
@@ -38,7 +38,7 @@
 
 @end
 
-static com_runrev_livecode_MCSoundDelegate *s_delegate = nil;
+static com_hyperxtalk_hyperxtalk_MCSoundDelegate *s_delegate = nil;
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -51,7 +51,7 @@ void MCPlatformSoundCreateWithData(const void *p_data, size_t p_data_size, MCPla
     t_sound = [[NSSound alloc] initWithData: t_data];
 
     if (s_delegate == nil)
-        s_delegate = [[com_runrev_livecode_MCSoundDelegate alloc] init];
+        s_delegate = [[com_hyperxtalk_hyperxtalk_MCSoundDelegate alloc] init];
     
     [t_sound setDelegate: s_delegate];
     

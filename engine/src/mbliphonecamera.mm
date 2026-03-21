@@ -37,7 +37,7 @@ along with LiveCode.  If not see <http://www.gnu.org/licenses/>.  */
 ////////////////////////////////////////////////////////////////////////////////
 
 // MM-2013-09-23: [[ iOS7 Support ]] Added missing delegates implemented in order to appease llvm 5.0.
-@interface com_runrev_livecode_MCIPhoneImagePickerDialog : UIImagePickerController<UIImagePickerControllerDelegate, UIPopoverControllerDelegate, UINavigationControllerDelegate>
+@interface com_hyperxtalk_hyperxtalk_MCIPhoneImagePickerDialog : UIImagePickerController<UIImagePickerControllerDelegate, UIPopoverControllerDelegate, UINavigationControllerDelegate>
 {
 	bool m_cancelled;
 	bool m_running;
@@ -53,9 +53,9 @@ along with LiveCode.  If not see <http://www.gnu.org/licenses/>.  */
 }
 @end
 
-static com_runrev_livecode_MCIPhoneImagePickerDialog *s_image_picker = nil;
+static com_hyperxtalk_hyperxtalk_MCIPhoneImagePickerDialog *s_image_picker = nil;
 
-@implementation com_runrev_livecode_MCIPhoneImagePickerDialog
+@implementation com_hyperxtalk_hyperxtalk_MCIPhoneImagePickerDialog
 
 - (void)setMaxWidth:(int32_t)mwidth maxHeight:(int32_t)mheight
 {
@@ -237,13 +237,13 @@ static com_runrev_livecode_MCIPhoneImagePickerDialog *s_image_picker = nil;
     }
     
 	if (s_image_picker == nil)
-		s_image_picker = [[com_runrev_livecode_MCIPhoneImagePickerDialog alloc] init];
+		s_image_picker = [[com_hyperxtalk_hyperxtalk_MCIPhoneImagePickerDialog alloc] init];
 	
 }
 
 + (NSData *)showModalForSource: (UIImagePickerControllerSourceType)sourceType deviceType: (UIImagePickerControllerCameraDevice)deviceType maxWidth: (int32_t)maxWidth maxHeight: (int32_t)maxHeight
 {
-	MCIPhoneCallSelectorOnMainFiber([com_runrev_livecode_MCIPhoneImagePickerDialog class], @selector(prepare));
+	MCIPhoneCallSelectorOnMainFiber([com_hyperxtalk_hyperxtalk_MCIPhoneImagePickerDialog class], @selector(prepare));
 	
 	s_image_picker -> m_running = true;
 	s_image_picker -> m_cancelled = true;
@@ -315,7 +315,7 @@ bool MCSystemAcquirePhoto(MCPhotoSourceType p_source, int32_t p_max_width, int32
 	map_photo_source_to_source_and_device(p_source, t_source_type, t_device_type);
 	
 	NSData *t_ns_image_data;
-	t_ns_image_data = [com_runrev_livecode_MCIPhoneImagePickerDialog showModalForSource: t_source_type deviceType: t_device_type maxWidth: p_max_width maxHeight: p_max_height];
+	t_ns_image_data = [com_hyperxtalk_hyperxtalk_MCIPhoneImagePickerDialog showModalForSource: t_source_type deviceType: t_device_type maxWidth: p_max_width maxHeight: p_max_height];
 	
 	if (t_ns_image_data != nil)
 	{

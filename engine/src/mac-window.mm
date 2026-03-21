@@ -53,7 +53,7 @@ static MCRectangle MCRectangleFromNSRect(const NSRect &p_rect)
 
 static bool s_lock_responder_change = false;
 
-@implementation com_runrev_livecode_MCWindow
+@implementation com_hyperxtalk_hyperxtalk_MCWindow
 
 - (id)initWithContentRect:(NSRect)contentRect styleMask:(NSUInteger)windowStyle backing:(NSBackingStoreType)bufferingType defer:(BOOL)deferCreation
 {
@@ -112,9 +112,9 @@ static bool s_lock_responder_change = false;
 		t_view = (NSView *)p_responder;
 		while(t_view != nil)
 		{
-			if ([t_view respondsToSelector:@selector(com_runrev_livecode_nativeViewId)])
+			if ([t_view respondsToSelector:@selector(com_hyperxtalk_hyperxtalk_nativeViewId)])
 			{
-				[(MCWindowDelegate *)[self delegate] viewFocusSwitched: (uintptr_t)[t_view com_runrev_livecode_nativeViewId]];
+				[(MCWindowDelegate *)[self delegate] viewFocusSwitched: (uintptr_t)[t_view com_hyperxtalk_hyperxtalk_nativeViewId]];
 				return YES;
 			}
 			
@@ -141,11 +141,11 @@ static bool s_lock_responder_change = false;
 
 @end
 
-@implementation com_runrev_livecode_MCPanel
+@implementation com_hyperxtalk_hyperxtalk_MCPanel
 
 // SN-2014-10-01: [[ Bug 13522 ]] Popup menus changed to inherit NSPanel instead of NSWindow,
 //   allowing us to set the workWhenModal to true.
-//   All the popup-specific code has been moved from com_runrev_livecode_MCWindow to com_runrev_livecode_MCPanel
+//   All the popup-specific code has been moved from com_hyperxtalk_hyperxtalk_MCWindow to com_hyperxtalk_hyperxtalk_MCPanel
 
 // MW-2014-06-11: [[ Bug 12451 ]] When we 'popup' a window we install a monitor to catch
 //   other mouse events outside the host window. This allows us to close them and still
@@ -225,9 +225,9 @@ static bool s_lock_responder_change = false;
 		t_view = (NSView *)p_responder;
 		while(t_view != nil)
 		{
-			if ([t_view respondsToSelector:@selector(com_runrev_livecode_nativeViewId)])
+			if ([t_view respondsToSelector:@selector(com_hyperxtalk_hyperxtalk_nativeViewId)])
 			{
-				[(MCWindowDelegate *)[self delegate] viewFocusSwitched: (uintptr_t)[t_view com_runrev_livecode_nativeViewId]];
+				[(MCWindowDelegate *)[self delegate] viewFocusSwitched: (uintptr_t)[t_view com_hyperxtalk_hyperxtalk_nativeViewId]];
 				return YES;
 			}
 			
@@ -341,7 +341,7 @@ void MCMacPlatformWindowWindowMoved(NSWindow *self, MCPlatformWindowRef p_window
         NSScreen * t_screen = [[NSScreen screens] objectAtIndex:0];
         t_rect . origin . y = [t_screen frame] . size . height - t_rect . origin . y - t_rect . size . height;
         
-        [(NSWindow <com_runrev_livecode_MCMovingFrame> *)self setMovingFrame:NSRectFromCGRect(t_rect)];
+        [(NSWindow <com_hyperxtalk_hyperxtalk_MCMovingFrame> *)self setMovingFrame:NSRectFromCGRect(t_rect)];
         
         ((MCMacPlatformWindow *)p_window) -> ProcessDidMove();
     }
@@ -350,7 +350,7 @@ void MCMacPlatformWindowWindowMoved(NSWindow *self, MCPlatformWindowRef p_window
     CFRelease(t_window_id_array);
 }
 
-@implementation com_runrev_livecode_MCWindowDelegate
+@implementation com_hyperxtalk_hyperxtalk_MCWindowDelegate
 
 - (id)initWithPlatformWindow: (MCMacPlatformWindow *)window
 {
@@ -419,7 +419,7 @@ void MCMacPlatformWindowWindowMoved(NSWindow *self, MCPlatformWindowRef p_window
     
     NSWindow * t_window = m_window -> GetHandle();
     if ([t_window respondsToSelector: @selector(setMovingFrame:)])
-        [((NSWindow <com_runrev_livecode_MCMovingFrame> *)t_window) setMovingFrame:[t_window frame]];
+        [((NSWindow <com_hyperxtalk_hyperxtalk_MCMovingFrame> *)t_window) setMovingFrame:[t_window frame]];
     
     if (!m_window -> IsSynchronizing())
     {
@@ -525,7 +525,7 @@ void MCMacPlatformWindowWindowMoved(NSWindow *self, MCPlatformWindowRef p_window
 
 ////////////////////////////////////////////////////////////////////////////////
 
-@implementation com_runrev_livecode_MCWindowView
+@implementation com_hyperxtalk_hyperxtalk_MCWindowView
 
 //////////
 
@@ -636,13 +636,13 @@ void MCMacPlatformWindowWindowMoved(NSWindow *self, MCPlatformWindowRef p_window
 	return YES;
 }
 
-- (BOOL)com_runrev_livecode_subviewBecomeFirstResponder: (uint32_t)p_id
+- (BOOL)com_hyperxtalk_hyperxtalk_subviewBecomeFirstResponder: (uint32_t)p_id
 {
 	//MCPlatformCallbackSendNativeViewFocus([(MCWindowDelegate *)[[self window] delegate] platformWindow], p_id);
 	return YES;
 }
 
-- (BOOL)com_runrev_livecode_subviewResignFirstResponder: (uint32_t)p_id
+- (BOOL)com_hyperxtalk_hyperxtalk_subviewResignFirstResponder: (uint32_t)p_id
 {
 	//MCPlatformCallbackSendNativeViewUnfocus([(MCWindowDelegate *)[[self window] delegate] platformWindow], p_id);
 	return YES;
@@ -1621,7 +1621,7 @@ static void map_key_event(NSEvent *event, MCPlatformKeyCode& r_key_code, codepoi
 
 @end
 
-@implementation com_runrev_livecode_MCWindowContainerView
+@implementation com_hyperxtalk_hyperxtalk_MCWindowContainerView
 
 - (id)initWithPlatformWindow:(MCMacPlatformWindow *)window
 {
@@ -1649,7 +1649,7 @@ static void map_key_event(NSEvent *event, MCPlatformKeyCode& r_key_code, codepoi
 		t_subview = [t_subviews objectAtIndex:i];
 		
         // Adjust any layers added by externals (revbrowser).
-        if ([t_subview respondsToSelector:@selector(com_runrev_livecode_nativeViewId)])
+        if ([t_subview respondsToSelector:@selector(com_hyperxtalk_hyperxtalk_nativeViewId)])
         {
 			NSPoint t_origin;
 			t_origin = [t_subview frame].origin;
@@ -1764,7 +1764,7 @@ void MCMacPlatformWindow::ProcessDidMove(void)
 	
 	// Get the window's new content rect.
 	NSRect t_new_cocoa_content;
-	t_new_cocoa_content = [m_window_handle contentRectForFrameRect: [(NSWindow <com_runrev_livecode_MCMovingFrame>*)m_window_handle movingFrame]];
+	t_new_cocoa_content = [m_window_handle contentRectForFrameRect: [(NSWindow <com_hyperxtalk_hyperxtalk_MCMovingFrame>*)m_window_handle movingFrame]];
 	
 	// Map from cocoa coords.
 	MCRectangle t_content;
@@ -1914,15 +1914,15 @@ void MCMacPlatformWindow::DoRealize(void)
 	// (Note that NSPanel is a subclass of NSWindow)
     // MW-2014-04-30: [[ Bug 12328 ]] Don't defer window creation, otherwise we don't have a windowId.
 	if (t_window_level == kCGFloatingWindowLevel)
-		m_panel_handle = [[com_runrev_livecode_MCPanel alloc] initWithContentRect: t_cocoa_content styleMask: t_window_style backing: NSBackingStoreBuffered defer: NO];
+		m_panel_handle = [[com_hyperxtalk_hyperxtalk_MCPanel alloc] initWithContentRect: t_cocoa_content styleMask: t_window_style backing: NSBackingStoreBuffered defer: NO];
     // SN-2014-10-01: [[ Bug 13522 ]] We want all the pulldown menus to work, even when there is a modal window.
     else if (t_window_level == kCGPopUpMenuWindowLevel)
     {
-		m_panel_handle = [[com_runrev_livecode_MCPanel alloc] initWithContentRect: t_cocoa_content styleMask: t_window_style backing: NSBackingStoreBuffered defer: NO];
+		m_panel_handle = [[com_hyperxtalk_hyperxtalk_MCPanel alloc] initWithContentRect: t_cocoa_content styleMask: t_window_style backing: NSBackingStoreBuffered defer: NO];
         [m_panel_handle setWorksWhenModal: YES];
     }
 	else
-		m_window_handle = [[com_runrev_livecode_MCWindow alloc] initWithContentRect: t_cocoa_content styleMask: t_window_style backing: NSBackingStoreBuffered defer: NO];
+		m_window_handle = [[com_hyperxtalk_hyperxtalk_MCWindow alloc] initWithContentRect: t_cocoa_content styleMask: t_window_style backing: NSBackingStoreBuffered defer: NO];
     
     // AL-2014-07-23: [[ Bug 12131 ]] Explicitly set frame, since initWithContentRect
     //  assumes content is on primary screen.
@@ -1932,13 +1932,13 @@ void MCMacPlatformWindow::DoRealize(void)
     [m_window_handle setFrame: t_cocoa_frame display: YES];
     
     if (m_delegate == nil)
-        m_delegate = [[com_runrev_livecode_MCWindowDelegate alloc] initWithPlatformWindow: this];
+        m_delegate = [[com_hyperxtalk_hyperxtalk_MCWindowDelegate alloc] initWithPlatformWindow: this];
 	[m_window_handle setDelegate: m_delegate];
 	
     m_container_view = [[MCWindowContainerView alloc] initWithPlatformWindow: this];
     [m_container_view setAutoresizesSubviews: NO];
     
-	m_view = [[com_runrev_livecode_MCWindowView alloc] initWithPlatformWindow: this];
+	m_view = [[com_hyperxtalk_hyperxtalk_MCWindowView alloc] initWithPlatformWindow: this];
     [m_container_view addSubview: m_view];
     
 	[m_window_handle setContentView: m_container_view];
@@ -2525,8 +2525,8 @@ static NSView *MCMacPlatformFindView(MCPlatformWindowRef p_window, uint32_t p_id
 		{
 			NSView *t_view;
 			t_view = (NSView *)[t_subviews objectAtIndex: i];
-			if ([t_view respondsToSelector:@selector(com_runrev_livecode_nativeViewId)])
-				if ((uintptr_t)[t_view com_runrev_livecode_nativeViewId] == p_id)
+			if ([t_view respondsToSelector:@selector(com_hyperxtalk_hyperxtalk_nativeViewId)])
+				if ((uintptr_t)[t_view com_hyperxtalk_hyperxtalk_nativeViewId] == p_id)
 					return t_view;
 		}
 	}
@@ -2554,7 +2554,7 @@ void MCPlatformSwitchFocusToView(MCPlatformWindowRef p_window, uint32_t p_id)
 		if (t_next_view != nil)
 			t_view = t_next_view;
 	}*/
-	[(com_runrev_livecode_MCWindow *)(t_window -> GetHandle()) makeFirstResponder: t_view];
+	[(com_hyperxtalk_hyperxtalk_MCWindow *)(t_window -> GetHandle()) makeFirstResponder: t_view];
 	s_lock_responder_change = false;
 }
 

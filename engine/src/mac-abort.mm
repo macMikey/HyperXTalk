@@ -73,7 +73,7 @@ static unsigned int s_abort_key_disabled = 0;
 
 ////////////////////////////////////////////////////////////////////////////////
 
-@interface com_runrev_livecode_MCAbortKeyThread: NSThread<NSPortDelegate>
+@interface com_hyperxtalk_hyperxtalk_MCAbortKeyThread: NSThread<NSPortDelegate>
 {
 	NSPort *m_termination_port;
 	BOOL m_is_running;
@@ -86,7 +86,7 @@ static unsigned int s_abort_key_disabled = 0;
 
 @end;
 
-@compatibility_alias MCAbortKeyThread com_runrev_livecode_MCAbortKeyThread;
+@compatibility_alias MCAbortKeyThread com_hyperxtalk_hyperxtalk_MCAbortKeyThread;
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -245,7 +245,7 @@ static void abort_key_timer_callback(CFRunLoopTimerRef p_timer, void *p_info)
 	}
 }
 
-@implementation com_runrev_livecode_MCAbortKeyThread
+@implementation com_hyperxtalk_hyperxtalk_MCAbortKeyThread
 
 - (void)main
 {

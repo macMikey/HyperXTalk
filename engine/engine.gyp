@@ -89,7 +89,7 @@
 			
 			'dependencies':
 			[
-				# Requires a working LiveCode engine
+				# Requires a working HyperXTalk engine
 				'host-server',
 			],
 			
@@ -272,7 +272,7 @@
 				[
 					'OS == "mac"',
 					{
-						'product_name': 'Standalone-Community',
+						'product_name': 'HyperXTalk-Standalone',
 						'mac_bundle_resources':
 						[
 							'rsrc/Standalone.icns',
@@ -342,7 +342,7 @@
 					# On Android, this needs to be built as a shared library
 					'OS == "android"',
 					{
-						'product_name': 'Standalone-Community',
+						'product_name': 'HyperXTalk-Standalone',
 						'product_prefix': '',
 						'product_extension': '',
 						'product_dir': '<(PRODUCT_DIR)',	# Shared libraries are not placed in PRODUCT_DIR by default
@@ -671,7 +671,7 @@
 
 		{
 			'target_name': 'development',
-			'product_name': 'LiveCode-Community',
+			'product_name': 'HyperXTalk',
 
 			'includes':
 			[
@@ -680,7 +680,7 @@
 			
 			'variables':
 			{
-				'app_plist': 'rsrc/LiveCode-Info.plist',
+				'app_plist': 'rsrc/HyperXTalk-Info.plist',
 			},
 			
 			'dependencies':
@@ -720,14 +720,14 @@
 					{
 						'mac_bundle_resources':
 						[
-							'rsrc/LiveCode.icns',
-							'rsrc/LiveCodeDoc.icns',
+							'rsrc/HyperXTalk.icns',
+							'rsrc/HyperXTalkDoc.icns',
                         ],
                         
                         'copies':
                         [
                             {
-                                'destination': '<(PRODUCT_DIR)/LiveCode-Community.app/Contents/MacOS',
+                                'destination': '<(PRODUCT_DIR)/HyperXTalk.app/Contents/MacOS',
                                 'files':
                                 [
                                     '<(PRODUCT_DIR)/revsecurity.dylib',
