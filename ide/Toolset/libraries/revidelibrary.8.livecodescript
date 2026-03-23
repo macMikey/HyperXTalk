@@ -7100,7 +7100,7 @@ function revIDEAcceptedTypes pType
       case "media"
          return revIDEAcceptedTypes("audio") & comma & revIDEAcceptedTypes("video")
       case "stack"
-         return "livecode,rev,lc,livecodescript,mc"
+         return "hyperxtalk,hyperxtalkscript,livecode,rev,lc,livecodescript,mc"
       case "text"
          return "txt"
       case "graph"
@@ -7863,7 +7863,7 @@ on revIDEActionSaveStackAs pStackID, pSubstackOnly
    put tShortName into tSubstitutions[1]
 
    local tStackFilter, tStack24Filter, tStack27Filter, tStack55Filter, tStack70Filter, tStack80Filter
-   put (revIDELocalise("LiveCode Stack") & "|livecode,rev|RSTK") into tStackFilter
+   put (revIDELocalise("HyperXTalk Stack") & "|hyperxtalk,hyperxtalkscript,livecode,rev|RSTK") into tStackFilter
    put (revIDELocalise("Legacy LiveCode Stack (2.4)") & "|livecode,rev|RSTK") into tStack24Filter
    put (revIDELocalise("Legacy LiveCode Stack (2.7)") & "|livecode,rev|RSTK") into tStack27Filter
    put (revIDELocalise("Legacy LiveCode Stack (5.5)") & "|livecode,rev|RSTK") into tStack55Filter
@@ -7874,7 +7874,7 @@ on revIDEActionSaveStackAs pStackID, pSubstackOnly
    switch 
       case the scriptOnly of stack tShortName
          put "script" after tStackName
-         ask file revIDELocalise("Save script only stack %1 as:", tSubstitutions) with tStackName with type (revIDELocalise("LiveCode Script Only Stack") & "|livecodescript|RSTK")
+         ask file revIDELocalise("Save script only stack %1 as:", tSubstitutions) with tStackName with type (revIDELocalise("HyperXTalk Script Only Stack") & "|hyperxtalkscript,livecodescript|RSTK")
          break
 	  case tStackFileType is 8.0
 	     ask file revIDELocalise("Save stack %1 as:", tSubstitutions) with tStackName with type tStack80Filter or type tStackFilter or type tStack70Filter or type tStack55Filter or type tStack27Filter or type tStack24Filter
@@ -7926,8 +7926,8 @@ on revIDEActionSaveStackAs pStackID, pSubstackOnly
    
    # MacOS Auotmatically appends the filetype to the filename
    local tFilePath
-   if the platform is not "MacOS" and not (it ends with ".rev" or it ends with ".livecode" or it ends with ".livecodescript") then
-      put ".livecode" after it
+   if the platform is not "MacOS" and not (it ends with ".rev" or it ends with ".livecode" or it ends with ".livecodescript" or it ends with ".hyperxtalk" or it ends with ".hyperxtalkscript") then
+      put ".hyperxtalk" after it
       if the scriptOnly of stack tShortName then
          put "script" after it
       end if
