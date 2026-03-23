@@ -719,7 +719,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			xgOwfo6Rq5czS6TtNMHE8csTEoQh6kn18LAl+UMOzHs=
+			0sFpOCFmlZOnXfH9J8g/ogfLaE+vPUrGTvOcSZ15+8I=
 			</data>
 		</dict>
 		<key>Tools/Extensions/com.livecode.library.ini/ini.lcb</key>
@@ -950,7 +950,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			U5g0keC+1ajx3y6eNKoJb7ttz/jsWhLdds18rUTJIqA=
+			BkN4BLCWX6zhPQ+H4DcFLgR8bVqZzfmaVBBkCilaKlo=
 			</data>
 		</dict>
 		<key>Tools/Extensions/com.livecode.library.timezone/manifest.xml</key>
@@ -5507,7 +5507,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			G6hlu4j7A6Zt+x2N6wzf1KfR//ODWmDIxvmD6jiLQHs=
+			TXvvO1nD5gdY3eXmB4UIMf6V3RGZzyJLhvNBlEZDYvc=
 			</data>
 		</dict>
 		<key>Tools/Externals/Database Drivers/dbmysql.bundle/Contents/_CodeSignature/CodeResources</key>
@@ -5528,7 +5528,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			9zotNl9gMcUsyM48Bqb75stD+iLf7TDEhGDXatqyue0=
+			w9FVOha2xRZPQQ7w0yK1IEINS6Q4pIg+KzN7mL4wVHk=
 			</data>
 		</dict>
 		<key>Tools/Externals/Database Drivers/dbodbc.bundle/Contents/_CodeSignature/CodeResources</key>
@@ -5549,7 +5549,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			odn4230QUNRRlKZJpXKSDlWdkOJpPTtsrLlwJ5Yj26I=
+			cScmLe20JC1PepuoUcnuFPHxzWE+AvdpxWNN6IDXmho=
 			</data>
 		</dict>
 		<key>Tools/Externals/Database Drivers/dbpostgresql.bundle/Contents/_CodeSignature/CodeResources</key>
@@ -5570,7 +5570,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			Y9t6O9WqwJiBVgeia4hQD5Uk5YzLcg1FrhlkA1oEleM=
+			a7tQbmSr1L7gCjtcM8aA/IBb1HRZQ5+PEI2sotLWP4w=
 			</data>
 		</dict>
 		<key>Tools/Externals/Database Drivers/dbsqlite.bundle/Contents/_CodeSignature/CodeResources</key>
@@ -5591,7 +5591,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			P0lgX5Uj8r3dKhZ/OQjgbs6pB6SVZ7/gEv4BNIDfWeo=
+			chrpPWpceeBjbdGdTU/vEp1FBJKyx46AMpDUE/davgM=
 			</data>
 		</dict>
 		<key>Tools/Externals/revbrowser.bundle/Contents/_CodeSignature/CodeResources</key>
@@ -5612,7 +5612,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			L0vs+k90VNK1lYBTKynSHdmULyKwdE91AWlsG7AGvgc=
+			9n3EDzr12pcT4rAF4LxRzQSfTVAwyKg8kHb1CnvGF9I=
 			</data>
 		</dict>
 		<key>Tools/Externals/revdb.bundle/Contents/_CodeSignature/CodeResources</key>
@@ -5633,7 +5633,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			Oi2sn/1GNUUtV4/gklvQdXnJeM0ewinENcE7o4FdGYU=
+			XIQBsAH9hI3+8aYY8Kxf5+CHo2wemY2vKQsu+BdtkB4=
 			</data>
 		</dict>
 		<key>Tools/Externals/revspeech.bundle/Contents/_CodeSignature/CodeResources</key>
@@ -5654,7 +5654,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			yFg5IqrqoFexr1Vuagfr/57C0gJIEMnT+2uSfdt6Klc=
+			hYYsrpoDJv51zftZIXxlPk9ScysY+SEaXH6fpsG1UOQ=
 			</data>
 		</dict>
 		<key>Tools/Externals/revxml.bundle/Contents/_CodeSignature/CodeResources</key>
@@ -5675,7 +5675,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			SCI+m8vr7qf5prT3sj9vzECuHddSdGQgSiWhyaMcEto=
+			JySV/J68dXzveXGHnRLNefl6ppoCRpoIlYWQgS7TFFA=
 			</data>
 		</dict>
 		<key>Tools/Externals/revzip.bundle/Contents/_CodeSignature/CodeResources</key>
@@ -5773,7 +5773,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			zYVcjdbyEUXK0tMpFJZwgdyMjYnaomp6hJ9DJ5MRcX4=
+			khtEBdIEz2f8ybFjjoNLu9vNWQpIi/4CXBzrjfGCYbk=
 			</data>
 		</dict>
 		<key>Tools/Runtime/Mac OS X/arm64/Standalone.app/Contents/PkgInfo</key>
@@ -5944,188 +5944,6 @@
 			PjYo4cyQMdmb5KZMpYPZwvCurgTOIf2Ad7F66F+ck10=
 			</data>
 		</dict>
-		<key>Tools/Runtime/Mac OS X/arm64/Standalone.app/HyperXTalk-Standalone.app/Contents/Info.plist</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			ojy7sY+vZ1rWgux0fYZ6jIZUEPjVcjIV0vxDzf8g9cA=
-			</data>
-		</dict>
-		<key>Tools/Runtime/Mac OS X/arm64/Standalone.app/HyperXTalk-Standalone.app/Contents/MacOS/HyperXTalk-Standalone</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			zYVcjdbyEUXK0tMpFJZwgdyMjYnaomp6hJ9DJ5MRcX4=
-			</data>
-		</dict>
-		<key>Tools/Runtime/Mac OS X/arm64/Standalone.app/HyperXTalk-Standalone.app/Contents/PkgInfo</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			Vjs5j4OWLQAlcVJxB0njnM6ovidMTdWQ2cGQkxvYHGc=
-			</data>
-		</dict>
-		<key>Tools/Runtime/Mac OS X/arm64/Standalone.app/HyperXTalk-Standalone.app/Contents/Resources/Dutch.lproj/Localisation.strings</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			6AEFEl8loZevSHcgs8tkYqYJrziRJIP1NOOEAvdWQcQ=
-			</data>
-		</dict>
-		<key>Tools/Runtime/Mac OS X/arm64/Standalone.app/HyperXTalk-Standalone.app/Contents/Resources/English.lproj/Localisation.strings</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			QgAVxJn9SUYU8+BdWFMbiDupk3mPny1OSVpQOwTtgqE=
-			</data>
-		</dict>
-		<key>Tools/Runtime/Mac OS X/arm64/Standalone.app/HyperXTalk-Standalone.app/Contents/Resources/French.lproj/Localisation.strings</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			M+JA+QTJGA3zNctDwlNdcBQJMXv2ebiRNBAPcZehY7U=
-			</data>
-		</dict>
-		<key>Tools/Runtime/Mac OS X/arm64/Standalone.app/HyperXTalk-Standalone.app/Contents/Resources/German.lproj/Localisation.strings</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			xbVA3cYxE8qwUmRs6X9DV98UKe4gx/YDX8S1KFq9wE4=
-			</data>
-		</dict>
-		<key>Tools/Runtime/Mac OS X/arm64/Standalone.app/HyperXTalk-Standalone.app/Contents/Resources/HyperXTalk.rsrc</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			kSTSlI6HQmtVmRgxvs9b7v5JbPHEdufbKYqPH/Kq+ZQ=
-			</data>
-		</dict>
-		<key>Tools/Runtime/Mac OS X/arm64/Standalone.app/HyperXTalk-Standalone.app/Contents/Resources/Italian.lproj/Localisation.strings</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			CKtxEEqkB5fDRO5ouRF6FiLaK1AqUJDV3FjIze2alEk=
-			</data>
-		</dict>
-		<key>Tools/Runtime/Mac OS X/arm64/Standalone.app/HyperXTalk-Standalone.app/Contents/Resources/Japanese.lproj/Localisation.strings</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			CvfuLJWomLOTx0C/fxRLaf3Aaj5BjAxLzp+ajPkUfcg=
-			</data>
-		</dict>
-		<key>Tools/Runtime/Mac OS X/arm64/Standalone.app/HyperXTalk-Standalone.app/Contents/Resources/Spanish.lproj/Localisation.strings</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			SFBHGwWoU0tWB9ibKLm7ri6qkvwWWEfKilRCv9o17sU=
-			</data>
-		</dict>
-		<key>Tools/Runtime/Mac OS X/arm64/Standalone.app/HyperXTalk-Standalone.app/Contents/Resources/Standalone.icns</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			az8yXh9r86zRWDtrdD9Bi0wDE+BLfe8i5JTAb3SupYo=
-			</data>
-		</dict>
-		<key>Tools/Runtime/Mac OS X/arm64/Standalone.app/HyperXTalk-Standalone.app/Contents/Resources/StandaloneDoc.icns</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			jYdc88o6atT8j5jd2a48/ha1W9RQWatFnRfbfKe4e08=
-			</data>
-		</dict>
-		<key>Tools/Runtime/Mac OS X/arm64/Standalone.app/HyperXTalk-Standalone.app/Contents/Resources/ar.lproj/Localisation.strings</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			f40+hWI1XtVFBKPR46fWTS2En3Xoifg9j9JAdWyiR3E=
-			</data>
-		</dict>
-		<key>Tools/Runtime/Mac OS X/arm64/Standalone.app/HyperXTalk-Standalone.app/Contents/Resources/da.lproj/Localisation.strings</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			FuMroWdURjYLkVhY6ZmXIUScncVc1LdLLujMBakFKJ4=
-			</data>
-		</dict>
-		<key>Tools/Runtime/Mac OS X/arm64/Standalone.app/HyperXTalk-Standalone.app/Contents/Resources/fi.lproj/Localisation.strings</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			wYgZ/5P5RuIBjk5BIooONPDFltympDOaNt0iYl2QXGo=
-			</data>
-		</dict>
-		<key>Tools/Runtime/Mac OS X/arm64/Standalone.app/HyperXTalk-Standalone.app/Contents/Resources/he.lproj/Localisation.strings</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			ffM2RaDBJbmz3rYJK9JJQSYHDQLyuzLJGASDkbNYPaw=
-			</data>
-		</dict>
-		<key>Tools/Runtime/Mac OS X/arm64/Standalone.app/HyperXTalk-Standalone.app/Contents/Resources/ko.lproj/Localisation.strings</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			qXccpwLdqqIPnsoMYruIQAzw7iCzypRJnKoC5A8d2iE=
-			</data>
-		</dict>
-		<key>Tools/Runtime/Mac OS X/arm64/Standalone.app/HyperXTalk-Standalone.app/Contents/Resources/no.lproj/Localisation.strings</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			LE4x7Onod+on06o9xGNPj4cllqW816rjgLNC0X3HaMw=
-			</data>
-		</dict>
-		<key>Tools/Runtime/Mac OS X/arm64/Standalone.app/HyperXTalk-Standalone.app/Contents/Resources/pt.lproj/Localisation.strings</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			HuCaLdDb+IcEll96mQFo/eBfSvZeDpvrYxw5muS+u5c=
-			</data>
-		</dict>
-		<key>Tools/Runtime/Mac OS X/arm64/Standalone.app/HyperXTalk-Standalone.app/Contents/Resources/ru.lproj/Localisation.strings</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			ikyeggWAQmw+sYXzqDbQoOmEne9NsQc+I8IciDHKtdc=
-			</data>
-		</dict>
-		<key>Tools/Runtime/Mac OS X/arm64/Standalone.app/HyperXTalk-Standalone.app/Contents/Resources/sv.lproj/Localisation.strings</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			SGTiyvyC6jYuuUrtegvoK38o6skbR8B/cU03NZtNvH0=
-			</data>
-		</dict>
-		<key>Tools/Runtime/Mac OS X/arm64/Standalone.app/HyperXTalk-Standalone.app/Contents/Resources/terminology.sdef</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			KhDXQpitp99tC3zeq8BDm2PbVSynE36Vp7kISFqtFzU=
-			</data>
-		</dict>
-		<key>Tools/Runtime/Mac OS X/arm64/Standalone.app/HyperXTalk-Standalone.app/Contents/Resources/zh_CN.lproj/Localisation.strings</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			91nsXE2fTkpNQafl0ZXuYX86tV5CADL5o0HJCEmh8OI=
-			</data>
-		</dict>
-		<key>Tools/Runtime/Mac OS X/arm64/Standalone.app/HyperXTalk-Standalone.app/Contents/Resources/zh_TW.lproj/Localisation.strings</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			Q9zS4cW6ljhkjNPjRgiCzk3soSm9RIqV5lAcXw2Xn8o=
-			</data>
-		</dict>
-		<key>Tools/Runtime/Mac OS X/arm64/Standalone.app/HyperXTalk-Standalone.app/Contents/_CodeSignature/CodeResources</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			PjYo4cyQMdmb5KZMpYPZwvCurgTOIf2Ad7F66F+ck10=
-			</data>
-		</dict>
 		<key>Tools/Runtime/Mac OS X/arm64/Support/revpdfprinter.bundle/Contents/Info.plist</key>
 		<dict>
 			<key>hash2</key>
@@ -6137,7 +5955,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			x1VtGJKNr1Nz+biRNtM7yhvsAiMtFWXp7Mcao8bAQMQ=
+			h3TiSLMTI/oVDgZJV/Qm7rvB9UImuSNovM5TWVMHHQk=
 			</data>
 		</dict>
 		<key>Tools/Runtime/Mac OS X/arm64/Support/revpdfprinter.bundle/Contents/_CodeSignature/CodeResources</key>
@@ -6151,28 +5969,28 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			ZynVNg7iwecGxkUExfRcUBrgaXARdnvpPD/5IQUiBSQ=
+			2r66a2pX7roSSGHYukLzGmw6FS1+RS3mWDT6iuvo83E=
 			</data>
 		</dict>
 		<key>Tools/Toolchain/lc-compile</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			8EYWrqGHhVLhKUoOopFm8HijsNMZ1V0SPyMp9dyehzA=
+			wVVTmi4pChgAAkG9kxmoMAAoBn5x/pmvyIhcssdiVmk=
 			</data>
 		</dict>
 		<key>Tools/Toolchain/lc-compile-ffi-java</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			HrzKwE3+oE8QpLzVCAe3fRZTzqbuG8INIaq8MELMpc4=
+			hwmSE4bzNdKrR7/S8RDkBcUsBKrrsQkFZnjZYAMT/Mc=
 			</data>
 		</dict>
 		<key>Tools/Toolchain/lc-run</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			Ygb79hHJa2JzY/gPFLrJCnCxstw90otp0Mwivd8IRcw=
+			ryi+8wsh0a9oGgUUN2iJYVEiG/AubWiE4LP6pTbnw0c=
 			</data>
 		</dict>
 		<key>Tools/Toolchain/modules/lci/__builtin__.lci</key>

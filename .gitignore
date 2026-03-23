@@ -7,3 +7,5 @@
 *.cer
 *.mobileprovision
 codesign.cfg
+/mac-bin
+/mac-bin

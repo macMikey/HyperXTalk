@@ -318,9 +318,33 @@ package-mac:
 	@# ----------------------------------------------------------------
 	@# Runtime: arm64 standalone engine + support libraries
 	@# ----------------------------------------------------------------
+	@# Remove existing Standalone.app first so cp -R replaces it rather
+	@# than nesting HyperXTalk-Standalone.app inside it on re-runs.
+	@rm -rf "$(RUNTIME_ARM64)/Standalone.app"
 	@[ -d "$(MAC_BIN)/HyperXTalk-Standalone.app" ] && \
 	    cp -R "$(MAC_BIN)/HyperXTalk-Standalone.app" \
 	      "$(RUNTIME_ARM64)/Standalone.app" || true
+	@# Re-sign Standalone.app inside-out with hardened runtime so
+	@# notarization accepts it (strips get-task-allow from debug build).
+	@if [ -d "$(RUNTIME_ARM64)/Standalone.app" ]; then \
+	  find "$(RUNTIME_ARM64)/Standalone.app" \
+	      \( -name "*.framework" -o -name "*.dylib" \) | \
+	      sort -r | while read F; do \
+	    codesign --force --sign "$(CODESIGN_IDENTITY)" \
+	        --options runtime \
+	        --entitlements HyperXTalk.entitlements "$$F" 2>/dev/null || true; \
+	  done; \
+	  find "$(RUNTIME_ARM64)/Standalone.app" -name "*.bundle" | \
+	      while read F; do \
+	    codesign --force --sign "$(CODESIGN_IDENTITY)" \
+	        --options runtime \
+	        --entitlements HyperXTalk.entitlements "$$F" 2>/dev/null || true; \
+	  done; \
+	  codesign --force --sign "$(CODESIGN_IDENTITY)" \
+	      --options runtime \
+	      --entitlements HyperXTalk.entitlements \
+	      "$(RUNTIME_ARM64)/Standalone.app"; \
+	fi
 	@[ -d "$(MAC_BIN)/revpdfprinter.bundle" ] && \
 	    cp -R "$(MAC_BIN)/revpdfprinter.bundle" \
 	      "$(RUNTIME_ARM64)/Support/" || true
@@ -339,6 +363,14 @@ package-mac:
 	      "$(TOOLS_DIR)/Toolchain/" || true
 	@[ -d "$(MAC_BIN)/modules" ] && \
 	    cp -R "$(MAC_BIN)/modules" "$(TOOLS_DIR)/Toolchain/" || true
+	@# Re-sign toolchain tools with hardened runtime (strips get-task-allow).
+	@for t in lc-compile lc-run lc-compile-ffi-java; do \
+	  [ -f "$(TOOLS_DIR)/Toolchain/$$t" ] && \
+	    codesign --force --sign "$(CODESIGN_IDENTITY)" \
+	        --options runtime \
+	        --entitlements HyperXTalk.entitlements \
+	        "$(TOOLS_DIR)/Toolchain/$$t" || true; \
+	done
 	@# ----------------------------------------------------------------
 	@# Extensions
 	@# ----------------------------------------------------------------
@@ -447,9 +479,33 @@ package-mac-bin:
 	@# ----------------------------------------------------------------
 	@# Runtime: arm64 standalone engine + support libraries
 	@# ----------------------------------------------------------------
+	@# Remove existing Standalone.app first so cp -R replaces it rather
+	@# than nesting HyperXTalk-Standalone.app inside it on re-runs.
+	@rm -rf "$(MACBIN_RT_ARM64)/Standalone.app"
 	@[ -d "$(MACBIN_BIN)/HyperXTalk-Standalone.app" ] && \
 	    cp -R "$(MACBIN_BIN)/HyperXTalk-Standalone.app" \
 	      "$(MACBIN_RT_ARM64)/Standalone.app" || true
+	@# Re-sign Standalone.app inside-out with hardened runtime so
+	@# notarization accepts it (strips get-task-allow from debug build).
+	@if [ -d "$(MACBIN_RT_ARM64)/Standalone.app" ]; then \
+	  find "$(MACBIN_RT_ARM64)/Standalone.app" \
+	      \( -name "*.framework" -o -name "*.dylib" \) | \
+	      sort -r | while read F; do \
+	    codesign --force --sign "$(CODESIGN_IDENTITY)" \
+	        --options runtime \
+	        --entitlements HyperXTalk.entitlements "$$F" 2>/dev/null || true; \
+	  done; \
+	  find "$(MACBIN_RT_ARM64)/Standalone.app" -name "*.bundle" | \
+	      while read F; do \
+	    codesign --force --sign "$(CODESIGN_IDENTITY)" \
+	        --options runtime \
+	        --entitlements HyperXTalk.entitlements "$$F" 2>/dev/null || true; \
+	  done; \
+	  codesign --force --sign "$(CODESIGN_IDENTITY)" \
+	      --options runtime \
+	      --entitlements HyperXTalk.entitlements \
+	      "$(MACBIN_RT_ARM64)/Standalone.app"; \
+	fi
 	@[ -d "$(MACBIN_BIN)/revpdfprinter.bundle" ] && \
 	    cp -R "$(MACBIN_BIN)/revpdfprinter.bundle" \
 	      "$(MACBIN_RT_ARM64)/Support/" || true
@@ -468,6 +524,14 @@ package-mac-bin:
 	      "$(MACBIN_TOOLS)/Toolchain/" || true
 	@[ -d "$(MACBIN_BIN)/modules" ] && \
 	    cp -R "$(MACBIN_BIN)/modules" "$(MACBIN_TOOLS)/Toolchain/" || true
+	@# Re-sign toolchain tools with hardened runtime (strips get-task-allow).
+	@for t in lc-compile lc-run lc-compile-ffi-java; do \
+	  [ -f "$(MACBIN_TOOLS)/Toolchain/$$t" ] && \
+	    codesign --force --sign "$(CODESIGN_IDENTITY)" \
+	        --options runtime \
+	        --entitlements HyperXTalk.entitlements \
+	        "$(MACBIN_TOOLS)/Toolchain/$$t" || true; \
+	done
 	@# ----------------------------------------------------------------
 	@# Extensions
 	@# ----------------------------------------------------------------
