@@ -1369,11 +1369,11 @@ private function _revEnvironmentPlatform
          put "Linux" into tPlatform
          break
       case "MacOS"
-         if char 1 of the systemVersion is 1 then
-            put "MacOS X" into tPlatform
-         else
-            put "MacOS Classic" into tPlatform
-         end if
+         --         if char 1 of the systemVersion is 1 then
+         put "MacOS X" into tPlatform
+         --         else
+         --         put "MacOS Classic" into tPlatform
+         --      end if
          break
       case "Win32"
          put "Windows" into tPlatform

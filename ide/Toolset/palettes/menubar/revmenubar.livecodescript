@@ -1924,8 +1924,8 @@ private function revMenubarHelpMenu pContext
 //   put enableMenuItem("Re-license LiveCode/|Relicense", line 7 of the revLicenseInfo is not "Global") & return after tHelp
 //   put "-" & return after tHelp
 //   put "Check For Updates/|Update" & return after tHelp
-//   put "-" & return after tHelp
-   put "About LiveCode/|About" after tHelp
+   put "-" & return after tHelp
+   put "About HyperXTalk/|About" after tHelp
    
    return modifyMenu("Help", tHelp)
 end revMenubarHelpMenu
@@ -3140,9 +3140,9 @@ on revMenubarHelpMenuPick pWhich
          break
 //      case "Start Center"
 //      case "Welcome"
-//      case "About"
-//         revIDEOpenPalette tPick
-//         break
+      case "About"
+         revIDEOpenPalette tPick
+         break
 //      case "Buy"
 //      case "Support"
 //      case "User Guide"

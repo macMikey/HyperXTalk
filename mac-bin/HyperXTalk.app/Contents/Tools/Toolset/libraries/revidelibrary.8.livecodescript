@@ -4378,8 +4378,6 @@ function revIDEPaletteToStackName pPalette
          return "revIDEProjectBrowser"
       case "extension manager"
          return "revIDEExtensionManager"
-//eh      case "start center"
-//eh         return "revStartCenter"
       case "welcome"
          return "revWelcome"
       case "search"
@@ -4604,7 +4602,7 @@ example: revIDEOpenPalette "inspector"
 */
 command revIDEOpenPalette pPaletteName
    local tExistingPalette, tPalette, tPaletteID
-   
+      
    local tStackName
    put revIDEPaletteToStackName(pPaletteName) into tStackName
    
@@ -4612,18 +4610,6 @@ command revIDEOpenPalette pPaletteName
    
    hide stack tStackName
    switch pPaletteName
-//eh      case "Start Center"
-//eh         set the cMode of stack tStackName to "run"
-//eh         modeless stack tStackName
-//eh         break
-//eh      case "Welcome"
-//eh         local tStartCenter
-//eh         put revIDEPaletteToStackName("start center") into tStartCenter
-//eh         if the visible of stack tStartCenter is true then
-//eh            close stack tStartCenter
-//eh         end if
-//eh         modeless stack tStackName
-//eh         break
       case "message box"
          -- The message box needs to be brought to the front as it takes keyboard focus
          palette stack tStackName

@@ -240,49 +240,7 @@ on revInternal__openStack
          modal stack "revFileAssociations"
       end if
    end if
-   
-   # AL-2015-07-10: Temporarily disable welcome screen
-   /*
-   if revIDEGetPreference("welcomeScreenShown") is not "true" then
-      revIDEOpenPalette "Welcome"
-   else if revIDEPrefGet("StartPageShow") is not "false" then
-      */
-      if revIDEGetPreference("cStartPageShow") is not "false" then
-         revIDEOpenPalette "Start Center"
-      end if
 
-
-      -- MM-2011-09-27: The new auto update process is handled entirely by the installer.
-      -- Launch the installer in update mode to begin update process.
-      --
-      if line 3 of revLicenseInfo is not "evaluation" then
-         local tCommand, tOldPath
-         put $PATH into tOldPath
-         set the itemdelimiter to "/"
-         switch the platform
-            case "MacOS"
-               put item 1 to -5 of the filename me & "/Contents/MacOS/autoupdater" into tCommand
-               put quote & tCommand & quote && "install -update" into tCommand
-               break
-            case "Win32"
-               put item 1 to -3 of the filename me & "/.setup.exe" into tCommand
-               put quote & tCommand & quote && "install -update" into tCommand
-               break
-            case "Linux"
-               -- MDW-2015-12-19 [[fix_installer]] LC8-style setup filename
-               if the processor is "x86_64" then
-               		put item 1 to -3 of the filename me & "/setup.x86_64" into tCommand
-               else
-               		put item 1 to -3 of the filename me & "/setup.x86" into tCommand
-               end if
-               put tCommand && "install -update" into tCommand
-               break
-         end switch
-         set the itemDel to comma
-         open process tCommand for neither
-         put tOldPath into $PATH
-      end if
-      
       close stack "revSplash"
       
       revInternal__Log "Leave", "revInternal__openStack"
