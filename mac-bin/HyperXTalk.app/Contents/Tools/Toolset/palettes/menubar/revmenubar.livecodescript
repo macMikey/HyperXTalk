@@ -1370,15 +1370,15 @@ private function revMenubarFileMenu pContext
    
    local tFile
    put "&New Stack" & return after tFile
-   put tab & "Default Size" & return after tFile
-   put tab & "-" & return after tFile
-   put tab & "iPhone 4 (320x480)" & return after tFile
-   put tab & "iPhone 5 (320x568)" & return after tFile
-   put tab & "iPhone 6 (375x667)" & return after tFile
-   put tab & "iPhone 6 Plus (414x736)" & return after tFile
-   put tab & "iPad//Tablet Portrait (768x1024)" & return after tFile
-   put tab & "iPad//Tablet Landscape (1024x768)" & return after tFile
-   put tab & "-" & return after tFile
+   put tab & "Default Size/CMD SHIFT N" & return after tFile
+   --   put tab & "-" & return after tFile
+   --   put tab & "iPhone 4 (320x480)" & return after tFile
+   --   put tab & "iPhone 5 (320x568)" & return after tFile
+   --   put tab & "iPhone 6 (375x667)" & return after tFile
+   --   put tab & "iPhone 6 Plus (414x736)" & return after tFile
+   --   put tab & "iPad//Tablet Portrait (768x1024)" & return after tFile
+   --   put tab & "iPad//Tablet Landscape (1024x768)" & return after tFile
+   --   put tab & "-" & return after tFile
    put tab & "Script only Stack" & return after tFile
    
    if tIsUserTarget and not tIsScriptOnly then
@@ -1520,7 +1520,11 @@ private function revMenubarEditMenu pContext
    put "-" & return after tEdit
    put "Find and Replace.../F" & return after tEdit
    put "-" & return after tEdit
-   put "Pre&ferences" after tEdit
+   if (the platform = "MacOS") then
+      put "Preferences" after tEdit
+   else
+      put "Settings" after tEdit
+   end if
    
    return modifyMenu("Edit", tEdit)
 end revMenubarEditMenu
@@ -1537,7 +1541,7 @@ private function revMenubarToolsMenu pContext
    put toggleMenuItem("&Paint and Draw Tools", "paint" is among the items of revIDEGetPreference("revTools_show")) & return after tTools
    put "-" & return after tTools
    
-   put toggleMenuItem("Project Browser", revIDEPaletteIsVisible("project browser")) & return after tTools
+   put toggleMenuItem("Project Browser/Cmd Shift P", revIDEPaletteIsVisible("project browser")) & return after tTools
    put toggleMenuItem("&Message Box/M", revIDEPaletteIsVisible("message box")) & return after tTools
    put toggleMenuItem("Extension Manager", revIDEPaletteIsVisible("extension manager")) & return after tTools
    put toggleMenuItem("Extension Builder", revIDEPaletteIsVisible("extension builder")) & return after tTools
@@ -2848,6 +2852,7 @@ on revMenubarEditMenuPick pWhich
          revIDEToggle pWhich
          break
       case "Preferences"
+      case "Settings"
          revIDEOpenPalette "preferences"
          break
       case "Find and Replace..."
@@ -3161,11 +3166,11 @@ on revMenubarHelpMenuPick pWhich
       case "All Guides"
          revIDEOpenPalette "guide"
          break
-      case "Relicense"
-         revIDEActionRelicense
-         break
-      case "Update"
-         revIDECheckForUpdates
-         break
+      //eh case "Relicense"
+         //eh revIDEActionRelicense
+         //eh break
+      //eh case "Update"
+         //eh revIDECheckForUpdates
+         //eh break
    end switch
 end revMenubarHelpMenuPick

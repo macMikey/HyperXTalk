@@ -38,7 +38,7 @@ on subscribeMessages
    revIDESubscribe "idePluginsChanged"
    revIDESubscribe "ideWindowsChanged"
    
-   revIDESubscribe "ideTutorialProgressChanged"
+   --   revIDESubscribe "ideTutorialProgressChanged"
    revIDESubscribe "ideActiveStacksChanged"
 end subscribeMessages
 
@@ -278,11 +278,11 @@ on ideActiveStacksChanged
    updateButtonState
 end ideActiveStacksChanged
 
-on ideTutorialProgressChanged
-   highlightObject empty
-   layoutMenu
-   revMenubarBuildMenus
-end ideTutorialProgressChanged
+--on ideTutorialProgressChanged
+--   highlightObject empty
+--   layoutMenu
+--   revMenubarBuildMenus
+--end ideTutorialProgressChanged
 
 on idePreferenceChanged pPreference
    switch pPreference
@@ -463,31 +463,31 @@ private command generateTutorialGroup
 end generateTutorialGroup
 
 private command generateUpgradeGroup
-   if there is a group "upgrade" of me then
-      delete group "upgrade" of me
-   end if
-   
-   create group "upgrade"
-   set the margins of it to 0
-   
-   create graphic "bg" in group "upgrade" of me
-   set the opaque of it to true
-   set the style of it to "roundRect"
-   set the lineSize of it to 0
-   
-   local tUpgradeEdition
-   put revEnvironmentEditionProperty("upgrade_edition") into tUpgradeEdition
-   set the backcolor of it to revEnvironmentEditionProperty("color", tUpgradeEdition)
-   set the roundRadius of it to 8
-   
-   create field "label" in group "upgrade" of me
-   set the margins of it to 4
-   set the traversalOn of it to false
-   set the text of it to "Upgrade Options"
-   set the textStyle["bold"] of it to true
-   set the textColor of it to "white"
-   
-   hide group "upgrade" of me
+  if there is a group "upgrade" of me then
+     delete group "upgrade" of me
+  end if
+
+  create group "upgrade"
+  set the margins of it to 0
+
+  create graphic "bg" in group "upgrade" of me
+  set the opaque of it to true
+  set the style of it to "roundRect"
+  set the lineSize of it to 0
+
+  local tUpgradeEdition
+  put revEnvironmentEditionProperty("upgrade_edition") into tUpgradeEdition
+  set the backcolor of it to revEnvironmentEditionProperty("color", tUpgradeEdition)
+  set the roundRadius of it to 8
+
+  create field "label" in group "upgrade" of me
+  set the margins of it to 4
+  set the traversalOn of it to false
+  set the text of it to "Upgrade Options"
+  set the textStyle["bold"] of it to true
+  set the textColor of it to "white"
+
+  hide group "upgrade" of me
 end generateUpgradeGroup
 
 on generateMenuGroup
@@ -609,66 +609,66 @@ on layoutMenu
       end if
    end repeat
    
-   local tTutorial, tLabelWidth
-   put revIDETutorialInProgress() into tTutorial
-   if tTutorial is not empty then
-      hide group "upgrade" of me
-      
-      add kPadding/2 to tLeft
-      show group "tutorial" of me
-      show tLastDivide
-      set the text of field "label" of group "tutorial" of me to tTutorial["lesson"] 
-      set the width of field "label" of group "tutorial" of me to 1000
-      set the height of field "label" of group "tutorial" of me to the formattedHeight of field "label" of group "tutorial" of me
-      
-      put the formattedwidth of field "label" of group "tutorial" of me into tLabelWidth
-      set the width of field "label" of group "tutorial" of me to tLabelWidth
-      set the topleft of field "label" of group "tutorial" of me to 0, 0
-      
-      set the backcolor of graphic "Trough" of group "progress" of me to "white"
-      set the backcolor of graphic "Bar" of group "progress" of me to "black"
-      set the rect of graphic "Trough" of group "progress" of me to 0, 0, tLabelWidth, kPadding / 2
-      set the rect of graphic "Bar" of group "progress" of me to 0, 0, revIDETutorialDonePercentage() * tLabelWidth / 100, kPadding / 2
-      set the rect of group "progress" of me to the formattedRect of group "progress" of me
-      set the loc of group "progress" of me to the loc of field "label" of me
-      set the top of group "progress" of me to the bottom of field "label" of group "tutorial" of me + kPadding / 5
-      
-      set the topleft of widget "skip" of group "actions" of group "tutorial" of me to 0,0
-      set the topleft of widget "stop" of group "actions" of group "tutorial" of me to kTutorialActionSize + kPadding / 2, 0
-      set the rect of group "actions" of group "tutorial" of me to the formattedRect of group "actions" of group "tutorial" of me
-      set the loc of group "actions" of group "tutorial" of me to the loc of field "label" of me
-      set the top of group "actions" of group "tutorial" of me to the bottom of group "progress" of me + kPadding / 2
-      
-      set the rect of group "tutorial" of me to the formattedRect of group "tutorial" of me
-      set the loc of group "tutorial" of me to the loc of group "toolbar" of me
-      set the left of group "tutorial" of me to tLeft
-      
-      add the width of group "tutorial" of me + kPadding to tLeft
-   else if ideShouldShowUpgradeOptions() then
-      hide group "tutorial" of me
-      
-      add kPadding/2 to tLeft
-      show group "upgrade" of me
-      show tLastDivide
-      
-      put the height of me into tHeight
-      
-      local tMenuBarHeight = 0
-      if the platform is not "MacOS" then
-         subtract kMenuBarHeight from tHeight
-         put kMenuBarHeight into tMenuBarHeight
-      end if
-      
-      set the topLeft of group "upgrade" of me to \
-            tLeft, \
-            tMenuBarHeight + (tHeight - the height of group "upgrade" of me) / 2
-      
-      add the width of group "upgrade" of me + kPadding to tLeft
-   else
-      hide tLastDivide
-      hide group "tutorial" of me
-      hide group "upgrade" of me
-   end if	
+   --   local tTutorial, tLabelWidth
+   --   put revIDETutorialInProgress() into tTutorial
+   --   if tTutorial is not empty then
+   --      hide group "upgrade" of me
+   
+   --      add kPadding/2 to tLeft
+   --      show group "tutorial" of me
+   --      show tLastDivide
+   --      set the text of field "label" of group "tutorial" of me to tTutorial["lesson"] 
+   --      set the width of field "label" of group "tutorial" of me to 1000
+   --      set the height of field "label" of group "tutorial" of me to the formattedHeight of field "label" of group "tutorial" of me
+   
+   --      put the formattedwidth of field "label" of group "tutorial" of me into tLabelWidth
+   --      set the width of field "label" of group "tutorial" of me to tLabelWidth
+   --      set the topleft of field "label" of group "tutorial" of me to 0, 0
+   
+   --      set the backcolor of graphic "Trough" of group "progress" of me to "white"
+   --      set the backcolor of graphic "Bar" of group "progress" of me to "black"
+   --      set the rect of graphic "Trough" of group "progress" of me to 0, 0, tLabelWidth, kPadding / 2
+   --      set the rect of graphic "Bar" of group "progress" of me to 0, 0, revIDETutorialDonePercentage() * tLabelWidth / 100, kPadding / 2
+   --      set the rect of group "progress" of me to the formattedRect of group "progress" of me
+   --      set the loc of group "progress" of me to the loc of field "label" of me
+   --      set the top of group "progress" of me to the bottom of field "label" of group "tutorial" of me + kPadding / 5
+   
+   --      set the topleft of widget "skip" of group "actions" of group "tutorial" of me to 0,0
+   --      set the topleft of widget "stop" of group "actions" of group "tutorial" of me to kTutorialActionSize + kPadding / 2, 0
+   --      set the rect of group "actions" of group "tutorial" of me to the formattedRect of group "actions" of group "tutorial" of me
+   --      set the loc of group "actions" of group "tutorial" of me to the loc of field "label" of me
+   --      set the top of group "actions" of group "tutorial" of me to the bottom of group "progress" of me + kPadding / 2
+   
+   --      set the rect of group "tutorial" of me to the formattedRect of group "tutorial" of me
+   --      set the loc of group "tutorial" of me to the loc of group "toolbar" of me
+   --      set the left of group "tutorial" of me to tLeft
+   
+   --      add the width of group "tutorial" of me + kPadding to tLeft
+   --   else if ideShouldShowUpgradeOptions() then
+   --      hide group "tutorial" of me
+   
+   --      add kPadding/2 to tLeft
+   --      show group "upgrade" of me
+   --      show tLastDivide
+   
+   --      put the height of me into tHeight
+   
+   --      local tMenuBarHeight = 0
+   --      if the platform is not "MacOS" then
+   --         subtract kMenuBarHeight from tHeight
+   --         put kMenuBarHeight into tMenuBarHeight
+   --      end if
+   
+   --      set the topLeft of group "upgrade" of me to \
+   --            tLeft, \
+   --            tMenuBarHeight + (tHeight - the height of group "upgrade" of me) / 2
+   
+   --      add the width of group "upgrade" of me + kPadding to tLeft
+   --   else
+   hide tLastDivide
+   hide group "tutorial" of me
+   hide group "upgrade" of me
+   --end if	
    
    set the width of me to tLeft
    set the height of group "revMenuBar" of me to kMenuBarHeight
@@ -1370,15 +1370,15 @@ private function revMenubarFileMenu pContext
    
    local tFile
    put "&New Stack" & return after tFile
-   put tab & "Default Size" & return after tFile
-   put tab & "-" & return after tFile
-   put tab & "iPhone 4 (320x480)" & return after tFile
-   put tab & "iPhone 5 (320x568)" & return after tFile
-   put tab & "iPhone 6 (375x667)" & return after tFile
-   put tab & "iPhone 6 Plus (414x736)" & return after tFile
-   put tab & "iPad//Tablet Portrait (768x1024)" & return after tFile
-   put tab & "iPad//Tablet Landscape (1024x768)" & return after tFile
-   put tab & "-" & return after tFile
+   put tab & "Default Size/CMD SHIFT N" & return after tFile
+   --   put tab & "-" & return after tFile
+   --   put tab & "iPhone 4 (320x480)" & return after tFile
+   --   put tab & "iPhone 5 (320x568)" & return after tFile
+   --   put tab & "iPhone 6 (375x667)" & return after tFile
+   --   put tab & "iPhone 6 Plus (414x736)" & return after tFile
+   --   put tab & "iPad//Tablet Portrait (768x1024)" & return after tFile
+   --   put tab & "iPad//Tablet Landscape (1024x768)" & return after tFile
+   --   put tab & "-" & return after tFile
    put tab & "Script only Stack" & return after tFile
    
    if tIsUserTarget and not tIsScriptOnly then
@@ -1520,7 +1520,11 @@ private function revMenubarEditMenu pContext
    put "-" & return after tEdit
    put "Find and Replace.../F" & return after tEdit
    put "-" & return after tEdit
-   put "Pre&ferences" after tEdit
+   if (the platform = "MacOS") then
+      put "Preferences" after tEdit
+   else
+      put "Settings" after tEdit
+   end if
    
    return modifyMenu("Edit", tEdit)
 end revMenubarEditMenu
@@ -1537,7 +1541,7 @@ private function revMenubarToolsMenu pContext
    put toggleMenuItem("&Paint and Draw Tools", "paint" is among the items of revIDEGetPreference("revTools_show")) & return after tTools
    put "-" & return after tTools
    
-   put toggleMenuItem("Project Browser", revIDEPaletteIsVisible("project browser")) & return after tTools
+   put toggleMenuItem("Project Browser/Cmd Shift P", revIDEPaletteIsVisible("project browser")) & return after tTools
    put toggleMenuItem("&Message Box/M", revIDEPaletteIsVisible("message box")) & return after tTools
    put toggleMenuItem("Extension Manager", revIDEPaletteIsVisible("extension manager")) & return after tTools
    put toggleMenuItem("Extension Builder", revIDEPaletteIsVisible("extension builder")) & return after tTools
@@ -2848,6 +2852,7 @@ on revMenubarEditMenuPick pWhich
          revIDEToggle pWhich
          break
       case "Preferences"
+      case "Settings"
          revIDEOpenPalette "preferences"
          break
       case "Find and Replace..."
@@ -3161,11 +3166,11 @@ on revMenubarHelpMenuPick pWhich
       case "All Guides"
          revIDEOpenPalette "guide"
          break
-      case "Relicense"
-         revIDEActionRelicense
-         break
-      case "Update"
-         revIDECheckForUpdates
-         break
+      //eh case "Relicense"
+         //eh revIDEActionRelicense
+         //eh break
+      //eh case "Update"
+         //eh revIDECheckForUpdates
+         //eh break
    end switch
 end revMenubarHelpMenuPick

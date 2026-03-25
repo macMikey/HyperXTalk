@@ -4602,7 +4602,7 @@ example: revIDEOpenPalette "inspector"
 */
 command revIDEOpenPalette pPaletteName
    local tExistingPalette, tPalette, tPaletteID
-      
+   
    local tStackName
    put revIDEPaletteToStackName(pPaletteName) into tStackName
    
@@ -4629,7 +4629,7 @@ command revIDEOpenPalette pPaletteName
       case "extension builder"
       case "plugin preferences"
       case "about"
-      case "resource center"
+         //eh      case "resource center"
          modeless stack tStackName
          break
       case "dictionary"
@@ -7977,7 +7977,7 @@ on revIDEActionSaveStackAs pStackID, pSubstackOnly
 
    # RevOnline fingerprint enables the revOnline uploader automatically overwrite the stack if already uploaded.
    # Because you're saving as a new stack, this fingerprint should be removed.
-   revRemoveRevOnlineKey "fingerprint",tShortName
+   //eh revRemoveRevOnlineKey "fingerprint",tShortName
 
    -- Synthesize a "saveStackRequest" message
    if ideDispatchSaveStackRequest(tShortName) is not "handled" then
@@ -8904,52 +8904,52 @@ end revIDEDocumentationLoad
 
 on revIDELaunchResource pName
    switch pName
-      case "Buy"
-         launch url "https://livecode.com/products/livecode-platform/pricing/"
-         break
-      case "Support"
-         launch url "https://livecode.com/resources/support/"
-         break
-      case "License Agreement"
-         launch document (revEnvironmentToolsPath() & slash & "License Agreement.txt")
-         break
-      case "Release Notes"
-         launch document (revEnvironmentToolsPath() & slash & "Release Notes.pdf")
-         break
-      case "User Guide"
-         launch document revEnvironmentDocumentationPath() & "/pdf/LiveCode User Guide.pdf"
-         break
-      case "Sample Stacks"
-         set the _ideoverride of stack "revonline" to true
-         go stack "revOnline"
-         break
-      case "Sample Scripts"
-         launch url "http://lessons.runrev.com/m/2592"
-         break
-      case "Beginners Guide"
-         launch url "https://livecode.com/resources/guides/beginners-guide/"
-         break
-      case "Tutorials"
-         launch url "http://livecode.com/links/livecode/tutorials"
-         break
-      case "All Guides"
-         launch url "http://livecode.com/links/livecode/guides"
-         break
+      --      case "Buy"
+      --         launch url "https://livecode.com/products/livecode-platform/pricing/"
+      --         break
+      --      case "Support"
+      --         launch url "https://livecode.com/resources/support/"
+      --         break
+      --      case "License Agreement"
+      --         launch document (revEnvironmentToolsPath() & slash & "License Agreement.txt")
+      --         break
+      --      case "Release Notes"
+      --         launch document (revEnvironmentToolsPath() & slash & "Release Notes.pdf")
+      --         break
+      --      case "User Guide"
+      --         launch document revEnvironmentDocumentationPath() & "/pdf/LiveCode User Guide.pdf"
+      --         break
+      --      case "Sample Stacks"
+      --         set the _ideoverride of stack "revonline" to true
+      --         go stack "revOnline"
+      --         break
+      --      case "Sample Scripts"
+      --         launch url "http://lessons.runrev.com/m/2592"
+      --         break
+      --      case "Beginners Guide"
+      --         launch url "https://livecode.com/resources/guides/beginners-guide/"
+      --         break
+      --      case "Tutorials"
+      --         launch url "http://livecode.com/links/livecode/tutorials"
+      --         break
+      --      case "All Guides"
+      --         launch url "http://livecode.com/links/livecode/guides"
+      --         break
       case "Forums"
-         launch url "http://livecode.com/links/livecode/forum"
+         launch url "https://hyperxtalk.discourse.group"
          break
       case "Technical Questions"
-         launch url "http://livecode.com/links/stackoverflow"
+         launch url "https://github.com/emily-elizabeth/HyperXTalk"
          break
-      case "Discussion List"
-         launch url "http://livecode.com/links/lists"
-         break
-      case "Newsletters"
-         launch url "http://livecode.com/links/livecode/newsletters"
-         break
-      case "Resources"
-         launch document revEnvironmentToolsPath() & slash & "Resources"
-         break
+         --      case "Discussion List"
+         --         launch url "http://livecode.com/links/lists"
+         --         break
+         --      case "Newsletters"
+         --         launch url "http://livecode.com/links/livecode/newsletters"
+         --         break
+         --      case "Resources"
+         --         launch document revEnvironmentToolsPath() & slash & "Resources"
+         --         break
    end switch
 end revIDELaunchResource
 

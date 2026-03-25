@@ -42,7 +42,7 @@
 		</dict>
 		<key>Resources/HyperXTalk.icns</key>
 		<data>
-		vkpt74FXOIXoJ3fEKs7WKWTmtFw=
+		oq8IyUcg/VTqpBAyvI0NXEhc+Wo=
 		</data>
 		<key>Resources/HyperXTalk.rsrc</key>
 		<data>
@@ -50,7 +50,7 @@
 		</data>
 		<key>Resources/HyperXTalkDoc.icns</key>
 		<data>
-		qGts+RGBdJ6t65riClntcokkbd0=
+		B3OOGNpEc2AhzxPrLxlFGyKJq/E=
 		</data>
 		<key>Resources/Italian.lproj/Localisation.strings</key>
 		<dict>
@@ -243,7 +243,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			/lZ/NKhWKsUECyoCYPQOh4YNVXRaryb128V7ydDHILE=
+			h1jL61LFfT/MgacWfwNJj3uINkeD09Sijxx5FDfX8WI=
 			</data>
 		</dict>
 		<key>Resources/HyperXTalk.rsrc</key>
@@ -257,7 +257,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			jYdc88o6atT8j5jd2a48/ha1W9RQWatFnRfbfKe4e08=
+			bRY8dwIV2ypZuU+I8tu2WNp4GRyuOuRLJKJQ8kN6DEc=
 			</data>
 		</dict>
 		<key>Resources/Italian.lproj/Localisation.strings</key>
@@ -412,6 +412,62 @@
 			<key>hash2</key>
 			<data>
 			PrJjqBVtHv/GKHwzNOQTg5gf+tyOs89ISlaBnZ+3JSw=
+			</data>
+		</dict>
+		<key>Tools/Extensions/com.hyperxtalk.library.macoswindowanimation/api.lcdoc</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			sde2WBwnRXTfE86glTYdqkfAyEvNUaQbQLiqV8eTUIY=
+			</data>
+		</dict>
+		<key>Tools/Extensions/com.hyperxtalk.library.macoswindowanimation/code/arm64-mac/windowanimation_glue.dylib</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			1/urQrt6M1UMPlbPZb4igbHq2zEwPx144Mj0pdY6AP4=
+			</data>
+		</dict>
+		<key>Tools/Extensions/com.hyperxtalk.library.macoswindowanimation/code/x86_64-mac/windowanimation_glue.dylib</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			1fcJwGfVX/45zXKeRbhziEUVNLbMQYleSDSqvQM5oC8=
+			</data>
+		</dict>
+		<key>Tools/Extensions/com.hyperxtalk.library.macoswindowanimation/com.hyperxtalk.library.macoswindowanimation.lcb</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			aOE4ICf4PP2OhlCxDrTCCcNsrdOwPEMdh8DGC9J4Nvc=
+			</data>
+		</dict>
+		<key>Tools/Extensions/com.hyperxtalk.library.macoswindowanimation/manifest.xml</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			NAerVILLtZigN9MHxUkQ/G5FibEjMiolx6iNNnk2SB0=
+			</data>
+		</dict>
+		<key>Tools/Extensions/com.hyperxtalk.library.macoswindowanimation/module.2.lcm</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			6Sh46kb+xa0yNQyHcs2rRvrCDmLL5gupQa6+T75/BOE=
+			</data>
+		</dict>
+		<key>Tools/Extensions/com.hyperxtalk.library.macoswindowanimation/module.lcm</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			6Sh46kb+xa0yNQyHcs2rRvrCDmLL5gupQa6+T75/BOE=
+			</data>
+		</dict>
+		<key>Tools/Extensions/com.hyperxtalk.library.macoswindowanimation/org.openxtalk.windowanimation.lcb</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			JbsZAqZfH0sbxAUYEotfvMq01M6Q+Nb6TXucAcaOvVo=
 			</data>
 		</dict>
 		<key>Tools/Extensions/com.livecode.library.androidaudiorecorder/androidaudiorecorder.lcb</key>
@@ -719,7 +775,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			xw96VNEr7gpiA1ny9nNjkQkc+sZonHTKUdjG0DOKsR0=
+			kpl0U1/svvRlMwg+HRNKiymXDnR7c5HrX16QEjHsD6k=
 			</data>
 		</dict>
 		<key>Tools/Extensions/com.livecode.library.ini/ini.lcb</key>
@@ -950,7 +1006,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			+rPfsEzU67FjkVLAoMF2iJGCaZerK6syoCnNCmyK+Cc=
+			5yJtpYWVPtHh7KoPtEAPi5NI1CowxYLeJizcl5DdB7g=
 			</data>
 		</dict>
 		<key>Tools/Extensions/com.livecode.library.timezone/manifest.xml</key>
@@ -5507,7 +5563,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			1Bb/OfRG/Ysqo/MzkJpK7ufWxX8WgSzfyJVXSThe/iA=
+			HwJrVrE4X8IUBvkgoiWhETmpF96cdiBUrH9GVtTuHQ0=
 			</data>
 		</dict>
 		<key>Tools/Externals/Database Drivers/dbmysql.bundle/Contents/_CodeSignature/CodeResources</key>
@@ -5528,7 +5584,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			dHXYGj2G66/pembXbk3fpSkgPLdHm1C58GsczOSr3ZA=
+			xD+koGGU8wUf41vgPWzcRP2jkri8bwgC9t5/qbj5a6U=
 			</data>
 		</dict>
 		<key>Tools/Externals/Database Drivers/dbodbc.bundle/Contents/_CodeSignature/CodeResources</key>
@@ -5549,7 +5605,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			9ZfrTtX0V0sygTddgdOBDJcvTx1Tclg32rL99TFhdfQ=
+			u23ipbYViSWyvVoNV6r+xDuBVdfXjAW3uejRDHn1PSI=
 			</data>
 		</dict>
 		<key>Tools/Externals/Database Drivers/dbpostgresql.bundle/Contents/_CodeSignature/CodeResources</key>
@@ -5570,7 +5626,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			stQW5YloT1OHC2uyP3ewykUQrlMlESo8cXTAUtp8VfI=
+			GzOJLpbGj6PgvNerQlahg783m2tb66bAVQTjZWOt8bE=
 			</data>
 		</dict>
 		<key>Tools/Externals/Database Drivers/dbsqlite.bundle/Contents/_CodeSignature/CodeResources</key>
@@ -5591,7 +5647,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			SxgsPTG9jx/ylShGd2Q7QFbotfTDQpJnPPwCEys3hvc=
+			CxWYHVDDQDW5RJtCz7YT5uCb8vHzoXkLO0uvXih4vvY=
 			</data>
 		</dict>
 		<key>Tools/Externals/revbrowser.bundle/Contents/_CodeSignature/CodeResources</key>
@@ -5612,7 +5668,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			o4NDXny2ebM+AJr/PKK+xP+RWMvHWLyn+O6gt+68aLM=
+			PdTL1f/XOteN0MFx3ntD7yGwbqJi96fuIvyBkSgbuLM=
 			</data>
 		</dict>
 		<key>Tools/Externals/revdb.bundle/Contents/_CodeSignature/CodeResources</key>
@@ -5633,7 +5689,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			xq9eu/qv8ieK7iwTTAg/Eru1d1TodyAaL0IveZF2cIo=
+			unsp1R7Zgf20kBAO4g11dTsaa/YyXoc1may6T4KRz0k=
 			</data>
 		</dict>
 		<key>Tools/Externals/revspeech.bundle/Contents/_CodeSignature/CodeResources</key>
@@ -5654,7 +5710,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			yuA1NiJDUVHfXoWRdtysJYcZf0UUaKdMXZlF75dr2A0=
+			WzfqToTXb9hByJJ6hV71PI3X6k8zHdwseSijZ27rZ+Y=
 			</data>
 		</dict>
 		<key>Tools/Externals/revxml.bundle/Contents/_CodeSignature/CodeResources</key>
@@ -5675,7 +5731,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			dNIFCwd/j3vsA+HZudkmYibwWE4mT5QkJnpRKhsrGb8=
+			8NcEorEELFdt0sPAlAIn1GQgQDz4RRmEPg4k2I5xvfQ=
 			</data>
 		</dict>
 		<key>Tools/Externals/revzip.bundle/Contents/_CodeSignature/CodeResources</key>
@@ -5773,7 +5829,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			pOSVwwNFo2A2NRUU7cKsoABGEW1WmX1b84hNaSeUnAM=
+			1y7icCfUrbzwwL1e8UAjMhYMYhscHW2UPHzFuOEuMW8=
 			</data>
 		</dict>
 		<key>Tools/Runtime/Mac OS X/arm64/Standalone.app/Contents/PkgInfo</key>
@@ -5955,7 +6011,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			aAbvPD+Ao8Op6dbPYmVDckmwLugE57/8cDx2nwv6HIo=
+			z89dd4DzJI3UBDQ0+CEUhFNhN4gIRZkOb0PCNqHBVGY=
 			</data>
 		</dict>
 		<key>Tools/Runtime/Mac OS X/arm64/Support/revpdfprinter.bundle/Contents/_CodeSignature/CodeResources</key>
@@ -5969,28 +6025,28 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			5v94scW4TEW7qkpwNSx+Oso3S2yd3tEmmwGT90D3CyA=
+			vP8/Vg4palu8Vo0J1YQhi45waxTSG/wq0LBofQG9LSA=
 			</data>
 		</dict>
 		<key>Tools/Toolchain/lc-compile</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			2zvVBN3OAaLp8M7b4GMIgFFhRnlUxrQC1bP+Vn/A494=
+			Tmf7+biRn8ZtdlVrEwMe0j7GAys4tDT1saoDah5osuU=
 			</data>
 		</dict>
 		<key>Tools/Toolchain/lc-compile-ffi-java</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			SUL0tkJGjkeTlRnMJSuDmSx8uGf8b+qY9sxpsF1oJeo=
+			cOZ+e1MGuyCd+nqlDzNnDxMQlvJO//Fb4VSm3hDsw+A=
 			</data>
 		</dict>
 		<key>Tools/Toolchain/lc-run</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			1bKjHJgwoO87mxJCCjTrlUiFHzrzKvyTeCKgFDIPCo0=
+			a/m/IQy6kir+r7IJ4fA48qk9/QaibK2Htia+KXr7uFU=
 			</data>
 		</dict>
 		<key>Tools/Toolchain/modules/lci/__builtin__.lci</key>
@@ -6571,7 +6627,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			RTO9WCLYmrbRQ46siQzbQ3zI5CITM0WPRlqSCAZkmnE=
+			vSDFo44m0tGZ4o7qcj27gJNNhY1GZQ0WnkQl/9vLUFk=
 			</data>
 		</dict>
 		<key>Tools/Toolset/libraries/revidemessagehandlerlibrary.livecodescript</key>
@@ -6711,7 +6767,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			K+zWYI/IJu4MQetDkQHEx0+eO2flI2eKjbYIhkoAzhg=
+			2uhvrR4Dyw3bAsdVg8d5ResCHkIca4DGVVjuUtVwsEo=
 			</data>
 		</dict>
 		<key>Tools/Toolset/palettes/behaviors/revcorestackbehavior.livecodescript</key>
@@ -8216,7 +8272,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			NYsmBEN1JTsjldGOXSrHIq16m5LXk1z/82p9JM0lM1g=
+			NU95i0Bb0DJ0D3VrwDDucLY1An3Kx0CR6cvm24+kMlE=
 			</data>
 		</dict>
 		<key>Tools/Toolset/palettes/menubar/svg/icons-depressed.svg</key>
@@ -8377,7 +8433,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			vrLR+fD14eLf6O2PL4lELBO9dFtg6lVQeaZm3Rqs0pM=
+			7YTpi48o4NBkT3BbKXjkgf8lSxX5spIwq3ogRS6Qflk=
 			</data>
 		</dict>
 		<key>Tools/Toolset/palettes/revaddlibrarystack.livecode</key>
@@ -8657,7 +8713,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			L5fe75riAubYLLVR8F0erSrmh3sBfI8ZJlVlzfNvc1E=
+			/zBenNhtYVyneD26qZScRc1m0namiLJR4fbY0BUgNnQ=
 			</data>
 		</dict>
 		<key>Tools/Toolset/palettes/revprintdialog.rev</key>
@@ -8909,14 +8965,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			PzRo+DMIe6Joj/hLrxuAZI8D3sG3TnUJNt/cuJYyIXE=
+			ueMU1rb1/TZLFrmXI+hVZQWK129+LPMz55/ujJekLWE=
 			</data>
 		</dict>
 		<key>Tools/Toolset/palettes/splash/revsplashstackbehavior.livecodescript</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			YCgm4hMdYvvt33ICqSbu8RXJtcvPWXKTLnFkpsGh24c=
+			l//xl21OT+rkjxX6fU5oHNJIw3U85rCfddR+64aYYQI=
 			</data>
 		</dict>
 		<key>Tools/Toolset/palettes/standalone settings/revstandalonesettings.8.rev</key>
