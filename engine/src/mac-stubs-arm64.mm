@@ -138,11 +138,17 @@ public:
 
     virtual Widget_Part hittest(const MCWidgetInfo &winfo, int2 mx, int2 my, const MCRectangle &drect) override
     {
-        // For scrollbars, determine which part was clicked
-        if (winfo.type == WTHEME_TYPE_SCROLLBAR || winfo.type == WTHEME_TYPE_SMALLSCROLLBAR)
+        // For scrollbars and sliders, determine which part was clicked
+        bool t_is_scrollbar = (winfo.type == WTHEME_TYPE_SCROLLBAR || winfo.type == WTHEME_TYPE_SMALLSCROLLBAR);
+        bool t_is_slider = (winfo.type == WTHEME_TYPE_SLIDER ||
+                           winfo.type == WTHEME_TYPE_SLIDER_TRACK_HORIZONTAL ||
+                           winfo.type == WTHEME_TYPE_SLIDER_TRACK_VERTICAL ||
+                           winfo.type == WTHEME_TYPE_SLIDER_THUMB_HORIZONTAL ||
+                           winfo.type == WTHEME_TYPE_SLIDER_THUMB_VERTICAL);
+        
+        if (t_is_scrollbar || t_is_slider)
         {
             // Use default behavior if we can't determine specific parts
-            // This allows the fallback code in scrolbar.cpp to handle it
             if (winfo.datatype != WTHEME_DATA_SCROLLBAR || winfo.data == nil)
             {
                 return WTHEME_PART_THUMB;
@@ -151,7 +157,7 @@ public:
             MCWidgetScrollBarInfo *sb = (MCWidgetScrollBarInfo *)winfo.data;
             
             // Guard against invalid values
-            if (sb->endvalue <= sb->startvalue || sb->thumbsize <= 0)
+            if (sb->endvalue <= sb->startvalue)
             {
                 return WTHEME_PART_THUMB;
             }
@@ -161,49 +167,59 @@ public:
             CGFloat t_length = t_horizontal ? drect.width : drect.height;
             CGFloat t_thickness = t_horizontal ? drect.height : drect.width;
             
-            double t_range = sb->endvalue - sb->startvalue;
-            CGFloat t_thumb_x = 0, t_thumb_w = t_length;
-            
-            if (t_range > 0.0 && sb->thumbsize < t_range)
+            // For sliders, use fixed thumb size (14px radius = 28px diameter)
+            // For scrollbars, use the thumbsize from the info
+            CGFloat t_thumb_len;
+            if (t_is_slider)
             {
+                t_thumb_len = 28.0f; // Fixed slider thumb size
+            }
+            else
+            {
+                t_thumb_len = (CGFloat)(sb->thumbsize / (sb->endvalue - sb->startvalue)) * t_length;
+                if (t_thumb_len < 8.0f) t_thumb_len = 8.0f;
+            }
+            
+            double t_range = sb->endvalue - sb->startvalue;
+            CGFloat t_thumb_x;
+            
+            if (t_is_slider)
+            {
+                // Slider: position is fraction of total range
+                CGFloat t_norm = (CGFloat)((sb->thumbpos - sb->startvalue) / t_range);
+                t_thumb_x = t_norm * (t_length - t_thumb_len);
+            }
+            else
+            {
+                // Scrollbar: subtract thumb size from scrollable range
                 double t_scrollable = t_range - sb->thumbsize;
                 if (t_scrollable > 0)
                 {
                     CGFloat t_norm = (CGFloat)((sb->thumbpos - sb->startvalue) / t_scrollable);
-                    CGFloat t_thumb_len = (CGFloat)(sb->thumbsize / t_range) * t_length;
-                    if (t_thumb_len < 8.0f) t_thumb_len = 8.0f;
                     t_thumb_x = t_norm * (t_length - t_thumb_len);
-                    t_thumb_w = t_thumb_len;
+                }
+                else
+                {
+                    t_thumb_x = 0;
                 }
             }
             
             // Check if mouse is in thumb area
             if (t_horizontal) {
-                if (mx >= drect.x + t_thumb_x && mx <= drect.x + t_thumb_x + t_thumb_w &&
+                if (mx >= drect.x + t_thumb_x && mx <= drect.x + t_thumb_x + t_thumb_len &&
                     my >= drect.y && my <= drect.y + t_thickness) {
                     return WTHEME_PART_THUMB;
                 }
-                // Check track
-                if (my >= drect.y && my <= drect.y + t_thickness) {
-                    if (mx < drect.x + t_thumb_x)
-                        return WTHEME_PART_TRACK_DEC;
-                    else if (mx > drect.x + t_thumb_x + t_thumb_w)
-                        return WTHEME_PART_TRACK_INC;
-                }
+                // Check track - for sliders, return thumb to enable dragging anywhere
+                return WTHEME_PART_THUMB;
             } else {
                 if (mx >= drect.x && mx <= drect.x + t_thickness &&
-                    my >= drect.y + t_thumb_x && my <= drect.y + t_thumb_x + t_thumb_w) {
+                    my >= drect.y + t_thumb_x && my <= drect.y + t_thumb_x + t_thumb_len) {
                     return WTHEME_PART_THUMB;
                 }
-                // Check track
-                if (mx >= drect.x && mx <= drect.x + t_thickness) {
-                    if (my < drect.y + t_thumb_x)
-                        return WTHEME_PART_TRACK_DEC;
-                    else if (my > drect.y + t_thumb_x + t_thumb_w)
-                        return WTHEME_PART_TRACK_INC;
-                }
+                // Check track - for sliders, return thumb to enable dragging anywhere
+                return WTHEME_PART_THUMB;
             }
-            return WTHEME_PART_THUMB;
         }
         
         // For other widgets, use default behavior
@@ -212,9 +228,15 @@ public:
 
     virtual void getwidgetrect(const MCWidgetInfo &winfo, Widget_Metric wmetric, const MCRectangle &srect, MCRectangle &drect) override
     {
-        // For scrollbars, compute the thumb rect
-        if ((winfo.type == WTHEME_TYPE_SCROLLBAR || winfo.type == WTHEME_TYPE_SMALLSCROLLBAR)
-            && wmetric == WTHEME_METRIC_PARTSIZE)
+        // For scrollbars and sliders, compute the thumb rect
+        bool t_is_scrollbar = (winfo.type == WTHEME_TYPE_SCROLLBAR || winfo.type == WTHEME_TYPE_SMALLSCROLLBAR);
+        bool t_is_slider = (winfo.type == WTHEME_TYPE_SLIDER ||
+                           winfo.type == WTHEME_TYPE_SLIDER_TRACK_HORIZONTAL ||
+                           winfo.type == WTHEME_TYPE_SLIDER_TRACK_VERTICAL ||
+                           winfo.type == WTHEME_TYPE_SLIDER_THUMB_HORIZONTAL ||
+                           winfo.type == WTHEME_TYPE_SLIDER_THUMB_VERTICAL);
+        
+        if ((t_is_scrollbar || t_is_slider) && wmetric == WTHEME_METRIC_PARTSIZE)
         {
             if (winfo.datatype == WTHEME_DATA_SCROLLBAR && winfo.data != nil)
             {
@@ -227,11 +249,32 @@ public:
                 
                 double t_range = sb->endvalue - sb->startvalue;
                 
-                if (t_range > 0.0 && sb->thumbsize < t_range)
+                if (t_range > 0.0)
                 {
-                    CGFloat t_norm = (CGFloat)((sb->thumbpos - sb->startvalue) / (t_range - sb->thumbsize));
-                    CGFloat t_thumb_len = (CGFloat)(sb->thumbsize / t_range) * t_length;
-                    if (t_thumb_len < 8.0f) t_thumb_len = 8.0f;
+                    // For sliders, use fixed thumb size; for scrollbars, use thumbsize from info
+                    CGFloat t_norm;
+                    CGFloat t_thumb_len;
+                    if (t_is_slider)
+                    {
+                        // Slider: position is fraction of total range, fixed thumb size
+                        t_norm = (CGFloat)((sb->thumbpos - sb->startvalue) / t_range);
+                        t_thumb_len = 28.0f; // Fixed slider thumb size
+                    }
+                    else
+                    {
+                        // Scrollbar: subtract thumb size from scrollable range
+                        if (sb->thumbsize < t_range)
+                        {
+                            t_norm = (CGFloat)((sb->thumbpos - sb->startvalue) / (t_range - sb->thumbsize));
+                            t_thumb_len = (CGFloat)(sb->thumbsize / t_range) * t_length;
+                            if (t_thumb_len < 8.0f) t_thumb_len = 8.0f;
+                        }
+                        else
+                        {
+                            t_norm = 0.0f;
+                            t_thumb_len = t_length;
+                        }
+                    }
                     
                     CGFloat t_thumb_x = t_norm * (t_length - t_thumb_len);
                     
@@ -316,6 +359,10 @@ Boolean MCNativeTheme::drawwidget(MCDC *dc, const MCWidgetInfo &winfo, const MCR
         case WTHEME_TYPE_SCROLLBAR:
         case WTHEME_TYPE_SMALLSCROLLBAR:
         case WTHEME_TYPE_SLIDER:
+        case WTHEME_TYPE_SLIDER_TRACK_HORIZONTAL:
+        case WTHEME_TYPE_SLIDER_TRACK_VERTICAL:
+        case WTHEME_TYPE_SLIDER_THUMB_HORIZONTAL:
+        case WTHEME_TYPE_SLIDER_THUMB_VERTICAL:
         {
             if (winfo.datatype == WTHEME_DATA_SCROLLBAR && winfo.data != nil)
             {
@@ -326,7 +373,13 @@ Boolean MCNativeTheme::drawwidget(MCDC *dc, const MCWidgetInfo &winfo, const MCR
                 t_info.scrollbar.thumbsize  = sb->thumbsize;
             }
             t_info.scrollbar.horizontal = (winfo.attributes & WTHEME_ATT_SBVERTICAL) == 0;
-            MCThemeDrawType dt = (winfo.type == WTHEME_TYPE_SLIDER)
+            
+            // Use slider draw type for slider widgets, scrollbar for scrollbar widgets
+            MCThemeDrawType dt = (winfo.type == WTHEME_TYPE_SLIDER ||
+                                 winfo.type == WTHEME_TYPE_SLIDER_TRACK_HORIZONTAL ||
+                                 winfo.type == WTHEME_TYPE_SLIDER_TRACK_VERTICAL ||
+                                 winfo.type == WTHEME_TYPE_SLIDER_THUMB_HORIZONTAL ||
+                                 winfo.type == WTHEME_TYPE_SLIDER_THUMB_VERTICAL)
                                  ? THEME_DRAW_TYPE_SLIDER
                                  : THEME_DRAW_TYPE_SCROLLBAR;
             dc->drawtheme(dt, &t_info);
@@ -682,16 +735,10 @@ bool MCThemeDraw(MCGContextRef p_context, MCThemeDrawType p_type, MCThemeDrawInf
             break;
         }
 
-        // ── Scrollbar / Slider ────────────────────────────────────────
-        // Uses NSScroller with the legacy (always-visible) style so that
-        // arrows and track are always drawn — regardless of the system's
-        // default overlay-scroller preference.
+        // ── Scrollbar ────────────────────────────────────────────────────────
         case THEME_DRAW_TYPE_SCROLLBAR:
-        case THEME_DRAW_TYPE_SLIDER:
         {
             double t_range = p_info->scrollbar.endvalue - p_info->scrollbar.startvalue;
-            // Normalised knob position within [0..1]: fraction of the way
-            // through the scrollable range at which the knob START sits.
             CGFloat t_pos = 0.0f, t_proportion = 1.0f;
             if (t_range > 0.0)
             {
@@ -700,7 +747,6 @@ bool MCThemeDraw(MCGContextRef p_context, MCThemeDrawType p_type, MCThemeDrawInf
                     t_pos = (CGFloat)((p_info->scrollbar.thumbpos - p_info->scrollbar.startvalue)
                                       / t_scrollable);
                 t_proportion = (CGFloat)(p_info->scrollbar.thumbsize / t_range);
-                // Clamp to valid range.
                 if (t_pos < 0.0f)        t_pos = 0.0f;
                 if (t_pos > 1.0f)        t_pos = 1.0f;
                 if (t_proportion < 0.0f) t_proportion = 0.0f;
@@ -714,8 +760,6 @@ bool MCThemeDraw(MCGContextRef p_context, MCThemeDrawType p_type, MCThemeDrawInf
             [t_scroller setEnabled:!t_disabled];
             [t_scroller setWantsLayer:NO];
 
-            // Add to the dummy view hierarchy so the scroller has a proper
-            // window environment (appearance, colorspace, scale factor).
             [t_view addSubview:t_scroller positioned:NSWindowBelow relativeTo:nil];
 
             [t_appearance performAsCurrentDrawingAppearance:^{
@@ -724,6 +768,103 @@ bool MCThemeDraw(MCGContextRef p_context, MCThemeDrawType p_type, MCThemeDrawInf
 
             [t_scroller removeFromSuperview];
             [t_scroller release];
+            break;
+        }
+
+        // ── Slider ────────────────────────────────────────────────────────
+        // Draw native macOS slider using NSSlider
+        case THEME_DRAW_TYPE_SLIDER:
+        {
+            double t_range = p_info->scrollbar.endvalue - p_info->scrollbar.startvalue;
+            CGFloat t_value = 0.0f;
+            if (t_range > 0.0)
+            {
+                t_value = (CGFloat)((p_info->scrollbar.thumbpos - p_info->scrollbar.startvalue) / t_range);
+                if (t_value < 0.0f) t_value = 0.0f;
+                if (t_value > 1.0f) t_value = 1.0f;
+            }
+
+            bool t_horizontal = ((p_info->attributes & WTHEME_ATT_SBVERTICAL) == 0);
+            
+            CGFloat t_track_thickness = 4.0f;
+            CGFloat t_thumb_radius = 7.0f;
+            
+            // Use NSBezierPath for proper dynamic accent color support
+            [t_appearance performAsCurrentDrawingAppearance:^{
+                NSColor *t_accent = [NSColor controlAccentColor];
+                NSColor *t_track_color = [NSColor colorWithCalibratedWhite:0.75 alpha:1.0];
+                NSColor *t_thumb_color = [NSColor whiteColor];
+                NSColor *t_thumb_border = [NSColor colorWithCalibratedWhite:0.5 alpha:1.0];
+                
+                if (t_horizontal)
+                {
+                    CGFloat t_track_y = t_frame.origin.y + (t_frame.size.height - t_track_thickness) / 2.0f;
+                    CGFloat t_track_x = t_frame.origin.x + t_thumb_radius;
+                    CGFloat t_track_w = t_frame.size.width - 2 * t_thumb_radius;
+                    
+                    // Draw track background
+                    NSRect t_track_rect = NSMakeRect(t_track_x, t_track_y, t_track_w, t_track_thickness);
+                    NSBezierPath *t_track_path = [NSBezierPath bezierPathWithRoundedRect:t_track_rect xRadius:2.0 yRadius:2.0];
+                    [t_track_color setFill];
+                    [t_track_path fill];
+                    
+                    // Draw filled portion (accent - dynamically changes with system appearance)
+                    CGFloat t_fill_w = t_track_w * t_value;
+                    if (t_fill_w > 0.0f)
+                    {
+                        NSRect t_fill_rect = NSMakeRect(t_track_x, t_track_y, t_fill_w, t_track_thickness);
+                        NSBezierPath *t_fill_path = [NSBezierPath bezierPathWithRoundedRect:t_fill_rect xRadius:2.0 yRadius:2.0];
+                        [t_accent setFill];
+                        [t_fill_path fill];
+                    }
+                    
+                    // Draw thumb
+                    CGFloat t_thumb_x = t_track_x + t_track_w * t_value;
+                    CGFloat t_thumb_y = t_frame.origin.y + t_frame.size.height / 2.0f;
+                    NSRect t_thumb_rect = NSMakeRect(t_thumb_x - t_thumb_radius, t_thumb_y - t_thumb_radius, 
+                                                     t_thumb_radius * 2, t_thumb_radius * 2);
+                    NSBezierPath *t_thumb_path = [NSBezierPath bezierPathWithOvalInRect:t_thumb_rect];
+                    [t_thumb_color setFill];
+                    [t_thumb_path fill];
+                    [t_thumb_border setStroke];
+                    t_thumb_path.lineWidth = 1.0;
+                    [t_thumb_path stroke];
+                }
+                else
+                {
+                    CGFloat t_track_x = t_frame.origin.x + (t_frame.size.width - t_track_thickness) / 2.0f;
+                    CGFloat t_track_y = t_frame.origin.y + t_thumb_radius;
+                    CGFloat t_track_h = t_frame.size.height - 2 * t_thumb_radius;
+                    
+                    // Draw track background
+                    NSRect t_track_rect = NSMakeRect(t_track_x, t_track_y, t_track_thickness, t_track_h);
+                    NSBezierPath *t_track_path = [NSBezierPath bezierPathWithRoundedRect:t_track_rect xRadius:2.0 yRadius:2.0];
+                    [t_track_color setFill];
+                    [t_track_path fill];
+                    
+                    // Draw filled portion (accent - dynamically changes with system appearance)
+                    CGFloat t_fill_h = t_track_h * t_value;
+                    if (t_fill_h > 0.0f)
+                    {
+                        NSRect t_fill_rect = NSMakeRect(t_track_x, t_track_y, t_track_thickness, t_fill_h);
+                        NSBezierPath *t_fill_path = [NSBezierPath bezierPathWithRoundedRect:t_fill_rect xRadius:2.0 yRadius:2.0];
+                        [t_accent setFill];
+                        [t_fill_path fill];
+                    }
+                    
+                    // Draw thumb
+                    CGFloat t_thumb_x = t_frame.origin.x + t_frame.size.width / 2.0f;
+                    CGFloat t_thumb_y = t_track_y + t_track_h * t_value;
+                    NSRect t_thumb_rect = NSMakeRect(t_thumb_x - t_thumb_radius, t_thumb_y - t_thumb_radius,
+                                                     t_thumb_radius * 2, t_thumb_radius * 2);
+                    NSBezierPath *t_thumb_path = [NSBezierPath bezierPathWithOvalInRect:t_thumb_rect];
+                    [t_thumb_color setFill];
+                    [t_thumb_path fill];
+                    [t_thumb_border setStroke];
+                    t_thumb_path.lineWidth = 1.0;
+                    [t_thumb_path stroke];
+                }
+            }];
             break;
         }
 
