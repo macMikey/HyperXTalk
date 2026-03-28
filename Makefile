@@ -286,6 +286,19 @@ package-mac:
 	@printf 'MySQL,dbmysql.bundle\nODBC,dbodbc.bundle\nPostgreSQL,dbpostgresql.bundle\nSQLite,dbsqlite.bundle\n' \
 	    > "$(RUNTIME_ARM64)/Externals/Database Drivers/Database Drivers.txt"
 	@# ----------------------------------------------------------------
+	@# Externals (Runtime standalone use) — mirror of Tools/Externals
+	@# ----------------------------------------------------------------
+	@for b in revbrowser revxml revspeech revzip revdb; do \
+	  [ -d "$(TOOLS_DIR)/Externals/$$b.bundle" ] && \
+	    cp -R "$(TOOLS_DIR)/Externals/$$b.bundle" \
+	      "$(RUNTIME_ARM64)/Externals/" || true; \
+	done
+	@for b in dbmysql dbodbc dbpostgresql dbsqlite; do \
+	  [ -d "$(TOOLS_DIR)/Externals/Database Drivers/$$b.bundle" ] && \
+	    cp -R "$(TOOLS_DIR)/Externals/Database Drivers/$$b.bundle" \
+	      "$(RUNTIME_ARM64)/Externals/Database Drivers/" || true; \
+	done
+	@# ----------------------------------------------------------------
 	@# Runtime: arm64 standalone engine + support libraries
 	@# ----------------------------------------------------------------
 	@# Remove existing Standalone.app first so cp -R replaces it rather
@@ -471,6 +484,19 @@ package-mac-bin:
 	    >> "$(MACBIN_RT_ARM64)/Externals/Externals.txt"
 	@printf 'MySQL,dbmysql.bundle\nODBC,dbodbc.bundle\nPostgreSQL,dbpostgresql.bundle\nSQLite,dbsqlite.bundle\n' \
 	    > "$(MACBIN_RT_ARM64)/Externals/Database Drivers/Database Drivers.txt"
+	@# ----------------------------------------------------------------
+	@# Externals (Runtime standalone use) — mirror of Tools/Externals
+	@# ----------------------------------------------------------------
+	@for b in revbrowser revxml revspeech revzip revdb; do \
+	  [ -d "$(MACBIN_TOOLS)/Externals/$$b.bundle" ] && \
+	    cp -R "$(MACBIN_TOOLS)/Externals/$$b.bundle" \
+	      "$(MACBIN_RT_ARM64)/Externals/" || true; \
+	done
+	@for b in dbmysql dbodbc dbpostgresql dbsqlite; do \
+	  [ -d "$(MACBIN_TOOLS)/Externals/Database Drivers/$$b.bundle" ] && \
+	    cp -R "$(MACBIN_TOOLS)/Externals/Database Drivers/$$b.bundle" \
+	      "$(MACBIN_RT_ARM64)/Externals/Database Drivers/" || true; \
+	done
 	@# ----------------------------------------------------------------
 	@# Runtime: arm64 standalone engine + support libraries
 	@# ----------------------------------------------------------------
