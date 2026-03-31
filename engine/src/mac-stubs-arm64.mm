@@ -1384,18 +1384,35 @@ bool MCThemeDraw(MCGContextRef p_context, MCThemeDrawType p_type, MCThemeDrawInf
         }
 
         // ── Text-field / combo / listbox frame ────────────────────────
-        // Draw white background with 2px gray border and 4px focus ring when focused.
+        // Draw background with 2px gray border. Background adapts to light/dark mode.
         case THEME_DRAW_TYPE_FRAME:
         {
-            // Draw white background for text field areas (no inset)
-            [[NSColor whiteColor] setFill];
-            NSRectFill(t_frame);
-            
-            // 2px gray border (on the frame itself, no inset)
-            [[NSColor colorWithCalibratedWhite:0.7 alpha:1.0] setStroke];
-            NSBezierPath *t_border = [NSBezierPath bezierPathWithRoundedRect:t_frame xRadius:3.0 yRadius:3.0];
-            [t_border setLineWidth:2.0];
-            [t_border stroke];
+            [t_appearance performAsCurrentDrawingAppearance:^{
+                // Determine if we're in dark mode
+                NSAppearanceName t_best =
+                    [[NSApp effectiveAppearance]
+                        bestMatchFromAppearancesWithNames:
+                            @[NSAppearanceNameAqua, NSAppearanceNameDarkAqua]];
+                bool t_is_dark = [t_best isEqualToString:NSAppearanceNameDarkAqua];
+                
+                // Background: white in light mode, dark gray in dark mode
+                if (t_is_dark) {
+                    [[NSColor colorWithCalibratedWhite:0.15 alpha:1.0] setFill];
+                } else {
+                    [[NSColor whiteColor] setFill];
+                }
+                NSRectFill(t_frame);
+                
+                // Border: gray that adapts slightly
+                if (t_is_dark) {
+                    [[NSColor colorWithCalibratedWhite:0.35 alpha:1.0] setStroke];
+                } else {
+                    [[NSColor colorWithCalibratedWhite:0.7 alpha:1.0] setStroke];
+                }
+                NSBezierPath *t_border = [NSBezierPath bezierPathWithRoundedRect:t_frame xRadius:3.0 yRadius:3.0];
+                [t_border setLineWidth:2.0];
+                [t_border stroke];
+            }];
             break;
         }
 
