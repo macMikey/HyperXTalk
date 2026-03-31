@@ -45,6 +45,12 @@
 #include "desktop-dc.h"
 #include "param.h"
 
+#if defined(_MACOSX) && (defined(__arm64__) || defined(__aarch64__))
+// Weak fallbacks — overridden by the real implementations in mac-stubs-arm64.mm.
+extern "C" __attribute__((weak)) bool MCplatformIsDarkMode(void) { return false; }
+extern "C" __attribute__((weak)) void MCplatformGetWindowBackgroundColor(char *, size_t) {}
+#endif
+
 ////////////////////////////////////////////////////////////////////////////////
 
 #if defined(FEATURE_PLATFORM_APPLICATION)
@@ -174,8 +180,25 @@ void MCPlatformHandleSystemAppearanceChanged(void)
 {
 	if (MCscreen == nil)
 		return;
-	
+
+#if defined(_MACOSX) && (defined(__arm64__) || defined(__aarch64__))
+    // Pass the appearance name ("dark"/"light") as p1 and the resolved
+    // windowBackgroundColor as a hex string ("#rrggbb") as p2, e.g.:
+    //   on systemAppearanceChanged pMode, pWindowColor
+    //     set the backgroundColor of this stack to pWindowColor
+    //   end systemAppearanceChanged
+    char t_color_buf[8];
+    MCplatformGetWindowBackgroundColor(t_color_buf, sizeof(t_color_buf));
+    MCStringRef t_color_str;
+    /* UNCHECKED */ MCStringCreateWithCString(t_color_buf, t_color_str);
+    MCscreen -> delaymessage(MCdefaultstackptr -> getcurcard(),
+                             MCM_system_appearance_changed,
+                             MCplatformIsDarkMode() ? MCSTR("dark") : MCSTR("light"),
+                             t_color_str);
+    MCValueRelease(t_color_str);
+#else
 	MCscreen -> delaymessage(MCdefaultstackptr -> getcurcard(), MCM_system_appearance_changed);
+#endif
 }
 
 ////////////////////////////////////////////////////////////////////////////////
