@@ -316,7 +316,10 @@ template<typename Type> INLINE Type fastmax(Type a, Type b)
 	return a < b ? b : a;
 }
 
-template<BitwiseOperation x_combiner, bool x_dst_alpha, bool x_src_alpha> INLINE uint32_t bitwise_combiner(uint32_t dst, uint32_t src)
+// Nasty shim to work around a Visual Studio and clang 21 compiler bug (it doesn't 
+// handle templates whose parameters are overloaded on enums properly)
+// Instead of using enum template parameters, we use a switch-based implementation
+template<int x_combiner, bool x_dst_alpha, bool x_src_alpha> INLINE uint32_t pixel_combine(uint32_t dst, uint32_t src)
 {
 	uint8_t sa, da;
 	uint32_t r, s, d;
@@ -349,68 +352,62 @@ template<BitwiseOperation x_combiner, bool x_dst_alpha, bool x_src_alpha> INLINE
 
 	switch(x_combiner)
 	{
-	case OPERATION_CLEAR:
+	case 0: // OPERATION_CLEAR
 		r = 0x00000000;
 	break;
-	case OPERATION_AND:
+	case 1: // OPERATION_AND
 		r = s & d;
 	break;
-	case OPERATION_AND_REVERSE:
+	case 2: // OPERATION_AND_REVERSE
 		r = (s & ~d) & 0xffffff;
 	break;
-	case OPERATION_COPY:
+	case 3: // OPERATION_COPY
 		r = s;
 	break;
-	case OPERATION_AND_INVERTED:
+	case 4: // OPERATION_AND_INVERTED
 		r = (~s & d) & 0xffffff;
 	break;
-	case OPERATION_NOOP:
+	case 5: // OPERATION_NOOP
 		r = d;
 	break;
-	case OPERATION_XOR:
+	case 6: // OPERATION_XOR
 		r = s ^ d;
 	break;
-	case OPERATION_OR:
+	case 7: // OPERATION_OR
 		r = s | d;
 	break;
-	case OPERATION_NOR:
+	case 8: // OPERATION_NOR
 		r = (~(s | d)) & 0xffffff;
 	break;
-	case OPERATION_EQUIV:
+	case 9: // OPERATION_EQUIV
 		r = (~s ^ d) & 0xffffff;
 	break;
-	case OPERATION_INVERT:
+	case 10: // OPERATION_INVERT
 		r = ~d & 0xffffff;
 	break;
-	case OPERATION_OR_REVERSE:
+	case 11: // OPERATION_OR_REVERSE
 		r = (s | ~d) & 0xffffff;
 	break;
-	case OPERATION_COPY_INVERTED:
+	case 12: // OPERATION_COPY_INVERTED
 		r = (~s) & 0xffffff;
 	break;
-	case OPERATION_OR_INVERTED:
+	case 13: // OPERATION_OR_INVERTED
 		r = (~s | d) & 0xffffff;
 	break;
-	case OPERATION_NAND:
+	case 14: // OPERATION_NAND
 		r = (~(s & d)) & 0xffffff;
 	break;
-	case OPERATION_SET:
+	case 15: // OPERATION_SET
 		r = 0x00ffffff;
 	break;
-    default:
-        MCUnreachableReturn(0);
+	default:
+		return dst;
 	}
 
-	if (x_src_alpha && x_dst_alpha)
-	{
-		uint8_t ra;
-		ra = downscale(sa * da);
-		r = packed_bilinear_bounded(src, 255 - da, dst, 255 - sa) + packed_scale_bounded(r | 0xff000000, ra);
-	}
-	else if (!x_src_alpha && x_dst_alpha)
-		r = packed_bilinear_bounded(src, 255 - da, r | 0xff000000, da);
-	else if (!x_dst_alpha && x_src_alpha)
-		r = packed_bilinear_bounded(dst, 255 - sa, r | 0xff000000, sa);
+	if (x_dst_alpha)
+		r |= packed_alpha(dst);
+	else
+		r |= 0xff000000;
 
 	return r;
 }
@@ -905,23 +902,39 @@ template<AdvancedImagingOperation x_combiner, bool x_dst_alpha, bool x_src_alpha
 // Nasty shim to work around a Visual Studio compiler bug (it doesn't handle
 // templates whose parameters are overloaded on enums properly so it always
 // tries to use the AdvancedImagingOperation form of the template)
-template<int x_combiner, bool x_dst_alpha, bool x_src_alpha> INLINE uint32_t pixel_combine(uint32_t dst, uint32_t src)
+//
+// Nasty shim to work around a Visual Studio compiler bug (it doesn't handle
+// templates whose parameters are overloaded on enums properly so it always
+// tries to use the AdvancedImagingOperation form of the template)
+//
+/*template <BitwiseOperation x_combiner, bool x_dst_alpha, bool x_src_alpha>
+void surface_combine(void *p_dst, int32_t p_dst_stride, const void *p_src, uint32_t p_src_stride, uint32_t p_width, uint32_t p_height, uint8_t p_opacity)
 {
-    // These should get collapsed at compile-time so no need to worry about a
-    // performance hit (assuming the compiler is half-way sensible...)
-    if (x_combiner <= LAST_BITWISE_OPERATION)
-        return bitwise_combiner<BitwiseOperation(x_combiner), x_dst_alpha, x_src_alpha>(dst, src);
-    else if (x_combiner <= LAST_ARITHMETIC_OPERATION)
-        return arithmetic_combiner<ArithmeticOperation(x_combiner), x_dst_alpha, x_src_alpha>(dst, src);
-    else if (x_combiner <= LAST_BASIC_IMAGING_OPERATION)
-        return basic_imaging_combiner<BasicImagingOperation(x_combiner), x_dst_alpha, x_src_alpha>(dst, src);
-    else if (x_combiner <= LAST_ADVANCED_IMAGING_OPERATION)
-        return advanced_imaging_combiner<AdvancedImagingOperation(x_combiner), x_dst_alpha, x_src_alpha>(dst, src);
-    else
-        MCUnreachable();
+	return surface_combine<BitwiseOperation, x_combiner, x_dst_alpha, x_src_alpha>(p_dst, p_dst_stride, p_src, p_src_stride, p_width, p_height, p_opacity);
 }
 
-template<class T, T x_combiner, bool x_dst_alpha, bool x_src_alpha>
+template <ArithmeticOperation x_combiner, bool x_dst_alpha, bool x_src_alpha>
+void surface_combine(void *p_dst, int32_t p_dst_stride, const void *p_src, uint32_t p_src_stride, uint32_t p_width, uint32_t p_height, uint8_t p_opacity)
+{
+	return surface_combine<ArithmeticOperation, x_combiner, x_dst_alpha, x_src_alpha>(p_dst, p_dst_stride, p_src, p_src_stride, p_width, p_height, p_opacity);
+}
+
+template <BasicImagingOperation x_combiner, bool x_dst_alpha, bool x_src_alpha>
+void surface_combine(void *p_dst, int32_t p_dst_stride, const void *p_src, uint32_t p_src_stride, uint32_t p_width, uint32_t p_height, uint8_t p_opacity)
+{
+	return surface_combine<BasicImagingOperation, x_combiner, x_dst_alpha, x_src_alpha>(p_dst, p_dst_stride, p_src, p_src_stride, p_width, p_height, p_opacity);
+}
+
+template <AdvancedImagingOperation x_combiner, bool x_dst_alpha, bool x_src_alpha>
+void surface_combine(void *p_dst, int32_t p_dst_stride, const void *p_src, uint32_t p_src_stride, uint32_t p_width, uint32_t p_height, uint8_t p_opacity)
+{
+	return surface_combine<AdvancedImagingOperation, x_combiner, x_dst_alpha, x_src_alpha>(p_dst, p_dst_stride, p_src, p_src_stride, p_width, p_height, p_opacity);
+}*/
+
+// Nasty shim to work around a Visual Studio and clang 21 compiler bug (it doesn't 
+// handle templates whose parameters are overloaded on enums properly so it always 
+// tries to use the AdvancedImagingOperation form of the template)
+template<int x_combiner, bool x_dst_alpha, bool x_src_alpha>
 INLINE void surface_combine(void *p_dst, int32_t p_dst_stride, const void *p_src, uint32_t p_src_stride, uint32_t p_width, uint32_t p_height, uint8_t p_opacity)
 {
 	if (p_opacity == 0)
@@ -956,53 +969,6 @@ INLINE void surface_combine(void *p_dst, int32_t p_dst_stride, const void *p_src
 			*t_dst_ptr++ = t_pixel;
 		}
 	}
-}
-
-// These are commented out until a particular bug in Visual Studio (described
-// below) is fixed.
-//
-/*template <BitwiseOperation x_combiner, bool x_dst_alpha, bool x_src_alpha>
-void surface_combine(void *p_dst, int32_t p_dst_stride, const void *p_src, uint32_t p_src_stride, uint32_t p_width, uint32_t p_height, uint8_t p_opacity)
-{
-	return surface_combine<BitwiseOperation, x_combiner, x_dst_alpha, x_src_alpha>(p_dst, p_dst_stride, p_src, p_src_stride, p_width, p_height, p_opacity);
-}
-
-template <ArithmeticOperation x_combiner, bool x_dst_alpha, bool x_src_alpha>
-void surface_combine(void *p_dst, int32_t p_dst_stride, const void *p_src, uint32_t p_src_stride, uint32_t p_width, uint32_t p_height, uint8_t p_opacity)
-{
-	return surface_combine<ArithmeticOperation, x_combiner, x_dst_alpha, x_src_alpha>(p_dst, p_dst_stride, p_src, p_src_stride, p_width, p_height, p_opacity);
-}
-
-template <BasicImagingOperation x_combiner, bool x_dst_alpha, bool x_src_alpha>
-void surface_combine(void *p_dst, int32_t p_dst_stride, const void *p_src, uint32_t p_src_stride, uint32_t p_width, uint32_t p_height, uint8_t p_opacity)
-{
-	return surface_combine<BasicImagingOperation, x_combiner, x_dst_alpha, x_src_alpha>(p_dst, p_dst_stride, p_src, p_src_stride, p_width, p_height, p_opacity);
-}
-
-template <AdvancedImagingOperation x_combiner, bool x_dst_alpha, bool x_src_alpha>
-void surface_combine(void *p_dst, int32_t p_dst_stride, const void *p_src, uint32_t p_src_stride, uint32_t p_width, uint32_t p_height, uint8_t p_opacity)
-{
-	return surface_combine<AdvancedImagingOperation, x_combiner, x_dst_alpha, x_src_alpha>(p_dst, p_dst_stride, p_src, p_src_stride, p_width, p_height, p_opacity);
-}*/
-
-// Nasty shim to work around a Visual Studio compiler bug (it doesn't handle
-// templates whose parameters are overloaded on enums properly so it always
-// tries to use the AdvancedImagingOperation form of the template)
-template<int x_combiner, bool x_dst_alpha, bool x_src_alpha>
-INLINE void surface_combine(void *p_dst, int32_t p_dst_stride, const void *p_src, uint32_t p_src_stride, uint32_t p_width, uint32_t p_height, uint8_t p_opacity)
-{
-    // These should get collapsed at compile-time so no need to worry about a
-    // performance hit (assuming the compiler is half-way sensible...)
-    if (x_combiner <= LAST_BITWISE_OPERATION)
-        return surface_combine<BitwiseOperation, BitwiseOperation(x_combiner), x_dst_alpha, x_src_alpha>(p_dst, p_dst_stride, p_src, p_src_stride, p_width, p_height, p_opacity);
-    else if (x_combiner <= LAST_ARITHMETIC_OPERATION)
-        return surface_combine<ArithmeticOperation, ArithmeticOperation(x_combiner), x_dst_alpha, x_src_alpha>(p_dst, p_dst_stride, p_src, p_src_stride, p_width, p_height, p_opacity);
-    else if (x_combiner <= LAST_BASIC_IMAGING_OPERATION)
-        return surface_combine<BasicImagingOperation, BasicImagingOperation(x_combiner), x_dst_alpha, x_src_alpha>(p_dst, p_dst_stride, p_src, p_src_stride, p_width, p_height, p_opacity);
-    else if (x_combiner <= LAST_ADVANCED_IMAGING_OPERATION)
-        return surface_combine<AdvancedImagingOperation, AdvancedImagingOperation(x_combiner), x_dst_alpha, x_src_alpha>(p_dst, p_dst_stride, p_src, p_src_stride, p_width, p_height, p_opacity);
-    else
-        MCUnreachable();
 }
 
 // MW-2009-02-09: This is the most important combiner so we optimize it.

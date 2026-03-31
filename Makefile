@@ -370,6 +370,11 @@ package-mac:
 	@[ -f "ide/Open Source Licenses.txt" ] && \
 	    cp "ide/Open Source Licenses.txt" "$(SUPPORT_DIR)/" || true
 	@# ----------------------------------------------------------------
+	@# Documentation: Dictionary and help files
+	@# ----------------------------------------------------------------
+	@[ -d "ide/Documentation" ] && \
+	    cp -R "ide/Documentation" "$(TOOLS_DIR)/Documentation" || true
+	@# ----------------------------------------------------------------
 	@# Strip extended attributes (resource forks, Finder info, etc.)
 	@# xattr -cr must run before codesign or signing will be rejected.
 	@# ----------------------------------------------------------------
@@ -568,6 +573,11 @@ package-mac-bin:
 	    cp "ide/about.txt" "$(MACBIN_SUPPORT)/" || true
 	@[ -f "ide/Open Source Licenses.txt" ] && \
 	    cp "ide/Open Source Licenses.txt" "$(MACBIN_SUPPORT)/" || true
+	@# ----------------------------------------------------------------
+	@# Documentation: Dictionary and help files
+	@# ----------------------------------------------------------------
+	@[ -d "ide/Documentation" ] && \
+	    cp -R "ide/Documentation" "$(MACBIN_TOOLS)/Documentation" || true
 	@# ----------------------------------------------------------------
 	@# Strip extended attributes (resource forks, Finder info, etc.)
 	@# xattr -cr must run before codesign or signing will be rejected.

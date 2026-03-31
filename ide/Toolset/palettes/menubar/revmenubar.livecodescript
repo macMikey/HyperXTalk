@@ -3130,12 +3130,11 @@ on revMenubarHelpMenuPick pWhich
 end revMenubarHelpMenuPick
 
 // HXT
-on systemAppearanceChanged
-   if the systemAppearance is "dark" then
-      set the backColor of me to "black"
+on systemAppearanceChanged pMode, pWindowColor
+   set the backgroundColor of this stack to pWindowColor
+   if pMode is "dark" then
       set the foreColor of me to "white"
    else
-      set the backColor of me to "white"
       set the foreColor of me to "black"
    end if
 end systemAppearanceChanged
