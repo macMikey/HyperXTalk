@@ -15,7 +15,6 @@ on startup
    revInternal__Log "Enter", "Startup"
    
    try
-//      revInternal__SetupLicense
       revInternal__SetupPaths
       revInternal__SetupFolders
       revInternal__SetupStackFiles
@@ -207,13 +206,13 @@ on revInternal__openStack
       end if
       
       if tSuccess then
-         hxtInternal__setSplashStatus "Cleaning Cache"
+         hxtInternal__setSplashStatus "Cleaning Cache..."
          revInternal__CleanDocsCache
          put the result into tSuccess
       end if
       
       if tSuccess and not revEnvironmentIsInstalled() then
-         hxtInternal__setSplashStatus "Building Dictionary"
+         hxtInternal__setSplashStatus "Building Dictionary..."
          revInternal__BuildDictionary
          put the result into tSuccess
       end if
@@ -251,17 +250,18 @@ on revInternal__openStack
 end revInternal__openStack
 
 on hxtInternal__setSplashStatus pMessage
-	revInternal__Log "Message", pMessage
+   revInternal__Log "Message", pMessage
    set the statusMessage of stack "revSplash" to pMessage
 end hxtInternal__setSplashStatus
 
-
+/* HyperXTalk
 local sLicensePlatform
 local sLicenseClass
 local sLicenseVersion
 local sLicenseName
 local sLicenseOrganization
 local sLicenseMultiplicity
+*/
 
 -- This is the path to the folder containing the IDE's folders
 local sToolsPath
@@ -298,7 +298,7 @@ constant kProductName = "HyperXTalk"
 -- Internal Setup Functions
 --
 
-
+/* HyperXTalk
 private command revInternal__SetupLicense 
    revInternal__Log "Enter", "License Setup"
    
@@ -317,6 +317,7 @@ private command revInternal__SetupLicense
    
    revInternal__Log "Leave", "License Setup"
 end revInternal__SetupLicense
+*/
 
 
 private command revInternal__SetupPaths
@@ -334,8 +335,9 @@ private command revInternal__SetupPaths
    set the itemDelimiter to ":"
    put item 2 to -1 of the address into tEnginePath
    set the itemDelimiter to "/"
-   switch revEnvironmentPlatform()
+   switch the platform
       case "Linux"
+         /* HyperXTalk
          local tOldFolder
          put the folder into tOldFolder
          set the folder to "~"
@@ -346,6 +348,9 @@ private command revInternal__SetupPaths
          if there is no folder sOldPreferencesPath then
             put the folder & slash & ".hyperxtalk/hyperxtalk/media/preferences" into sOldPreferencesPath
          end if
+         */
+         local tOldFolder
+         put the folder into tOldFolder
          put the folder & slash & ".hyperxtalk/preferences" into sPreferencesPath
          put the folder & slash & ".hyperxtalk/cache" into sCachePath
          put the folder & slash & ".hyperxtalk/crashlogs" into sCrashLogPath
@@ -355,8 +360,9 @@ private command revInternal__SetupPaths
          -- MW-2013-06-13: Adjust the engine path for Linux
          put item 1 to -2 of tEnginePath into tEnginePath
          break
-      case "MacOS X"
-
+      case "MacOS"
+         
+         /* HyperXTalk
          put specialFolderPath("Preferences") & "/Runtime Revolution/Revolution Enterprise" into sOldPreferencesPath
          if there is no folder sOldPreferencesPath then
             put specialFolderPath("Preferences") & "/Runtime Revolution/Revolution Studio" into sOldPreferencesPath
@@ -364,7 +370,8 @@ private command revInternal__SetupPaths
          if there is no folder sOldPreferencesPath then
             put specialFolderPath("Preferences") & "/Runtime Revolution/Revolution Media" into sOldPreferencesPath
          end if
-
+         */
+         
          put specialFolderPath("Preferences") & "/HyperXTalk" into sPreferencesPath
          put specialFolderPath("cusr") & "/Library/Application Support/HyperXTalk/Cache" into sCachePath
          put specialFolderPath("cusr") & "/Library/Application Support/HyperXTalk/Crash Logs" into sCrashLogPath
@@ -374,7 +381,7 @@ private command revInternal__SetupPaths
          put item 1 to -5 of tEnginePath into tEnginePath
          break
       case "Windows"
-
+         /* HyperXTalk
          -- We put prefereces into the 'Roaming' AppData folder.
          put specialFolderPath(0x001a) & "/Runtime Revolution/Revolution Enterprise/Preferences" into sOldPreferencesPath
          if there is no folder sOldPreferencesPath then
@@ -383,7 +390,8 @@ private command revInternal__SetupPaths
          if there is no folder sOldPreferencesPath then
             put specialFolderPath(0x001a) & "/Runtime Revolution/Revolution Media/Preferences" into sOldPreferencesPath
          end if
-
+         */
+         
          put specialFolderPath(0x001a) & "/HyperXTalk/Preferences" into sPreferencesPath
          -- We put everything else in the 'Local' AppData folder.
          put specialFolderPath(0x001c) & "/HyperXTalk/Cache" into sCachePath
@@ -395,14 +403,18 @@ private command revInternal__SetupPaths
          break
    end switch
    
+   /* HyperXTalk
    # The docs cache is per-version and edition
    local tEdition
    put tolower(sLicenseClass) into tEdition
+   */
    
    local tVersion
    put the version into tVersion
    put replaceText(tVersion, "[-,\.]", "_") into tVersion
-   put slash & tVersion & "_" & tEdition after sUserDocsPath
+   --   put slash & tVersion & "_" & tEdition after sUserDocsPath
+   put slash & tVersion & "_" & "" after sUserDocsPath
+   --   put slash & tVersion after sUserDocsPath
    
    -- MW-2013-06-13: [[ CloneAndRun ]] Set up the binaries path.
    local tRepositoryPath
@@ -421,7 +433,7 @@ private command revInternal__SetupPaths
    end if
    
    revInternal__Log "Message", "Tools Path = " & sToolsPath
-   revInternal__Log "Message", "Old Preferences Path = " & sOldPreferencesPath
+   // HyperXTalk revInternal__Log "Message", "Old Preferences Path = " & sOldPreferencesPath
    revInternal__Log "Message", "Preferences Path = " & sPreferencesPath
    revInternal__Log "Message", "Cache Path = " & sCachePath
    revInternal__Log "Message", "Crash Log Path = " & sCrashLogPath
@@ -440,7 +452,7 @@ command revInternal__SetupCustomizationPath
   if tUserCustomizationPath is not empty then
     put tUserCustomizationPath into sCustomizationPath
   else
-    switch revEnvironmentPlatform()
+    switch the platform
     case "Linux"
       local tOldFolder
       put the folder into tOldFolder
@@ -448,10 +460,10 @@ command revInternal__SetupCustomizationPath
       put the folder & slash & "hyperxtalk_customization" into sCustomizationPath
       set the folder to tOldFolder
       break
-    case "Windows"
+    case "Win32"
       put specialFolderPath(0x0005) & "/HyperXTalk" into sCustomizationPath
       break
-    case "MacOS X"
+    case "MacOS"
       put specialFolderPath("docs") & "/HyperXTalk" into sCustomizationPath
       break
     end switch
@@ -1045,14 +1057,14 @@ command revInternal__Log pType, pMessage
    if pType is "Start" then
       local tLogPath
       put 0 into sLogIndent
-      switch revEnvironmentPlatform()
+      switch the platform
          case "Linux"
             put "~/.runrev/logs/" & toLower(kProductName) & "_tools_log.txt" into tLogPath
             break
-         case "MacOS X"
+         case "MacOS"
             put specialFolderPath("cusr") & "/Library/Logs/RunRev/" & kProductName & "ToolsLog.txt"  into tLogPath
             break
-         case "Windows"
+         case "Win32"
             -- Make sure we put logs in the 'Local' AppData section.
             put specialFolderPath(0x001c) & "/RunRev/Logs/" & kProductName & "ToolsLog.txt" into tLogPath
             break
@@ -1102,27 +1114,29 @@ command revInternal__InitialiseSystem
    if it is empty then
       get "Small"
    end if
+   /* HyperXTalk
    if sLicensePlatform is "Windows" and it is not "None" then
       local tCrashSettings, tVersion
       put the version into tVersion
       replace "." with "_" in tVersion
       replace "-" with "_" in tVersion
-      
+      */
+      local tCrashSettings
       put it is "Medium" into tCrashSettings["verbose"]
       
       convert the seconds to dateItems
       put format("%s/%s-%s-%04d_%02d_%02d-%02d_%02d_%02d.dmp", \
-             sCrashLogPath, kProductName, tVersion, item 1 of it, item 2 of it, item 3 of it, \
-             item 4 of it, item 5 of it, item 6 of it) into tCrashSettings["filename"]
+            sCrashLogPath, kProductName, "", item 1 of it, item 2 of it, item 3 of it, \
+            item 4 of it, item 5 of it, item 6 of it) into tCrashSettings["filename"]
       
       revInternal__Log "Message", "Configuring crash log output to" && tCrashSettings["filename"]
       do "set the revCrashReportSettings to tCrashSettings"
-   end if
-
-   revInternal__Log "Leave", "System Initialisation"
-   
-   return tSuccess
-end revInternal__InitialiseSystem
+      // HyperXTalk end if
+      
+      revInternal__Log "Leave", "System Initialisation"
+      
+      return tSuccess
+   end revInternal__InitialiseSystem
 
 command revInternal__InitialiseGlobals
    revInternal__Log "Enter", "Globals Initialisation"
@@ -1179,7 +1193,7 @@ command revInternal__InitialiseLibraries
    put return & "revIDELibrary" after tLoadList
    put return & "revidemessagehandlerlibrary" after tLoadList
    put return & "revBackScriptLibrary" after tLoadList 
-   put return & "revDeployLibrary" after tLoadList
+   // HXT put return & "revDeployLibrary" after tLoadList
    put return & "revDebuggerLibrary" after tLoadList 
    put return & "revLibUrl" after tLoadList 
    put return & "revPrintLibrary" after tLoadList 
@@ -1188,7 +1202,7 @@ command revInternal__InitialiseLibraries
    put return & "revXMLRPCLibrary" after tLoadList 
    put return & "revProfilesLibrary" after tLoadList 
    put return & "revTableLibrary" after tLoadList 
-   put return & "revhtml5urllibrary" after tLoadList
+   // HXT put return & "revhtml5urllibrary" after tLoadList
 
 
    if revEnvironmentEditionProperty("autocomplete_pro") then
@@ -1203,10 +1217,12 @@ command revInternal__InitialiseLibraries
    local tBackList
    put "revidedeveloperextensionlibrary" into tBackList
    put return & "revsaveasstandalone" after tBackList
+   /* HXT
    put return & "revsaveasiosstandalone" after tBackList
    put return & "revsaveasandroidstandalone" after tBackList
    put return & "revsaveasemscriptenstandalone" after tBackList
-       put return & "revOnlineLibrary" after tBackList
+   put return & "revOnlineLibrary" after tBackList
+   */
    put return & "revCore" after tBackList
    
    # AL-2015-09-02: [[ Bug 15841 ]] Temporarily add project browser library to prevent preference errors
@@ -1273,14 +1289,14 @@ private command revInternal__SetupExternals
    revInternal__Log "Enter", "Externals Setup"
    
    local tExtension
-   switch revEnvironmentPlatform()
+   switch the platform
       case "Linux"
          put "so" into tExtension
          break
-      case "MacOS X"
+      case "MacOS"
          put "bundle" into tExtension
          break
-      case "Windows"
+      case "Win32"
          put "dll" into tExtension
          break
    end switch
@@ -1375,17 +1391,18 @@ command revInternal__InitialiseDefaults
       
    set the _ideoverride of stack "home" to true
 
-   switch sLicensePlatform
-      case "MacOS X"
+   switch the platform
+      case "MacOS"
          set the stackFileType to "RevoRSTK"
          set the hidePalettes to true
          set the dontUseNS to false
          set the itemdelimiter to "."
          revInternal__Log "message", "Trying to set the default text of stack home"
 
+         delete stack "revCursors"  // HyperXTalk
          hide stack "revMacCursors"    
          break
-      case "Windows"
+      case "Win32"
          set the hidePalettes to false
          hide stack "revCursors"
          break
@@ -1703,12 +1720,17 @@ command revInternal__InitialiseFinalSteps
    close stack "home"
    
    revInternal__Log "Message", "Resetting Cursors"
+   if the platform is "MacOS" then
+      if there is a stack "revCursors" then delete stack "revCursors"
+   end if
    reset cursors
    
+   /* HXT
    if the cStartupRevOnline of stack "revPreferences" then
       revInternal__Log "Message", "Launching revOnline"
       send "revGoOnline" to stack "revOnline"
    end if
+   */
    
    revInternal__Log "Message", "Initialising revFrontScript"
    
@@ -1728,15 +1750,15 @@ command revInternal__CleanDocsCache
    revInternal__Log "Enter", "Cleaning Docs Cache"
    # Clean up old non-versioned docs
    local tOldDocsFolder
-   switch revEnvironmentPlatform()
+   switch the platform
       case "Linux"
-         put "~/.runrev/docs" into tOldDocsFolder
+         put "~/.hyperxtalk/docs" into tOldDocsFolder
          break
-      case "MacOS X"
-         put specialFolderPath("cusr") & "/Library/Application Support/RunRev/Docs" into tOldDocsFolder
+      case "MacOS"
+         put specialFolderPath("cusr") & "/Library/Application Support/HyperXTalk/Docs" into tOldDocsFolder
          break
-      case "Windows"
-         put specialFolderPath(0x001c) & "/RunRev/Docs" into tOldDocsFolder
+      case "Win32"
+         put specialFolderPath(0x001c) & "/HyperXTalk/Docs" into tOldDocsFolder
          break
    end switch
    if there is a folder tOldDocsFolder then
@@ -2135,7 +2157,7 @@ function revEnvironmentUserCachePath
 end revEnvironmentUserCachePath
 
 function revEnvironmentUserDocsPath
-  return sUserDocsPath
+   return sUserDocsPath
 end revEnvironmentUserDocsPath
 
 function revEnvironmentIsUpdateable
@@ -2301,7 +2323,9 @@ end revEnvironmentGuessRepositoryPath
 -- Global Environment Functions - General Support
 --
 
+/*
 function revEnvironmentPlatform
+   put the executionContexts
    local tPlatform
    
    switch the platform
@@ -2321,3 +2345,4 @@ function revEnvironmentPlatform
    
    return tPlatform
 end revEnvironmentPlatform
+*/

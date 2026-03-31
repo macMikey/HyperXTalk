@@ -29,6 +29,19 @@
 #include "hc.h"
 #include "exec.h"
 
+// ── Dark-mode helper (callable from plain C++) ─────────────────────────
+// Returns true when the app is currently running in dark Aqua.
+// Exposed as extern "C" so that C++ translation units (e.g. buttondraw.cpp)
+// can call it without Objective-C includes.
+extern "C" bool MCplatformIsDarkMode(void)
+{
+    NSAppearanceName t_best =
+        [[NSApp effectiveAppearance]
+            bestMatchFromAppearancesWithNames:
+                @[NSAppearanceNameAqua, NSAppearanceNameDarkAqua]];
+    return [t_best isEqualToString:NSAppearanceNameDarkAqua];
+}
+
 // ── ARM64 MCThemeDrawInfo ───────────────────────────────────────────────
 // Replaces the Carbon/HITheme-based version in osxtheme.h (which is
 // excluded on ARM64).  Only drawwidget() and MCThemeDraw() in this file
@@ -407,6 +420,7 @@ Boolean MCNativeTheme::drawwidget(MCDC *dc, const MCWidgetInfo &winfo, const MCR
         case WTHEME_TYPE_PULLDOWN:
         case WTHEME_TYPE_COMBOBUTTON:
         case WTHEME_TYPE_COMBO:
+        case WTHEME_TYPE_RECTANGLE_BUTTON:
             dc->drawtheme(THEME_DRAW_TYPE_BUTTON, &t_info);
             break;
 
@@ -508,7 +522,7 @@ Boolean MCNativeTheme::drawwidget(MCDC *dc, const MCWidgetInfo &winfo, const MCR
         case WTHEME_TYPE_SCROLLBAR_GRIPPER_VERTICAL:
         case WTHEME_TYPE_SCROLLBAR_GRIPPER_HORIZONTAL:
         {
-            // Regular scrollbar buttons - use NSScroller
+            // Scrollbar sub-parts delegate to the full scrollbar draw path.
             if (winfo.datatype == WTHEME_DATA_SCROLLBAR && winfo.data != nil)
             {
                 MCWidgetScrollBarInfo *sb = (MCWidgetScrollBarInfo *)winfo.data;
@@ -843,6 +857,71 @@ bool MCThemeDraw(MCGContextRef p_context, MCThemeDrawType p_type, MCThemeDrawInf
                     }];
                     break;
                 }
+                case WTHEME_TYPE_RECTANGLE_BUTTON:
+                {
+                    // Rectangle button - no rounded corners
+                    NSRect t_r = t_frame;
+                    t_r.origin.y    += 1.0;
+                    t_r.size.height -= 3.0;
+                    
+                    // Resolve accent color
+                    NSColor *t_accent = nil;
+                    NSColor *t_candidate = [NSColor controlAccentColor];
+                    if (t_candidate != nil) {
+                        t_accent = [t_candidate colorUsingColorSpace:[NSColorSpace sRGBColorSpace]];
+                    }
+                    if (t_accent == nil && [NSColor respondsToSelector:@selector(tintedControlColor)]) {
+                        t_candidate = [NSColor performSelector:@selector(tintedControlColor)];
+                        if (t_candidate != nil) {
+                            t_accent = [t_candidate colorUsingColorSpace:[NSColorSpace sRGBColorSpace]];
+                        }
+                    }
+                    if (t_accent == nil) {
+                        t_accent = [[NSColor systemBlueColor] colorUsingColorSpace:[NSColorSpace sRGBColorSpace]];
+                    }
+                    if (t_accent == nil) {
+                        t_accent = [NSColor systemBlueColor];
+                    }
+                    
+                    [t_appearance performAsCurrentDrawingAppearance:^{
+                        NSColor *t_fill;
+                        if (t_disabled) {
+                            t_fill = [[NSColor controlColor] colorWithAlphaComponent:0.5];
+                        } else if (t_pressed || t_hilited) {
+                            if (t_default) {
+                                t_fill = [t_accent shadowWithLevel:0.15];
+                            } else {
+                                t_fill = [[NSColor controlColor] shadowWithLevel:0.12];
+                            }
+                        } else if (t_default) {
+                            t_fill = t_accent;
+                        } else {
+                            t_fill = [NSColor controlColor];
+                        }
+                        
+                        // Draw rectangle button without rounded corners
+                        NSBezierPath *t_path = [NSBezierPath bezierPathWithRect:t_r];
+                        
+                        // Drop shadow
+                        [NSGraphicsContext saveGraphicsState];
+                        NSShadow *t_shadow = [[NSShadow alloc] init];
+                        [t_shadow setShadowOffset:NSMakeSize(0.0, -1.0)];
+                        [t_shadow setShadowBlurRadius:1.5];
+                        [t_shadow setShadowColor:[NSColor colorWithWhite:0.0 alpha:0.20]];
+                        [t_shadow set];
+                        [t_fill setFill];
+                        [t_path fill];
+                        [t_shadow release];
+                        [NSGraphicsContext restoreGraphicsState];
+                        
+                        // Draw border
+                        NSColor *t_border = [NSColor colorWithCalibratedWhite:0.55 alpha:1.0];
+                        [t_border setStroke];
+                        [t_path setLineWidth:1.0];
+                        [t_path stroke];
+                    }];
+                    break;
+                }
                 default:   // push button, bevel button, combo button
                 {
                     // NSButtonCell with NSBezelStyleRounded uses Core Animation /
@@ -954,6 +1033,9 @@ bool MCThemeDraw(MCGContextRef p_context, MCThemeDrawType p_type, MCThemeDrawInf
         }
 
         // ── Scrollbar ────────────────────────────────────────────────────────
+        // HXT: Use NSScrollerCell (via NSScroller) to obtain the native NSScroller appearance,
+        // then apply a CGContext scale in the thickness axis so the rendering fills the actual
+        // scrollbarWidth frame rather than always appearing at the native ~15 pt width.
         case THEME_DRAW_TYPE_SCROLLBAR:
         {
             double t_range = p_info->scrollbar.endvalue - p_info->scrollbar.startvalue;
@@ -971,20 +1053,57 @@ bool MCThemeDraw(MCGContextRef p_context, MCThemeDrawType p_type, MCThemeDrawInf
                 if (t_proportion > 1.0f) t_proportion = 1.0f;
             }
 
-            NSScroller *t_scroller = [[NSScroller alloc] initWithFrame:t_frame];
-            [t_scroller setScrollerStyle:NSScrollerStyleLegacy];
-            [t_scroller setDoubleValue:(double)t_pos];
-            [t_scroller setKnobProportion:t_proportion];
-            [t_scroller setEnabled:!t_disabled];
-            [t_scroller setWantsLayer:NO];
+            bool t_sb_vertical = ((p_info->attributes & WTHEME_ATT_SBVERTICAL) != 0);
 
-            [t_view addSubview:t_scroller positioned:NSWindowBelow relativeTo:nil];
+            // Preferred native thickness for NSScrollerStyleLegacy (typically ~15 pt).
+            // NSScrollerStyleLegacy is deprecated but still renders; suppress the warning.
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+            CGFloat t_native_w = [NSScroller scrollerWidthForControlSize:NSControlSizeRegular
+                                                            scrollerStyle:NSScrollerStyleLegacy];
+            if (t_native_w <= 0.0f)
+                t_native_w = 15.0f;
+
+            // Requested thickness (width for vertical, height for horizontal).
+            CGFloat t_thickness = t_sb_vertical ? t_frame.size.width : t_frame.size.height;
+            // Scale factor to stretch native-width NSScroller to fill the actual frame.
+            CGFloat t_sb_scale  = (t_thickness > 0.0f) ? (t_thickness / t_native_w) : 1.0f;
+
+            // Build a temporary NSScroller so we can configure knobProportion (not on NSCell)
+            // and then draw track + knob into our CGContext via its own drawing methods.
+            NSRect t_native_frame;
+            if (t_sb_vertical)
+                t_native_frame = NSMakeRect(0, 0, t_native_w, t_frame.size.height);
+            else
+                t_native_frame = NSMakeRect(0, 0, t_frame.size.width, t_native_w);
+
+            NSScroller *t_scroller = [[NSScroller alloc] initWithFrame:t_native_frame];
+            [t_scroller setScrollerStyle:NSScrollerStyleLegacy];
+            [t_scroller setEnabled:!t_disabled];
+            [t_scroller setFloatValue:(float)t_pos];
+            [t_scroller setKnobProportion:t_proportion];
+#pragma clang diagnostic pop
 
             [t_appearance performAsCurrentDrawingAppearance:^{
-                [t_scroller drawRect:t_frame];
-            }];
+                CGContextSaveGState(t_cgcontext);
 
-            [t_scroller removeFromSuperview];
+                // Pre-multiply a scale into the CTM so that drawing at t_native_w
+                // in the thickness direction fills the actual scrollbarWidth.
+                // The existing CTM already carries the HiDPI and flip transforms,
+                // so we only need to add this one extra factor.
+                if (t_sb_vertical)
+                    CGContextScaleCTM(t_cgcontext, t_sb_scale, 1.0f);
+                else
+                    CGContextScaleCTM(t_cgcontext, 1.0f, t_sb_scale);
+
+                // NSScrollerCell's drawWithFrame:inView: only draws the track slot.
+                // The knob must be drawn separately.  Both methods draw into the
+                // current NSGraphicsContext (already set to t_ns_ctx above).
+                [t_scroller drawKnobSlotInRect:t_native_frame highlight:t_hilited];
+                [t_scroller drawKnob];
+
+                CGContextRestoreGState(t_cgcontext);
+            }];
             [t_scroller release];
             break;
         }
@@ -1140,34 +1259,79 @@ bool MCThemeDraw(MCGContextRef p_context, MCThemeDrawType p_type, MCThemeDrawInf
 
                 if (t_hilited)
                 {
-                    // Selected tab: filled with the user's accent colour.
-                    // Resolve to a concrete sRGB value inside the appearance
-                    // block so the colour stays stable when the app is in the
-                    // background (same fix applied to default push buttons).
-                    NSColor *t_accent =
-                        [[NSColor controlAccentColor]
-                            colorUsingColorSpace:[NSColorSpace sRGBColorSpace]]
-                        ?: [NSColor systemBlueColor];
+                    if (MCappisactive)
+                    {
+                        // Active window: fill with the user's accent colour.
+                        NSColor *t_accent =
+                            [[NSColor controlAccentColor]
+                                colorUsingColorSpace:[NSColorSpace sRGBColorSpace]]
+                            ?: [NSColor systemBlueColor];
 
-                    [t_accent setFill];
-                    [t_path fill];
+                        [t_accent setFill];
+                        [t_path fill];
 
-                    // Subtle white highlight stripe at the top for a slight lift.
-                    NSRect t_hi = NSMakeRect(t_r.origin.x + 1.0,
-                                             t_r.origin.y + 1.0,
-                                             t_r.size.width  - 2.0,
-                                             3.0);
-                    [[NSColor colorWithCalibratedWhite:1.0 alpha:0.25] setFill];
-                    NSRectFillUsingOperation(t_hi,
-                                             NSCompositingOperationSourceOver);
+                        // Subtle lighter accent highlight stripe at the top.
+                        NSRect t_hi = NSMakeRect(t_r.origin.x + 1.0,
+                                                 t_r.origin.y + 1.0,
+                                                 t_r.size.width  - 2.0,
+                                                 3.0);
+                        NSColor *t_hi_color = [t_accent colorWithAlphaComponent:0.3];
+                        [t_hi_color setFill];
+                        NSRectFillUsingOperation(t_hi,
+                                                 NSCompositingOperationSourceOver);
+                    }
+                    else
+                    {
+                        // Inactive window: grey fill, matching macOS's standard
+                        // appearance for selected tabs in background windows.
+                        // The text colour is handled separately in buttondraw.cpp
+                        // (also keyed on MCappisactive → getgray()).
+                        // In light mode the fill (0.75) is lighter than the text
+                        // (~0.5 grey), so the tab reads as a muted light pill.
+                        // In dark mode we swap: use a dark fill (~0.32) so the
+                        // text (~0.5 grey) appears relatively lighter — the correct
+                        // visual relationship for a dark-mode inactive tab.
+                        NSAppearanceName t_best_i =
+                            [t_appearance bestMatchFromAppearancesWithNames:
+                                @[NSAppearanceNameAqua, NSAppearanceNameDarkAqua]];
+                        bool t_inactive_dark =
+                            [t_best_i isEqualToString:NSAppearanceNameDarkAqua];
+                        NSColor *t_inactive =
+                            t_inactive_dark
+                            ? [NSColor colorWithCalibratedWhite:0.20f alpha:1.0f]
+                            : [NSColor colorWithCalibratedWhite:0.75f alpha:1.0f];
+                        [t_inactive setFill];
+                        [t_path fill];
+                    }
                 }
                 else
                 {
-                    // Unselected tab: same light-grey fill as a normal button,
-                    // with a subtle border.  Disabled tabs are more transparent.
+                    // Unselected tab: use an opaque fill colour that matches the
+                    // system appearance.  [NSColor controlColor] is intentionally
+                    // avoided here because in dark mode it resolves to
+                    // rgba(255,255,255,0.25) — a semi-transparent vibrancy tint
+                    // designed for Metal/CA-backed views.  In a plain
+                    // CGBitmapContext the alpha composites over whatever is already
+                    // in the buffer, producing a visible top/bottom split where the
+                    // top half (above the already-drawn tab pane) looks light and
+                    // the bottom half looks dark.  Using an explicit opaque colour
+                    // prevents this.
+                    NSAppearanceName t_best =
+                        [t_appearance bestMatchFromAppearancesWithNames:
+                            @[NSAppearanceNameAqua, NSAppearanceNameDarkAqua]];
+                    bool t_is_dark =
+                        [t_best isEqualToString:NSAppearanceNameDarkAqua];
+
+                    // Light: ~NSColor.controlColor resolved (~0.93 white, opaque)
+                    // Dark:  ~NSColor.controlBackgroundColor in dark (~0.22 white),
+                    //        fully opaque — matches the standard unselected-tab look.
+                    NSColor *t_base = t_is_dark
+                        ? [NSColor colorWithCalibratedWhite:0.22f alpha:1.0f]
+                        : [NSColor colorWithCalibratedWhite:0.93f alpha:1.0f];
                     NSColor *t_fill = t_disabled
-                        ? [[NSColor controlColor] colorWithAlphaComponent:0.5]
-                        : [NSColor controlColor];
+                        ? [t_base colorWithAlphaComponent:0.5f]
+                        : t_base;
+
                     [t_fill setFill];
                     [t_path fill];
 

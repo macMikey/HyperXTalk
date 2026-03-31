@@ -45,6 +45,15 @@ along with LiveCode.  If not see <http://www.gnu.org/licenses/>.  */
 #include "context.h"
 #include "graphics_util.h"
 
+#if defined(_MACOSX) && (defined(__arm64__) || defined(__aarch64__))
+// Weak fallback definition — always returns false (= light mode).
+// mac-stubs-arm64.mm provides a non-weak override for GUI builds that
+// actually queries NSAppearance.  On Mach-O a non-weak definition always
+// wins over a weak one, so server/non-GUI targets silently use this stub
+// while the GUI target uses the real implementation.
+extern "C" __attribute__((weak)) bool MCplatformIsDarkMode(void) { return false; }
+#endif
+
 // MW-2011-09-06: [[ Redraw ]] Added 'sprite' option - if true, ink and opacity are not set.
 void MCButton::draw(MCDC *dc, const MCRectangle& p_dirty, bool p_isolated, bool p_sprite)
 {
@@ -1677,7 +1686,53 @@ void MCButton::drawtabs(MCDC *dc, MCRectangle &srect)
 		}
 		else
 			if (reversetext)
-				setforeground(dc, DI_PSEUDO_BUTTON_TEXT_SEL, False, True);
+			{
+#ifdef _MACOSX
+                // HXT: On the native macOS theme the selected tab is filled with
+                // the user's accent colour, so the tab label must always be white.
+                // DI_PSEUDO_BUTTON_TEXT_SEL resolves to DI_BACK, which walks up
+                // to the stack and returns whatever background colour the developer
+                // has set — causing the text to disappear or match the background.
+                // Force white here when the native tab theme is active; fall back
+                // to the inherited colour only for the non-native (LF_MAC) path,
+                // where reversetext is set for MAC_SHADOW-filled hovered tabs and
+                // the original lookup is correct.
+                if (MCcurtheme && MCcurtheme->iswidgetsupported(WTHEME_TYPE_TAB))
+                {
+                    // Active window: white text over accent-colour fill.
+                    // Inactive window: the text colour depends on appearance:
+                    //   Light mode — medium grey (~0.50) over a light fill (0.75)
+                    //   Dark mode  — lighter grey (~0.62) over a dark fill (0.20)
+                    // The lighter value for dark mode is intentional: fill and
+                    // text swap roles (dark fill / light text) to match macOS's
+                    // standard inactive-tab appearance in dark Aqua.
+                    if (MCappisactive)
+                    {
+                        dc->setforeground(dc->getwhite());
+                    }
+                    else if (
+#if defined(__arm64__) || defined(__aarch64__)
+                             MCplatformIsDarkMode()
+#else
+                             false
+#endif
+                             )
+                    {
+                        // ~RGB(158,158,158) — lighter than getgray() (~128) to
+                        // sit visibly above the 0.20-white dark inactive fill.
+                        MCColor t_light_gray = { 0x9E9E, 0x9E9E, 0x9E9E };
+                        dc->setforeground(t_light_gray);
+                    }
+                    else
+                    {
+                        dc->setforeground(dc->getgray());
+                    }
+                    dc->setfillstyle(FillSolid, nil, 0, 0);
+                }
+                else
+#endif
+                    setforeground(dc, DI_PSEUDO_BUTTON_TEXT_SEL, False, True);
+			}
 			else
 				setforeground(dc, DI_PSEUDO_BUTTON_TEXT, False);
         // AL-2014-09-24: [[ Bug 13528 ]] Don't draw character indicating button is disabled
@@ -1993,6 +2048,10 @@ void MCButton::getwidgetthemeinfo(MCWidgetInfo &widgetinfo)
 	// MW-2005-07-25: [[Bug 2574]] A 'hilited' push-button, should actually be pressed
 	if (widgetinfo . type == WTHEME_TYPE_PUSHBUTTON && state & CS_HILITED)
 		wstate |= WTHEME_STATE_PRESSED;
+	
+	// Set widget type based on button style - rectangle buttons should use WTHEME_TYPE_RECTANGLE_BUTTON
+	if ((widgetinfo.type == WTHEME_TYPE_PUSHBUTTON || widgetinfo.type == WTHEME_TYPE_BEVELBUTTON) && getstyleint(flags) == F_RECTANGLE)
+		widgetinfo.type = WTHEME_TYPE_RECTANGLE_BUTTON;
 	
 	widgetinfo.state = wstate;
 }

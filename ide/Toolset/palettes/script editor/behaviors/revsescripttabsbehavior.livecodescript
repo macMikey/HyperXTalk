@@ -370,7 +370,7 @@ private function tabColor pSelected, pObject
    else
       return "251,251,252"
    end if
-   
+
    # The following code implements the colored tabs and is left here for now in case we decide to use it.
    
    local tState

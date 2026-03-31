@@ -4067,10 +4067,10 @@ function revIDESpecialFolderPath pKey, pParam
          revIDEEnsurePath tPath
          return tPath
          break
-      case "documentation"
-         put item 1 to -3 of the filename of stack "home" & "/Documentation" into tPath
-         return tPath
-         break
+       case "documentation"
+          put item 1 to -3 of the filename of stack "home" & "/Documentation" into tPath
+          return tPath
+          break
       case "documentation cache"
          put revEnvironmentUserDocsPath() & slash & "IDE" into tPath
          revIDEEnsurePath tPath
@@ -4644,6 +4644,7 @@ command revIDEOpenPalette pPaletteName
             end if
             
             revIDEGenerateDictionaryHTML tWhich
+            answer "file:" & revIDEGetDictionaryUrl(tWhich)
             launch url ("file:" & revIDEGetDictionaryUrl(tWhich))
          else
             toplevel stack tStackName

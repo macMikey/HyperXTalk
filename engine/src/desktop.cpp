@@ -124,6 +124,9 @@ void MCPlatformHandleApplicationSuspend(void)
     if (MCdefaultstackptr)
         MCdefaultstackptr -> getcard() -> message(MCM_suspend);
 	MCappisactive = False;
+    // HXT: dirty the screen so that controls that reflect the active/inactive
+    // state (e.g. native tab-button text colour) are repainted immediately.
+    MCRedrawDirtyScreen();
 }
 
 void MCPlatformHandleApplicationResume(void)
@@ -132,6 +135,9 @@ void MCPlatformHandleApplicationResume(void)
     MCappisactive = True;
     if (MCdefaultstackptr)
         MCdefaultstackptr -> getcard() -> message(MCM_resume);
+    // HXT: repaint so that active-state visuals (e.g. white tab text) are
+    // restored as soon as the window comes back to the foreground.
+    MCRedrawDirtyScreen();
 }
 
 void MCPlatformHandleApplicationRun(bool& r_continue)

@@ -1376,6 +1376,13 @@ command actionResizeStack pInitializing
       set the topLeft of group "Toolbar" of me to the bottomLeft of group "Menubar" of me
       set the width of group "Script Tabs" of me to tCardWidth - tLeftSplit - the width of button "Left Resizer" of me
       set the topLeft of group "Script Tabs" of me to tLeftSplit + the width of button "Left Resizer" of me, the bottom of group "Toolbar" of me
+      # HXT: On macOS the Menubar group feeds the system menu bar; it must not be visible inside
+      # the window. Move it off-screen and reposition the Toolbar to the top of the card instead.
+      if seGetPlatform() is "MacOS" then
+         set the right of group "Menubar" of me to tCardLeft - 500
+         set the topLeft of group "Toolbar" of me to (tCardLeft, tCardTop)
+         set the topLeft of group "Script Tabs" of me to tLeftSplit + the width of button "Left Resizer" of me, the bottom of group "Toolbar" of me
+      end if
    else
       set the right of group "Menubar" of me to tCardLeft - 500
       set the right of group "Toolbar" of me to tCardLeft - 500

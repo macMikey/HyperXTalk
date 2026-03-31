@@ -16,6 +16,15 @@ on preOpenStack
    updateMenubarPreference
    layoutMenu
    revIDEPositionPalette the short name of me
+   
+   if the systemAppearance is "dark" then
+      set the backColor of me to "black"
+      set the foreColor of me to "white"
+   else
+      set the backColor of me to "white"
+      set the foreColor of me to "black"
+   end if
+   
    # Since the menubar is topleveled on Linux and Windows, set the cantModify to true
    # to prevent users being able to alter the menubar stack.
    set the cantModify of me to true
@@ -1105,19 +1114,20 @@ on revMenubarMenuButtonClicked pWhich
       case "Errors"
          revIDEToggle "Suppress Errors"
          break
-//      case "Sample Stacks"
-//      case "Tutorials"
-//         revIDELaunchResource pWhich
-//         break
-//      case "Resources"
-//         revIDEOpenPalette "Resource Center"
-//         break
+         //      case "Sample Stacks"
+         //      case "Tutorials"
+         //         revIDELaunchResource pWhich
+         //         break
+         //      case "Resources"
+         //         revIDEOpenPalette "Resource Center"
+         //         break
+      case "Documentation"
       case "Dictionary"
          revIDEDocumentationLoad "API", "LiveCode Script"
          break
-//      case "Test"
-//         revIDEDeployAction
-//         break
+         //      case "Test"
+         //         revIDEDeployAction
+         //         break
    end switch
 end revMenubarMenuButtonClicked
 /*
@@ -1846,7 +1856,7 @@ private function revMenubarHelpMenu pContext
    //put "Welcome Screen/|Welcome" & return after tHelp
 //   put "Start Center/|Start Center" & return after tHelp
 //   put "User Guide" & return after tHelp
-   put "Dictionary (API)/|Dictionary" & return after tHelp
+   put "Documentation/|Dictionary" & return after tHelp
    
    put "-" & return  after tHelp
    
@@ -3083,37 +3093,49 @@ on revMenubarHelpMenuPick pWhich
    local tPick
    put item 1 of pWhich into tPick
    switch tPick
+      case "Documentation"
       case "Dictionary"
          revIDEDocumentationLoad "API", "LiveCode Script"
          break
-//      case "Start Center"
-//      case "Welcome"
+         //      case "Start Center"
+         //      case "Welcome"
       case "About"
          revIDEOpenPalette tPick
          break
-//      case "Buy"
-//      case "Support"
-//      case "User Guide"
+         //      case "Buy"
+         //      case "Support"
+         //      case "User Guide"
       case "License Agreement"
       case "Release Notes"
-//      case "Sample Stacks"
-//      case "Sample Scripts"
-//      case "Beginners Guide"
-//      case "Tutorials"
+         //      case "Sample Stacks"
+         //      case "Sample Scripts"
+         //      case "Beginners Guide"
+         //      case "Tutorials"
       case "Forums"
       case "Technical Questions"
-//      case "Discussion List"
-//      case "Newsletters"
+         //      case "Discussion List"
+         //      case "Newsletters"
          revIDELaunchResource tPick
          break
       case "All Guides"
          revIDEOpenPalette "guide"
          break
-      //eh case "Relicense"
+         //eh case "Relicense"
          //eh revIDEActionRelicense
          //eh break
-      //eh case "Update"
+         //eh case "Update"
          //eh revIDECheckForUpdates
          //eh break
    end switch
 end revMenubarHelpMenuPick
+
+// HXT
+on systemAppearanceChanged
+   if the systemAppearance is "dark" then
+      set the backColor of me to "black"
+      set the foreColor of me to "white"
+   else
+      set the backColor of me to "white"
+      set the foreColor of me to "black"
+   end if
+end systemAppearanceChanged

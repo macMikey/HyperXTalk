@@ -368,9 +368,10 @@ component Resources
 		file	"ide:Resources/Start Center/samples/sample_3/images/splash-screens/splash-iphone-5.png"
 		file	"ide:Resources/Start Center/samples/sample_3/images/splash-screens/splash-iphone-retina.png"
 
-component Documentation
-	into [[ToolsFolder]]/Documentation place
-		file "ide:Documentation/SearchEngineStandardUrls.txt"
+ component Documentation
+ 	// Copy to Tools folder for backwards compatibility
+ 	into [[ToolsFolder]]/Documentation place
+ 		file "ide:Documentation/SearchEngineStandardUrls.txt"
 	into [[ToolsFolder]]/Documentation/rev place
 		file "ide:Documentation/rev/Color Names Reference.rev"
 		file "ide:Documentation/rev/Database Types Reference.rev"
@@ -552,10 +553,11 @@ component Mobile.MacOSX
 		executable macosx:reviphone.bundle
 		executable macosx:revandroid.bundle
 
-component Engine.MacOSX
-	executable macosx:HyperXTalk.app as "[[TargetFolder]]"
-	executable macosx:revpdfprinter.bundle as "[[TargetFolder]]/Contents/MacOS/revpdfprinter.bundle"
-	executable macosx:revsecurity.dylib as "[[TargetFolder]]/Contents/MacOS/revsecurity.dylib"
+ component Engine.MacOSX
+ 	executable macosx:HyperXTalk.app as "[[TargetFolder]]"
+ 	executable macosx:revpdfprinter.bundle as "[[TargetFolder]]/Contents/MacOS/revpdfprinter.bundle"
+ 	executable macosx:revsecurity.dylib as "[[TargetFolder]]/Contents/MacOS/revsecurity.dylib"
+
 
 ////////////////////////////////////////////////////////////////////////////////
 

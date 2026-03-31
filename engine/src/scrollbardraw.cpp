@@ -988,9 +988,19 @@ uint2 MCScrollbar::getwidgetthemetype()
 		return WTHEME_TYPE_PROGRESSBAR;
 	if (flags & F_SCALE)
 		return WTHEME_TYPE_SLIDER;
+	// HXT: SMALLSCROLLBAR (spin-arrows) is used for three cases:
+	//   1. Horizontal bar whose thickness is below the platform minimum — too thin for track+thumb.
+	//   2. Zero-width vertical bar — guard against division-by-zero elsewhere.
+	//   3. A genuine stepper control: vertical, compact (height < 2×smallscrollbarsize) AND
+	//      not very elongated (ratio < 3).  NSStepper regular height is ~27 pt; on Mac
+	//      smallscrollbarsize = 14, so 2×14 = 28 pt covers it.  Without the absolute-height
+	//      ceiling the ratio check incorrectly classifies wide (>16 px) scrollbars in short
+	//      fields as steppers — adding the ceiling limits the stepper path to controls that
+	//      are genuinely tiny, which field scrollbars never are in practice.
 	else if ((rect.width > rect.height && rect.height < smallscrollbarsize) ||
-	         (rect.height > rect.width && (rect . width == 0 || rect.height / rect.width < 3)) ||
-	         rect.width < smallscrollbarsize)
+	         (rect.height > rect.width && rect.width == 0) ||
+	         (rect.height > rect.width && rect.height < 2 * smallscrollbarsize &&
+	          rect.height / rect.width < 3))
 		return WTHEME_TYPE_SMALLSCROLLBAR;
 	else
 		return WTHEME_TYPE_SCROLLBAR;

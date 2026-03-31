@@ -22,7 +22,7 @@ on openStack
    lock screen
    --Force the browser to actually resize
    set the rect of widget "Dictionary" of me to 0,0,0,0
-   set the javascripthandlers of widget "Dictionary" of me to "linkClicked" & return & "showUpgradeOptions"
+   set the javascripthandlers of widget "Dictionary" of me to "linkClicked" // HyperXTalk & return & "showUpgradeOptions"
    set the width of me to tMinWidth
    set the minWidth of me to tMinWidth
    set the title of me to "Dictionary"
@@ -83,6 +83,7 @@ on linkClicked pLink
    launch url pLink
 end linkClicked
 
+/* HyperXTalk
 on showUpgradeOptions pEdition, pDisplayName
    put urlEncode(pDisplayName) into pDisplayName
    replace "+" with "%20" in pDisplayName
@@ -90,6 +91,7 @@ on showUpgradeOptions pEdition, pDisplayName
    launch url revEnvironmentEditionProperty("edition_external_url", pEdition) & \
          "?utm_source=ide&utm_medium=docs&utm_campaign="&pDisplayName
 end showUpgradeOptions
+*/
 
 # bug 17819 enable cmd+c in dictionary
 on commandKeyDown pWhich
