@@ -152,18 +152,19 @@ endif
 	  $(XCODEBUILD_FILTER) || true
 	$(XCODEBUILD) -project "build-mac/livecode/revdb/revdb.xcodeproj" -configuration Debug -target dbsqlite-server \
 	  $(XCODEBUILD_FILTER) || true
+	$(XCODEBUILD) -project "build-mac/livecode/revdb/revdb.xcodeproj" -configuration Debug -target dbmysql \
+	  $(XCODEBUILD_FILTER) || true
+	$(XCODEBUILD) -project "build-mac/livecode/revdb/revdb.xcodeproj" -configuration Debug -target dbmysql-server \
+	  $(XCODEBUILD_FILTER) || true
 	$(XCODEBUILD) -project "build-mac/livecode/revdb/revdb.xcodeproj" -configuration Debug -target external-revdb \
 	  $(XCODEBUILD_FILTER) || true
-	$(XCODEBUILD) -project "build-mac/livecode/revxml/revxml.xcodeproj" -configuration Debug -target external-revxml \
-	  $(XCODEBUILD_FILTER) || true
-	$(XCODEBUILD) -project "build-mac/livecode/revzip/revzip.xcodeproj" -configuration Debug -target external-revzip \
-	  $(XCODEBUILD_FILTER) || true
 	@# Copy all available bundles from build output to mac-bin
-	@for b in dbodbc dbpostgresql dbsqlite revdb revxml revzip; do \
+	@for b in dbodbc dbpostgresql dbsqlite dbmysql revdb revxml revzip; do \
 	  [ -d "_build/mac/Debug/$$b.bundle" ] && cp -R "_build/mac/Debug/$$b.bundle" "mac-bin/" || true; \
 	done
 	@# Copy server dylibs from build output
 	@[ -d "_build/mac/Debug/server-dbsqlite.dylib" ] && cp -R "_build/mac/Debug/server-dbsqlite.dylib" "mac-bin/" || true
+	@[ -d "_build/mac/Debug/server-dbmysql.dylib" ] && cp -R "_build/mac/Debug/server-dbmysql.dylib" "mac-bin/" || true
 	@[ -d "_build/mac/Debug/server-revdb.dylib" ] && cp -R "_build/mac/Debug/server-revdb.dylib" "mac-bin/" || true
 	@[ -d "_build/mac/Debug/server-revxml.dylib" ] && cp -R "_build/mac/Debug/server-revxml.dylib" "mac-bin/" || true
 	@[ -d "_build/mac/Debug/server-revzip.dylib" ] && cp -R "_build/mac/Debug/server-revzip.dylib" "mac-bin/" || true
