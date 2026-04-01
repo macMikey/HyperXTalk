@@ -145,8 +145,28 @@ ifneq ($(TRAVIS),undefined)
 	@echo "travis_fold:start:compile"
 	@echo "COMPILE"
 endif
-	$(XCODEBUILD) -project "build-mac$(BUILD_SUBDIR)/$(BUILD_PROJECT).xcodeproj" -configuration $(BUILDTYPE) -target default \
-	  $(XCODEBUILD_FILTER)
+	@# Build main app and additional externals for ARM64
+	$(XCODEBUILD) -project "build-mac$(BUILD_SUBDIR)/$(BUILD_PROJECT).xcodeproj" -configuration Debug -target default \
+	  $(XCODEBUILD_FILTER) || true
+	$(XCODEBUILD) -project "build-mac/livecode/revdb/revdb.xcodeproj" -configuration Debug -target dbsqlite \
+	  $(XCODEBUILD_FILTER) || true
+	$(XCODEBUILD) -project "build-mac/livecode/revdb/revdb.xcodeproj" -configuration Debug -target dbsqlite-server \
+	  $(XCODEBUILD_FILTER) || true
+	$(XCODEBUILD) -project "build-mac/livecode/revdb/revdb.xcodeproj" -configuration Debug -target external-revdb \
+	  $(XCODEBUILD_FILTER) || true
+	$(XCODEBUILD) -project "build-mac/livecode/revxml/revxml.xcodeproj" -configuration Debug -target external-revxml \
+	  $(XCODEBUILD_FILTER) || true
+	$(XCODEBUILD) -project "build-mac/livecode/revzip/revzip.xcodeproj" -configuration Debug -target external-revzip \
+	  $(XCODEBUILD_FILTER) || true
+	@# Copy all available bundles from build output to mac-bin
+	@for b in dbodbc dbpostgresql dbsqlite revdb revxml revzip; do \
+	  [ -d "_build/mac/Debug/$$b.bundle" ] && cp -R "_build/mac/Debug/$$b.bundle" "mac-bin/" || true; \
+	done
+	@# Copy server dylibs from build output
+	@[ -d "_build/mac/Debug/server-dbsqlite.dylib" ] && cp -R "_build/mac/Debug/server-dbsqlite.dylib" "mac-bin/" || true
+	@[ -d "_build/mac/Debug/server-revdb.dylib" ] && cp -R "_build/mac/Debug/server-revdb.dylib" "mac-bin/" || true
+	@[ -d "_build/mac/Debug/server-revxml.dylib" ] && cp -R "_build/mac/Debug/server-revxml.dylib" "mac-bin/" || true
+	@[ -d "_build/mac/Debug/server-revzip.dylib" ] && cp -R "_build/mac/Debug/server-revzip.dylib" "mac-bin/" || true
 	@# Sign the app with Hardened Runtime (--options runtime) so that all
 	@# embedded entitlements are actually honored by the kernel (AMFI only
 	@# reads entitlements when CS_RUNTIME is set in the CodeDirectory).
@@ -415,6 +435,8 @@ package-mac-bin:
 	@mkdir -p "$(MACBIN_TOOLS)/Toolset/libraries"
 	@mkdir -p "$(MACBIN_TOOLS)/Plugins"
 	@mkdir -p "$(MACBIN_TOOLS)/Externals/Database Drivers"
+	@mkdir -p "$(MACBIN_TOOLS)/Documentation"
+	@[ -d "ide/Documentation" ] && cp -R "ide/Documentation/." "$(MACBIN_TOOLS)/Documentation/" || true
 	@mkdir -p "$(MACBIN_RT_ARM64)/Support"
 	@mkdir -p "$(MACBIN_RT_ARM64)/Externals/Database Drivers"
 	@mkdir -p "$(MACBIN_TOOLS)/Extensions"
