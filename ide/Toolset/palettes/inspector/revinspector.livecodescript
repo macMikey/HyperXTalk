@@ -264,3 +264,22 @@ on highlightObject pObjectData
    dispatch "navSelected" to tTargetInspector with pObjectData["section"]
    unlock screen
 end highlightObject
+
+// HXT
+on systemAppearanceChanged pMode, pWindowColor
+   set the backgroundColor of this stack to pWindowColor
+   --   if pMode is "dark" then
+   --      set the foreColor of me to "white"
+   --   else
+   set the foreColor of me to "black"
+   --   end if
+end systemAppearanceChanged
+   
+   // HXT
+   on preOpenStack
+   if (the systemAppearance is "dark") then
+      set the backColor of me to "#323232"
+   else
+      set the backColor of me to "#ececec"
+   end if
+end preOpenStack

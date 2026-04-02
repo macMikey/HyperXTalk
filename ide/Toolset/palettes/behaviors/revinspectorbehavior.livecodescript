@@ -1,4 +1,4 @@
-﻿script "revInspectorBehavior"
+﻿script "revInspectorBehavior" with behavior "revPaletteBehavior"
 constant kMaxLabelSize = 200
 
 # The inspector data
