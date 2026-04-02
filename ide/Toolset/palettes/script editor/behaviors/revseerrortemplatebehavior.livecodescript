@@ -98,14 +98,16 @@ command itemHilite
    if seGetPlatform() is not "MacOS" then
       set the textColor of field 1 of me to "255,255,255"
    end if
-   set the backgroundColor of field 1 of me to tHiliteColor
+   // HXT set the backgroundColor of field 1 of me to tHiliteColor
+   set the backgroundColor of field 1 of me to EMPTY
 end itemHilite
 
 command itemUnhilite
    if seGetPlatform() is not "MacOS" then
       set the textColor of field 1 of me to "0,0,0"
    end if
-   set the backgroundColor of field 1 of me to "255,255,255"
+   // HXT set the backgroundColor of field 1 of me to "255,255,255"
+   set the backgroundColor of field 1 of me to EMPTY
 end itemUnhilite
 
 
