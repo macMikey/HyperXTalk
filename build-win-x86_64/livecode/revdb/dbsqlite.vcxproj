@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Fast|x64">
+      <Configuration>Fast</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{83AAD531-B37B-BEE2-237C-3E47799643FF}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>dbsqlite</RootNamespace>
+    <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props"/>
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Label="Locals">
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props"/>
+  <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.props"/>
+  <ImportGroup Label="ExtensionSettings"/>
+  <ImportGroup Label="PropertySheets">
+    <Import Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props"/>
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros"/>
+  <PropertyGroup>
+    <ExecutablePath>$(ExecutablePath);$(MSBuildProjectDirectory)\..\..\..\revdb\bin\;$(MSBuildProjectDirectory)\..\..\..\revdb\bin\</ExecutablePath>
+    <IgnoreImportLibrary>true</IgnoreImportLibrary>
+    <IntDir>$(Configuration)\obj\$(ProjectName)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Fast|x64'"></LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <TargetName>dbsqlite</TargetName>
+    <TargetPath>$(OutDir)\dbsqlite$(TargetExt)</TargetPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\..\..\revdb\src;..\..\..\libexternal\include;..\..\..\thirdparty\libsqlite\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <CompileAsWinRT>false</CompileAsWinRT>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <DisableSpecificWarnings>4577;4800;4244</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PreprocessorDefinitions>_DEBUG;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_DISABLE_PERFCRIT_LOCKS;__LITTLE_ENDIAN__;WINVER=0x0601;_WIN32_WINNT=0x0601;CROSS_COMPILE_TARGET;_WINDOWS;WIN32;TARGET_PLATFORM_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Lib>
+      <AdditionalOptions>/MACHINE:x64 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+    <Link>
+      <AdditionalDependencies>oleaut32.lib;libsqlite.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\prebuilt\unpacked\Thirdparty\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/MACHINE:x64 %(AdditionalOptions)</AdditionalOptions>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <OptimizeReferences>true</OptimizeReferences>
+      <OutputFile>$(OutDir)dbsqlite$(TargetExt)</OutputFile>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>..\..\..\revdb\src;..\..\..\libexternal\include;..\..\..\thirdparty\libsqlite\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_DISABLE_PERFCRIT_LOCKS;__LITTLE_ENDIAN__;WINVER=0x0601;_WIN32_WINNT=0x0601;CROSS_COMPILE_TARGET;_WINDOWS;WIN32;TARGET_PLATFORM_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Fast|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\..\..\revdb\src;..\..\..\libexternal\include;..\..\..\thirdparty\libsqlite\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <CompileAsWinRT>false</CompileAsWinRT>
+      <DebugInformationFormat></DebugInformationFormat>
+      <DisableSpecificWarnings>4577;4800;4244</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PreprocessorDefinitions>_RELEASE;NDEBUG;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_DISABLE_PERFCRIT_LOCKS;__LITTLE_ENDIAN__;WINVER=0x0601;_WIN32_WINNT=0x0601;CROSS_COMPILE_TARGET;_WINDOWS;WIN32;TARGET_PLATFORM_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+    </ClCompile>
+    <Lib>
+      <AdditionalOptions>/MACHINE:x64 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+    <Link>
+      <AdditionalDependencies>oleaut32.lib;libsqlite.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\prebuilt\unpacked\Thirdparty\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/MACHINE:x64 %(AdditionalOptions)</AdditionalOptions>
+      <EnableCOMDATFolding></EnableCOMDATFolding>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <OptimizeReferences></OptimizeReferences>
+      <OutputFile>$(OutDir)dbsqlite$(TargetExt)</OutputFile>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>..\..\..\revdb\src;..\..\..\libexternal\include;..\..\..\thirdparty\libsqlite\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_DISABLE_PERFCRIT_LOCKS;__LITTLE_ENDIAN__;WINVER=0x0601;_WIN32_WINNT=0x0601;CROSS_COMPILE_TARGET;_WINDOWS;WIN32;TARGET_PLATFORM_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\..\..\revdb\src;..\..\..\libexternal\include;..\..\..\thirdparty\libsqlite\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <CompileAsWinRT>false</CompileAsWinRT>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4577;4800;4244</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <Optimization>Full</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PreprocessorDefinitions>_RELEASE;NDEBUG;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_DISABLE_PERFCRIT_LOCKS;__LITTLE_ENDIAN__;WINVER=0x0601;_WIN32_WINNT=0x0601;CROSS_COMPILE_TARGET;_WINDOWS;WIN32;TARGET_PLATFORM_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+    </ClCompile>
+    <Lib>
+      <AdditionalOptions>/MACHINE:x64 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+    <Link>
+      <AdditionalDependencies>oleaut32.lib;libsqlite.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\prebuilt\unpacked\Thirdparty\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/MACHINE:x64 %(AdditionalOptions)</AdditionalOptions>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <OptimizeReferences>true</OptimizeReferences>
+      <OutputFile>$(OutDir)dbsqlite$(TargetExt)</OutputFile>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>..\..\..\revdb\src;..\..\..\libexternal\include;..\..\..\thirdparty\libsqlite\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_DISABLE_PERFCRIT_LOCKS;__LITTLE_ENDIAN__;WINVER=0x0601;_WIN32_WINNT=0x0601;CROSS_COMPILE_TARGET;_WINDOWS;WIN32;TARGET_PLATFORM_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="..\..\..\revdb\revdb.gyp"/>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\revdb\src\dbsqlite.h"/>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\revdb\src\dbdrivercommon.cpp"/>
+    <ClCompile Include="..\..\..\revdb\src\database.cpp"/>
+    <ClCompile Include="..\..\..\revdb\src\dbsqliteapi.cpp"/>
+    <ClCompile Include="..\..\..\revdb\src\sqlite_connection.cpp"/>
+    <ClCompile Include="..\..\..\revdb\src\sqlite_cursor.cpp"/>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\libexternal\libExternal.vcxproj">
+      <Project>{0AE20C02-7522-8B11-CECA-2934E0DC769D}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\prebuilt\thirdparty_prebuilt_sqlite.vcxproj">
+      <Project>{C5407257-C79E-86D8-EC2A-F5AB8466CC68}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\libcore\libCore.vcxproj">
+      <Project>{D4BA8A47-F6B3-58E8-69A2-95EC3AEDFAD4}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\prebuilt\thirdparty_prebuilt_dep.vcxproj">
+      <Project>{AA91F23A-8CED-6630-016F-5179DB328B02}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\prebuilt\fetch.vcxproj">
+      <Project>{C5F87F95-76B2-B0D3-4C1A-DB981D564DAB}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\prebuilt\fetch-win.vcxproj">
+      <Project>{D95A7532-FDE1-73CC-EE5D-CD83586A809E}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets"/>
+  <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.targets"/>
+  <ImportGroup Label="ExtensionTargets"/>
+</Project>

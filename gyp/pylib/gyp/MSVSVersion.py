@@ -157,7 +157,7 @@ def _RegistryQuery(key, value=None):
   text = None
   try:
     text = _RegistryQueryBase('Sysnative', key, value)
-  except OSError, e:
+  except OSError as e:
     if e.errno == errno.ENOENT:
       text = _RegistryQueryBase('System32', key, value)
     else:
@@ -175,7 +175,10 @@ def _RegistryGetValueUsingWinReg(key, value):
     contents of the registry key's value, or None on failure.  Throws
     ImportError if _winreg is unavailable.
   """
-  import _winreg
+  try:
+    import winreg as _winreg
+  except ImportError:
+    import _winreg
   try:
     root, subkey = key.split('\\', 1)
     assert root == 'HKLM'  # Only need HKLM for now.
@@ -225,6 +228,33 @@ def _CreateVersion(name, path, sdk_based=False):
   if path:
     path = os.path.normpath(path)
   versions = {
+      '2022': VisualStudioVersion('2022',
+                                  'Visual Studio 2022',
+                                  solution_version='17.00',
+                                  project_version='17.0',
+                                  flat_sln=False,
+                                  uses_vcxproj=True,
+                                  path=path,
+                                  sdk_based=sdk_based,
+                                  default_toolset='v143'),
+      '2019': VisualStudioVersion('2019',
+                                  'Visual Studio 2019',
+                                  solution_version='16.00',
+                                  project_version='16.0',
+                                  flat_sln=False,
+                                  uses_vcxproj=True,
+                                  path=path,
+                                  sdk_based=sdk_based,
+                                  default_toolset='v142'),
+      '2017': VisualStudioVersion('2017',
+                                  'Visual Studio 2017',
+                                  solution_version='15.00',
+                                  project_version='15.0',
+                                  flat_sln=False,
+                                  uses_vcxproj=True,
+                                  path=path,
+                                  sdk_based=sdk_based,
+                                  default_toolset='v141'),
       '2015': VisualStudioVersion('2015',
                                   'Visual Studio 2015',
                                   solution_version='12.00',
@@ -354,6 +384,9 @@ def _DetectVisualStudioVersions(versions_to_check, force_express):
       '11.0': '2012',
       '12.0': '2013',
       '14.0': '2015',
+      '15.0': '2017',
+      '16.0': '2019',
+      '17.0': '2022',
   }
   versions = []
   for version in versions_to_check:
@@ -394,6 +427,34 @@ def _DetectVisualStudioVersions(versions_to_check, force_express):
         versions.append(_CreateVersion(version_to_year[version] + 'e',
             os.path.join(path, '..'), sdk_based=True))
 
+    # Modern Visual Studio (2017+) stores installation path differently
+    # Try to find VS installations in Program Files
+    program_files = os.environ.get('ProgramFiles', 'C:/Program Files')
+    vs_base = os.path.join(program_files, 'Microsoft Visual Studio')
+    if os.path.exists(vs_base):
+      for entry in os.listdir(vs_base):
+        entry_path = os.path.join(vs_base, entry)
+        if os.path.isdir(entry_path):
+          # entry is like "18" for 2022, "17" for 2019, "16" for 2017
+          try:
+            folder_version = int(entry)
+            if folder_version == 18:
+              year = '2022'
+            elif folder_version == 17:
+              year = '2019'
+            elif folder_version == 16:
+              year = '2017'
+            else:
+              continue
+            # Check for Community/Pro/Ent subfolder
+            for subfolder in ['Community', 'Professional', 'Enterprise', 'Preview']:
+              install_path = os.path.join(entry_path, subfolder)
+              if os.path.exists(install_path):
+                versions.append(_CreateVersion(year, install_path))
+                break
+          except ValueError:
+            pass
+
   return versions
 
 
@@ -409,7 +470,7 @@ def SelectVisualStudioVersion(version='auto', allow_fallback=True):
   if version == 'auto':
     version = os.environ.get('GYP_MSVS_VERSION', 'auto')
   version_map = {
-    'auto': ('14.0', '12.0', '10.0', '9.0', '8.0', '11.0'),
+    'auto': ('17.0', '16.0', '15.0', '14.0', '12.0', '10.0', '9.0', '8.0', '11.0'),
     '2005': ('8.0',),
     '2005e': ('8.0',),
     '2008': ('9.0',),
@@ -421,6 +482,9 @@ def SelectVisualStudioVersion(version='auto', allow_fallback=True):
     '2013': ('12.0',),
     '2013e': ('12.0',),
     '2015': ('14.0',),
+    '2017': ('15.0',),
+    '2019': ('16.0',),
+    '2022': ('17.0',),
   }
   override_path = os.environ.get('GYP_MSVS_OVERRIDE_PATH')
   if override_path:

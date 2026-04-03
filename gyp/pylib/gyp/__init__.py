@@ -34,7 +34,7 @@ def DebugOutput(mode, message, *args):
       pass
     if args:
       message %= args
-    print '%s:%s:%d:%s %s' % (mode.upper(), os.path.basename(ctx[0]),
+    print('%s:%s:%d:%s %s') % (mode.upper(), os.path.basename(ctx[0]),
                               ctx[1], ctx[2], message)
 
 def FindBuildFiles():
@@ -206,7 +206,7 @@ def RegenerateFlags(options):
   # We always want to ignore the environment when regenerating, to avoid
   # duplicate or changed flags in the environment at the time of regeneration.
   flags = ['--ignore-environment']
-  for name, metadata in options._regeneration_metadata.iteritems():
+  for name, metadata in options._regeneration_metadata.items():
     opt = metadata['opt']
     value = getattr(options, name)
     value_predicate = metadata['type'] == 'path' and FixPath or Noop
@@ -421,7 +421,7 @@ def gyp_main(args):
       build_file_dir = os.path.abspath(os.path.dirname(build_file))
       build_file_dir_components = build_file_dir.split(os.path.sep)
       components_len = len(build_file_dir_components)
-      for index in xrange(components_len - 1, -1, -1):
+      for index in range(components_len - 1, -1, -1):
         if build_file_dir_components[index] == 'src':
           options.depth = os.path.sep.join(build_file_dir_components)
           break
@@ -464,7 +464,7 @@ def gyp_main(args):
   if home_dot_gyp != None:
     default_include = os.path.join(home_dot_gyp, 'include.gypi')
     if os.path.exists(default_include):
-      print 'Using overrides found in ' + default_include
+      print('Using overrides found in ') + default_include
       includes.append(default_include)
 
   # Command-line --include files come after the default include.
@@ -524,7 +524,7 @@ def gyp_main(args):
 def main(args):
   try:
     return gyp_main(args)
-  except GypError, e:
+  except GypError as e:
     sys.stderr.write("gyp: %s\n" % e)
     return 1
 

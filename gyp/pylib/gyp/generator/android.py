@@ -458,7 +458,7 @@ class AndroidMkWriter(object):
     Args:
       spec, configs: input from gyp.
     """
-    for configname, config in sorted(configs.iteritems()):
+    for configname, config in sorted(configs.items()):
       extracted_includes = []
 
       self.WriteLn('\n# Flags passed to both C and C++ files.')
@@ -788,7 +788,7 @@ class AndroidMkWriter(object):
     static_libs, dynamic_libs, ldflags_libs = self.FilterLibraries(libraries)
 
     if self.type != 'static_library':
-      for configname, config in sorted(configs.iteritems()):
+      for configname, config in sorted(configs.items()):
         ldflags = list(config.get('ldflags', []))
         self.WriteLn('')
         self.WriteList(ldflags, 'LOCAL_LDFLAGS_%s' % configname)
@@ -837,7 +837,7 @@ class AndroidMkWriter(object):
     settings = spec.get('aosp_build_settings', {})
     if settings:
       self.WriteLn('### Set directly by aosp_build_settings.')
-      for k, v in settings.iteritems():
+      for k, v in settings.items():
         if isinstance(v, list):
           self.WriteList(v, k)
         else:
@@ -955,7 +955,7 @@ def PerformBuild(data, configurations, params):
   env = dict(os.environ)
   env['ONE_SHOT_MAKEFILE'] = makefile
   arguments = ['make', '-C', os.environ['ANDROID_BUILD_TOP'], 'gyp_all_modules']
-  print 'Building: %s' % arguments
+  print('Building: %s') % arguments
   subprocess.check_call(arguments, env=env)
 
 

@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Fast|x64">
+      <Configuration>Fast</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{9B01D63D-1E0D-0593-1D72-26B9D1EDD468}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>test-kernel-server</RootNamespace>
+    <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props"/>
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Label="Locals">
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props"/>
+  <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.props"/>
+  <ImportGroup Label="ExtensionSettings"/>
+  <ImportGroup Label="PropertySheets">
+    <Import Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props"/>
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros"/>
+  <PropertyGroup>
+    <ExecutablePath>$(ExecutablePath);$(MSBuildProjectDirectory)\..\..\..\engine\bin\;$(MSBuildProjectDirectory)\..\..\..\engine\bin\</ExecutablePath>
+    <IntDir>$(Configuration)\obj\$(ProjectName)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Fast|x64'"></LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <TargetName>$(ProjectName)</TargetName>
+    <TargetPath>$(OutDir)\$(ProjectName)$(TargetExt)</TargetPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(IntDir)src;$(IntDir)include;$(OutDir)obj\global_intermediate\src;$(OutDir)obj\global_intermediate\include;..\..\..\engine\include;..\..\..\engine\src;..\..\..\libcpptest\googletest\googletest\include;..\..\..\prebuilt\unpacked\icu\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\include;..\..\..\libfoundation\include;..\..\..\libgraphics\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <CompileAsWinRT>false</CompileAsWinRT>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <DisableSpecificWarnings>4577;4800;4244</DisableSpecificWarnings>
+      <ExceptionHandling>false</ExceptionHandling>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PreprocessorDefinitions>_DEBUG;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_DISABLE_PERFCRIT_LOCKS;__LITTLE_ENDIAN__;WINVER=0x0601;_WIN32_WINNT=0x0601;MODE_SERVER;GTEST_HAS_POSIX_RE=0;GTEST_HAS_PTHREAD=0;GTEST_HAS_RTTI=0;GTEST_HAS_EXCEPTIONS=0;U_STATIC_IMPLEMENTATION=1;CROSS_COMPILE_TARGET;_WINDOWS;WIN32;TARGET_PLATFORM_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Lib>
+      <AdditionalOptions>/MACHINE:x64 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+    <Link>
+      <AdditionalDependencies>comdlg32.lib;crypt32.lib;gdi32.lib;iphlpapi.lib;imm32.lib;mscms.lib;msimg32.lib;psapi.lib;ole32.lib;rpcrt4.lib;shell32.lib;shlwapi.lib;user32.lib;usp10.lib;version.lib;winmm.lib;winspool.lib;ws2_32.lib;oleaut32.lib;sicuin.lib;sicuio.lib;sicutu.lib;sicuuc.lib;sicudt.lib;advapi32.lib;libz.lib;libgif.lib;libpng.lib;libjpeg.lib;libskia.lib;libskia_opt_none.lib;libskia_opt_arm.lib;libskia_opt_sse2.lib;libskia_opt_sse3.lib;libskia_opt_sse41.lib;libskia_opt_sse42.lib;libskia_opt_avx.lib;libskia_opt_hsw.lib;libffi.lib;libcurl_a.lib;libeay32.lib;ssleay32.lib;libpcre.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\prebuilt\unpacked\icu\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\lib;..\..\..\prebuilt\unpacked\Thirdparty\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\lib;..\..\..\prebuilt\unpacked\curl\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\lib;..\..\..\prebuilt\unpacked\openssl\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/MACHINE:x64 %(AdditionalOptions)</AdditionalOptions>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <OptimizeReferences>true</OptimizeReferences>
+      <OutputFile>$(OutDir)$(ProjectName)$(TargetExt)</OutputFile>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>$(IntDir)src;$(IntDir)include;$(OutDir)obj\global_intermediate\src;$(OutDir)obj\global_intermediate\include;..\..\..\engine\include;..\..\..\engine\src;..\..\..\libcpptest\googletest\googletest\include;..\..\..\prebuilt\unpacked\icu\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\include;..\..\..\libfoundation\include;..\..\..\libgraphics\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_DISABLE_PERFCRIT_LOCKS;__LITTLE_ENDIAN__;WINVER=0x0601;_WIN32_WINNT=0x0601;MODE_SERVER;GTEST_HAS_POSIX_RE=0;GTEST_HAS_PTHREAD=0;GTEST_HAS_RTTI=0;GTEST_HAS_EXCEPTIONS=0;U_STATIC_IMPLEMENTATION=1;CROSS_COMPILE_TARGET;_WINDOWS;WIN32;TARGET_PLATFORM_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Fast|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(IntDir)src;$(IntDir)include;$(OutDir)obj\global_intermediate\src;$(OutDir)obj\global_intermediate\include;..\..\..\engine\include;..\..\..\engine\src;..\..\..\libcpptest\googletest\googletest\include;..\..\..\prebuilt\unpacked\icu\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\include;..\..\..\libfoundation\include;..\..\..\libgraphics\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <CompileAsWinRT>false</CompileAsWinRT>
+      <DebugInformationFormat></DebugInformationFormat>
+      <DisableSpecificWarnings>4577;4800;4244</DisableSpecificWarnings>
+      <ExceptionHandling>false</ExceptionHandling>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PreprocessorDefinitions>_RELEASE;NDEBUG;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_DISABLE_PERFCRIT_LOCKS;__LITTLE_ENDIAN__;WINVER=0x0601;_WIN32_WINNT=0x0601;MODE_SERVER;GTEST_HAS_POSIX_RE=0;GTEST_HAS_PTHREAD=0;GTEST_HAS_RTTI=0;GTEST_HAS_EXCEPTIONS=0;U_STATIC_IMPLEMENTATION=1;CROSS_COMPILE_TARGET;_WINDOWS;WIN32;TARGET_PLATFORM_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+    </ClCompile>
+    <Lib>
+      <AdditionalOptions>/MACHINE:x64 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+    <Link>
+      <AdditionalDependencies>comdlg32.lib;crypt32.lib;gdi32.lib;iphlpapi.lib;imm32.lib;mscms.lib;msimg32.lib;psapi.lib;ole32.lib;rpcrt4.lib;shell32.lib;shlwapi.lib;user32.lib;usp10.lib;version.lib;winmm.lib;winspool.lib;ws2_32.lib;oleaut32.lib;sicuin.lib;sicuio.lib;sicutu.lib;sicuuc.lib;sicudt.lib;advapi32.lib;libz.lib;libgif.lib;libpng.lib;libjpeg.lib;libskia.lib;libskia_opt_none.lib;libskia_opt_arm.lib;libskia_opt_sse2.lib;libskia_opt_sse3.lib;libskia_opt_sse41.lib;libskia_opt_sse42.lib;libskia_opt_avx.lib;libskia_opt_hsw.lib;libffi.lib;libcurl_a.lib;libeay32.lib;ssleay32.lib;libpcre.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\prebuilt\unpacked\icu\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\lib;..\..\..\prebuilt\unpacked\Thirdparty\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\lib;..\..\..\prebuilt\unpacked\curl\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\lib;..\..\..\prebuilt\unpacked\openssl\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/MACHINE:x64 %(AdditionalOptions)</AdditionalOptions>
+      <EnableCOMDATFolding></EnableCOMDATFolding>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <OptimizeReferences></OptimizeReferences>
+      <OutputFile>$(OutDir)$(ProjectName)$(TargetExt)</OutputFile>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>$(IntDir)src;$(IntDir)include;$(OutDir)obj\global_intermediate\src;$(OutDir)obj\global_intermediate\include;..\..\..\engine\include;..\..\..\engine\src;..\..\..\libcpptest\googletest\googletest\include;..\..\..\prebuilt\unpacked\icu\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\include;..\..\..\libfoundation\include;..\..\..\libgraphics\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_DISABLE_PERFCRIT_LOCKS;__LITTLE_ENDIAN__;WINVER=0x0601;_WIN32_WINNT=0x0601;MODE_SERVER;GTEST_HAS_POSIX_RE=0;GTEST_HAS_PTHREAD=0;GTEST_HAS_RTTI=0;GTEST_HAS_EXCEPTIONS=0;U_STATIC_IMPLEMENTATION=1;CROSS_COMPILE_TARGET;_WINDOWS;WIN32;TARGET_PLATFORM_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(IntDir)src;$(IntDir)include;$(OutDir)obj\global_intermediate\src;$(OutDir)obj\global_intermediate\include;..\..\..\engine\include;..\..\..\engine\src;..\..\..\libcpptest\googletest\googletest\include;..\..\..\prebuilt\unpacked\icu\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\include;..\..\..\libfoundation\include;..\..\..\libgraphics\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <CompileAsWinRT>false</CompileAsWinRT>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4577;4800;4244</DisableSpecificWarnings>
+      <ExceptionHandling>false</ExceptionHandling>
+      <Optimization>Full</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PreprocessorDefinitions>_RELEASE;NDEBUG;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_DISABLE_PERFCRIT_LOCKS;__LITTLE_ENDIAN__;WINVER=0x0601;_WIN32_WINNT=0x0601;MODE_SERVER;GTEST_HAS_POSIX_RE=0;GTEST_HAS_PTHREAD=0;GTEST_HAS_RTTI=0;GTEST_HAS_EXCEPTIONS=0;U_STATIC_IMPLEMENTATION=1;CROSS_COMPILE_TARGET;_WINDOWS;WIN32;TARGET_PLATFORM_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+    </ClCompile>
+    <Lib>
+      <AdditionalOptions>/MACHINE:x64 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+    <Link>
+      <AdditionalDependencies>comdlg32.lib;crypt32.lib;gdi32.lib;iphlpapi.lib;imm32.lib;mscms.lib;msimg32.lib;psapi.lib;ole32.lib;rpcrt4.lib;shell32.lib;shlwapi.lib;user32.lib;usp10.lib;version.lib;winmm.lib;winspool.lib;ws2_32.lib;oleaut32.lib;sicuin.lib;sicuio.lib;sicutu.lib;sicuuc.lib;sicudt.lib;advapi32.lib;libz.lib;libgif.lib;libpng.lib;libjpeg.lib;libskia.lib;libskia_opt_none.lib;libskia_opt_arm.lib;libskia_opt_sse2.lib;libskia_opt_sse3.lib;libskia_opt_sse41.lib;libskia_opt_sse42.lib;libskia_opt_avx.lib;libskia_opt_hsw.lib;libffi.lib;libcurl_a.lib;libeay32.lib;ssleay32.lib;libpcre.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\prebuilt\unpacked\icu\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\lib;..\..\..\prebuilt\unpacked\Thirdparty\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\lib;..\..\..\prebuilt\unpacked\curl\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\lib;..\..\..\prebuilt\unpacked\openssl\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/MACHINE:x64 %(AdditionalOptions)</AdditionalOptions>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <OptimizeReferences>true</OptimizeReferences>
+      <OutputFile>$(OutDir)$(ProjectName)$(TargetExt)</OutputFile>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>$(IntDir)src;$(IntDir)include;$(OutDir)obj\global_intermediate\src;$(OutDir)obj\global_intermediate\include;..\..\..\engine\include;..\..\..\engine\src;..\..\..\libcpptest\googletest\googletest\include;..\..\..\prebuilt\unpacked\icu\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\include;..\..\..\libfoundation\include;..\..\..\libgraphics\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_DISABLE_PERFCRIT_LOCKS;__LITTLE_ENDIAN__;WINVER=0x0601;_WIN32_WINNT=0x0601;MODE_SERVER;GTEST_HAS_POSIX_RE=0;GTEST_HAS_PTHREAD=0;GTEST_HAS_RTTI=0;GTEST_HAS_EXCEPTIONS=0;U_STATIC_IMPLEMENTATION=1;CROSS_COMPILE_TARGET;_WINDOWS;WIN32;TARGET_PLATFORM_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="..\..\..\engine\kernel-server.gyp"/>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\engine\src\stacksecurity.h"/>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\engine\test\test_lextable.cpp"/>
+    <ClCompile Include="..\..\..\engine\test\test_new.cpp"/>
+    <ClCompile Include="..\..\..\engine\test\test_rgb.cpp"/>
+    <ClCompile Include="..\..\..\engine\test\test_path.cpp"/>
+    <ClCompile Include="..\..\..\engine\src\stacksecurity.cpp"/>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\libcpptest\libcpptest.vcxproj">
+      <Project>{81321968-D5E0-9A55-8353-5932EF4657B7}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="kernel-server.vcxproj">
+      <Project>{70558F2B-09B9-0A14-8DC4-1EF19D4C2DC6}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\libfoundation\libFoundation.vcxproj">
+      <Project>{F633F641-E4CC-5138-896E-0180F3C9B617}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\libgraphics\libGraphics.vcxproj">
+      <Project>{79DEAC50-9728-6C1B-0BE1-6F7D3FBF0B92}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\prebuilt\libicu.vcxproj">
+      <Project>{CB15F5BD-272F-A896-ECF2-907E79B449D5}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\prebuilt\fetch.vcxproj">
+      <Project>{C5F87F95-76B2-B0D3-4C1A-DB981D564DAB}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\prebuilt\fetch-win.vcxproj">
+      <Project>{D95A7532-FDE1-73CC-EE5D-CD83586A809E}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\prebuilt\libicu_include.vcxproj">
+      <Project>{14D9A223-7706-C551-D4EC-A0097FF6CB8A}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\prebuilt\libicu_link.vcxproj">
+      <Project>{61C2B6DC-C974-6CE5-F579-FB133F9A9D73}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\prebuilt\encode_minimal_icu_data.vcxproj">
+      <Project>{E410C150-1D2C-A380-CD41-4EA4469974C9}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\prebuilt\minimal_icu_data.vcxproj">
+      <Project>{4F6EC370-3362-C623-9FA0-12C0D255216B}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\prebuilt\thirdparty_prebuilt_z.vcxproj">
+      <Project>{A3A05D5C-AAF0-621E-75CF-BEE6F5FA91D2}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\prebuilt\thirdparty_prebuilt_dep.vcxproj">
+      <Project>{AA91F23A-8CED-6630-016F-5179DB328B02}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\thirdparty\libffi\libffi.vcxproj">
+      <Project>{9A4BA89F-63AA-416C-0480-A05C62203301}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\prebuilt\thirdparty_prebuilt_gif.vcxproj">
+      <Project>{DF5EBB29-D1EE-6078-6B67-2332F912A133}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\prebuilt\thirdparty_prebuilt_png.vcxproj">
+      <Project>{E7624E09-97AB-8239-6E9F-8C4D6CC021DB}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\prebuilt\thirdparty_prebuilt_jpeg.vcxproj">
+      <Project>{FAC523E3-AF98-3FC5-A297-D1079A28229F}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\prebuilt\thirdparty_prebuilt_skia.vcxproj">
+      <Project>{431400B9-0C71-5BAF-49FA-F422F47DC97A}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\prebuilt\thirdparty_prebuilt_expat.vcxproj">
+      <Project>{7C8517CD-F621-3A83-9907-092A960B44C5}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\prebuilt\thirdparty_prebuilt_freetype.vcxproj">
+      <Project>{0F3F3F33-EF75-7BEB-C3D3-181210F1180B}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\prebuilt\thirdparty_prebuilt_fontconfig.vcxproj">
+      <Project>{B3C0818D-BA86-BADB-333E-BF94E22F6C30}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\libscript\libScript.vcxproj">
+      <Project>{2B1A893D-A239-246A-B966-9989ADCACF50}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\prebuilt\thirdparty_prebuilt_ffi.vcxproj">
+      <Project>{DF67B2F7-8AD9-E704-DE8B-8562252AB4C5}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\libscript\stdscript.vcxproj">
+      <Project>{3516EE70-AFD4-1F1E-5007-9061FB64F74E}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\prebuilt\libcurl.vcxproj">
+      <Project>{B546486A-3F79-A9D2-C827-1C1A9598DD7B}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\prebuilt\libopenssl.vcxproj">
+      <Project>{20BBA447-BA96-2B4C-DCB9-3C5AF33D6806}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\prebuilt\thirdparty_prebuilt_pcre.vcxproj">
+      <Project>{AFB559CB-5076-1BFD-B65E-0DB14BFB1CBC}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="quicktime_stubs.vcxproj">
+      <Project>{F811C770-B591-8678-63FC-1BE9BFB67332}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="engine_lcb_modules.vcxproj">
+      <Project>{BC79D647-8BE7-D07E-9653-E2C5CCA5189F}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\toolchain\lc-compile\lc-compile.vcxproj">
+      <Project>{7ECDEA91-D21D-BFBA-E75C-2909DBAC9502}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="encode_version.vcxproj">
+      <Project>{87A46A6F-758C-14A4-6150-E99A3DE69262}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\libbrowser\libbrowser.vcxproj">
+      <Project>{E33E6A67-4DC7-01E7-434A-0993B1C6403B}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\prebuilt\libcef.vcxproj">
+      <Project>{A85543CB-BD44-7C06-9CA6-50C886EBBB4B}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\thirdparty\libcef\libcef_library_wrapper.vcxproj">
+      <Project>{90249560-3763-BDB7-395D-2A41829F8C19}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\thirdparty\libcef\libcef_stubs.vcxproj">
+      <Project>{08D751A0-5C99-9176-29EE-CEAD662A70EC}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets"/>
+  <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.targets"/>
+  <ImportGroup Label="ExtensionTargets"/>
+</Project>

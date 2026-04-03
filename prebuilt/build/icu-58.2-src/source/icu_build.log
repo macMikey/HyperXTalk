@@ -1,0 +1,5 @@
+./runConfigureICU: line 6: $'\r': command not found
+./runConfigureICU: line 9: $'\r': command not found
+./runConfigureICU: line 12: $'\r': command not found
+./runConfigureICU: line 13: syntax error near unexpected token `$'\r''
+./runConfigureICU: line 13: `usage()'

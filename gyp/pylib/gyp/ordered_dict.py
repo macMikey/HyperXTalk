@@ -106,7 +106,7 @@ class OrderedDict(dict):
     def clear(self):
         'od.clear() -> None.  Remove all items from od.'
         try:
-            for node in self.__map.itervalues():
+            for node in self.__map.values():
                 del node[:]
             root = self.__root
             root[:] = [root, root, None]
@@ -153,7 +153,7 @@ class OrderedDict(dict):
         return [(key, self[key]) for key in self]
 
     def iterkeys(self):
-        'od.iterkeys() -> an iterator over the keys in od'
+        'od.keys() -> an iterator over the keys in od'
         return iter(self)
 
     def itervalues(self):

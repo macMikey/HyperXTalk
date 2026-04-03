@@ -5,10 +5,16 @@
 		'ms_speech_sdk4%': '$(foo)C:/Program Files/Microsoft Speech SDK',
 		'ms_speech_sdk5%': '$(foo)C:/Program Files/Microsoft Speech SDK 5.1',
 		
-		# Set if the Gyp step is being run on a Unix-like host (i.e not Windows)
-		'unix_configure%': '0',
+	# Set if the Gyp step is being run on a Unix-like host (i.e not Windows)
+	'unix_configure%': '0',
+	
+	# Uniform arch - used for output directory naming
+	'uniform_arch%': '<(target_arch)',
+	
+	'output_dir': '../win-<(uniform_arch)-bin',
 		
-		'output_dir': '../win-<(uniform_arch)-bin',
+		# Shared intermediate directory for generated files
+		'SHARED_INTERMEDIATE_DIR': '$(obj)/../shared_intermediate',
 	},
 	
 	'target_defaults':
@@ -23,7 +29,7 @@
 			'debug_info_suffix': '',
 
 			'silence_warnings': 0,
-			'msvs_compiler_version': "141",
+			'msvs_compiler_version': "145",
 		},
 		
 		# Don't assume a Cygwin environment when invoking actions

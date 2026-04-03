@@ -27,11 +27,11 @@ else:
             # is there a better method ?
             #
 #            else:
-#                print "libxslt could not guess RTLD_GLOBAL and RTLD_NOW " + \
+#                print("libxslt could not guess RTLD_GLOBAL and RTLD_NOW ") + \
 #                      "on this platform: %s" % (osname)
         except:
              pass
-#            print "libxslt could not guess RTLD_GLOBAL and RTLD_NOW " + \
+#            print("libxslt could not guess RTLD_GLOBAL and RTLD_NOW ") + \
 #                  "on this platform: %s" % (osname)
     except:
         RTLD_GLOBAL = -1

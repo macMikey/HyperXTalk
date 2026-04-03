@@ -433,7 +433,7 @@ def ConvertVCMacrosToMSBuild(s):
         '$(PlatformName)': '$(Platform)',
         '$(SafeInputName)': '%(Filename)',
     }
-    for old, new in replace_map.iteritems():
+    for old, new in replace_map.items():
       s = s.replace(old, new)
     s = FixVCMacroSlashes(s)
   return s
@@ -453,15 +453,15 @@ def ConvertToMSBuildSettings(msvs_settings, stderr=sys.stderr):
       dictionaries of settings and their values.
   """
   msbuild_settings = {}
-  for msvs_tool_name, msvs_tool_settings in msvs_settings.iteritems():
+  for msvs_tool_name, msvs_tool_settings in msvs_settings.items():
     if msvs_tool_name in _msvs_to_msbuild_converters:
       msvs_tool = _msvs_to_msbuild_converters[msvs_tool_name]
-      for msvs_setting, msvs_value in msvs_tool_settings.iteritems():
+      for msvs_setting, msvs_value in msvs_tool_settings.items():
         if msvs_setting in msvs_tool:
           # Invoke the translation function.
           try:
             msvs_tool[msvs_setting](msvs_value, msbuild_settings)
-          except ValueError, e:
+          except ValueError as e:
             print >> stderr, ('Warning: while converting %s/%s to MSBuild, '
                               '%s' % (msvs_tool_name, msvs_setting, e))
         else:
@@ -513,11 +513,11 @@ def _ValidateSettings(validators, settings, stderr):
   for tool_name in settings:
     if tool_name in validators:
       tool_validators = validators[tool_name]
-      for setting, value in settings[tool_name].iteritems():
+      for setting, value in settings[tool_name].items():
         if setting in tool_validators:
           try:
             tool_validators[setting](value)
-          except ValueError, e:
+          except ValueError as e:
             print >> stderr, ('Warning: for %s/%s, %s' %
                               (tool_name, setting, e))
         else:

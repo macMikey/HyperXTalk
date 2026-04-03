@@ -73,7 +73,7 @@ class XcodeArchsDefault(object):
             if arch not in expanded_archs:
               expanded_archs.append(arch)
         except KeyError as e:
-          print 'Warning: Ignoring unsupported variable "%s".' % variable
+          print('Warning: Ignoring unsupported variable "%s".') % variable
       elif arch not in expanded_archs:
         expanded_archs.append(arch)
     return expanded_archs
@@ -168,7 +168,7 @@ class XcodeSettings(object):
     # the same for all configs are implicitly per-target settings.
     self.xcode_settings = {}
     configs = spec['configurations']
-    for configname, config in configs.iteritems():
+    for configname, config in configs.items():
       self.xcode_settings[configname] = config.get('xcode_settings', {})
       self._ConvertConditionalKeys(configname)
       if self.xcode_settings[configname].get('IPHONEOS_DEPLOYMENT_TARGET',
@@ -194,7 +194,7 @@ class XcodeSettings(object):
           new_key = key.split("[")[0]
           settings[new_key] = settings[key]
       else:
-        print 'Warning: Conditional keys not implemented, ignoring:', \
+        print('Warning: Conditional keys not implemented, ignoring:'), \
               ' '.join(conditional_keys)
       del settings[key]
 
@@ -213,7 +213,7 @@ class XcodeSettings(object):
 
   def _WarnUnimplemented(self, test_key):
     if test_key in self._Settings():
-      print 'Warning: Ignoring not yet implemented key "%s".' % test_key
+      print('Warning: Ignoring not yet implemented key "%s".') % test_key
 
   def IsBinaryOutputFormat(self, configname):
     default = "binary" if self.isIOS else "xml"
@@ -868,7 +868,7 @@ class XcodeSettings(object):
         result = dict(self.xcode_settings[configname])
         first_pass = False
       else:
-        for key, value in self.xcode_settings[configname].iteritems():
+        for key, value in self.xcode_settings[configname].items():
           if key not in result:
             continue
           elif result[key] != value:
@@ -976,7 +976,7 @@ class XcodeSettings(object):
     unimpl = ['OTHER_CODE_SIGN_FLAGS']
     unimpl = set(unimpl) & set(self.xcode_settings[configname].keys())
     if unimpl:
-      print 'Warning: Some codesign keys not implemented, ignoring: %s' % (
+      print('Warning: Some codesign keys not implemented, ignoring: %s') % (
           ', '.join(sorted(unimpl)))
 
     return ['%s code-sign-bundle "%s" "%s" "%s" "%s"' % (
@@ -1583,10 +1583,10 @@ def _HasIOSTarget(targets):
 def _AddIOSDeviceConfigurations(targets):
   """Clone all targets and append -iphoneos to the name. Configure these targets
   to build for iOS devices and use correct architectures for those builds."""
-  for target_dict in targets.itervalues():
+  for target_dict in targets.values():
     toolset = target_dict['toolset']
     configs = target_dict['configurations']
-    for config_name, config_dict in dict(configs).iteritems():
+    for config_name, config_dict in dict(configs).items():
       iphoneos_config_dict = copy.deepcopy(config_dict)
       configs[config_name + '-iphoneos'] = iphoneos_config_dict
       configs[config_name + '-iphonesimulator'] = config_dict

@@ -131,8 +131,8 @@ def gen_stubs_file(pPaths):
 
 	tSignatureList.sort()
 	
-	print "cef ./Externals/CEF/libcef ./Externals/CEF/libcef ./Externals/CEF/libcef"
-	print "\n".join(tSignatureList)
+	print("cef ./Externals/CEF/libcef ./Externals/CEF/libcef ./Externals/CEF/libcef")
+	print("\n").join(tSignatureList)
 
 #get include folder from the command line
 tPaths = ["."]

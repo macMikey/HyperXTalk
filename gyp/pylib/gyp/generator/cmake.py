@@ -1102,11 +1102,11 @@ def PerformBuild(data, configurations, params):
                                               output_dir,
                                               config_name))
     arguments = ['cmake', '-G', 'Ninja']
-    print 'Generating [%s]: %s' % (config_name, arguments)
+    print('Generating [%s]: %s') % (config_name, arguments)
     subprocess.check_call(arguments, cwd=build_dir)
 
     arguments = ['ninja', '-C', build_dir]
-    print 'Building [%s]: %s' % (config_name, arguments)
+    print('Building [%s]: %s') % (config_name, arguments)
     subprocess.check_call(arguments)
 
 
@@ -1134,7 +1134,7 @@ def GenerateOutput(target_list, target_dicts, data, params):
           arglists.append((target_list, target_dicts, data,
                            params, config_name))
           pool.map(CallGenerateOutputForConfig, arglists)
-      except KeyboardInterrupt, e:
+      except KeyboardInterrupt as e:
         pool.terminate()
         raise e
     else:
