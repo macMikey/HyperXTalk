@@ -861,6 +861,10 @@ on revSBDefaultStandaloneSettings pStack, @xSettingsA
       if xSettingsA["Windows,iconFile"] = "" then put tName & "/genericapp.ico" into xSettingsA["Windows,iconFile"]
       if xSettingsA["Windows,documenticonFile"] = "" then put tName & "/genericdoc.ico" into xSettingsA["Windows,documenticonFile"]
    end if
+   // HXT
+   put revEnvironmentRuntimePath() & "/Mac OS X/arm64/Support/Sample Icons" into tName
+   if xSettingsA["OSX,iconFile"] = "" then put tName & "/GenericApplication.icns" into xSettingsA["OSX,iconFile"]
+   
    if xSettingsA["answerDialog"] = "" then put kAnswerDialog into xSettingsA["answerDialog"]
    if xSettingsA["cursors"] = "" then put kCursors into xSettingsA["cursors"]
    -- version
@@ -914,7 +918,7 @@ on revSBDefaultStandaloneSettings pStack, @xSettingsA
          put true into xSettingsA["MacOSX x86-64"]
       end if
    end if
-
+   
    -- Migration: if arm64 is now selected and x86-64 is also set (from old saved settings),
    -- clear x86-64 so we don't attempt to build both.  arm64 takes precedence on Apple Silicon.
    if xSettingsA["MacOSX arm64"] and xSettingsA["MacOSX x86-64"] then
