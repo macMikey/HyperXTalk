@@ -2482,7 +2482,7 @@ function revDBDriverPath pDriver, pPlatform, pArchitecture
    if tPlatform is "MacOSX" then
       put "Mac OS X" into tPlatform
       if pArchitecture is empty then
-         put "Universal" into pArchitecture
+         put "arm64" into pArchitecture
       end if
    end if
    
@@ -2571,22 +2571,23 @@ function revExternalPath pDriver, pPlatform, pArchitecture
    switch pPlatform
       case "MacOSX"
          if pArchitecture is empty then
-            put "Universal" into pArchitecture
+            // HXT put "Universal" into pArchitecture
+            put "arm64" into pArchitecture
          end if
          put revEnvironmentRuntimePath() & "/Mac OS X/" & pArchitecture & "/Externals/Externals.txt" into tEnvironmentFile
          put revEnvironmentUserRuntimePath() & "/Mac OS X/" & pArchitecture & "/Externals/Externals.txt" into tUserFile
-         put revEnvironmentUserRuntimePath() & "/Mac OS X/" & pArchitecture & "/Externals/Legacy/Externals.txt" into tLegacyFile
+         // HXT put revEnvironmentUserRuntimePath() & "/Mac OS X/" & pArchitecture & "/Externals/Legacy/Externals.txt" into tLegacyFile
          break
       case "Windows"
          put revEnvironmentRuntimePath() & "/Windows/" & pArchitecture & "/Externals/Externals.txt" into tEnvironmentFile
          put revEnvironmentUserRuntimePath() & "/Windows/" & pArchitecture & "/Externals/Externals.txt" into tUserFile
-         put revEnvironmentUserRuntimePath() & "/Windows/" & pArchitecture & "/Externals/Legacy/Externals.txt" into tLegacyFile
+         // HXT put revEnvironmentUserRuntimePath() & "/Windows/" & pArchitecture & "/Externals/Legacy/Externals.txt" into tLegacyFile
          break
          # OK-2007-08-14 : Linux support reinstated
       case "Linux"
          put revEnvironmentRuntimePath() & "/Linux/" & pArchitecture & "/Externals/Externals.txt" into tEnvironmentFile
          put revEnvironmentUserRuntimePath() & "/Linux/" & pArchitecture & "/Externals/Externals.txt" into tUserFile
-         put revEnvironmentUserRuntimePath() & "/Linux/" & pArchitecture & "/Externals/Legacy/Externals.txt" into tLegacyFile
+         // HXT put revEnvironmentUserRuntimePath() & "/Linux/" & pArchitecture & "/Externals/Legacy/Externals.txt" into tLegacyFile
          break
    end switch
    

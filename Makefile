@@ -475,6 +475,10 @@ package-mac-bin:
 	@# ----------------------------------------------------------------
 	@cp -R ide/Toolset/. "$(MACBIN_TOOLS)/Toolset/"
 	@# ----------------------------------------------------------------
+	@# Runtime: copy ide/Runtime to Tools/Runtime
+	@# ----------------------------------------------------------------
+	@[ -d "ide/Runtime" ] && cp -R "ide/Runtime/." "$(MACBIN_TOOLS)/Runtime/" || true
+	@# ----------------------------------------------------------------
 	@# Toolset libraries: IDE support scripts from ide-support/
 	@# ----------------------------------------------------------------
 	@for f in \

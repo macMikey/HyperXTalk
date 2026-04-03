@@ -142,39 +142,43 @@ function getExtensionHiliteList pExtensionData
             put tTitle is among the lines of tSettings["scriptLibraries"] or \ 
                   tTitle is among the lines of tSettings["externals"] into tShouldHilite
             
-            repeat for each item tItem in "ios,android"
-               if tSettings[tItem & ",include" && tId] then
-                  put true into tShouldHilite
-               end if
-            end repeat
+            // HXT
+            --            repeat for each item tItem in "ios,android"
+            --               if tSettings[tItem & ",include" && tId] then
+            --                  put true into tShouldHilite
+            --               end if
+            --            end repeat
             break
          case "inclusion"
             put tTitle is among the lines of tSettings["scriptLibraries"] or \
                   tSettings[tTitle] into tShouldHilite
             
-            repeat for each item tItem in "ios,android"
-               if tSettings[revSBInclusionToMobileKey(tTitle, "external", tItem)] then
-                  put true into tShouldHilite
-               end if
-            end repeat
+            // HXT
+            --            repeat for each item tItem in "ios,android"
+            --               if tSettings[revSBInclusionToMobileKey(tTitle, "external", tItem)] then
+            --                  put true into tShouldHilite
+            --               end if
+            --            end repeat
             break
          case "database driver"
             put tTitle is among the lines of tSettings["databaseDrivers"] into tShouldHilite
             
-            repeat for each item tItem in "ios,android"
-               if tSettings[revSBInclusionToMobileKey(tTitle, "database driver", tItem)] then
-                  put true into tShouldHilite
-               end if
-            end repeat
+            // HXT
+            --            repeat for each item tItem in "ios,android"
+            --               if tSettings[revSBInclusionToMobileKey(tTitle, "database driver", tItem)] then
+            --                  put true into tShouldHilite
+            --               end if
+            --            end repeat
             break
          case "resource"
             put tSettings[tID] into tShouldHilite
             
-            repeat for each item tItem in "ios,android"
-               if tSettings[revSBInclusionToMobileKey(tID, "external", tItem)] then
-                  put true into tShouldHilite
-               end if
-            end repeat
+            // HXT
+            --            repeat for each item tItem in "ios,android"
+            --               if tSettings[revSBInclusionToMobileKey(tID, "external", tItem)] then
+            --                  put true into tShouldHilite
+            --               end if
+            --            end repeat
             break
       end switch
       put tShouldHilite into tHiliteList[tIndex]

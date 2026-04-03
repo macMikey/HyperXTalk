@@ -425,7 +425,6 @@ private command revInternal__SetupPaths
    end if
    
    revInternal__Log "Message", "Tools Path = " & sToolsPath
-   // HyperXTalk revInternal__Log "Message", "Old Preferences Path = " & sOldPreferencesPath
    revInternal__Log "Message", "Preferences Path = " & sPreferencesPath
    revInternal__Log "Message", "Cache Path = " & sCachePath
    revInternal__Log "Message", "Crash Log Path = " & sCrashLogPath
@@ -2296,6 +2295,12 @@ private function revEnvironmentGuessRepositoryPath pEnginePath
    put "build-" & tPlatform & "-" & tProcessor into tBuildDir
    put tPlatform & "-" & tProcessor & "-bin" into tPackageDir
    put tPlatform & "-bin" into tAltPackageDir
+   
+   // HXT
+   revInternal__Log "Message", "tBuildDir = " & tBuildDir
+   revInternal__Log "Message", "tPackageDir = " & tPackageDir
+   revInternal__Log "Message", "tAltPackageDir = " & tAltPackageDir
+   revInternal__Log "Message", "pEnginePath = " & pEnginePath
    
    set the itemDelimiter to "/"
    if tBuildDir is among the items of pEnginePath then
