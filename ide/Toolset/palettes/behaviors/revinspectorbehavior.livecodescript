@@ -40,6 +40,8 @@ before openStack
    set the stackfiles of me to tStackFiles
    revIDEPopDefaultFolder
    put true into sStackIsInFront
+   
+   updateInspector
 end openStack
 
 on resizeInspector
@@ -752,3 +754,30 @@ on ideStyleTextRequest pWhich, pValue, pSelectedChunk, pSelectedObject
       end if
    end if
 end ideStyleTextRequest
+
+// revinspectorbehavior
+on updateInspector   
+   -- should this be coloured?
+   -- we attempt to set the card backgroundcolor (requested by Richmond 10-3-2025)
+   if the cInspectorBackgroundColor of stack "revPreferences" is not "" then
+      try
+         local tColValue
+         put the cInspectorBackgroundColor of stack "revPreferences" into tColValue
+         set the backgroundcolor of this stack to tColValue
+      catch e
+      end try
+   else
+      set the backgroundcolor of this stack to ""
+   end if
+end updateInspector
+
+// HXT
+on systemAppearanceChanged pMode, pWindowColor
+   set the cInspectorBackgroundColor of stack "revPreferences" to pWindowColor
+   set the backgroundColor of this stack to pWindowColor
+   if pMode is "dark" then
+      set the foreColor of me to "white"
+   else
+      set the foreColor of me to "black"
+   end if
+end systemAppearanceChanged

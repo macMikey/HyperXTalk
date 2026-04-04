@@ -265,15 +265,7 @@ on highlightObject pObjectData
    unlock screen
 end highlightObject
 
-// HXT
-on systemAppearanceChanged pMode, pWindowColor
-   set the backgroundColor of this stack to pWindowColor
-   if pMode is "dark" then
-      set the foreColor of me to "white"
-   else
-      set the foreColor of me to "black"
-   end if
-end systemAppearanceChanged
+
 
 // HXT
 on preOpenStack
