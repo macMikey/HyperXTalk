@@ -41,7 +41,7 @@ before openStack
    revIDEPopDefaultFolder
    put true into sStackIsInFront
    
-   updateInspector
+   set the backgroundColor of this stack to (the systemWindowColor)  // HXT
 end openStack
 
 on resizeInspector
@@ -754,22 +754,6 @@ on ideStyleTextRequest pWhich, pValue, pSelectedChunk, pSelectedObject
       end if
    end if
 end ideStyleTextRequest
-
-// revinspectorbehavior
-on updateInspector   
-   -- should this be coloured?
-   -- we attempt to set the card backgroundcolor (requested by Richmond 10-3-2025)
-   if the cInspectorBackgroundColor of stack "revPreferences" is not "" then
-      try
-         local tColValue
-         put the cInspectorBackgroundColor of stack "revPreferences" into tColValue
-         set the backgroundcolor of this stack to tColValue
-      catch e
-      end try
-   else
-      set the backgroundcolor of this stack to ""
-   end if
-end updateInspector
 
 // HXT
 on systemAppearanceChanged pMode, pWindowColor
