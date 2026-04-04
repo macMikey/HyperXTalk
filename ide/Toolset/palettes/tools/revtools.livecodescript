@@ -58,11 +58,7 @@ on openStack
    registerForMessages
    
    // HXT dark mode
-   if (the systemAppearance is "dark") then
-      set the backColor of me to "#323232"
-   else
-      set the backColor of me to "#ececec"
-   end if
+   set the backColor of me to (the systemWindowColor)
    
    set the visible of me to true
    unlock screen

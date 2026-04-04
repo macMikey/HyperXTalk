@@ -17,11 +17,11 @@ on preOpenStack
    layoutMenu
    revIDEPositionPalette the short name of me
    
+   // HXT
+   set the backColor of me to (the systemWindowColor)   
    if the systemAppearance is "dark" then
-      set the backColor of me to "#323232"
       set the foreColor of me to "white"
    else
-      set the backColor of me to "#ececec"
       set the foreColor of me to "black"
    end if
    

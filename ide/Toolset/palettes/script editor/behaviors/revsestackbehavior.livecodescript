@@ -2516,6 +2516,7 @@ end resumeStack
 # Description
 #   Sent when the script editor stack is opened. Initialises the stack...
 on preOpenStack pDontCheckTarget
+   set the backgroundColor of this stack to (the systemWindowColor)
    revSEInitialize pDontCheckTarget
 end preOpenStack
 
