@@ -1,4 +1,4 @@
-﻿script "com.livecode.pi.number.behavior"
+﻿script "com.livecode.pi.number.behavior" with behavior "revInspectorEditorBehavior"
 local sMax, sMin, sScrollbarFactor
 
 constant kFieldWidth = 100
@@ -164,14 +164,16 @@ on scrollbarLineInc
    if the visible of scrollbar "twiddle" of me is false then
       exit scrollbarLineInc
    end if
-   scrollbarValueChanged field 1 of me - the lineInc of scrollbar "twiddle" of me
+   --   scrollbarValueChanged field 1 of me - the lineInc of scrollbar "twiddle" of me  // HXT
+   scrollbarValueChanged field 1 of me + the lineInc of scrollbar "twiddle" of me
 end scrollbarLineInc
 
 on scrollbarLineDec
    if the visible of scrollbar "twiddle" of me is false then
       exit scrollbarLineDec
    end if
-   scrollbarValueChanged field 1 of me + the lineInc of scrollbar "twiddle" of me
+   --   scrollbarValueChanged field 1 of me + the lineInc of scrollbar "twiddle" of me  // HXT
+   scrollbarValueChanged field 1 of me - the lineInc of scrollbar "twiddle" of me
 end scrollbarLineDec
 
 on scrollbarValueChanged pValue
