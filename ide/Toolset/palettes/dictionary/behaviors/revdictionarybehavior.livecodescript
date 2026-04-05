@@ -22,7 +22,7 @@ on openStack
    lock screen
    --Force the browser to actually resize
    set the rect of widget "Dictionary" of me to 0,0,0,0
-   set the javascripthandlers of widget "Dictionary" of me to "linkClicked" // HyperXTalk & return & "showUpgradeOptions"
+   set the javascripthandlers of widget "Dictionary" of me to "linkClicked" // HXT & return & "showUpgradeOptions"
    set the width of me to tMinWidth
    set the minWidth of me to tMinWidth
    set the title of me to "Dictionary"

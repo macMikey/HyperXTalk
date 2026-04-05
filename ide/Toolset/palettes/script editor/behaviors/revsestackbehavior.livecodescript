@@ -2517,6 +2517,13 @@ end resumeStack
 #   Sent when the script editor stack is opened. Initialises the stack...
 on preOpenStack pDontCheckTarget
    set the backgroundColor of this stack to (the systemWindowColor)
+   if systemAppearance is "dark" then
+      set the backColor of field "Handlers" of group "Left Handler List" of group "Left Bar" of card "Main" of this stack to "black"
+      set the foreColor of field "Handlers" of group "Left Handler List" of group "Left Bar" of card "Main" of this stack to "white"
+   else
+      set the backColor of field "Handlers" of group "Left Handler List" of group "Left Bar" of card "Main" of this stack to "white"
+      set the foreColor of field "Handlers" of group "Left Handler List" of group "Left Bar" of card "Main" of this stack to "black"
+   end if
    revSEInitialize pDontCheckTarget
 end preOpenStack
 
@@ -2579,7 +2586,7 @@ command revSEInitialize pDontCheckTarget
    # On OS X, toplevel windows have a white background, which is both inconsistent with the rest of the IDE
    # and looks bad.
    if (the platform is "MacOS") then
-      set the backgroundColor of me to "236,236,236"
+      set the backgroundColor of me to (the systemWindowColor)
    end if
    
    actionResizeStack true
