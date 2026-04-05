@@ -38,7 +38,10 @@ on openStack
 end openStack
 
 on resizeStack
-   set the rect of widget "Dictionary" of me to the contentRect of me
+   --   set the rect of widget "Dictionary" of me to the contentRect of me  // HXT
+   local tDictionaryWidgetRect
+   put 0,0,the width of me, the height of me into tDictionaryWidgetRect
+   set the rect of widget "Dictionary" of me to tDictionaryWidgetRect
 end resizeStack
 
 on showAPIs
