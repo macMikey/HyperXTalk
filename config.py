@@ -26,6 +26,8 @@ import shutil
 BUILDBOT_PLATFORM_TRIPLES = (
     'x86-linux-debian8',
     'x86_64-linux-debian8',
+    'armv7l-linux-debian8',
+
     'armv7-android-ndk16r15',
     'arm64-android-ndk16r15',
     'x86-android-ndk16r15',
@@ -47,7 +49,7 @@ BUILDBOT_PLATFORM_TRIPLES = (
 )
 
 KNOWN_PLATFORMS = (
-    'linux-x86', 'linux-x86_64', 'linux-armv6hf', 'linux-armv7',
+    'linux-x86', 'linux-x86_64', 'linux-armv6hf', 'linux-armv7', 'linux-armv7l',
     'android-armv6', 'android-armv7', 'android-arm64', 'android-x86', 'android-x86_64',
     'mac', 'ios', 
     'win-x86', 'win-x86_64', 
@@ -152,8 +154,9 @@ def process_env_options(opts):
         'ANDROID_SDK', 'ANDROID_NDK', 'ANDROID_BUILD_TOOLS', 'LTO',
         'ANDROID_TOOLCHAIN_DIR', 'ANDROID_TOOLCHAIN', 'ANDROID_API_VERSION',
         'AR', 'CC', 'CXX', 'LINK', 'OBJCOPY', 'OBJDUMP',
-        'STRIP', 'JAVA_SDK', 'NODE_JS', 'BUILD_EDITION', 'CC_PREFIX', 'CROSS',
+        'STRIP', 'JAVA_SDK', 'JAVA_HOME', 'NODE_JS', 'BUILD_EDITION', 'CC_PREFIX', 'CROSS',
         'SYSROOT', 'AUX_SYSROOT', 'TRIPLE', 'MS_SPEECH_SDK5', 'QUICKTIME_SDK',
+        'BUILD_THIRDPARTY',
         )
     for v in vars:
         opts[v] = os.getenv(v)
@@ -252,7 +255,7 @@ def validate_platform(opts):
     if platform is None:
         platform = guess_platform()
     if platform is None:
-        error("Cannot guess platform; specify '--platform <n>-'")
+        error("Cannot guess platform; specify '--platform <name>-'")
 
     if not platform in KNOWN_PLATFORMS:
         error("Unrecognised platform: '{}'".format(platform))
@@ -274,11 +277,11 @@ def host_platform(opts):
     opts['HOST_PLATFORM'] = guess_platform()
 
 def guess_xcode_arch(target_sdk):
-    sdk, ver = re.match('^([^\d]*)(\d*)', target_sdk).groups()
+    sdk, ver = re.match('^([^\\d]*)(\\d*)', target_sdk).groups()
     if sdk == 'macosx':
         # ARM: return arm64 for Apple Silicon builds.
         # Previously this was hardcoded to 'x86_64'.
-        return 'arm64'
+        return 'x86_64'
     if sdk == 'iphoneos':
         if int(ver) < 8:
             return 'armv7'
@@ -401,15 +404,23 @@ def configure_toolchain(opts):
             opts[key] += ' -flto -ffunction-sections -fdata-sections -fuse-linker-plugin -fuse-ld=gold'
 
     # If cross-compiling, link libgcc and libstdc++ statically.
+    # This is done because the cross-compilers are likely to be different
+    # versions to those available on the target system.
     if opts['CROSS'] is True:
         for key in ('CC', 'CXX', 'LINK'):
             opts[key] += ' -static-libgcc -static-libstdc++'
 
+    # Append a --sysroot option for the compilers and linker
     if opts['SYSROOT'] is not None:
         for key in ('CC', 'CXX', 'LINK'):
             opts[key] += ' --sysroot="' + opts['SYSROOT'] + '"'
             opts[key] += ' -Wl,--sysroot,"' + opts['SYSROOT'] + '"'
 
+    # Configure an auxiliary sysroot, if one is specified.
+    #
+    # The -L options beginning '-L=/' are required to ensure the original
+    # sysroot gets searched before the auxiliary one. Similarly with
+    # -idirafter; these come after the sysroot include directories.
     if opts['AUX_SYSROOT'] is not None:
         for key in ('CC', 'CXX', 'LINK'):
             opts[key] += ' -idirafter "' + opts['AUX_SYSROOT'] + '/usr/include"'
@@ -429,6 +440,7 @@ def configure_toolchain(opts):
                 opts[key] += ' -Wl,-rpath-link,"' + opts['AUX_SYSROOT'] + '/lib/' + opts['TRIPLE'] + '"'
                 opts[key] += ' -Wl,-rpath-link,"' + opts['AUX_SYSROOT'] + '/usr/lib/' + opts['TRIPLE'] + '"'
 
+    # Add LD as an alias for LINK
     opts['LD'] = opts['LINK']
 
 ################################################################
@@ -441,6 +453,7 @@ def get_program_files_x86():
                                          'C:\\Program Files\\'))
 
 def guess_windows_perl():
+    # Check the PATH first
     if (any(os.access(os.path.join(p, 'perl.exe'), os.X_OK)
             for p in os.environ['PATH'].split(os.pathsep))):
         return 'perl.exe'
@@ -450,6 +463,7 @@ def guess_windows_perl():
         if os.access(perl, os.X_OK):
             return perl
 
+    # If this is running on a non-Windows platform, default to "perl"
     if platform.system() != 'windows':
         return 'perl'
 
@@ -478,6 +492,8 @@ def validate_windows_tools(opts):
         opts['QUICKTIME_SDK'] = guess_quicktime_sdk()
 
     if opts['WIN_MSVS_VERSION'] is None:
+        # TODO [2017-04-11]: This should be 2017, but it is not
+        # compatible with our gyp as is.
         opts['WIN_MSVS_VERSION'] = '2015'
 
 ################################################################
@@ -505,6 +521,8 @@ def validate_xcode_sdks(opts):
 # Android-specific options
 ################################################################
 
+# We suggest some symlinks for Android toolchain components in the
+# INSTALL-android.md file.  This checks if a directory is present
 def guess_android_tooldir(toolchain, name):
     if toolchain is None:
         dir = os.path.join(os.path.expanduser('~'), 'android', 'toolchain', name)
@@ -514,18 +532,23 @@ def guess_android_tooldir(toolchain, name):
         return dir
     return None
 
+# Attempt to guess the Android build tools version by looking for directories
+# in the SDK's build-tools subdirectory.  This is pretty fragile if someone
+# has (potentially?) multiple sets of build tools installed.
 def guess_android_build_tools(sdkdir):
     dirs = os.listdir(os.path.join(sdkdir, 'build-tools'))
     if len(dirs) == 1:
         return dirs[0]
     return None
 
+# Guess the standalone toolchain directory name.
 def guess_standalone_toolchain_dir_name(target_arch):
     if target_arch == 'armv6' or target_arch == 'armv7':
         return 'standalone-arm'
     else:
         return 'standalone-' + target_arch
 
+# Guess the triple to use for a given Android target architecture.
 def guess_android_triple(target_arch):
     if target_arch == 'armv6':
         return 'arm-linux-androideabi'
@@ -540,19 +563,24 @@ def guess_android_triple(target_arch):
     else:
         return target_arch
 
+# Guess the value to pass with the -march flag for Android builds.
 def guess_android_march(target_arch):
     if target_arch == 'armv7':
         return 'armv7-a'
     elif target_arch == 'arm64':
+        # The -march flag is not used for baseline arm64.
         return ''
     elif target_arch == 'x86':
         return 'i686'
     elif target_arch == 'x86_64':
+        # The -march flag is not used for baseline x86_64
         return ''
     return target_arch
 
+# Guess the prefix used on the compiler's name.
 def guess_compiler_prefix(target_arch):
     if target_arch == 'armv7':
+        # The ARMv7 triple is different from its compiler's prefix.
         triple = guess_android_triple('armv6')
     else:
         triple = guess_android_triple(target_arch)
@@ -560,13 +588,20 @@ def guess_compiler_prefix(target_arch):
         return ''
     return triple + '-'
 
+# Returns any extra C/C++ compiler flags required when targeting Android on the
+# given architecture.
 def android_extra_cflags(target_arch):
     if target_arch == 'armv7':
+        # The first three flags are required in order to guarantee ABI compatibility.
+        # Additionally, Google recommends generating thumb instructions on Android.
         return '-mfloat-abi=softfp -mfpu=vfpv3-d16 -Wl,--fix-cortex-a8 -mthumb'
     elif target_arch == 'armv6':
+        # Google recommends generating thumb instructions on Android.
         return '-mthumb'
     return ''
 
+# Returns any extra linker flags required when targeting Android on the given
+# architecture.
 def android_extra_ldflags(target_arch):
     if target_arch == 'armv7':
         return '-Wl,--fix-cortex-a8'
@@ -577,6 +612,7 @@ def validate_android_tools(opts):
         opts['ANDROID_NDK_VERSION'] = 'r15'
 
     ndk_ver = opts['ANDROID_NDK_VERSION']
+
     toolchain_dir = opts['ANDROID_TOOLCHAIN_DIR']
 
     if opts['ANDROID_NDK'] is None:
@@ -629,11 +665,14 @@ def validate_android_tools(opts):
     ldflags = android_extra_ldflags(target_arch)
 
     if opts['ANDROID_LIB_PATH'] is None:
-        dir = guess_standalone_toolchain_dir_name(opts['TARGET_ARCH'])
+        dir =guess_standalone_toolchain_dir_name(opts['TARGET_ARCH'])
         if dir is None:
             error('Android standalone toolchain not found for architecture {}'.format(opts['TARGET_ARCH']))
+
         opts['ANDROID_LIB_PATH'] = os.path.join(dir,triple,'lib')
 
+    # All Android builds use Clang and make a lot of noise about unused
+    # arguments (e.g. linker-specific arguments). Suppress them.
     cflags += ' -Qunused-arguments'
 
     if march != '':
@@ -687,7 +726,11 @@ def core_gyp_args(opts):
         args.append('-Dcross_compile=1')
 
     args.append('-Dbuild_edition=' + opts['BUILD_EDITION'])
+
     args.append('-Duniform_arch=' + opts['UNIFORM_ARCH'])
+
+    if opts['BUILD_THIRDPARTY'] is not None:
+        args.append('-Duse_prebuilt_thirdparty=0')
 
     return args
 
@@ -713,6 +756,9 @@ def configure_linux(opts):
     args = core_gyp_args(opts) + ['-Dtarget_arch=' + opts['TARGET_ARCH'],
                                   '-Djavahome=' + opts['JAVA_SDK']]
     exec_gyp(args + opts['GYP_OPTIONS'])
+
+def configure_rpi(opts):
+	configure_linux(opts)
 
 def configure_emscripten(opts):
     host_platform(opts)
@@ -746,9 +792,11 @@ def configure_win(opts):
     validate_target_arch(opts)
     validate_windows_tools(opts)
 
+    # Make sure we strictly enforce TARGET_ARCH being x86 or x86_64
     if opts['TARGET_ARCH'] != 'x86' and opts['TARGET_ARCH'] != 'x86_64':
         error("TARGET_ARCH must be x86 or x86_64")
 
+    # Map target_arch for gyp - x86_64 -> x64
     if opts['TARGET_ARCH'] == 'x86_64':
         opts['TARGET_ARCH'] = 'x64'
 
@@ -772,7 +820,7 @@ def configure_mac(opts):
     args = core_gyp_args(opts) + ['-Dtarget_sdk=' + opts['XCODE_TARGET_SDK'],
                                   '-Dhost_sdk=' + opts['XCODE_HOST_SDK'],
                                   '-Dtarget_arch=' + opts['TARGET_ARCH'],
-                                  '-Djavahome=' + opts['JAVA_SDK']]
+                                  '-Djavahome=' + opts['JAVA_HOME']]
     exec_gyp(args + opts['GYP_OPTIONS'])
 
 def configure_ios(opts):

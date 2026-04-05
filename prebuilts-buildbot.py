@@ -34,11 +34,10 @@ import uuid
 
 # LiveCode build configuration script
 import config
-#import fetch
 
 # The set of build tasks that this branch supports
 BUILDBOT_TARGETS = ('config', 'compile', 'bin-archive', 'bin-extract', 'prebuilts-upload')
-
+ 
 SKIP_EXIT_STATUS = 88
 
 def usage(exit_status):
@@ -78,7 +77,8 @@ def get_buildtype():
     return os.environ.get('BUILDTYPE', 'Debug')
 
 def get_build_edition():
-    return os.environ.get('BUILD_EDITION', 'community')
+    return os.environ.get('BUILD_EDITION', 'commercial')
+    #return os.environ.get('BUILD_EDITION', 'community')
 
 def check_target_triple():
     # Check that this branch can actually be built for the specified platform
@@ -174,7 +174,7 @@ def bin_archive(target):
 	print(' '.join(args))
 
 	exit_status = subprocess.call(args)
-	if exit_status == 0 and get_build_edition() == "commercial":
+	if 0 == exit_status and "commercial" == get_build_edition():
 		args = ["python", "../prebuilt/archive.py"] + format_target_params(*target)
 		print(' '.join(args))
 		exit_status = subprocess.call(args)
@@ -187,7 +187,7 @@ def do_bin_archive():
 
 def do_bin_extract():
 	exit_status = subprocess.call(['python', 'prebuilt/extract.py'])
-	if exit_status == 0 and get_build_edition() == "commercial":
+	if 0 == exit_status and "commercial" == get_build_edition():
 		args = ["python", "../prebuilt/extract.py"]
 		exit_status = subprocess.call(args)
 
@@ -231,12 +231,12 @@ def buildbot_task(target):
         return do_configure()
     elif target == 'compile':
         return do_compile()
-#    elif target == 'bin-archive':
-#        return do_bin_archive()
+    #elif target == 'bin-archive':
+        #return do_bin_archive()
     elif target == 'bin-extract':
         return do_bin_extract()
-#    elif target == 'prebuilts-upload':
-#        return do_prebuilts_upload()
+    #elif target == 'prebuilts-upload':
+        #return do_prebuilts_upload()
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:

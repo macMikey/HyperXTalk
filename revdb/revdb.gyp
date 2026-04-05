@@ -10,8 +10,8 @@
 		[
             'src/revdb.h',
             'src/revdbapi.h',
-            'src/database.h',
-            'src/dbcursor.h',
+#            'src/database.h',
+#            'src/dbcursor.h',
             'src/dbdriver.h',
             'src/iossupport.h',
             'src/osxsupport.h',
@@ -98,12 +98,15 @@
 			'dependencies':
 			[
 				'../libexternal/libexternal.gyp:libExternal',
-				'../prebuilt/thirdparty.gyp:thirdparty_prebuilt_mysql',
+				'../thirdparty/libmysql/libmysql.gyp:libmysql',
+				'../thirdparty/libopenssl/libopenssl.gyp:libopenssl_stubs',
+				'../thirdparty/libiodbc/libiodbc.gyp:libiodbc',
 			],
 			
 			'include_dirs':
 			[
 				'src',
+                '../thirdparty/libiodbc/include',
 			],
 			
 			'sources':
@@ -164,7 +167,8 @@
 			'dependencies':
 			[
 				'../libexternal/libexternal.gyp:libExternal',
-				'../prebuilt/thirdparty.gyp:thirdparty_prebuilt_mysql',
+				'../thirdparty/libmysql/libmysql.gyp:libmysql',
+				'../thirdparty/libopenssl/libopenssl.gyp:libopenssl_stubs',
 			],
 			
 			'include_dirs':
@@ -231,7 +235,7 @@
 					{
 						'dependencies':
 						[
-							'../prebuilt/thirdparty.gyp:thirdparty_prebuilt_iodbc',
+							'../thirdparty/libiodbc/libiodbc.gyp:libiodbc',
 						],
 					},
 					{
@@ -251,6 +255,7 @@
 			'include_dirs':
 			[
 				'src',
+                '../thirdparty/libiodbc/include',
 			],
 			
 			'sources':
@@ -295,7 +300,7 @@
 					{
 						'dependencies':
 						[
-							'../prebuilt/thirdparty.gyp:thirdparty_prebuilt_iodbc',
+							'../thirdparty/libiodbc/libiodbc.gyp:libiodbc',
 						],
 					},
 					{
@@ -367,12 +372,14 @@
 			'dependencies':
 			[
 				'../libexternal/libexternal.gyp:libExternal',
-				'../prebuilt/thirdparty.gyp:thirdparty_prebuilt_pq',
+				'../thirdparty/libopenssl/libopenssl.gyp:libopenssl_stubs',
+				'../thirdparty/libpq/libpq.gyp:libpq',
 			],
 			
 			'include_dirs':
 			[
 				'src',
+                '../thirdparty/libiodbc/include',
 			],
 			
 			'sources':
@@ -413,7 +420,8 @@
 			'dependencies':
 			[
 				'../libexternal/libexternal.gyp:libExternal',
-				'../prebuilt/thirdparty.gyp:thirdparty_prebuilt_pq',
+				'../thirdparty/libpq/libpq.gyp:libpq',
+				'../thirdparty/libopenssl/libopenssl.gyp:libopenssl_stubs',
 			],
 			
 			'include_dirs':
@@ -475,12 +483,13 @@
 			'dependencies':
 			[
 				'../libexternal/libexternal.gyp:libExternal',
-				'../prebuilt/thirdparty.gyp:thirdparty_prebuilt_sqlite',
+				'../thirdparty/libsqlite/libsqlite.gyp:libsqlite',
 			],
 			
 			'include_dirs':
 			[
 				'src',
+                '../thirdparty/libiodbc/include',
 			],
 			
 			'sources':
@@ -581,15 +590,9 @@
 			
 			'dependencies':
 			[
-				'../libcore/libcore.gyp:libCore',
 				'../libexternal/libexternal.gyp:libExternal',
-				'../prebuilt/thirdparty.gyp:thirdparty_prebuilt_sqlite',
+				'../thirdparty/libsqlite/libsqlite.gyp:libsqlite',
 			],
-			
-			'variables':
-			{
-				'server_mode': 1,
-			},
 			
 			'include_dirs':
 			[
@@ -700,6 +703,7 @@
 			'include_dirs':
 			[
 				'src',
+                '../thirdparty/libiodbc/include',
 			],
 			
 			'sources':

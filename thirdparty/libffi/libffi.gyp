@@ -42,6 +42,16 @@
 			'./include_linux/arm64',
 		],
 		
+		'libffi_public_headers_linux_armv6hf_dir':
+		[
+			'./include_linux/arm64',
+		],
+
+		'libffi_public_headers_linux_armv6_dir':
+		[
+			'./include_linux/arm64',
+		],
+
 		'libffi_public_headers_android_dir':
 		[
 			'./include_android',
@@ -124,6 +134,19 @@
 		],
 
 		'libffi_linux_arm_source_files':
+		[
+			'src/arm/ffi.c',
+			'src/arm/sysv.S',
+			'src/arm/trampoline.S',
+		],
+
+		'libffi_linux_arm64_source_files':
+		[
+			'src/aarch64/ffi.c',
+			'src/aarch64/sysv.S',
+		],
+
+		'libffi_linux_armv6hf_source_files':
 		[
 			'src/arm/ffi.c',
 			'src/arm/sysv.S',
@@ -295,6 +318,7 @@
 					},
 				],
 				[
+					# 32-bit linux build
 					'(toolset_os == "linux" or toolset_os == "android") and toolset_arch == "x86"',
 					{
 						'platform_include_dirs':
@@ -310,6 +334,7 @@
 					},
 				],
 				[
+					# 64-bit linux or android build
 					'(toolset_os == "linux" or toolset_os == "android") and toolset_arch == "x86_64"',
 					{
 						'platform_include_dirs':
@@ -325,6 +350,7 @@
 					},
 				],
 				[
+					# 32-bit linux or android build for arm processor
 					'toolset_os in ("linux", "android") and toolset_arch in ("armv6", "armv6hf", "armv7")',
 					{
 						'platform_include_dirs':
@@ -354,6 +380,7 @@
 					},
 				],
 				[
+					# 64-bit linux or android build for arm processor
 					'toolset_os in ("linux", "android") and toolset_arch == "arm64"',
 					{
 						'platform_include_dirs':

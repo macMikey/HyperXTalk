@@ -8,7 +8,7 @@ source "${BASEDIR}/scripts/platform.inc"
 echo "platform = ${PLATFORM}"
 source "${BASEDIR}/scripts/lib_versions.inc"
 echo "openssl version=${OpenSSL_VERSION}"
-echo "Thirdparty_LIBS_linux=${Thirdparty_LIBS_linux}"
+#echo "Thirdparty_LIBS_linux=${Thirdparty_LIBS_linux}"
 
 source "${BASEDIR}/scripts/util.inc"
 
@@ -215,9 +215,10 @@ EOF
 		CRYPTO_LIBS+="${INSTALL_DIR}/${NAME}/lib/libcrypto.a "
 		SSL_LIBS+="${INSTALL_DIR}/${NAME}/lib/libssl.a "
 	else
-		mkdir -p "${OUTPUT_DIR}/lib/${NAME}"
-        if [ ${OpenSSL_VERSION} == "1.1.1v" ] ; then
-    		cp "${INSTALL_DIR}/${NAME}/lib/libcrypto.a" "${OUTPUT_DIR}/lib/${NAME}/libcustomcrypto.a"
+ 		mkdir -p "${OUTPUT_DIR}/lib/${NAME}"
+#        if [ ${OpenSSL_VERSION} == "1.1.1v" ] ; then
+	    if [ -e "${INSTALL_DIR}/${NAME}/lib/libcrypto.a" ] ; then
+   		    cp "${INSTALL_DIR}/${NAME}/lib/libcrypto.a" "${OUTPUT_DIR}/lib/${NAME}/libcustomcrypto.a"
     		cp "${INSTALL_DIR}/${NAME}/lib/libssl.a" "${OUTPUT_DIR}/lib/${NAME}/libcustomssl.a"
         else
 		    cp "${INSTALL_DIR}/${NAME}/lib64/libcrypto.a" "${OUTPUT_DIR}/lib/${NAME}/libcustomcrypto.a"

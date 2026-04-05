@@ -809,9 +809,9 @@
    || (defined(__SUNPRO_C) && __SUNPRO_C >= 0x550) 
 #   define U_EXPORT __global
 /*#elif defined(__HP_aCC) || defined(__HP_cc)
-#   define U_EXPORT*/
+#   define U_EXPORT __declspec(dllexport)*/
 #elif defined(_MSC_VER)
-#   define U_EXPORT
+#   define U_EXPORT __declspec(dllexport)
 #else
 #   define U_EXPORT
 #endif
@@ -829,7 +829,7 @@
     /* Use the predefined value. */
 #elif defined(_MSC_VER)
     /* Windows needs to export/import data. */
-#   define U_IMPORT
+#   define U_IMPORT __declspec(dllimport)
 #else
 #   define U_IMPORT 
 #endif

@@ -1,3 +1,1 @@
-// Copyright (c) 2011 The Chromium Embedded Framework Authors. All rights
-// reserved. Use of this source code is governed by a BSD-style license that
-// can be found in the LICENSE file.
+/home/mwieder/Downloads/HyperXTalk/prebuilt/build/cef_binary_74.1.19+gb62bacf+chromium-74.0.3729.157_linux64/libcef_dll/wrapper/libcef_dll_wrapper2.cc

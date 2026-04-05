@@ -19,7 +19,7 @@
 		},
 
 		{
-			'target_name': 'HyperXTalk-all',
+			'target_name': 'LiveCode-all',
 			'type': 'none',
 			
 			'dependencies':
@@ -41,6 +41,20 @@
 			[
 				
 				[
+					'OS != "emscripten"',
+					{
+						'dependencies':
+						[
+							'thirdparty/libopenssl/libopenssl.gyp:revsecurity',
+							'revdb/revdb.gyp:external-revdb',
+							'revdb/revdb.gyp:dbmysql',
+							'revdb/revdb.gyp:dbsqlite',
+							'revxml/revxml.gyp:external-revxml',
+							'revzip/revzip.gyp:external-revzip',
+						],
+					},
+				],
+				[
 					'mobile == 0',
 					{
 						'dependencies':
@@ -54,7 +68,9 @@
 							'revbrowser/revbrowser.gyp:external-revbrowser',
 							'revdb/revdb.gyp:dbodbc',
 							'revdb/revdb.gyp:dbpostgresql',
-									'revspeech/revspeech.gyp:external-revspeech',
+							'revmobile/revmobile.gyp:external-revandroid',
+							'revmobile/revmobile.gyp:external-reviphone',
+							'revspeech/revspeech.gyp:external-revspeech',
 							
 							# Server externals
 							'revdb/revdb.gyp:external-revdb-server',
@@ -82,6 +98,34 @@
 							'revdb/revdb.gyp:dbsqlite-server',
 							'revxml/revxml.gyp:external-revxml-server',
 							'revzip/revzip.gyp:external-revzip-server',
+							'thirdparty/libopenssl/libopenssl.gyp:revsecurity',
+						],
+					},
+				],
+				[
+					'OS == "ios"',
+					{
+						'dependencies':
+						[
+							'engine/engine.gyp:ios-standalone-executable',
+						],
+					},
+				],
+				[
+					'OS != "emscripten"',
+					{
+						'dependencies':
+						[
+							'revpdfprinter/revpdfprinter.gyp:external-revpdfprinter',
+						],
+					},
+				],
+				[
+					'OS == "emscripten"',
+					{
+						'dependencies':
+						[
+							'engine/engine.gyp:javascriptify',
 						],
 					},
 				],
@@ -94,7 +138,7 @@
 			
 			'dependencies':
 			[
-				'HyperXTalk-all',
+				'LiveCode-all',
 			],
 			
 			'variables':
@@ -136,7 +180,7 @@
 			
 			'dependencies':
 			[
-				'HyperXTalk-all',
+				'LiveCode-all',
 				'debug-symbols',
 			],
 			
@@ -183,8 +227,8 @@
 				'thirdparty_libs_core':
 				[
 					'thirdparty/libffi/libffi.gyp:libffi',
+                    'thirdparty/libz/libz.gyp:libz',
 					'thirdparty/libpng/libpng.gyp:libpng',
-					'thirdparty/libz/libz.gyp:libz',
 					'thirdparty/libgif/libgif.gyp:libgif',
 					'thirdparty/libjpeg/libjpeg.gyp:libjpeg',
 					'thirdparty/libpcre/libpcre.gyp:libpcre',
@@ -237,6 +281,37 @@
 						[
 							'<@(thirdparty_libs_native)',
 							'<@(thirdparty_libs_desktop)',
+						],
+					},
+				],
+				[
+					'OS == "ios"',
+					{
+						'dependencies':
+						[
+							'<@(thirdparty_libs_native)',
+							'thirdparty/libcairo/libcairo.gyp:libcairo',
+						],
+					},
+				],
+				[
+					'OS == "android"',
+					{
+						'dependencies':
+						[
+							'<@(thirdparty_libs_native)',
+							'<@(thirdparty_libs_fonts)',
+							'thirdparty/libexpat/libexpat.gyp:libexpat',
+							'thirdparty/libcairo/libcairo.gyp:libcairo',
+						],
+					},
+				],
+				[
+					'OS == "emscripten"',
+					{
+						'dependencies':
+						[
+							'<@(thirdparty_libs_fonts)',
 						],
 					},
 				],

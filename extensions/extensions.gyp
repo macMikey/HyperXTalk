@@ -139,8 +139,12 @@
 			'sources':
 			[
 				'modules/widget-utils/widget-utils.lcb',
+				'modules/android-utils/android-utils.lcb',				
 				'modules/scriptitems/scriptitems.lcb',
 
+				'libraries/androidbgaudio/androidbgaudio.lcb',
+				'libraries/androidaudiorecorder/androidaudiorecorder.lcb',
+				'libraries/toast/toast.lcb',
 				'libraries/canvas/canvas.lcb',
 				'libraries/iconsvg/iconsvg.lcb',
 				'libraries/json/json.lcb',
@@ -150,8 +154,12 @@
 				'libraries/macstatusmenu/macstatusmenu.lcb',
 				'libraries/macOSAnimateResize/com.hyperxtalk.macosanimateresize.lcb',
 
+				'widgets/androidbutton/androidbutton.lcb',
+				'widgets/androidfield/androidfield.lcb',
+				'widgets/html5button/html5button.lcb',
 				'widgets/macbutton/macbutton.lcb',
 				'widgets/mactextfield/mactextfield.lcb',
+				'widgets/iosbutton/iosbutton.lcb',
 				'widgets/browser/browser.lcb',
 				#’widgets/chart/chart.lcb',
 				#'widgets/checkbox/checkbox.lcb',

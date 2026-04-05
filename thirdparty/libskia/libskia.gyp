@@ -9,7 +9,6 @@
 		'skia_include_dirs':
 		[
 			'include/android',
-			'include/animator',
 			'include/c',
 			'include/codec',
 			'include/config',
@@ -27,7 +26,6 @@
 			'include/views',
 			'include/xml',
 			'src/android',
-			'src/animator',
 			'src/c',
 			'src/codec',
 			'src/core',
@@ -47,6 +45,7 @@
 			'src/views',
 			'src/xml',
 			'src/xps',
+			'../libjpeg/src',
 		],
 
 		'skia_defines':
@@ -767,7 +766,7 @@
 				'src/animator/SkDisplayType.cpp',
 				'src/animator/SkDisplayTypes.cpp',
 				'src/animator/SkDisplayXMLParser.cpp',
-				'src/animator/SkDraw3D.h',
+				'src/animator/SkDraw3D.cpp',
 				'src/animator/SkDrawBitmap.cpp',
 				'src/animator/SkDrawBlur.cpp',
 				'src/animator/SkDrawClip.cpp',
@@ -799,7 +798,7 @@
 				'src/animator/SkMemberInfo.cpp',
 				'src/animator/SkOpArray.cpp',
 				'src/animator/SkOperandIterpolator.cpp',
-				'src/animator/SkPaintPart.h',
+				'src/animator/SkPaintPart.cpp',
 				'src/animator/SkParseSVGPath.cpp',
 				'src/animator/SkPathParts.cpp',
 				'src/animator/SkPostParts.cpp',
@@ -1722,11 +1721,8 @@
 				['exclude', '^src/codec/.*Codec.*\\.cpp$'],
 				['include', '^src/codec/SkCodec(ImageGenerator)?\\.cpp$'],
 				
-				# Disable animation scripting
-				['exclude', 'src/animator/SkScript'],
-				
-				# SkSnapshot doesn't build
-				['exclude', 'src/animator/SkSnapshot'],
+				# Disable unused and unsupported animator
+				['exclude', 'src/animator/*'],
 				
 				# Don't build XPS 
 				['exclude', '/xps/'],

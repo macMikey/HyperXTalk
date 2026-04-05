@@ -1,6 +1,64 @@
-/_build
-/_cache
-/mac-bin
+# Logs and databases #
+######################
+*.log
+*.sql
+*.sqlite
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+*.db
+
+# Projects and project setting files #
+#########################
+*.pbxuser
+*.perspectivev3
+*.xcworkspace
+*.xcworkspacedata
+xcuserdata/
+*.vcproj.*.user
+*.ncb
+*.suo
+*.mode1v3
+*.xcworkspacedata
+*.creator.user
+*.Makefile
+*.mk
+*.xcodeproj/*
+*.pbxproj
+*.vcproject
+*.vcxproject
+make-*_*/
+vsprojects/
+xcprojects/
+GPATH
+GRTAGS
+GTAGS
+
+# Build folders #
+#################
+_build/
+_cache/
+build/
+/_tests/
+*-bin/
+mac-bin
+build-*/
+docs/
+*.gn
+
+# Ignore prebuilts #
+###################
+prebuilt/lib
+prebuilt/bin
+prebuilt/share
+prebuilt/build
+prebuilt/fetched
 
 # Local secrets — never commit
 .env.local

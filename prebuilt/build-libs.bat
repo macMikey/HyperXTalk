@@ -42,6 +42,7 @@ REM
 
 REM # get the drive & path of the folder this script lives in
 REM # (note: ends with \ path delimiter)
+
 FOR /F "delims=" %%A IN ("%0") DO SET _TOOLS_DIR=%%~dpA
 
 SET _ROOT_DIR=%_TOOLS_DIR%build
@@ -71,10 +72,10 @@ IF NOT DEFINED TOOL (
 )
 
 REM Check variable values
-IF %ARCH%==x86 (
+IF x86==%ARCH% (
 	REM
 ) ELSE (
-	IF %ARCH%==x86_64 (
+	IF x86_64==%ARCH% (
 		REM
 	) ELSE (
 		ECHO ARCH variable must be x86 or x86_64
@@ -82,10 +83,10 @@ IF %ARCH%==x86 (
 	)
 )
 
-IF %MODE%==debug (
+IF debug==%MODE% (
 	REM
 ) ELSE (
-	IF %MODE%==release (
+	IF release==%MODE% (
 		REM
 	) ELSE (
 		ECHO MODE variable must be debug or release
@@ -95,14 +96,14 @@ IF %MODE%==debug (
 
 REM Compute the mode suffix - MD, MDd, MT, MTd - these correspond
 REM to the CRT options available: DLL, DLL debug, Static, Static debug.
-IF %MODE%==debug (
+IF debug==%MODE% (
 	SET CRT=static_debug
 ) ELSE (
 	SET CRT=static_release
 )
 
 REM If the TOOL version is 15, then the CRT version 141
-IF %TOOL%==15 (
+IF 15==%TOOL% (
 	SET TOOL_CRT=141
 ) ELSE (
 	SET TOOL_CRT=%TOOL%0
@@ -112,7 +113,7 @@ REM Set the suffix that should be used by all libraries
 SET BUILDTRIPLE=%ARCH%-win32-v%TOOL_CRT%_%CRT%
 
 REM Compute path to VS version
-IF %ARCH%==x86 (
+IF x86==%ARCH% (
 	SET ARCH_STRING=x86
 ) ELSE (
 	SET ARCH_STRING=amd64

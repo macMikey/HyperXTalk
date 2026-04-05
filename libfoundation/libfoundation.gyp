@@ -47,7 +47,7 @@
 			[
 				'../prebuilt/libicu.gyp:libicu',
 				'../prebuilt/libicu.gyp:encode_minimal_icu_data',
-                '../prebuilt/thirdparty.gyp:thirdparty_prebuilt_z',
+ 				'../thirdparty/libz/libz.gyp:libz',
 				'../thirdparty/libffi/libffi.gyp:libffi',
 			],
 			
@@ -121,7 +121,6 @@
 				'src/foundation-value.cpp',
 				'src/foundation-objc.mm',
 				'src/foundation-ffi-js.cpp',
-				'src/foundation-java-stubs.cpp',
 				'src/system-commandline.cpp',
 				'src/system-error.cpp',
 				'src/system-file.cpp',
@@ -237,22 +236,10 @@
                         ],
                     }
                 ],
-                [
-                    'OS != "android"',
-                    {
-                        'sources!':
-                        [
-                            'src/foundation-java.cpp',
-                            'src/foundation-java-private.cpp',
-                            'src/foundation-java-private.h',
-                        ],
-                    },
-                ],
                 
                 # Set java-related defines and includes
-                # Java/JNI support is only needed for Android targets; disable on mac desktop.
                 [
-					'host_os == "mac" and OS != "mac" and OS != "ios" and OS != "emscripten"',
+					'host_os == "mac" and OS != "ios" and OS != "emscripten"',
 					{
 						'defines':
 						[

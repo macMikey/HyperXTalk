@@ -47,6 +47,7 @@ readVersion libjpeg
 readVersion libpng
 readVersion libfreetype
 readVersion libcairo
+readVersion libiodbc
 
 #readVersion Thirdparty
 

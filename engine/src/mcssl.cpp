@@ -483,12 +483,12 @@ char *SSL_encode(Boolean isdecrypt, const char *ciphername,
 	//get new keylength in bytes
 	int4 curkeylength = EVP_CIPHER_CTX_key_length(*ctx);
 	//zero key and iv
-	memset(key,0,EVP_MAX_KEY_LENGTH);
-	memset(iv,0,EVP_MAX_IV_LENGTH);
+	memset((void *)key,0,EVP_MAX_KEY_LENGTH);
+	memset((void *)iv,0,EVP_MAX_IV_LENGTH);
 	//if password combine with salt value to generate key
 
 	unsigned char saltbuf[PKCS5_SALT_LEN];
-	memset(saltbuf,0,sizeof(saltbuf));
+	memset((void *)saltbuf,0,sizeof(saltbuf));
 
 	char *tend = (char *)data + inlen;
 
@@ -529,8 +529,8 @@ char *SSL_encode(Boolean isdecrypt, const char *ciphername,
 
 	if (ivstr != NULL && ivlen > 0)
 	{
-		memset(iv,0,EVP_MAX_IV_LENGTH);
-		memcpy(iv,ivstr,MCU_min(ivlen,EVP_MAX_IV_LENGTH));
+		memset((void *)iv,0,EVP_MAX_IV_LENGTH);
+		memcpy((void *)iv,ivstr,MCU_min(ivlen,EVP_MAX_IV_LENGTH));
 	}
 
 	
@@ -941,7 +941,7 @@ bool export_system_root_cert_stack(STACK_OF(X509) *&r_x509_stack)
 	CFArrayRef t_anchors = NULL;
 	STACK_OF(X509) *t_stack = NULL;
 	
-		t_success = noErr == SecTrustCopyAnchorCertificates(&t_anchors);
+	t_success = noErr == SecTrustCopyAnchorCertificates(&t_anchors);
 	
 	t_stack = sk_X509_new(NULL);
 	if (t_success)
@@ -953,15 +953,19 @@ bool export_system_root_cert_stack(STACK_OF(X509) *&r_x509_stack)
 			const unsigned char* t_data_ptr = NULL;
 			UInt32 t_data_len = 0;
 			
-			CFDataRef t_cert_data_ref = SecCertificateCopyData((SecCertificateRef)CFArrayGetValueAtIndex(t_anchors, i));
-			t_success = t_cert_data_ref != NULL;
+			CSSM_DATA t_cert_data;
+			t_success = noErr == SecCertificateGetData((SecCertificateRef)CFArrayGetValueAtIndex(t_anchors, i), &t_cert_data);
 			
 			if (t_success)
 			{
-				const unsigned char* t_cert_data_ptr = CFDataGetBytePtr(t_cert_data_ref);
-				CFIndex t_cert_data_len = CFDataGetLength(t_cert_data_ref);
-				t_success = NULL != (t_x509 = d2i_X509(NULL, &t_cert_data_ptr, t_cert_data_len));
-				CFRelease(t_cert_data_ref);
+#				const unsigned char* t_cert_data_ptr = CFDataGetBytePtr(t_cert_data_ref);
+#				CFIndex t_cert_data_len = CFDataGetLength(t_cert_data_ref);
+#				t_success = NULL != (t_x509 = d2i_X509(NULL, &t_cert_data_ptr, t_cert_data_len));
+#				CFRelease(t_cert_data_ref);
+
+				t_data_ptr = t_cert_data.Data;
+				t_data_len = t_cert_data.Length;
+				t_success = NULL != (t_x509 = d2i_X509(NULL, &t_data_ptr, t_data_len));
 			}
 			if (t_success)
 				t_success = 0 != sk_X509_push(t_stack, t_x509);

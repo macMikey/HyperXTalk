@@ -25,13 +25,13 @@
 						
 						'include_dirs':
 						[
-							'include',
+#							'include',
 							'src',
 						],
 						
 						'sources':
 						[
-							'include/gif_lib.h',
+							'src/gif_lib.h',
 							
 							'src/gif_hash.h',
 							'src/gif_lib_private.h',
@@ -50,7 +50,7 @@
 						{
 							'include_dirs':
 							[
-								'include',
+								'src',
 							],
 						},
 					},
