@@ -1,0 +1,7 @@
+*.bz2
+*.tgz
+*.gz
+lib/*
+share/*
+build/*
+xxx*

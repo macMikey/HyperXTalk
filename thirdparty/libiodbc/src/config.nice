@@ -1,0 +1,11 @@
+#!/bin/bash
+#
+# Created by configure for iODBC Driver Manager 3.52.15
+#
+
+SHELL='/bin/bash'
+export SHELL
+
+# configure
+/bin/bash "./configure" \
+"$@"

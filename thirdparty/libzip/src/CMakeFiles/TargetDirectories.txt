@@ -1,0 +1,3 @@
+/home/mwieder/livecode/thirdparty/libzip/lib/CMakeFiles/rebuild_cache.dir
+/home/mwieder/livecode/thirdparty/libzip/lib/CMakeFiles/edit_cache.dir
+/home/mwieder/livecode/thirdparty/libzip/lib/CMakeFiles/zip.dir
