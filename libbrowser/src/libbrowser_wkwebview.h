@@ -51,6 +51,7 @@ public:
 	virtual bool StopLoading();
 	virtual bool Reload();
 	virtual bool EvaluateJavaScript(const char *p_script, char *&r_result);
+	virtual bool SetAppearance(bool p_dark);
 
 	void SyncJavaScriptHandlers();
 

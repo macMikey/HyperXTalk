@@ -189,6 +189,9 @@ public:
 	virtual bool StopLoading() = 0;
 	virtual bool Reload() = 0;
 	virtual bool EvaluateJavaScript(const char *p_script, char *&r_result) = 0;
+
+	// Optional: set the browser's light/dark appearance. Default no-op returns true.
+	virtual bool SetAppearance(bool p_dark) { return true; }
 };
 
 // Browser factory interface
@@ -364,6 +367,7 @@ MC_BROWSER_DLLEXPORT bool MCBrowserLoadHTMLText(MCBrowserRef p_browser, const ch
 MC_BROWSER_DLLEXPORT bool MCBrowserStopLoading(MCBrowserRef p_browser);
 MC_BROWSER_DLLEXPORT bool MCBrowserReload(MCBrowserRef p_browser);
 MC_BROWSER_DLLEXPORT bool MCBrowserEvaluateJavaScript(MCBrowserRef p_browser, const char *p_script, char *&r_result);
+MC_BROWSER_DLLEXPORT bool MCBrowserSetAppearance(MCBrowserRef p_browser, bool p_dark);
 
 enum MCBrowserNavigationEventType
 {
