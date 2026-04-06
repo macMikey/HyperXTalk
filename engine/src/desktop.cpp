@@ -48,6 +48,7 @@
 // Weak fallbacks — overridden by the real implementations in mac-stubs-arm64.mm.
 extern "C" __attribute__((weak)) bool MCplatformIsDarkMode(void) { return false; }
 extern "C" __attribute__((weak)) void MCplatformGetWindowBackgroundColor(char *, size_t) {}
+extern "C" __attribute__((weak)) void MCplatformGetLabelColor(char *, size_t) {}
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -188,8 +189,10 @@ void MCPlatformHandleSystemAppearanceChanged(void)
     //   end systemAppearanceChanged
     char t_color_buf[8];
     MCplatformGetWindowBackgroundColor(t_color_buf, sizeof(t_color_buf));
+    char t_text_color_buf[8];
+    MCplatformGetLabelColor(t_text_color_buf, sizeof(t_text_color_buf));
     bool t_is_dark = MCplatformIsDarkMode();
-    
+
     // Send to all open stacks (not just the default stack)
     MCStacknode *t_stack_node = MCstacks->topnode();
     MCStacknode *t_first_node = t_stack_node;
@@ -200,11 +203,15 @@ void MCPlatformHandleSystemAppearanceChanged(void)
         {
             MCStringRef t_color_str;
             /* UNCHECKED */ MCStringCreateWithCString(t_color_buf, t_color_str);
+            MCStringRef t_text_color_str;
+            /* UNCHECKED */ MCStringCreateWithCString(t_text_color_buf, t_text_color_str);
             MCscreen->delaymessage(t_stack->getcurcard(),
                                      MCM_system_appearance_changed,
                                      t_is_dark ? MCSTR("dark") : MCSTR("light"),
-                                     t_color_str);
+                                     t_color_str,
+                                     t_text_color_str);
             MCValueRelease(t_color_str);
+            MCValueRelease(t_text_color_str);
         }
         t_stack_node = t_stack_node->next();
         // Stop when we loop back to the first node

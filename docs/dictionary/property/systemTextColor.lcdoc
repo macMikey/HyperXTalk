@@ -1,0 +1,27 @@
+Name: systemTextColor
+Type: property
+Syntax: get the systemTextColor
+
+Summary: Returns the current OS primary text color as a hex string.
+
+Value (string): The OS label/text color in the form `#rrggbb`, or empty on
+non-macOS (arm64) platforms.
+
+Description:
+The <systemTextColor> is a read-only property that returns the current
+operating system primary text color (equivalent to `NSColor.labelColor` on
+macOS) as a hex string in the form `#rrggbb`.
+
+The value automatically reflects the current light or dark appearance. On
+macOS in light mode this is typically near-black (`#000000`); in dark mode it
+is near-white (`#ececec`).
+
+On platforms other than macOS (arm64) the property returns empty.
+
+Example:
+on mouseUp
+    set the foreColor of field "body" to the systemTextColor
+end mouseUp
+
+References: systemAppearanceChanged (message), systemWindowColor (property),
+systemAppearance (property)

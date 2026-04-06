@@ -69,6 +69,30 @@ extern "C" void MCplatformGetWindowBackgroundColor(char *p_buf, size_t p_buflen)
     snprintf(p_buf, p_buflen, "#%02x%02x%02x", clamp(r), clamp(g), clamp(b));
 }
 
+// Returns the current labelColor (primary text colour) as a LiveCode-style hex
+// string ("#rrggbb") written into the caller-supplied buffer (at least 8 bytes).
+extern "C" void MCplatformGetLabelColor(char *p_buf, size_t p_buflen)
+{
+    if (p_buf == nullptr || p_buflen < 8)
+        return;
+
+    __block CGFloat r = 0.0, g = 0.0, b = 0.0;
+    [[NSApp effectiveAppearance] performAsCurrentDrawingAppearance:^{
+        NSColor *t_color =
+            [[NSColor labelColor]
+                colorUsingColorSpace:[NSColorSpace sRGBColorSpace]];
+        if (t_color != nil)
+        {
+            r = [t_color redComponent];
+            g = [t_color greenComponent];
+            b = [t_color blueComponent];
+        }
+    }];
+
+    auto clamp = ^(CGFloat v){ return (int)(v < 0.0 ? 0 : v > 1.0 ? 255 : v * 255.0 + 0.5); };
+    snprintf(p_buf, p_buflen, "#%02x%02x%02x", clamp(r), clamp(g), clamp(b));
+}
+
 // ── ARM64 MCThemeDrawInfo ───────────────────────────────────────────────
 // Replaces the Carbon/HITheme-based version in osxtheme.h (which is
 // excluded on ARM64).  Only drawwidget() and MCThemeDraw() in this file

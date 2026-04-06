@@ -1181,7 +1181,7 @@ size_t MCUIDC::doshiftmessage(size_t index, real8 newtime)
     return t_index;
 }
 
-void MCUIDC::delaymessage(MCObject *optr, MCNameRef mptr, MCStringRef p1, MCStringRef p2)
+void MCUIDC::delaymessage(MCObject *optr, MCNameRef mptr, MCStringRef p1, MCStringRef p2, MCStringRef p3)
 {
 	MCParameter *params = NULL;
 	if (p1 != NULL)
@@ -1192,9 +1192,14 @@ void MCUIDC::delaymessage(MCObject *optr, MCNameRef mptr, MCStringRef p1, MCStri
 		{
 			params->setnext(new MCParameter);
 			params->getnext()->setvalueref_argument(p2);
+			if (p3 != NULL)
+			{
+				params->getnext()->setnext(new MCParameter);
+				params->getnext()->getnext()->setvalueref_argument(p3);
+			}
 		}
 	}
-    
+
     doaddmessage(optr, mptr, MCS_time(), ++messageid, params);
 }
 
@@ -2047,6 +2052,11 @@ void MCUIDC::getsystemappearance(MCSystemAppearance &r_appearance)
 }
 
 void MCUIDC::getsystemwindowcolor(MCStringRef &r_color)
+{
+	r_color = MCValueRetain(kMCEmptyString);
+}
+
+void MCUIDC::getsystemtextcolor(MCStringRef &r_color)
 {
 	r_color = MCValueRetain(kMCEmptyString);
 }

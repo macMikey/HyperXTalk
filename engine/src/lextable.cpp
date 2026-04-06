@@ -1696,6 +1696,7 @@ const LT factor_table[] =
 		// IM-2013-12-04: [[ PixelScale ]] The "systemPixelScale" token
 		{"systempixelscale", TT_PROPERTY, P_SYSTEM_PIXEL_SCALE},
 		{"systemprintselector", TT_PROPERTY, P_SYSTEM_PS},
+		{"systemtextcolor", TT_PROPERTY, P_SYSTEM_TEXT_COLOR},
         {"systemversion", TT_FUNCTION, F_SYSTEM_VERSION},
         {"systemwindow", TT_PROPERTY, P_SYSTEM_WINDOW},
 		{"systemwindowcolor", TT_PROPERTY, P_SYSTEM_WINDOW_COLOR},

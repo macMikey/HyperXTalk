@@ -547,7 +547,7 @@ public:
 	virtual Boolean getmouse(uint2 button, Boolean& r_abort);
     virtual Boolean getmouseclick(uint2 button, Boolean& r_abort);
     virtual void addmessage(MCObject *optr, MCNameRef name, real8 time, MCParameter *params);
-    virtual void delaymessage(MCObject *optr, MCNameRef name, MCStringRef p1 = nil, MCStringRef p2 = nil);
+    virtual void delaymessage(MCObject *optr, MCNameRef name, MCStringRef p1 = nil, MCStringRef p2 = nil, MCStringRef p3 = nil);
 	
     // When called, all modal loops should be exited and control should return
     // to the main event loop. The intended use of this method is to prevent UI
@@ -663,6 +663,7 @@ public:
 	
 	virtual void getsystemappearance(MCSystemAppearance &r_appearance);
 	virtual void getsystemwindowcolor(MCStringRef &r_color);
+	virtual void getsystemtextcolor(MCStringRef &r_color);
 
     //
 

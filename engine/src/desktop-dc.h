@@ -145,6 +145,7 @@ public:
 	
 	virtual void getsystemappearance(MCSystemAppearance &r_appearance);
 	virtual void getsystemwindowcolor(MCStringRef &r_color);
+	virtual void getsystemtextcolor(MCStringRef &r_color);
 
 	//////////
 	

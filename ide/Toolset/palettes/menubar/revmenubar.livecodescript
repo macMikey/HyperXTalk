@@ -18,12 +18,8 @@ on preOpenStack
    revIDEPositionPalette the short name of me
    
    // HXT
-   set the backColor of me to (the systemWindowColor)   
-   if the systemAppearance is "dark" then
-      set the foreColor of me to "white"
-   else
-      set the foreColor of me to "black"
-   end if
+   set the backColor of me to (the systemWindowColor)
+   set the foregroundColor of me to (the systemTextColor)
    
    dispatch "revIDEPositionPaletteDefault" to stack "revIDElibrary" with "revMenubar"
    
@@ -3231,8 +3227,9 @@ on revMenubarHelpMenuPick pWhich
 end revMenubarHelpMenuPick
 
 // HXT
-on systemAppearanceChanged pMode, pWindowColor
+on systemAppearanceChanged pMode, pWindowColor, pTextColor
    set the backgroundColor of this stack to pWindowColor
+   set the foregroundColor of this stack to pTextColor
    local tDividerCounter
    put 1 into tDividerCounter
    repeat for each item tItem in revMenubarItems()
@@ -3253,9 +3250,4 @@ on systemAppearanceChanged pMode, pWindowColor
          set the visible of button (tItem & "-DM") of group "Toolbar" of me to tModeIsDark
       end if
    end repeat
-   if pMode is "dark" then
-      set the foreColor of me to "white"
-   else
-      set the foreColor of me to "black"
-   end if
 end systemAppearanceChanged

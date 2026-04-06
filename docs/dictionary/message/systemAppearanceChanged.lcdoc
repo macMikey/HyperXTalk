@@ -2,7 +2,7 @@ Name: systemAppearanceChanged
 
 Type: message
 
-Syntax: systemAppearanceChanged pMode, pWindowColor
+Syntax: systemAppearanceChanged pMode, pWindowColor, pTextColor
 
 Summary:
 Sent to the <current card> of the <defaultStack> when the <system appearance|systemAppearance>
@@ -24,17 +24,17 @@ pWindowColor:
 The current OS window background color as a hex string in the form `#rrggbb`. On platforms
 other than macOS (arm64), this parameter will be empty.
 
+pTextColor:
+The current OS primary text color (equivalent to `NSColor.labelColor`) as a hex string in
+the form `#rrggbb`. On platforms other than macOS (arm64), this parameter will be empty.
+
 Example:
-on systemAppearanceChanged pMode, pWindowColor
-    if pMode is "dark" then
-        set the backColor of me to "black"
-        set the foreColor of me to "white"
-    else
-        set the backColor of me to "white"
-        set the foreColor of me to "black"
-    end if
+on systemAppearanceChanged pMode, pWindowColor, pTextColor
     if pWindowColor is not empty then
         set the backColor of this stack to pWindowColor
+    end if
+    if pTextColor is not empty then
+        set the foreColor of this stack to pTextColor
     end if
 end systemAppearanceChanged
 
@@ -43,10 +43,14 @@ Handle the <systemAppearanceChanged> <message> if you need to change the color
 of objects when the application enters either light or dark mode.
 
 The <pWindowColor> parameter provides the OS window background color at the time
-of the change, as a hex color string (e.g. `#ececec`). This is the same value as
-<systemWindowColor> and is provided as a convenience so handlers do not need a
-separate `get the systemWindowColor` call. On platforms other than macOS (arm64)
-the parameter is empty.
+of the change. This is the same value as <systemWindowColor> and is provided as a
+convenience so handlers do not need a separate `get the systemWindowColor` call.
 
-References: systemAppearance (property), systemWindowColor (property), message (glossary), defaultStack (property)
+The <pTextColor> parameter provides the OS primary text color at the time of the
+change. This is the same value as <systemTextColor> and is provided as a
+convenience so handlers do not need a separate `get the systemTextColor` call.
+
+On platforms other than macOS (arm64) both color parameters are empty.
+
+References: systemAppearance (property), systemWindowColor (property), systemTextColor (property), message (glossary), defaultStack (property)
 

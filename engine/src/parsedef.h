@@ -1763,6 +1763,8 @@ enum Properties {
 
 	P_SYSTEM_WINDOW_COLOR,
 
+	P_SYSTEM_TEXT_COLOR,
+
     __P_LAST,
 };
 

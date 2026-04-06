@@ -951,6 +951,7 @@ void MCScreenDC::getsystemappearance(MCSystemAppearance &r_appearance)
 
 #if defined(_MACOSX) && (defined(__arm64__) || defined(__aarch64__))
 extern "C" void MCplatformGetWindowBackgroundColor(char *, size_t);
+extern "C" void MCplatformGetLabelColor(char *, size_t);
 #endif
 
 void MCScreenDC::getsystemwindowcolor(MCStringRef &r_color)
@@ -958,6 +959,17 @@ void MCScreenDC::getsystemwindowcolor(MCStringRef &r_color)
 #if defined(_MACOSX) && (defined(__arm64__) || defined(__aarch64__))
 	char t_buf[8] = "#ffffff";
 	MCplatformGetWindowBackgroundColor(t_buf, sizeof(t_buf));
+	/* UNCHECKED */ MCStringCreateWithCString(t_buf, r_color);
+#else
+	r_color = MCValueRetain(kMCEmptyString);
+#endif
+}
+
+void MCScreenDC::getsystemtextcolor(MCStringRef &r_color)
+{
+#if defined(_MACOSX) && (defined(__arm64__) || defined(__aarch64__))
+	char t_buf[8] = "#000000";
+	MCplatformGetLabelColor(t_buf, sizeof(t_buf));
 	/* UNCHECKED */ MCStringCreateWithCString(t_buf, r_color);
 #else
 	r_color = MCValueRetain(kMCEmptyString);

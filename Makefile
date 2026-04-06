@@ -428,6 +428,12 @@ MACBIN_TOOLS     = $(MACBIN_BUNDLE)/Contents/Tools
 MACBIN_SUPPORT   = $(MACBIN_BUNDLE)/Contents/Support
 MACBIN_RT_ARM64  = $(MACBIN_TOOLS)/Runtime/Mac OS X/arm64
 
+bump-revision:
+	@perl -i -pe 's/(BUILD_REVISION\s*=\s*)(\d+)/$$1.($$2+1)/e' version
+	@REV=$$(perl -ne 'print $$1 if /BUILD_REVISION\s*=\s*(\d+)/' version) && \
+	  PREV=$$REV perl -i -pe 's/(BUILD_LONG_VERSION\s*=\s*\d+\.\d+\.\d+\.)\d+/$$1.$$ENV{PREV}/e' version
+	@echo "Build revision is now $$(perl -ne 'print $$1 if /BUILD_REVISION\s*=\s*(\d+)/' version)"
+
 package-mac-bin:
 	@echo "=== Packaging $(MACBIN_BUNDLE) ==="
 	@# ----------------------------------------------------------------
