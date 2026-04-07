@@ -264,7 +264,7 @@ package-mac:
 	@# Toolset libraries: IDE support scripts from ide-support/
 	@# ----------------------------------------------------------------
 	@for f in \
-	    revsblibrary revsaveasstandalone; do \
+	    revsblibrary revsaveasstandalone revliburl; do \
 	  [ -f "ide-support/$$f.livecodescript" ] && \
 	    cp "ide-support/$$f.livecodescript" "$(TOOLS_DIR)/Toolset/libraries/" \
 	    || true; \
@@ -493,7 +493,7 @@ package-mac-bin:
 	@# Toolset libraries: IDE support scripts from ide-support/
 	@# ----------------------------------------------------------------
 	@for f in \
-	    revsblibrary revsaveasstandalone; do \
+	    revsblibrary revsaveasstandalone revliburl; do \
 	  [ -f "ide-support/$$f.livecodescript" ] && \
 	    cp "ide-support/$$f.livecodescript" "$(MACBIN_TOOLS)/Toolset/libraries/" \
 	    || true; \
