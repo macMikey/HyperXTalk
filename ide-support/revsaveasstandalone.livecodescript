@@ -284,6 +284,7 @@ command revDoSaveAsStandalone pStack, pFolder, pSettings, @xStandalonePaths
    
    local tError, tStandaloneFolder
    
+   /* HyperXTalk
    -- Don't build for any platform we are not licensed for
    local tRemoved
    put revSBRemoveUnlicensedTargetsFromSettings(sStandaloneSettingsA) into tRemoved
@@ -301,6 +302,7 @@ command revDoSaveAsStandalone pStack, pFolder, pSettings, @xStandalonePaths
    if tRemoved is not empty then
       revStandaloneAddWarning "Not licensed to build for the following selected platforms:" && tRemoved
    end if
+   */
    
    revStandaloneProgress "Preparing to build standalone..."
    
@@ -368,6 +370,7 @@ command revDoSaveAsStandalone pStack, pFolder, pSettings, @xStandalonePaths
          end if
          
          switch tPlatform
+            /* HyperXTalk
             case "iOS"
                if not (the platform begins with "MacOS") then
                   next repeat
@@ -386,6 +389,7 @@ command revDoSaveAsStandalone pStack, pFolder, pSettings, @xStandalonePaths
                dispatch "revSaveAsEmscriptenStandalone" to stack "revSaveAsEmscriptenStandalone" with \
                      pStack, xStandalonePaths[tPlatform], sStandaloneSettingsA, xStandalonePaths
                break
+            */
             case "MacOSX"
                revSaveAsMacStandalone pStack, tRestoreFileName, tTargetFolder, xStandalonePaths
                break
@@ -545,9 +549,11 @@ private on revStandalonePreBuild pStack, pFolder, pPlatform, pArchs, @rStackName
    set the itemdelimiter to "."
    put item -1 of tStackName into tExtension
    set the itemdelimiter to comma
+   /* HyperXTalk
    if tExtension is not among the items of revIDELiveCodeFileExtensions() then
       put ".livecode" after tStackName
    end if
+   */
    
    local tStackFileList
    revSBRelativeStackFilesList pStack, tStackFileList
@@ -574,6 +580,18 @@ private command revStandaloneCopyInclusions pStack, pStackFileList, pStackSource
    -- copy database drivers
    revCopyDatabaseDrivers pTarget, pStackSourceFile, pStandalonePath, pEngineSourceFile
    -- copy externals
+   // HXT
+   if (revEnvironmentIsInstalled()) AND (the platform = "macOS") then
+      local tExternalsFolder
+      set the itemDelimiter to "/"
+      put item 1 to -5 of pEngineSourceFile & "/Externals" into tExternalsFolder
+      revCopyModule "MacOSX", "revdb", "revdb.bundle", tExternalsFolder, pDirectory & "/Externals", "", TRUE
+      local tStackExternals
+      put the externals of stack pStack into tStackExternals
+      put LF & "Externals/revdb.bundle" after tStackExternals
+      filter tStackExternals without EMPTY
+      set the externals of stack pStack to tStackExternals
+   end if
    revCopyExternals pTarget, pStackSourceFile, pEngineSourceFile, pStandalonePath
    
    // IM-2015-10-14: [[ BrowserWidget ]] Copy CEF files needed for the browser widget.
@@ -715,7 +733,7 @@ command revSaveAsMacStandalone pStack, pRestoreFileName, pFolder, @xStandalonePa
       
       -- Ensure executable is at the expected location
       if there is not a file tEngineSourceFile then
-         throw "Standalone: Ensure that you have not renamed the main LiveCode executable file: " \
+         throw "Standalone: Ensure that you have not renamed the main HyperXTalk executable file: " \
                & return & tEngineSourceFile
       end if
       
@@ -2061,9 +2079,11 @@ private function revSaveToFolder pFolder, pStack, pGeneric
    # already contain ".rev". In this case, the stack ends up being called something.rev.rev,
    # and the standalone builder breaks further along because it makes assumptions about 
    # the stack's filename. I'm not 100% sure that this fix is correct...
+   /* HyperXTalk
    if not (tFileName ends with ".livecodescript" or tFileName ends with ".livecode" or tFileName ends with ".rev") then 
       put ".livecode" after tFileName
    end if
+   */
    lock screen
    // SN-2015-07-01: [[ Bug 15259 ]] We don't want the saving to be trapped by
    //  a saveStackRequest handler in the standalone stack
@@ -2155,8 +2175,7 @@ private command revCopyDatabaseDrivers pPlatform, pStackFilePath, pStandalonePat
    end if
    
    -- loop over drivers
-   repeat for each line tDriver in sStandaloneSettingsA["databaseDrivers"]
-      
+   repeat for each line tDriver in sStandaloneSettingsA["databaseDrivers"]      
       # OK-2010-01-13 : No Oracle support
       if tPlatform is "Linux" and tDriver is "Oracle" then
          revStandaloneAddWarning "Linux, Oracle is not currently supported on this platform"
@@ -2250,9 +2269,9 @@ private command revCopyModule pPlatform, pModuleName, pSourceFile, pSourceFolder
       if there is no folder tSourcePath then
          return "not found"
       end if
-      if there is a folder pStandaloneRoot & slash & pTargetFolder then
+      if there is a folder tTargetPath then
          return empty
-      end if 
+      end if
       revSBCopyFolderToDestination tSourcePath, pStandaloneRoot & slash & pTargetFolder, "revStandaloneProgressCallback", the long id of me, sStandaloneSettingsA
    else
       if there is no file tSourcePath then
@@ -2403,8 +2422,7 @@ private command revCopyExternals pPlatform, pStackFilePath, pEnginePath, pStanda
       put tExtension into tSharedExtension
    end if
    put tDetailsA["platform"] into tPlatform
-   put tDetailsA["architecture"] into tArch
-   
+   put tDetailsA["architecture"] into tArch   
    
    # OK-2010-04-26: Bug 8539 - PDF Printer not included
    if sStandaloneSettingsA["pdfPrinter"] then

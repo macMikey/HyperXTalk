@@ -10,6 +10,166 @@
 	<link href="[[tDocsCSSFolder]]/bootstrap.min.css" rel="stylesheet">
 	<link href="[[tDocsCSSFolder]]/lcdoc.css" rel="stylesheet">
 	<link href="[[tDocsCSSFolder]]/codestyle.css" rel="stylesheet">
+	<style>
+		/* ── Light/dark mode via CSS custom properties ── */
+		:root {
+			--bg:              #ffffff;
+			--bg-subtle:       #f5f5f5;
+			--bg-raised:       #ffffff;
+			--border:          #dddddd;
+			--text:            #333333;
+			--text-muted:      #777777;
+			--link:            #337ab7;
+			--navbar-bg:       #f8f8f8;
+			--navbar-border:   #e7e7e7;
+			--panel-head-bg:   #f5f5f5;
+			--input-bg:        #ffffff;
+			--input-border:    #cccccc;
+			--hover-bg:        #f5f5f5;
+			--dropdown-bg:     #ffffff;
+			--dropdown-border: #cccccc;
+			--scrollbar-thumb: #c1c1c1;
+		}
+
+		@media (prefers-color-scheme: dark) {
+			:root {
+				--bg:              #1e1e1e;
+				--bg-subtle:       #252526;
+				--bg-raised:       #2d2d30;
+				--border:          #3e3e42;
+				--text:            #d4d4d4;
+				--text-muted:      #858585;
+				--link:            #4da6ff;
+				--navbar-bg:       #252526;
+				--navbar-border:   #3e3e42;
+				--panel-head-bg:   #2d2d30;
+				--input-bg:        #3c3c3c;
+				--input-border:    #555555;
+				--hover-bg:        #2d2d30;
+				--dropdown-bg:     #2d2d30;
+				--dropdown-border: #3e3e42;
+				--scrollbar-thumb: #555555;
+			}
+		}
+
+		body {
+			background-color: var(--bg);
+			color: var(--text);
+		}
+
+		/* Navbar */
+		.navbar-default {
+			background-color: var(--navbar-bg);
+			border-color: var(--navbar-border);
+		}
+		.navbar-default .navbar-text,
+		.navbar-default .navbar-nav > li > a,
+		.navbar-default .navbar-nav > li > a:focus {
+			color: var(--text);
+		}
+		.navbar-default .navbar-nav > li > a:hover {
+			color: var(--text);
+			background-color: var(--hover-bg);
+		}
+		.navbar-default .navbar-form .form-control {
+			background-color: var(--input-bg);
+			border-color: var(--input-border);
+			color: var(--text);
+		}
+
+		/* Buttons */
+		.btn-default {
+			background-color: var(--bg-raised);
+			border-color: var(--border);
+			color: var(--text);
+		}
+		.btn-default:hover,
+		.btn-default:focus,
+		.btn-default:active,
+		.open > .dropdown-toggle.btn-default {
+			background-color: var(--hover-bg);
+			border-color: var(--border);
+			color: var(--text);
+		}
+
+		/* Panels */
+		.panel-default {
+			background-color: var(--bg-raised);
+			border-color: var(--border);
+		}
+		.panel-default > .panel-heading {
+			background-color: var(--panel-head-bg);
+			border-color: var(--border);
+			color: var(--text);
+		}
+		.panel-body {
+			background-color: var(--bg-raised);
+			color: var(--text);
+		}
+
+		/* Tables */
+		.table {
+			color: var(--text);
+		}
+		.table > thead > tr > th,
+		.table > tbody > tr > td {
+			border-color: var(--border);
+		}
+		.table-hover > tbody > tr:hover {
+			background-color: var(--hover-bg);
+		}
+
+		/* Forms */
+		.form-control {
+			background-color: var(--input-bg);
+			border-color: var(--input-border);
+			color: var(--text);
+		}
+		.form-control:focus {
+			background-color: var(--input-bg);
+			color: var(--text);
+		}
+		.form-control::placeholder {
+			color: var(--text-muted);
+		}
+
+		/* Dropdowns */
+		.dropdown-menu {
+			background-color: var(--dropdown-bg);
+			border-color: var(--dropdown-border);
+		}
+		.dropdown-menu > li > a {
+			color: var(--text);
+		}
+		.dropdown-menu > li > a:hover,
+		.dropdown-menu > li > a:focus {
+			background-color: var(--hover-bg);
+			color: var(--text);
+		}
+		.dropdown-menu .divider {
+			background-color: var(--border);
+		}
+
+		/* Links */
+		a { color: var(--link); }
+
+		/* Code blocks */
+		pre, code {
+			background-color: var(--bg-subtle);
+			border-color: var(--border);
+			color: var(--text);
+		}
+
+		/* Spacer below navbar */
+		#docs-spacer {
+			background-color: var(--bg);
+		}
+
+		/* Scrollbars (WebKit/WKWebView) */
+		::-webkit-scrollbar { width: 8px; height: 8px; }
+		::-webkit-scrollbar-track { background: var(--bg-subtle); }
+		::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 4px; }
+	</style>
 </head>
 <body>
 
@@ -68,7 +228,7 @@
 </nav>
 
 <div class="container-fluid bs-docs-container" >
-<div style="height:15px; z-index:200; background-color:#ffffff"></div>
+<div id="docs-spacer" style="height:15px; z-index:200;"></div>
 
 	<div class="row">
 		<div class="col-md-3">

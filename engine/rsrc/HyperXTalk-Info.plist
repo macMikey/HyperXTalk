@@ -49,6 +49,8 @@
 	<string>Revo</string>
 	<key>CFBundleVersion</key>
 	<string>$(BUILD_LONG_VERSION)</string>
+	<key>NSContactsUsageDescription</key>
+	<string>This app reads your contacts</string>
 	<key>CSResourcesFileMapped</key>
 	<true/>
 	<key>LFPrefersCarbon</key>

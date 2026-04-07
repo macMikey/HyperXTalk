@@ -52,6 +52,7 @@
   <handler name="OnTimer" parameters="" return="any"/>
   <handler name="OnOpen" parameters="" return="any"/>
   <handler name="OnClose" parameters="" return="any"/>
+  <handler name="OnSystemAppearanceChanged" parameters="in string,in string" return="any"/>
   <handler name="OnLaunchUrl" parameters="in string" return="any"/>
   <handler name="OnGoBack" parameters="" return="any"/>
   <handler name="OnGoForward" parameters="" return="any"/>

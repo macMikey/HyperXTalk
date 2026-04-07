@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Fast|x64">
+      <Configuration>Fast</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{8EA9BCF6-72DD-50B1-2469-5FA3DCB02CD3}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>lc-bootstrap-compile</RootNamespace>
+    <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props"/>
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Label="Locals">
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props"/>
+  <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.props"/>
+  <ImportGroup Label="ExtensionSettings">
+    <Import Project="lc-bootstrap-compile.props"/>
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props"/>
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros"/>
+  <PropertyGroup>
+    <ExecutablePath>$(ExecutablePath);$(MSBuildProjectDirectory)\..\..\..\..\..\toolchain\lc-compile\src\bin\;$(MSBuildProjectDirectory)\..\..\..\..\..\toolchain\lc-compile\src\bin\</ExecutablePath>
+    <IntDir>$(Configuration)\obj\$(ProjectName)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Fast|x64'"></LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <TargetName>lc-bootstrap-compile-target</TargetName>
+    <TargetPath>$(OutDir)\lc-bootstrap-compile-target$(TargetExt)</TargetPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\..\..\..\..\toolchain\lc-compile\src;..\..\..\..\..\prebuilt\unpacked\icu\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\include;..\..\..\..\..\toolchain\libcompile\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <CompileAsWinRT>false</CompileAsWinRT>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <DisableSpecificWarnings>4577;4800;4244</DisableSpecificWarnings>
+      <ExceptionHandling>false</ExceptionHandling>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PreprocessorDefinitions>_DEBUG;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_DISABLE_PERFCRIT_LOCKS;__LITTLE_ENDIAN__;WINVER=0x0601;_WIN32_WINNT=0x0601;inline=_inline;YY_NO_UNISTD_H=1;BOOTSTRAP;U_STATIC_IMPLEMENTATION=1;CROSS_COMPILE_TARGET;_WINDOWS;WIN32;TARGET_PLATFORM_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+    </ClCompile>
+    <Lib>
+      <AdditionalOptions>/MACHINE:x64 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+    <Link>
+      <AdditionalDependencies>oleaut32.lib;sicuin.lib;sicuio.lib;sicutu.lib;sicuuc.lib;sicudt.lib;advapi32.lib;libz.lib;libffi.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\..\..\prebuilt\unpacked\icu\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\lib;..\..\..\..\..\prebuilt\unpacked\Thirdparty\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/MACHINE:x64 %(AdditionalOptions)</AdditionalOptions>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <OptimizeReferences>true</OptimizeReferences>
+      <OutputFile>$(OutDir)lc-bootstrap-compile-target$(TargetExt)</OutputFile>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <StackReserveSize>0x04000000</StackReserveSize>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <MASM>
+      <WarningLevel>0</WarningLevel>
+    </MASM>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>..\..\..\..\..\toolchain\lc-compile\src;..\..\..\..\..\prebuilt\unpacked\icu\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\include;..\..\..\..\..\toolchain\libcompile\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_DISABLE_PERFCRIT_LOCKS;__LITTLE_ENDIAN__;WINVER=0x0601;_WIN32_WINNT=0x0601;inline=_inline;YY_NO_UNISTD_H=1;BOOTSTRAP;U_STATIC_IMPLEMENTATION=1;CROSS_COMPILE_TARGET;_WINDOWS;WIN32;TARGET_PLATFORM_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Fast|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\..\..\..\..\toolchain\lc-compile\src;..\..\..\..\..\prebuilt\unpacked\icu\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\include;..\..\..\..\..\toolchain\libcompile\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <CompileAsWinRT>false</CompileAsWinRT>
+      <DebugInformationFormat></DebugInformationFormat>
+      <DisableSpecificWarnings>4577;4800;4244</DisableSpecificWarnings>
+      <ExceptionHandling>false</ExceptionHandling>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PreprocessorDefinitions>_RELEASE;NDEBUG;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_DISABLE_PERFCRIT_LOCKS;__LITTLE_ENDIAN__;WINVER=0x0601;_WIN32_WINNT=0x0601;inline=_inline;YY_NO_UNISTD_H=1;BOOTSTRAP;U_STATIC_IMPLEMENTATION=1;CROSS_COMPILE_TARGET;_WINDOWS;WIN32;TARGET_PLATFORM_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+    </ClCompile>
+    <Lib>
+      <AdditionalOptions>/MACHINE:x64 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+    <Link>
+      <AdditionalDependencies>oleaut32.lib;sicuin.lib;sicuio.lib;sicutu.lib;sicuuc.lib;sicudt.lib;advapi32.lib;libz.lib;libffi.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\..\..\prebuilt\unpacked\icu\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\lib;..\..\..\..\..\prebuilt\unpacked\Thirdparty\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/MACHINE:x64 %(AdditionalOptions)</AdditionalOptions>
+      <EnableCOMDATFolding></EnableCOMDATFolding>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <OptimizeReferences></OptimizeReferences>
+      <OutputFile>$(OutDir)lc-bootstrap-compile-target$(TargetExt)</OutputFile>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <StackReserveSize>0x04000000</StackReserveSize>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <MASM>
+      <WarningLevel>0</WarningLevel>
+    </MASM>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>..\..\..\..\..\toolchain\lc-compile\src;..\..\..\..\..\prebuilt\unpacked\icu\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\include;..\..\..\..\..\toolchain\libcompile\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_DISABLE_PERFCRIT_LOCKS;__LITTLE_ENDIAN__;WINVER=0x0601;_WIN32_WINNT=0x0601;inline=_inline;YY_NO_UNISTD_H=1;BOOTSTRAP;U_STATIC_IMPLEMENTATION=1;CROSS_COMPILE_TARGET;_WINDOWS;WIN32;TARGET_PLATFORM_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\..\..\..\..\toolchain\lc-compile\src;..\..\..\..\..\prebuilt\unpacked\icu\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\include;..\..\..\..\..\toolchain\libcompile\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <CompileAsWinRT>false</CompileAsWinRT>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4577;4800;4244</DisableSpecificWarnings>
+      <ExceptionHandling>false</ExceptionHandling>
+      <Optimization>Full</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PreprocessorDefinitions>_RELEASE;NDEBUG;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_DISABLE_PERFCRIT_LOCKS;__LITTLE_ENDIAN__;WINVER=0x0601;_WIN32_WINNT=0x0601;inline=_inline;YY_NO_UNISTD_H=1;BOOTSTRAP;U_STATIC_IMPLEMENTATION=1;CROSS_COMPILE_TARGET;_WINDOWS;WIN32;TARGET_PLATFORM_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+    </ClCompile>
+    <Lib>
+      <AdditionalOptions>/MACHINE:x64 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+    <Link>
+      <AdditionalDependencies>oleaut32.lib;sicuin.lib;sicuio.lib;sicutu.lib;sicuuc.lib;sicudt.lib;advapi32.lib;libz.lib;libffi.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\..\..\prebuilt\unpacked\icu\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\lib;..\..\..\..\..\prebuilt\unpacked\Thirdparty\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/MACHINE:x64 %(AdditionalOptions)</AdditionalOptions>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <OptimizeReferences>true</OptimizeReferences>
+      <OutputFile>$(OutDir)lc-bootstrap-compile-target$(TargetExt)</OutputFile>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <StackReserveSize>0x04000000</StackReserveSize>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <MASM>
+      <WarningLevel>0</WarningLevel>
+    </MASM>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>..\..\..\..\..\toolchain\lc-compile\src;..\..\..\..\..\prebuilt\unpacked\icu\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\include;..\..\..\..\..\toolchain\libcompile\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_DISABLE_PERFCRIT_LOCKS;__LITTLE_ENDIAN__;WINVER=0x0601;_WIN32_WINNT=0x0601;inline=_inline;YY_NO_UNISTD_H=1;BOOTSTRAP;U_STATIC_IMPLEMENTATION=1;CROSS_COMPILE_TARGET;_WINDOWS;WIN32;TARGET_PLATFORM_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\..\toolchain\lc-compile\src\lc-compile-bootstrap.gyp"/>
+    <None Include="$(IntDir)\stage1\gen.lit">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(IntDir)\stage1\gen.tkn">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="..\..\..\..\..\toolchain\lc-compile\src\DOUBLE_LITERAL.t">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="..\..\..\..\..\toolchain\lc-compile\src\END_OF_UNIT.t">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="..\..\..\..\..\toolchain\lc-compile\src\ILLEGAL.b">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="..\..\..\..\..\toolchain\lc-compile\src\INTEGER_LITERAL.t">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="..\..\..\..\..\toolchain\lc-compile\src\LAYOUT.b">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="..\..\..\..\..\toolchain\lc-compile\src\LEXDEF.b">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="..\..\..\..\..\toolchain\lc-compile\src\LEXFUNC.b">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="..\..\..\..\..\toolchain\lc-compile\src\LITBLOCK.b">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="..\..\..\..\..\toolchain\lc-compile\src\NAME_LITERAL.t">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="..\..\..\..\..\toolchain\lc-compile\src\NEXT_UNIT.t">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="..\..\..\..\..\toolchain\lc-compile\src\SEPARATOR.t">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="..\..\..\..\..\toolchain\lc-compile\src\SETPOS.b">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="..\..\..\..\..\toolchain\lc-compile\src\STRING_LITERAL.t">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="..\..\..\..\..\toolchain\lc-compile\src\YYSTYPE.b">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="..\..\..\..\..\toolchain\lc-compile\src\YYWRAP.b">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(IntDir)\stage1\gen.h"/>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\toolchain\lc-compile\src\dummy.cpp"/>
+    <ClCompile Include="$(IntDir)\stage1\grammar.c"/>
+    <ClCompile Include="$(IntDir)\stage1\gen.l.c"/>
+    <ClCompile Include="$(IntDir)\stage1\gen.y.c"/>
+    <ClCompile Include="$(IntDir)\stage1\bind.c"/>
+    <ClCompile Include="$(IntDir)\stage1\check.c"/>
+    <ClCompile Include="$(IntDir)\stage1\generate.c"/>
+    <ClCompile Include="$(IntDir)\stage1\support.c"/>
+    <ClCompile Include="$(IntDir)\stage1\syntax.c"/>
+    <ClCompile Include="$(IntDir)\stage1\types.c"/>
+  </ItemGroup>
+  <ItemGroup>
+    <auxiliary_grammar Include="..\..\..\..\..\toolchain\lc-compile\src\bind.g"/>
+    <auxiliary_grammar Include="..\..\..\..\..\toolchain\lc-compile\src\check.g"/>
+    <auxiliary_grammar Include="..\..\..\..\..\toolchain\lc-compile\src\generate.g"/>
+    <auxiliary_grammar Include="..\..\..\..\..\toolchain\lc-compile\src\support.g"/>
+    <auxiliary_grammar Include="..\..\..\..\..\toolchain\lc-compile\src\syntax.g"/>
+    <auxiliary_grammar Include="..\..\..\..\..\toolchain\lc-compile\src\types.g"/>
+    <flex Include="$(IntDir)\stage1\gen.l"/>
+    <bison Include="$(IntDir)\stage1\gen.y"/>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\..\..\..\toolchain\lc-compile\src\grammar.g">
+      <FileType>Document</FileType>
+      <Command>call call $(OutDir)gentle-target.exe &quot;-inputdir&quot; &quot;..\..\..\..\..\toolchain\lc-compile\src&quot; &quot;..\..\..\..\..\toolchain\lc-compile\src\grammar.g&quot; &quot;..\..\..\..\..\toolchain\lc-compile\src\gen.lit=$(IntDir)stage1\gen.lit&quot; &quot;..\..\..\..\..\toolchain\lc-compile\src\gen.tkn=$(IntDir)stage1\gen.tkn&quot; &quot;..\..\..\..\..\toolchain\lc-compile\src\grammar.c=$(IntDir)stage1\grammar.c&quot; &quot;..\..\..\..\..\toolchain\lc-compile\src\gen.h=$(IntDir)stage1\gen.h&quot; &quot;..\..\..\..\..\toolchain\lc-compile\src\gen.y=$(IntDir)stage1\gen.y&quot;&#xD;&#xA;if %errorlevel% neq 0 exit /b %errorlevel%</Command>
+      <Message>Running gentle on bootstrap grammar</Message>
+      <Outputs>$(IntDir)\stage1\gen.lit;$(IntDir)\stage1\gen.tkn;$(IntDir)\stage1\grammar.c;$(IntDir)\stage1\gen.h;$(IntDir)\stage1\gen.y</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\..\toolchain\lc-compile\src\COMMENTS.b">
+      <FileType>Document</FileType>
+      <Command>call call $(OutDir)reflex-target.exe &quot;..\..\..\..\..\toolchain\lc-compile\src\COMMENTS.b&quot; &quot;..\..\..\..\..\toolchain\lc-compile\src\DOUBLE_LITERAL.t&quot; &quot;..\..\..\..\..\toolchain\lc-compile\src\END_OF_UNIT.t&quot; &quot;..\..\..\..\..\toolchain\lc-compile\src\ILLEGAL.b&quot; &quot;..\..\..\..\..\toolchain\lc-compile\src\INTEGER_LITERAL.t&quot; &quot;..\..\..\..\..\toolchain\lc-compile\src\LAYOUT.b&quot; &quot;..\..\..\..\..\toolchain\lc-compile\src\LEXDEF.b&quot; &quot;..\..\..\..\..\toolchain\lc-compile\src\LEXFUNC.b&quot; &quot;..\..\..\..\..\toolchain\lc-compile\src\LITBLOCK.b&quot; &quot;..\..\..\..\..\toolchain\lc-compile\src\NAME_LITERAL.t&quot; &quot;..\..\..\..\..\toolchain\lc-compile\src\NEXT_UNIT.t&quot; &quot;..\..\..\..\..\toolchain\lc-compile\src\SEPARATOR.t&quot; &quot;..\..\..\..\..\toolchain\lc-compile\src\SETPOS.b&quot; &quot;..\..\..\..\..\toolchain\lc-compile\src\STRING_LITERAL.t&quot; &quot;..\..\..\..\..\toolchain\lc-compile\src\YYSTYPE.b&quot; &quot;..\..\..\..\..\toolchain\lc-compile\src\YYWRAP.b&quot; &quot;..\..\..\..\..\toolchain\lc-compile\src\gen.lit=$(IntDir)stage1\gen.lit&quot; &quot;..\..\..\..\..\toolchain\lc-compile\src\gen.tkn=$(IntDir)stage1\gen.tkn&quot; &quot;..\..\..\..\..\toolchain\lc-compile\src\gen.l=$(IntDir)stage1\gen.l&quot;&#xD;&#xA;if %errorlevel% neq 0 exit /b %errorlevel%</Command>
+      <Message>Running reflex on bootstrap grammar</Message>
+      <Outputs>$(IntDir)\stage1\gen.l</Outputs>
+      <AdditionalInputs>..\..\..\..\..\toolchain\lc-compile\src\DOUBLE_LITERAL.t;..\..\..\..\..\toolchain\lc-compile\src\END_OF_UNIT.t;..\..\..\..\..\toolchain\lc-compile\src\ILLEGAL.b;..\..\..\..\..\toolchain\lc-compile\src\INTEGER_LITERAL.t;..\..\..\..\..\toolchain\lc-compile\src\LAYOUT.b;..\..\..\..\..\toolchain\lc-compile\src\LEXDEF.b;..\..\..\..\..\toolchain\lc-compile\src\LEXFUNC.b;..\..\..\..\..\toolchain\lc-compile\src\LITBLOCK.b;..\..\..\..\..\toolchain\lc-compile\src\NAME_LITERAL.t;..\..\..\..\..\toolchain\lc-compile\src\NEXT_UNIT.t;..\..\..\..\..\toolchain\lc-compile\src\SEPARATOR.t;..\..\..\..\..\toolchain\lc-compile\src\SETPOS.b;..\..\..\..\..\toolchain\lc-compile\src\STRING_LITERAL.t;..\..\..\..\..\toolchain\lc-compile\src\YYSTYPE.b;..\..\..\..\..\toolchain\lc-compile\src\YYWRAP.b;$(IntDir)\stage1\gen.lit;$(IntDir)\stage1\gen.tkn</AdditionalInputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\gentle\gentle\grts.vcxproj">
+      <Project>{3F4F393C-33D2-0138-5CB7-08713A25F756}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\libcompile\libcompile.vcxproj">
+      <Project>{643A8A1A-55D1-77EB-A2BE-93D89A787B39}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="lc-compile-lib.vcxproj">
+      <Project>{7DFFE416-16BB-1199-81D7-0B9E2C33A805}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\gentle\gentle\gentle.vcxproj">
+      <Project>{9E196A9D-A85D-6420-E7B9-672208B6B3E0}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\gentle\reflex\reflex.vcxproj">
+      <Project>{653A1853-B0B2-4550-1C53-D98B788DA940}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\libfoundation\libFoundation.vcxproj">
+      <Project>{F633F641-E4CC-5138-896E-0180F3C9B617}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\prebuilt\libicu.vcxproj">
+      <Project>{CB15F5BD-272F-A896-ECF2-907E79B449D5}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\prebuilt\fetch.vcxproj">
+      <Project>{C5F87F95-76B2-B0D3-4C1A-DB981D564DAB}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\prebuilt\fetch-win.vcxproj">
+      <Project>{D95A7532-FDE1-73CC-EE5D-CD83586A809E}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\prebuilt\libicu_include.vcxproj">
+      <Project>{14D9A223-7706-C551-D4EC-A0097FF6CB8A}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\prebuilt\libicu_link.vcxproj">
+      <Project>{61C2B6DC-C974-6CE5-F579-FB133F9A9D73}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\prebuilt\encode_minimal_icu_data.vcxproj">
+      <Project>{E410C150-1D2C-A380-CD41-4EA4469974C9}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\prebuilt\minimal_icu_data.vcxproj">
+      <Project>{4F6EC370-3362-C623-9FA0-12C0D255216B}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\prebuilt\thirdparty_prebuilt_z.vcxproj">
+      <Project>{A3A05D5C-AAF0-621E-75CF-BEE6F5FA91D2}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\prebuilt\thirdparty_prebuilt_dep.vcxproj">
+      <Project>{AA91F23A-8CED-6630-016F-5179DB328B02}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\thirdparty\libffi\libffi.vcxproj">
+      <Project>{9A4BA89F-63AA-416C-0480-A05C62203301}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\libscript\libScript.vcxproj">
+      <Project>{2B1A893D-A239-246A-B966-9989ADCACF50}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\prebuilt\thirdparty_prebuilt_ffi.vcxproj">
+      <Project>{DF67B2F7-8AD9-E704-DE8B-8562252AB4C5}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets"/>
+  <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.targets"/>
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="lc-bootstrap-compile.targets"/>
+  </ImportGroup>
+</Project>

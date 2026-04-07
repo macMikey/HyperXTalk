@@ -804,7 +804,7 @@ configure:13529: $? = 0
 configure:13529: result: yes
 configure:13529: checking for _dlopen
 configure:13529: gcc -o conftest -g -O2   conftest.c  -ldl >&5
-/usr/bin/ld: /tmp/cc6EkXwu.o: in function `main':
+/usr/bin/ld: /tmp/cc6TDW7d.o: in function `main':
 /home/mwieder/Downloads/HyperXTalk/prebuilt/build/libiodbc-3.52.15/conftest.c:77:(.text.startup+0xb): undefined reference to `_dlopen'
 collect2: error: ld returned 1 exit status
 configure:13529: $? = 1
@@ -917,7 +917,7 @@ configure:13675: $? = 0
 configure:13680: result: yes
 configure:13694: checking for shl_load
 configure:13694: gcc -o conftest -g -O2   conftest.c  -ldl >&5
-/usr/bin/ld: /tmp/ccerkkuS.o: in function `main':
+/usr/bin/ld: /tmp/ccp9bl5G.o: in function `main':
 /home/mwieder/Downloads/HyperXTalk/prebuilt/build/libiodbc-3.52.15/conftest.c:80:(.text.startup+0xb): undefined reference to `shl_load'
 collect2: error: ld returned 1 exit status
 configure:13694: $? = 1
@@ -1142,7 +1142,7 @@ configure: failed program was:
 configure:13783: result: no
 configure:13795: checking for NSCreateObjectFileImageFromFile
 configure:13795: gcc -o conftest -g -O2   conftest.c  -ldl >&5
-/usr/bin/ld: /tmp/ccEJoAvJ.o: in function `main':
+/usr/bin/ld: /tmp/ccME3ja0.o: in function `main':
 /home/mwieder/Downloads/HyperXTalk/prebuilt/build/libiodbc-3.52.15/conftest.c:80:(.text.startup+0xb): undefined reference to `NSCreateObjectFileImageFromFile'
 collect2: error: ld returned 1 exit status
 configure:13795: $? = 1

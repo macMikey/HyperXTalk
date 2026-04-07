@@ -1760,7 +1760,9 @@ enum Properties {
     P_LAYER_CLIP_RECT,
 	
 	P_SYSTEM_APPEARANCE,
-    
+
+	P_SYSTEM_WINDOW_COLOR,
+
     __P_LAST,
 };
 

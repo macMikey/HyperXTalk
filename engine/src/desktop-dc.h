@@ -144,7 +144,8 @@ public:
     virtual void hidecursoruntilmousemoves(void);
 	
 	virtual void getsystemappearance(MCSystemAppearance &r_appearance);
-	
+	virtual void getsystemwindowcolor(MCStringRef &r_color);
+
 	//////////
 	
 	bool isbackdrop(MCPlatformWindowRef window);

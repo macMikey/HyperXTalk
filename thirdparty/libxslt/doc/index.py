@@ -123,12 +123,12 @@ def createTable(db, name):
 
     ret = c.execute("DROP TABLE IF EXISTS %s" % (name))
     if ret == 1:
-        print "Removed table %s" % (name)
-    print "Creating table %s" % (name)
+        print("Removed table %s") % (name)
+    print("Creating table %s") % (name)
     try:
         ret = c.execute(TABLES[name])
     except:
-        print "Failed to create table %s" % (name)
+        print("Failed to create table %s") % (name)
 	return -1
     return ret
 
@@ -139,7 +139,7 @@ def checkTables(db):
         return -1
     c = db.cursor()
     nbtables = c.execute("show tables")
-    print "Found %d tables" % (nbtables)
+    print("Found %d tables") % (nbtables)
     tables = {}
     i = 0
     while i < nbtables:
@@ -150,20 +150,20 @@ def checkTables(db):
 
     for table in TABLES.keys():
         if not tables.has_key(table):
-	    print "table %s missing" % (table)
+	    print("table %s missing") % (table)
 	    createTable(db, table)
 	try:
 	    ret = c.execute("SELECT count(*) from %s" % table);
 	    row = c.fetchone()
-	    print "Table %s contains %d records" % (table, row[0])
+	    print("Table %s contains %d records") % (table, row[0])
 	except:
-	    print "Troubles with table %s : repairing" % (table)
+	    print("Troubles with table %s : repairing") % (table)
 	    ret = c.execute("repair table %s" % table);
-	    print "repairing returned %d" % (ret)
+	    print("repairing returned %d") % (ret)
 	    ret = c.execute("SELECT count(*) from %s" % table);
 	    row = c.fetchone()
-	    print "Table %s contains %d records" % (table, row[0])
-    print "checkTables finished"
+	    print("Table %s contains %d records") % (table, row[0])
+    print("checkTables finished")
 
     # make sure apache can access the tables read-only
     try:
@@ -180,7 +180,7 @@ def openMySQL(db="xmlsoft", passwd=None):
         try:
 	    passwd = os.environ["MySQL_PASS"]
 	except:
-	    print "No password available, set environment MySQL_PASS"
+	    print("No password available, set environment MySQL_PASS")
 	    sys.exit(1)
 
     DB = MySQLdb.connect(passwd=passwd, db=db)
@@ -212,8 +212,8 @@ def updateWord(name, symbol, relevance):
     """UPDATE XSLTwords SET relevance = %d where name = '%s' and symbol = '%s'""" %
 		    (relevance, name, symbol))
 	except:
-	    print "Update word (%s, %s, %s) failed command" % (name, symbol, relevance)
-	    print "UPDATE XSLTwords SET relevance = %d where name = '%s' and symbol = '%s'" % (relevance, name, symbol)
+	    print("Update word (%s, %s, %s) failed command") % (name, symbol, relevance)
+	    print("UPDATE XSLTwords SET relevance = %d where name = '%s' and symbol = '%s'") % (relevance, name, symbol)
 	    print sys.exc_type, sys.exc_value
 	    return -1
 	     
@@ -253,8 +253,8 @@ def updateSymbol(name, module, type, desc):
 """UPDATE XSLTsymbols SET module='%s', type='%s', descr='%s' where name='%s'""" %
                     (module, type, desc, name))
         except:
-	    print "Update symbol (%s, %s, %s) failed command" % (name, module, type)
-	    print """UPDATE XSLTsymbols SET module='%s', type='%s', descr='%s' where name='%s'""" % (module, type, desc, name)
+	    print("Update symbol (%s, %s, %s) failed command") % (name, module, type)
+	    print("")"UPDATE XSLTsymbols SET module='%s', type='%s', descr='%s' where name='%s'""" % (module, type, desc, name)
 	    print sys.exc_type, sys.exc_value
 	    return -1
 	     
@@ -302,8 +302,8 @@ def addPage(resource, title):
 		"""UPDATE XSLTpages SET title='%s' WHERE resource='%s'""" %
                     (title, resource))
         except:
-	    print "Update symbol (%s, %s, %s) failed command" % (name, module, type)
-	    print """UPDATE XSLTpages SET title='%s' WHERE resource='%s'""" % (title, resource)
+	    print("Update symbol (%s, %s, %s) failed command") % (name, module, type)
+	    print("")"UPDATE XSLTpages SET title='%s' WHERE resource='%s'""" % (title, resource)
 	    print sys.exc_type, sys.exc_value
 	    return -1
 	     
@@ -342,8 +342,8 @@ def updateWordHTML(name, resource, desc, id, relevance):
 """UPDATE XSLTwordsHTML SET section='%s', id='%s', relevance='%d' where name='%s' and resource='%s'""" %
                     (desc, id, relevance, name, resource))
         except:
-	    print "Update symbol (%s, %s, %d) failed command" % (name, resource, relevance)
-	    print """UPDATE XSLTwordsHTML SET section='%s', id='%s', relevance='%d' where name='%s' and resource='%s'""" % (desc, id, relevance, name, resource)
+	    print("Update symbol (%s, %s, %d) failed command") % (name, resource, relevance)
+	    print("")"UPDATE XSLTwordsHTML SET section='%s', id='%s', relevance='%d' where name='%s' and resource='%s'""" % (desc, id, relevance, name, resource)
 	    print sys.exc_type, sys.exc_value
 	    return -1
 	     
@@ -394,10 +394,10 @@ def addXMLMsgArchive(url, title):
         ret = c.execute(cmd)
 	row = c.fetchone()
 	if row == None:
-	    print "addXMLMsgArchive failed to get the ID: %s" % (url)
+	    print("addXMLMsgArchive failed to get the ID: %s") % (url)
 	    return -1
     except:
-        print "addXMLMsgArchive failed command: %s" % (cmd)
+        print("addXMLMsgArchive failed command: %s") % (cmd)
 	return -1
 	     
     return((int)(row[0]))
@@ -425,8 +425,8 @@ def updateWordArchive(name, id, relevance):
 """UPDATE XSLTwordsArchive SET relevance='%d' where name='%s' and ID='%d'""" %
                     (relevance, name, id))
         except:
-	    print "Update word archive (%s, %d, %d) failed command" % (name, id, relevance)
-	    print """UPDATE XSLTwordsArchive SET relevance='%d' where name='%s' and ID='%d'""" % (relevance, name, id)
+	    print("Update word archive (%s, %d, %d) failed command") % (name, id, relevance)
+	    print("")"UPDATE XSLTwordsArchive SET relevance='%d' where name='%s' and ID='%d'""" % (relevance, name, id)
 	    print sys.exc_type, sys.exc_value
 	    return -1
 	     
@@ -572,7 +572,7 @@ def addWordHTML(word, resource, id, section, relevance):
     if wordsDictHTML.has_key(word):
         d = wordsDictHTML[word]
 	if d == None:
-	    print "skipped %s" % (word)
+	    print("skipped %s") % (word)
 	    return 0
 	try:
 	    (r,i,s) = d[resource]
@@ -600,10 +600,10 @@ def addStringHTML(str, resource, id, section, relevance):
 	    try:
 		r = addWordHTML(word, resource, id, section, relevance)
 		if r < 0:
-		    print "addWordHTML failed: %s %s" % (word, resource)
+		    print("addWordHTML failed: %s %s") % (word, resource)
 		ret = ret + r
 	    except:
-		print "addWordHTML failed: %s %s %d" % (word, resource, relevance)
+		print("addWordHTML failed: %s %s %d") % (word, resource, relevance)
 		print sys.exc_type, sys.exc_value
 
     return ret
@@ -623,7 +623,7 @@ def addWordArchive(word, id, relevance):
     if wordsDictArchive.has_key(word):
         d = wordsDictArchive[word]
 	if d == None:
-	    print "skipped %s" % (word)
+	    print("skipped %s") % (word)
 	    return 0
 	try:
 	    r = d[id]
@@ -648,11 +648,11 @@ def addStringArchive(str, id, relevance):
 	    try:
 		r = addWordArchive(word, id, relevance)
 		if r < 0:
-		    print "addWordArchive failed: %s %s" % (word, id)
+		    print("addWordArchive failed: %s %s") % (word, id)
 		else:
 		    ret = ret + r
 	    except:
-		print "addWordArchive failed: %s %s %d" % (word, id, relevance)
+		print("addWordArchive failed: %s %s %d") % (word, id, relevance)
 		print sys.exc_type, sys.exc_value
     return ret
 
@@ -664,7 +664,7 @@ def addStringArchive(str, id, relevance):
 
 def loadAPI(filename):
     doc = libxml2.parseFile(filename)
-    print "loaded %s" % (filename)
+    print("loaded %s") % (filename)
     return doc
 
 def foundExport(file, symbol):
@@ -689,7 +689,7 @@ def analyzeAPIFile(top):
 	if cur.name == "exports":
 	    count = count + foundExport(name, cur.prop("symbol"))
 	else:
-	    print "unexpected element %s in API doc <file name='%s'>" % (name)
+	    print("unexpected element %s in API doc <file name='%s'>") % (name)
         cur = cur.next
     return count
 
@@ -704,7 +704,7 @@ def analyzeAPIFiles(top):
 	if cur.name == "file":
 	    count = count + analyzeAPIFile(cur)
 	else:
-	    print "unexpected element %s in API doc <files>" % (cur.name)
+	    print("unexpected element %s in API doc <files>") % (cur.name)
         cur = cur.next
     return count
 
@@ -816,7 +816,7 @@ def analyzeAPIMacro(top):
 
     if info == None:
 	addMacro(symbol, file)
-        print "Macro %s description has no <info>" % (symbol)
+        print("Macro %s description has no <info>") % (symbol)
         return 0
 
     info = string.replace(info, "'", " ")
@@ -865,7 +865,7 @@ def analyzeAPIFunction(top):
 	        addWord(name, file, symbol, 7)
         cur = cur.next
     if info == None:
-        print "Function %s description has no <info>" % (symbol)
+        print("Function %s description has no <info>") % (symbol)
 	addFunction(symbol, file, "")
     else:
         info = string.replace(info, "'", " ")
@@ -902,7 +902,7 @@ def analyzeAPISymbols(top):
 	elif cur.name == "functype":
 	    count = count + analyzeAPIFunctype(cur)
 	else:
-	    print "unexpected element %s in API doc <files>" % (cur.name)
+	    print("unexpected element %s in API doc <files>") % (cur.name)
         cur = cur.next
     return count
 
@@ -912,7 +912,7 @@ def analyzeAPI(doc):
         return -1
     root = doc.getRootElement()
     if root.name != "api":
-        print "Unexpected root name"
+        print("Unexpected root name")
         return -1
     cur = root.children
     while cur != None:
@@ -925,7 +925,7 @@ def analyzeAPI(doc):
 	elif cur.name == "symbols":
 	    count = count + analyzeAPISymbols(cur)
 	else:
-	    print "unexpected element %s in API doc" % (cur.name)
+	    print("unexpected element %s in API doc") % (cur.name)
         cur = cur.next
     return count
 
@@ -1003,9 +1003,9 @@ def analyzeHTML(doc, resource):
 	        analyzeHTMLPre(doc, resource, item, section, id)
 		para = para + 1
 	    else:
-	        print "Page %s, unexpected %s element" % (resource, item.name)
+	        print("Page %s, unexpected %s element") % (resource, item.name)
     except:
-        print "Page %s: problem analyzing" % (resource)
+        print("Page %s: problem analyzing") % (resource)
 	print sys.exc_type, sys.exc_value
 
     return para
@@ -1021,10 +1021,10 @@ def analyzeHTMLPages():
 	try:
 	    doc = libxml2.htmlParseFile(html, None)
 	    res = analyzeHTML(doc, html)
-	    print "Parsed %s : %d paragraphs" % (html, res)
+	    print("Parsed %s : %d paragraphs") % (html, res)
 	    ret = ret + 1
 	except:
-	    print "could not parse %s" % (html)
+	    print("could not parse %s") % (html)
     return ret
 
 #########################################################################
@@ -1058,12 +1058,12 @@ def scanXMLMsgArchive(url, title, force = 0):
 	    return 0
 
     try:
-        print "Loading %s" % (url)
+        print("Loading %s") % (url)
         doc = libxml2.htmlParseFile(url, None);
     except:
         doc = None
     if doc == None:
-        print "Failed to parse %s" % (url)
+        print("Failed to parse %s") % (url)
 	return 0
 
     addStringArchive(title, ID, 20)
@@ -1080,13 +1080,13 @@ def scanXMLDateArchive(t = None, force = 0):
     wordsDictArchive = {}
 
     url = getXMLDateArchive(t)
-    print "loading %s" % (url)
+    print("loading %s") % (url)
     try:
 	doc = libxml2.htmlParseFile(url, None);
     except:
         doc = None
     if doc == None:
-        print "Failed to parse %s" % (url)
+        print("Failed to parse %s") % (url)
 	return -1
     ctxt = doc.xpathNewContext()
     anchors = ctxt.xpathEval("//a[@href]")
@@ -1123,7 +1123,7 @@ def scanXMLDateArchive(t = None, force = 0):
 try:
     openMySQL()
 except:
-    print "Failed to open the database"
+    print("Failed to open the database")
     print sys.exc_type, sys.exc_value
     sys.exit(1)
 
@@ -1131,7 +1131,7 @@ def analyzeArchives(t = None, force = 0):
     global wordsDictArchive
 
     ret = scanXMLDateArchive(t, force)
-    print "Indexed %d words in %d archive pages" % (len(wordsDictArchive), ret)
+    print("Indexed %d words in %d archive pages") % (len(wordsDictArchive), ret)
 
     i = 0
     skipped = 0
@@ -1145,13 +1145,13 @@ def analyzeArchives(t = None, force = 0):
 	    updateWordArchive(word, id, relevance)
 	    i = i + 1
 
-    print "Found %d associations in HTML pages" % (i)
+    print("Found %d associations in HTML pages") % (i)
 
 def analyzeHTMLTop():
     global wordsDictHTML
 
     ret = analyzeHTMLPages()
-    print "Indexed %d words in %d HTML pages" % (len(wordsDictHTML), ret)
+    print("Indexed %d words in %d HTML pages") % (len(wordsDictHTML), ret)
 
     i = 0
     skipped = 0
@@ -1165,7 +1165,7 @@ def analyzeHTMLTop():
 	    updateWordHTML(word, resource, section, id, relevance)
 	    i = i + 1
 
-    print "Found %d associations in HTML pages" % (i)
+    print("Found %d associations in HTML pages") % (i)
 
 def analyzeAPITop():
     global wordsDict
@@ -1174,14 +1174,14 @@ def analyzeAPITop():
     try:
 	doc = loadAPI(API)
 	ret = analyzeAPI(doc)
-	print "Analyzed %d blocs" % (ret)
+	print("Analyzed %d blocs") % (ret)
 	doc.freeDoc()
     except:
-	print "Failed to parse and analyze %s" % (API)
+	print("Failed to parse and analyze %s") % (API)
 	print sys.exc_type, sys.exc_value
 	sys.exit(1)
 
-    print "Indexed %d words" % (len(wordsDict))
+    print("Indexed %d words") % (len(wordsDict))
     i = 0
     skipped = 0
     for word in wordsDict.keys():
@@ -1193,10 +1193,10 @@ def analyzeAPITop():
 	    updateWord(word, symbol, refs[(module, symbol)])
 	    i = i + 1
 
-    print "Found %d associations, skipped %d words" % (i, skipped)
+    print("Found %d associations, skipped %d words") % (i, skipped)
 
 def usage():
-    print "Usage index.py [--force] [--archive]  [--archive-year year] [--archive-month month] [--API] [--docs]"
+    print("Usage index.py [--force] [--archive]  [--archive-year year] [--archive-month month] [--API] [--docs]")
     sys.exit(1)
 
 def main():
@@ -1222,7 +1222,7 @@ def main():
 			t = time.mktime(T) + 3600 * 24 * 10;
 			analyzeArchives(t, force)
 		    except:
-			print "Failed to index month archive:"
+			print("Failed to index month archive:")
 			print sys.exc_type, sys.exc_value
 	    elif args[i] == '--archive-month':
 	        i = i + 1;
@@ -1232,7 +1232,7 @@ def main():
 		    t = time.mktime(T) + 3600 * 24 * 10;
 		    analyzeArchives(t, force)
 		except:
-		    print "Failed to index month archive:"
+		    print("Failed to index month archive:")
 		    print sys.exc_type, sys.exc_value
 	    elif args[i] == '--API':
 	        analyzeAPITop()

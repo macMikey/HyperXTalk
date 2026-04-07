@@ -179,6 +179,26 @@ NSWindow *MCMacPlatformApplicationPseudoModalFor(void)
 
 ////////////////////////////////////////////////////////////////////////////////
 
+// HXT: AppKit calls viewDidChangeEffectiveAppearance on NSView instances
+// (not NSApplication) when the system appearance changes.  A small hidden
+// view attached to the dummy window receives this call for both transitions
+// (light→dark and dark→light), making it more reliable than the private
+// AppleInterfaceThemeChangedNotification which misses the return to light.
+@interface MCAppearanceObserverView : NSView
+@end
+
+@implementation MCAppearanceObserverView
+- (void)viewDidChangeEffectiveAppearance
+{
+    [super viewDidChangeEffectiveAppearance];
+    // Call the platform callback directly to handle appearance changes
+    extern void MCPlatformHandleSystemAppearanceChanged(void);
+    MCPlatformHandleSystemAppearanceChanged();
+}
+@end
+
+////////////////////////////////////////////////////////////////////////////////
+
 @implementation com_hyperxtalk_hyperxtalk_MCApplicationDelegate
 
 //////////
@@ -308,6 +328,24 @@ static OSErr preDispatchAppleEvent(const AppleEvent *p_event, AppleEvent *p_repl
     NSWindow *t_dummy_window;
     t_dummy_window = [[NSWindow alloc] initWithContentRect: NSZeroRect styleMask: NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:YES];
     [t_dummy_window orderFront: nil];
+
+    // HXT: Create a dedicated off-screen window (non-zero size, defer:NO) to
+    // host the appearance observer view.  AppKit skips viewDidChangeEffectiveAppearance
+    // propagation for zero-size or deferred windows, so the dummy window above
+    // cannot be used for this purpose.  The window is positioned off-screen and
+    // given alpha 0 so it is never visible.
+    NSRect t_obs_rect = NSMakeRect(-10, -10, 1, 1);
+    NSWindow *t_obs_window = [[NSWindow alloc]
+                               initWithContentRect:t_obs_rect
+                                         styleMask:NSBorderlessWindowMask
+                                           backing:NSBackingStoreBuffered
+                                             defer:NO];
+    [t_obs_window setAlphaValue:0.0];
+    [t_obs_window orderFront:nil];
+    MCAppearanceObserverView *t_appearance_view =
+        [[MCAppearanceObserverView alloc] initWithFrame:NSMakeRect(0, 0, 1, 1)];
+    [[t_obs_window contentView] addSubview:t_appearance_view];
+    [t_appearance_view release];
     
 	// Dispatch the startup callback.
 	int t_error_code;
@@ -351,21 +389,12 @@ static OSErr preDispatchAppleEvent(const AppleEvent *p_event, AppleEvent *p_repl
         [t_event release];
     }
 	
-	[[NSDistributedNotificationCenter defaultCenter] addObserver:self
-									 selector:@selector(interfaceThemeChangedNotification:)
-								     name:@"AppleInterfaceThemeChangedNotification" object:nil];
-    
 	if ([NSWindow respondsToSelector:@selector(allowsAutomaticWindowTabbing)])
 		[NSWindow setAllowsAutomaticWindowTabbing: NO];
-	
+
 	// We started up successfully, so queue the root runloop invocation
 	// message.
 	[self performSelector: @selector(runMainLoop) withObject: nil afterDelay: 0];
-}
-
-- (void)interfaceThemeChangedNotification:(NSNotification *)notification
-{
-	MCPlatformCallbackSendSystemAppearanceChanged();
 }
 
 - (void)runMainLoop

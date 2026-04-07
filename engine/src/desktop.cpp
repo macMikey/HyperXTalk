@@ -15,7 +15,6 @@
  along with LiveCode.  If not see <http://www.gnu.org/licenses/>.  */
 
 #include "platform.h"
-
 #include "globdefs.h"
 #include "filedefs.h"
 #include "osspec.h"
@@ -44,6 +43,12 @@
 
 #include "desktop-dc.h"
 #include "param.h"
+
+#if defined(_MACOSX) && (defined(__arm64__) || defined(__aarch64__))
+// Weak fallbacks — overridden by the real implementations in mac-stubs-arm64.mm.
+extern "C" __attribute__((weak)) bool MCplatformIsDarkMode(void) { return false; }
+extern "C" __attribute__((weak)) void MCplatformGetWindowBackgroundColor(char *, size_t) {}
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -124,6 +129,9 @@ void MCPlatformHandleApplicationSuspend(void)
     if (MCdefaultstackptr)
         MCdefaultstackptr -> getcard() -> message(MCM_suspend);
 	MCappisactive = False;
+    // HXT: dirty the screen so that controls that reflect the active/inactive
+    // state (e.g. native tab-button text colour) are repainted immediately.
+    MCRedrawDirtyScreen();
 }
 
 void MCPlatformHandleApplicationResume(void)
@@ -132,6 +140,9 @@ void MCPlatformHandleApplicationResume(void)
     MCappisactive = True;
     if (MCdefaultstackptr)
         MCdefaultstackptr -> getcard() -> message(MCM_resume);
+    // HXT: repaint so that active-state visuals (e.g. white tab text) are
+    // restored as soon as the window comes back to the foreground.
+    MCRedrawDirtyScreen();
 }
 
 void MCPlatformHandleApplicationRun(bool& r_continue)
@@ -168,8 +179,41 @@ void MCPlatformHandleSystemAppearanceChanged(void)
 {
 	if (MCscreen == nil)
 		return;
-	
+
+#if defined(_MACOSX) && (defined(__arm64__) || defined(__aarch64__))
+    // Pass the appearance name ("dark"/"light") as p1 and the resolved
+    // windowBackgroundColor as a hex string ("#rrggbb") as p2, e.g.:
+    //   on systemAppearanceChanged pMode, pWindowColor
+    //     set the backgroundColor of this stack to pWindowColor
+    //   end systemAppearanceChanged
+    char t_color_buf[8];
+    MCplatformGetWindowBackgroundColor(t_color_buf, sizeof(t_color_buf));
+    bool t_is_dark = MCplatformIsDarkMode();
+    
+    // Send to all open stacks (not just the default stack)
+    MCStacknode *t_stack_node = MCstacks->topnode();
+    MCStacknode *t_first_node = t_stack_node;
+    while (t_stack_node != NULL)
+    {
+        MCStack *t_stack = t_stack_node->getstack();
+        if (t_stack != nil && t_stack->getcurcard() != nil)
+        {
+            MCStringRef t_color_str;
+            /* UNCHECKED */ MCStringCreateWithCString(t_color_buf, t_color_str);
+            MCscreen->delaymessage(t_stack->getcurcard(),
+                                     MCM_system_appearance_changed,
+                                     t_is_dark ? MCSTR("dark") : MCSTR("light"),
+                                     t_color_str);
+            MCValueRelease(t_color_str);
+        }
+        t_stack_node = t_stack_node->next();
+        // Stop when we loop back to the first node
+        if (t_stack_node == t_first_node)
+            break;
+    }
+#else
 	MCscreen -> delaymessage(MCdefaultstackptr -> getcurcard(), MCM_system_appearance_changed);
+#endif
 }
 
 ////////////////////////////////////////////////////////////////////////////////

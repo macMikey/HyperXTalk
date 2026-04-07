@@ -2046,4 +2046,9 @@ void MCUIDC::getsystemappearance(MCSystemAppearance &r_appearance)
 	r_appearance = kMCSystemAppearanceLight;
 }
 
+void MCUIDC::getsystemwindowcolor(MCStringRef &r_color)
+{
+	r_color = MCValueRetain(kMCEmptyString);
+}
+
 ////////////////////////////////////////////////////////////////////////////////

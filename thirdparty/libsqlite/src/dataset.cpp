@@ -142,20 +142,20 @@ void Dataset::set_select_sql(const string &sel_sql) {
 }
 
 
-void Dataset::parse_sql(string &sql) {
+void Dataset::parse_sql(string &t_sql) {
   string fpattern,by_what;
   int i;
   for (i=0;i< fields_object->size();i++) {
     fpattern = ":OLD_"+(*fields_object)[i].props.name;
-    by_what = "'"+(*fields_object)[i].val.get_asString()+"'";
+    by_what = "'"+(*edit_object)[i].val.get_asString()+"'";
 		int idx=0; int next_idx=0;
-		while ((idx = sql.find(fpattern,next_idx))>=0) {
+		while ((idx = t_sql.find(fpattern,next_idx))>=0) {
 		       	   next_idx=idx+fpattern.size();
-			       if (sql.length() > (next_idx))
-			       if(isalnum(sql[next_idx])  || sql[next_idx]=='_') {
+			       if (t_sql.length() > (next_idx))
+			       if(isalnum(t_sql[next_idx])  || t_sql[next_idx]=='_') {
 			       	   continue;
 			       	}
-			      sql.replace(idx,fpattern.size(),by_what); 	
+			      t_sql.replace(idx,fpattern.size(),by_what); 	
 		}//while
     }//for
 
@@ -163,13 +163,13 @@ void Dataset::parse_sql(string &sql) {
     fpattern = ":NEW_"+(*edit_object)[i].props.name;
     by_what = "'"+(*edit_object)[i].val.get_asString()+"'";
 		int idx=0; int next_idx=0;
-		while ((idx = sql.find(fpattern,next_idx))>=0) {
+		while ((idx = t_sql.find(fpattern,next_idx))>=0) {
 		       	   next_idx=idx+fpattern.size();
-			       if (sql.length() > (next_idx))
-			       if(isalnum(sql[next_idx]) || sql[next_idx]=='_') {
+			       if (t_sql.length() > (next_idx))
+			       if(isalnum(t_sql[next_idx]) || t_sql[next_idx]=='_') {
 			       	   continue;
 			       	}
-			      sql.replace(idx,fpattern.size(),by_what); 	
+			      t_sql.replace(idx,fpattern.size(),by_what); 	
 			}//while  
   } //for
 }
@@ -336,15 +336,6 @@ const field_value Dataset::get_field_value_by_index(int p_index)
 		else
 		{
 			return (*fields_object)[p_index] . val;
-
-/*			for (unsigned int i=0; i < fields_object->size(); i++)
-			{
-				int t_index;
-				t_index = (*edit_object)[i].props.index;
-
-				if ((*edit_object)[i].props.index == p_index)
-					return (*edit_object)[i] . val;
-			}*/
 		}
       throw DbErrors("Field not found: %i", p_index);
 	}

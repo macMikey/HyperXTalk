@@ -1724,6 +1724,11 @@ void MCInterfaceGetSystemAppearance(MCExecContext& ctxt, intenum_t& r_value)
 	r_value = (intenum_t)t_appearance;
 }
 
+void MCInterfaceGetSystemWindowColor(MCExecContext& ctxt, MCStringRef& r_value)
+{
+	MCscreen->getsystemwindowcolor(r_value);
+}
+
 void MCInterfaceGetSelectionHandleColor(MCExecContext& ctxt, MCInterfaceNamedColor& r_color)
 {
 	get_interface_color(MCselectioncolor, MCselectioncolorname, r_color);

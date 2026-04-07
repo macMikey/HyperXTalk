@@ -662,7 +662,8 @@ public:
     virtual void hidecursoruntilmousemoves(void);
 	
 	virtual void getsystemappearance(MCSystemAppearance &r_appearance);
-    
+	virtual void getsystemwindowcolor(MCStringRef &r_color);
+
     //
 
 	void addtimer(MCObject *optr, MCNameRef name, uint4 delay);

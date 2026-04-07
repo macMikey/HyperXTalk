@@ -180,7 +180,7 @@ class AbstractRpcServer(object):
     req = urllib2.Request(url, data=data)
     if self.host_override:
       req.add_header("Host", self.host_override)
-    for key, value in self.extra_headers.iteritems():
+    for key, value in self.extra_headers.items():
       req.add_header(key, value)
     return req
 
@@ -629,7 +629,7 @@ class VersionControlSystem(object):
     """Show an "are you sure?" prompt if there are unknown files."""
     unknown_files = self.GetUnknownFiles()
     if unknown_files:
-      print "The following files are not added to version control:"
+      print("The following files are not added to version control:")
       for line in unknown_files:
         print line
       prompt = "Are you sure to continue?(y/N) "
@@ -691,7 +691,7 @@ class VersionControlSystem(object):
         content = ""
       checksum = md5.new(content).hexdigest()
       if options.verbose > 0 and not file_too_large:
-        print "Uploading %s file for %s" % (type, filename)
+        print("Uploading %s file for %s") % (type, filename)
       url = "/%d/upload_content/%d/%d" % (int(issue), int(patchset), file_id)
       form_fields = [("filename", filename),
                      ("status", status),
@@ -1211,7 +1211,7 @@ def UploadSeparatePatches(issue, rpc_server, patchset, data, options):
     files = [("data", "data.diff", patch[1])]
     ctype, body = EncodeMultipartFormData(form_fields, files)
     url = "/%d/upload_patch/%d" % (int(issue), int(patchset))
-    print "Uploading patch for " + patch[0]
+    print("Uploading patch for ") + patch[0]
     response_body = rpc_server.Send(url, body, content_type=ctype)
     lines = response_body.splitlines()
     if not lines or lines[0] != "OK":
@@ -1301,7 +1301,7 @@ def RealMain(argv, data=None):
     data = vcs.GenerateDiff(args)
   files = vcs.GetBaseFiles(data)
   if verbosity >= 1:
-    print "Upload server:", options.server, "(change with -s/--server)"
+    print("Upload server:"), options.server, "(change with -s/--server)"
   if options.issue:
     prompt = "Message describing this patch set: "
   else:
@@ -1339,7 +1339,7 @@ def RealMain(argv, data=None):
   # Send a hash of all the base file so the server can determine if a copy
   # already exists in an earlier patchset.
   base_hashes = ""
-  for file, info in files.iteritems():
+  for file, info in files.items():
     if not info[0] is None:
       checksum = md5.new(info[0]).hexdigest()
       if base_hashes:
@@ -1353,7 +1353,7 @@ def RealMain(argv, data=None):
   if not options.download_base:
     form_fields.append(("content_upload", "1"))
   if len(data) > MAX_UPLOAD_SIZE:
-    print "Patch is large, so uploading file patches separately."
+    print("Patch is large, so uploading file patches separately.")
     uploaded_diff_file = []
     form_fields.append(("separate_patches", "1"))
   else:

@@ -154,6 +154,16 @@ Boolean MCNativeTheme::iswidgetsupported(Widget_Type w)
 	case WTHEME_TYPE_TAB:
 		return True;
 		break;
+	case WTHEME_TYPE_COMBO:
+	case WTHEME_TYPE_COMBOBUTTON:
+	case WTHEME_TYPE_COMBOTEXT:
+	case WTHEME_TYPE_COMBOFRAME:
+		// Use the non-theme (LF_MAC) drawing path for combo boxes, which reliably
+		// draws the text field border and popup arrow without depending on
+		// deprecated HITheme combo box APIs that produce no visible output on
+		// modern macOS.
+		return False;
+		break;
 	default:
 		return True;
 	}
@@ -251,19 +261,12 @@ void MCNativeTheme::getwidgetrect(const MCWidgetInfo &winfo, Widget_Metric wmetr
 				combobuttonrect.width = 18;
 				if (winfo.part == WTHEME_PART_COMBOTEXT)
 				{
-					HIThemeButtonDrawInfo bNewInfo;
-					HIRect macR,maccontentbounds;
-					getthemebuttonpartandstate(winfo, bNewInfo,srect,macR);
-
-                    HIThemeGetButtonBackgroundBounds(&macR, &bNewInfo, &maccontentbounds);
-                    
+					// Use a simple, reliable rect: full height, width minus button
 					drect = srect;
-					drect.height = maccontentbounds.size.height - 1;
-					drect = MCU_reduce_rect(drect,2);
 					drect.width -= combobuttonrect.width;
 				}
 				else if (winfo.part == WTHEME_PART_COMBOBUTTON)
-					drect = srect;
+					drect = combobuttonrect;
 				return;
 			}
 		}
@@ -316,11 +319,12 @@ Boolean MCNativeTheme::drawwidget(MCDC *dc, const MCWidgetInfo &winfo, const MCR
 		{
 			MCWidgetInfo twinfo = winfo;
 			MCRectangle comboentryrect,combobuttonrect;
-			//draw text box
 			twinfo.part = WTHEME_PART_COMBOTEXT;
 			getwidgetrect(twinfo, WTHEME_METRIC_PARTSIZE,drect,comboentryrect);
 			twinfo.part = WTHEME_PART_COMBOBUTTON;
 			getwidgetrect(twinfo, WTHEME_METRIC_PARTSIZE,drect,combobuttonrect);
+			twinfo.type = WTHEME_TYPE_COMBOTEXT;
+			drawwidget(dc, twinfo, comboentryrect);
 			twinfo.type = WTHEME_TYPE_COMBOBUTTON;
 			drawwidget(dc, twinfo, combobuttonrect);
 		}

@@ -499,10 +499,11 @@ end revRelativePath
 function canIncludeStackFiles
    local tCan
    put true into tCan
-   repeat for each item tPlatform in "ios,android,emscripten"
-      if getSetting(tPlatform) then
-         put false into tCan
-      end if
-   end repeat
+   // HXT
+   --   repeat for each item tPlatform in "ios,android,emscripten"
+   --      if getSetting(tPlatform) then
+   --         put false into tCan
+   --      end if
+   --   end repeat
    return tCan
 end canIncludeStackFiles

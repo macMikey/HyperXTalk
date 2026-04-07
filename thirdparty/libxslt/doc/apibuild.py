@@ -189,7 +189,7 @@ class index:
 	    elif type == "macro":
 	        self.macros[name] = d
 	    else:
-	        print "Unable to register type ", type
+	        print("Unable to register type "), type
 	return d
 
     def merge(self, idx):
@@ -201,7 +201,7 @@ class index:
 	     if self.macros.has_key(id):
 	         del self.macros[id]
 	     if self.functions.has_key(id):
-	         print "function %s from %s redeclared in %s" % (
+	         print("function %s from %s redeclared in %s") % (
 		    id, self.functions[id].module, idx.functions[id].module)
 	     else:
 	         self.functions[id] = idx.functions[id]
@@ -214,21 +214,21 @@ class index:
 	     if self.macros.has_key(id):
 	         del self.macros[id]
 	     if self.variables.has_key(id):
-	         print "variable %s from %s redeclared in %s" % (
+	         print("variable %s from %s redeclared in %s") % (
 		    id, self.variables[id].module, idx.variables[id].module)
 	     else:
 	         self.variables[id] = idx.variables[id]
 		 self.identifiers[id] = idx.variables[id]
         for id in idx.structs.keys():
 	     if self.structs.has_key(id):
-	         print "struct %s from %s redeclared in %s" % (
+	         print("struct %s from %s redeclared in %s") % (
 		    id, self.structs[id].module, idx.structs[id].module)
 	     else:
 	         self.structs[id] = idx.structs[id]
 		 self.identifiers[id] = idx.structs[id]
         for id in idx.typedefs.keys():
 	     if self.typedefs.has_key(id):
-	         print "typedef %s from %s redeclared in %s" % (
+	         print("typedef %s from %s redeclared in %s") % (
 		    id, self.typedefs[id].module, idx.typedefs[id].module)
 	     else:
 	         self.typedefs[id] = idx.typedefs[id]
@@ -245,14 +245,14 @@ class index:
              if self.enums.has_key(id):
                  continue
 	     if self.macros.has_key(id):
-	         print "macro %s from %s redeclared in %s" % (
+	         print("macro %s from %s redeclared in %s") % (
 		    id, self.macros[id].module, idx.macros[id].module)
 	     else:
 	         self.macros[id] = idx.macros[id]
 		 self.identifiers[id] = idx.macros[id]
         for id in idx.enums.keys():
 	     if self.enums.has_key(id):
-	         print "enum %s from %s redeclared in %s" % (
+	         print("enum %s from %s redeclared in %s") % (
 		    id, self.enums[id].module, idx.enums[id].module)
 	     else:
 	         self.enums[id] = idx.enums[id]
@@ -264,7 +264,7 @@ class index:
 	         up = idx.functions[id]
 	         self.functions[id].update(None, up.type, up.info, up.extra)
 	 #     else:
-	 #         print "Function %s from %s is not declared in headers" % (
+	 #         print("Function %s from %s is not declared in headers") % (
 	#	        id, idx.functions[id].module)
 	 # TODO: do the same for variables.
 
@@ -277,9 +277,9 @@ class index:
 	    if id.static == 0:
 	        public = public + 1
         if count != public:
-	    print "  %d %s , %d public" % (count, type, public)
+	    print("  %d %s , %d public") % (count, type, public)
 	elif count != 0:
-	    print "  %d public %s" % (count, type)
+	    print("  %d public %s") % (count, type)
 
 
     def analyze(self):
@@ -328,9 +328,9 @@ class CLexer:
         self.tokens.insert(0, token);
 
     def debug(self):
-        print "Last token: ", self.last
-	print "Token queue: ", self.tokens
-	print "Line %d end: " % (self.lineno), self.line
+        print("Last token: "), self.last
+	print("Token queue: "), self.tokens
+	print("Line %d end: ") % (self.lineno), self.line
 
     def token(self):
         while self.tokens == []:
@@ -545,16 +545,16 @@ class CParser:
         if self.no_error:
 	    return
 
-        print "Parse Error: " + msg
+        print("Parse Error: ") + msg
 	if token != -1:
-	    print "Got token ", token
+	    print("Got token "), token
 	self.lexer.debug()
 	sys.exit(1)
 
     def debug(self, msg, token=-1):
-        print "Debug: " + msg
+        print("Debug: ") + msg
 	if token != -1:
-	    print "Got token ", token
+	    print("Got token "), token
 	self.lexer.debug()
 
     def parseTopComment(self, comment):
@@ -850,7 +850,7 @@ class CParser:
 		continue
 	    else:
 	        if debug:
-		    print "=> ", token
+		    print("=> "), token
 	        return token
 	return None
 
@@ -1280,7 +1280,7 @@ class CParser:
 			return token
 		    if token[0] == 'sep' and token[1] == "{":
 		        token = self.token()
-#			 print 'Entering extern "C line ', self.lineno()
+#			 print('Entering extern "C line '), self.lineno()
 			while token != None and (token[0] != 'sep' or
 			      token[1] != "}"):
 			    if token[0] == 'name':
@@ -1290,7 +1290,7 @@ class CParser:
 				 "token %s %s unexpected at the top level" % (
 					token[0], token[1]))
 				token = self.parseGlobal(token)
-#			 print 'Exiting extern "C" line', self.lineno()
+#			 print('Exiting extern "C" line'), self.lineno()
 			token = self.token()
 			return token
 		else:
@@ -1456,7 +1456,7 @@ class docBuilder:
 		pass
 
     def analyze(self):
-        print "Project %s : %d headers, %d modules" % (self.name, len(self.headers.keys()), len(self.modules.keys()))
+        print("Project %s : %d headers, %d modules") % (self.name, len(self.headers.keys()), len(self.modules.keys()))
 	self.idx.analyze()
 
     def scanHeaders(self):
@@ -1563,7 +1563,7 @@ class docBuilder:
 			    desc = escape(desc)
 			output.write("      <field name='%s' type='%s' info='%s'/>\n" % (field[1] , field[0], desc))
 		except:
-		    print "Failed to serialize struct %s" % (name)
+		    print("Failed to serialize struct %s") % (name)
 		output.write("    </struct>\n")
 	    else:
 	        output.write("/>\n");
@@ -1604,7 +1604,7 @@ class docBuilder:
 		    output.write("      <arg name='%s' type='%s' info='%s'/>\n" % (param[1], param[0], escape(param[2])))
 		    self.indexString(name, param[2])
 	except:
-	    print "Failed to save function %s info: " % name, `id.info`
+	    print("Failed to save function %s info: ") % name, `id.info`
         output.write("    </%s>\n" % (id.type))
 
     def serialize_exports(self, output, file):
@@ -1619,7 +1619,7 @@ class docBuilder:
 				 escape(dict.info[data]),
 				 string.lower(data)))
 		except:
-		    print "Header %s lacks a %s description" % (module, data)
+		    print("Header %s lacks a %s description") % (module, data)
 	    if dict.info.has_key('Description'):
 	        desc = dict.info['Description']
 		if string.find(desc, "DEPRECATED") != -1:
@@ -1830,7 +1830,7 @@ class docBuilder:
 
     def serialize(self, outdir):
         filename = outdir + "%s-api.xml" % self.name
-        print "Saving XML description %s" % (filename)
+        print("Saving XML description %s") % (filename)
         output = open(filename, "w")
         output.write('<?xml version="1.0" encoding="ISO-8859-1"?>\n')
         output.write("<api name='%s'>\n" % self.name)
@@ -1866,7 +1866,7 @@ class docBuilder:
         output.close()
 
         filename = outdir + "%s-refs.xml" % self.name
-        print "Saving XML Cross References %s" % (filename)
+        print("Saving XML Cross References %s") % (filename)
         output = open(filename, "w")
         output.write('<?xml version="1.0" encoding="ISO-8859-1"?>\n')
         output.write("<apirefs name='%s'>\n" % self.name)
@@ -1878,19 +1878,19 @@ class docBuilder:
 def rebuild():
     builder = None
     if glob.glob("parser.c") != [] :
-        print "Rebuilding API description for libxml2"
+        print("Rebuilding API description for libxml2")
 	builder = docBuilder("libxml2", [".", "."],
 	                     ["xmlwin32version.h", "tst.c"])
     elif glob.glob("../parser.c") != [] :
-        print "Rebuilding API description for libxml2"
+        print("Rebuilding API description for libxml2")
 	builder = docBuilder("libxml2", ["..", "../include/libxml"],
 	                     ["xmlwin32version.h", "tst.c"])
     elif glob.glob("../libxslt/transform.c") != [] :
-        print "Rebuilding API description for libxslt"
+        print("Rebuilding API description for libxslt")
 	builder = docBuilder("libxslt", ["../libxslt"],
 	                     ["win32config.h", "libxslt.h", "tst.c"])
     else:
-        print "rebuild() failed, unable to guess the module"
+        print("rebuild() failed, unable to guess the module")
 	return None
     builder.scan()
     builder.analyze()

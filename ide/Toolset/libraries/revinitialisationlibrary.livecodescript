@@ -147,12 +147,20 @@ command revInternal_SetJAVA_HOME
       local tPath
       switch the platform
          case "MacOS"
-            put word 1 to -1 of shell("/usr/libexec/java_home") into tPath
+            try
+               put word 1 to -1 of shell("/usr/libexec/java_home") into tPath
+            catch tError
+               put empty into tPath
+            end try
             break
          case "Linux"
             local tJAVAC
             put "/bin/javac" into tJAVAC
-            put word 1 to -1 of shell("/usr/bin/env readlink -f /usr" & tJAVAC) into tPath
+            try
+               put word 1 to -1 of shell("/usr/bin/env readlink -f /usr" & tJAVAC) into tPath
+            catch tError
+               put empty into tPath
+            end try
             if there is a file tPath and tPath ends with tJAVAC then
                set the itemDelimiter to slash
                delete item -2 to -1 of tPath

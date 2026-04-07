@@ -742,7 +742,7 @@ def export_opts(opts, names):
 
 def gyp_define_args(opts, names):
     return ['-D{}={}'.format(key, opts[value])
-            for key, value in names.iteritems()
+            for key, value in names.items()
             if opts[value] is not None]
 
 def configure_linux(opts):

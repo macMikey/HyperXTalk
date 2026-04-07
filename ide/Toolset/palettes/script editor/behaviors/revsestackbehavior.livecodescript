@@ -1376,6 +1376,13 @@ command actionResizeStack pInitializing
       set the topLeft of group "Toolbar" of me to the bottomLeft of group "Menubar" of me
       set the width of group "Script Tabs" of me to tCardWidth - tLeftSplit - the width of button "Left Resizer" of me
       set the topLeft of group "Script Tabs" of me to tLeftSplit + the width of button "Left Resizer" of me, the bottom of group "Toolbar" of me
+      # HXT: On macOS the Menubar group feeds the system menu bar; it must not be visible inside
+      # the window. Move it off-screen and reposition the Toolbar to the top of the card instead.
+      if seGetPlatform() is "MacOS" then
+         set the right of group "Menubar" of me to tCardLeft - 500
+         set the topLeft of group "Toolbar" of me to (tCardLeft, tCardTop)
+         set the topLeft of group "Script Tabs" of me to tLeftSplit + the width of button "Left Resizer" of me, the bottom of group "Toolbar" of me
+      end if
    else
       set the right of group "Menubar" of me to tCardLeft - 500
       set the right of group "Toolbar" of me to tCardLeft - 500
@@ -2509,6 +2516,7 @@ end resumeStack
 # Description
 #   Sent when the script editor stack is opened. Initialises the stack...
 on preOpenStack pDontCheckTarget
+   set the backgroundColor of this stack to (the systemWindowColor)
    revSEInitialize pDontCheckTarget
 end preOpenStack
 
@@ -2570,13 +2578,20 @@ command revSEInitialize pDontCheckTarget
    
    # On OS X, toplevel windows have a white background, which is both inconsistent with the rest of the IDE
    # and looks bad.
-   if seGetPlatform() is "MacOS" then
+   if (the platform is "MacOS") then
       set the backgroundColor of me to "236,236,236"
    end if
    
    actionResizeStack true
    
    set the showInvisibles of me to false
+   
+   // HXT dark mode
+   if (the systemAppearance is "dark") then
+      set the backColor of me to "#323232"
+   else
+      set the backColor of me to "#ececec"
+   end if
 end revSEInitialize
 
 on idePreferenceChanged pPreference, pValue
@@ -3047,3 +3062,16 @@ command revSEAddDefaultHandler pHandler
    put tDefaultScript after tNewScript
    revSESetScript(tNewScript)
 end revSEAddDefaultHandler
+
+
+// HXT
+on systemAppearanceChanged pMode, pWindowColor
+   set the backgroundColor of this stack to pWindowColor
+   if pMode is "dark" then
+      set the backColor of field "Handlers" of group "Left Handler List" of group "Left Bar" of card "Main" of this stack to "black"
+      set the foreColor of field "Handlers" of group "Left Handler List" of group "Left Bar" of card "Main" of this stack to "white"
+   else
+      set the backColor of field "Handlers" of group "Left Handler List" of group "Left Bar" of card "Main" of this stack to "white"
+      set the foreColor of field "Handlers" of group "Left Handler List" of group "Left Bar" of card "Main" of this stack to "black"
+   end if
+end systemAppearanceChanged

@@ -1698,6 +1698,7 @@ const LT factor_table[] =
 		{"systemprintselector", TT_PROPERTY, P_SYSTEM_PS},
         {"systemversion", TT_FUNCTION, F_SYSTEM_VERSION},
         {"systemwindow", TT_PROPERTY, P_SYSTEM_WINDOW},
+		{"systemwindowcolor", TT_PROPERTY, P_SYSTEM_WINDOW_COLOR},
 		// MW-2012-02-10: [[ TabAlign ]] New property allowing configuration of tab alignment.
 		{"tabalign", TT_PROPERTY, P_TAB_ALIGN},
         {"tabgroupbehavior", TT_PROPERTY, P_TAB_GROUP_BEHAVIOR},

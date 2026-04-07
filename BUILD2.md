@@ -89,6 +89,11 @@ cp "$REPO/_build/mac/Debug/libxml.a"    "$REPO/prebuilt/lib/mac/libxml.a"
 cp "$REPO/_build/mac/Debug/libzip.a"    "$REPO/prebuilt/lib/mac/libzip.a"
 ```
 
+Rebuild MySQL
+```
+rebuild-dbmysql.sh
+```
+
 Build the standalone. The first command will make the executables and the second one will build the standalone in the /mac-bin folder
 ```
 make compile-mac

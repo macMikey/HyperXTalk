@@ -366,11 +366,13 @@ end tabImage
 #   The color that the tab should be in the given state.
 private function tabColor pSelected, pObject
    if pSelected then
-      return "255,255,255"
+      // HXT return "255,255,255"
+      return EMPTY
    else
-      return "251,251,252"
+      // HXT return "251,251,252"
+      return EMPTY
    end if
-   
+
    # The following code implements the colored tabs and is left here for now in case we decide to use it.
    
    local tState

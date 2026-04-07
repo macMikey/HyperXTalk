@@ -949,6 +949,21 @@ void MCScreenDC::getsystemappearance(MCSystemAppearance &r_appearance)
 	MCPlatformGetSystemProperty(kMCPlatformSystemPropertySystemAppearance, kMCPlatformPropertyTypeInt32, &r_appearance);
 }
 
+#if defined(_MACOSX) && (defined(__arm64__) || defined(__aarch64__))
+extern "C" void MCplatformGetWindowBackgroundColor(char *, size_t);
+#endif
+
+void MCScreenDC::getsystemwindowcolor(MCStringRef &r_color)
+{
+#if defined(_MACOSX) && (defined(__arm64__) || defined(__aarch64__))
+	char t_buf[8] = "#ffffff";
+	MCplatformGetWindowBackgroundColor(t_buf, sizeof(t_buf));
+	/* UNCHECKED */ MCStringCreateWithCString(t_buf, r_color);
+#else
+	r_color = MCValueRetain(kMCEmptyString);
+#endif
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 
 extern bool MCListSystemPrinters(MCStringRef &);

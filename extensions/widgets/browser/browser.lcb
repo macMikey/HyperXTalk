@@ -611,6 +611,16 @@ public handler OnClose()
 	put false into mOpened
 end handler
 
+public handler OnSystemAppearanceChanged(in pMode as String, in pWindowColor as String)
+	if mBrowser is nothing then
+		return
+	end if
+
+	unsafe
+		MCBrowserSetAppearance(mBrowser, pMode is "dark")
+	end unsafe
+end handler
+
 ----------
 
 private handler Capitalize(in pString as String) returns String

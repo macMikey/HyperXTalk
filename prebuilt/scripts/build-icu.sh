@@ -34,6 +34,9 @@ case $(uname) in
 		;;
 	CYGWIN*)
 		HOST_ICU_DIR="${BUILDDIR}/icu-${ICU_VERSION}-win32-i386"
+#		HOST_ICU_DIR="${BUILDDIR}/icu-${ICU_VERSION}-win-86"
+# move to 64-bit Windows?
+#		HOST_ICU_DIR="${BUILDDIR}/icu-${ICU_VERSION}-win-86_64"
 		;;
 esac
 
@@ -137,10 +140,10 @@ echo "PLATFORM = ${PLATFORM}, ARCH = ${ARCH} HOST_ARCH = ${HOST_ARCH}"
 	case "${PLATFORM}" in
 		mac)
 			CONFIG_TYPE="MacOSX"
-			if [ "${ARCH}" == "ppc" -o "${ARCH}" == "ppc64" ] ; then
-				echo "WARNING: cross-compiled ICU data for PPC does not work"
-				CONFIG_TYPE+=" --host=${ARCH}-apple-darwin --with-cross-build=${HOST_ICU_DIR}"
-			fi
+#			if [ "${ARCH}" == "ppc" -o "${ARCH}" == "ppc64" ] ; then
+#				echo "WARNING: cross-compiled ICU data for PPC does not work"
+#				CONFIG_TYPE+=" --host=${ARCH}-apple-darwin --with-cross-build=${HOST_ICU_DIR}"
+#			fi
 			;;
 		linux)
 			CONFIG_TYPE="Linux"

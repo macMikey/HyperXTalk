@@ -45,6 +45,15 @@ along with LiveCode.  If not see <http://www.gnu.org/licenses/>.  */
 #include "context.h"
 #include "graphics_util.h"
 
+#if defined(_MACOSX) && (defined(__arm64__) || defined(__aarch64__))
+// Weak fallback definition — always returns false (= light mode).
+// mac-stubs-arm64.mm provides a non-weak override for GUI builds that
+// actually queries NSAppearance.  On Mach-O a non-weak definition always
+// wins over a weak one, so server/non-GUI targets silently use this stub
+// while the GUI target uses the real implementation.
+extern "C" __attribute__((weak)) bool MCplatformIsDarkMode(void) { return false; }
+#endif
+
 // MW-2011-09-06: [[ Redraw ]] Added 'sprite' option - if true, ink and opacity are not set.
 void MCButton::draw(MCDC *dc, const MCRectangle& p_dirty, bool p_isolated, bool p_sprite)
 {
@@ -1247,7 +1256,10 @@ void MCButton::drawcascade(MCDC *dc, MCRectangle &srect)
 void MCButton::drawcombo(MCDC *dc, MCRectangle &srect)
 {
 	MCRectangle trect = srect;
-	if (MCcurtheme && MCcurtheme->iswidgetsupported(WTHEME_TYPE_COMBO))
+	// Use the native theme only when not on LF_MAC native path; on LF_MAC we
+	// use custom drawing for full control over the text-field and chevron borders.
+	if (MCcurtheme && MCcurtheme->iswidgetsupported(WTHEME_TYPE_COMBO)
+	        && !(MClook == LF_MAC && !IsMacEmulatedLF()))
 	{
 		//draw frame around combobobox
 		MCWidgetInfo winfo;
@@ -1272,15 +1284,57 @@ void MCButton::drawcombo(MCDC *dc, MCRectangle &srect)
 		break;
 	case LF_MAC:
 		{
-			trect.width -= trect.height + 2;
-			drawborder(dc, trect, 1);
-			trect.x = srect.x + srect.width - srect.height;
-			trect.width = trect.height;
-			setforeground(dc, DI_BACK, (state & CS_SUBMENU) != 0, False);
-			dc->fillrect(trect);
-			drawmacborder(dc, trect);
-			trect = MCU_reduce_rect(trect, 2);
-			drawmacpopup(dc, trect);
+			uint2 radius = 5;
+			// White background fill for the whole control.
+			MCColor white_col;
+			white_col.red = white_col.green = white_col.blue = 0xFFFF;
+			dc->setforeground(white_col);
+			dc->setfillstyle(FillSolid, nil, 0, 0);
+			dc->fillroundrect(srect, radius);
+			// Light gray outer border.
+			MCColor border_col;
+			border_col.red = border_col.green = border_col.blue = 0xCBCB;
+			dc->setforeground(border_col);
+			dc->drawroundrect(srect, radius, true);
+			// Small rounded pill button inset on the right.
+			int2 btn_margin = 3;
+			trect.x = srect.x + srect.width - srect.height + btn_margin;
+			trect.y = srect.y + btn_margin;
+			trect.width = srect.height - btn_margin * 2;
+			trect.height = srect.height - btn_margin * 2;
+			uint2 btn_radius = 4;
+			// Fill button with light gray.
+			MCColor btn_col;
+			btn_col.red = 0xE5E5; btn_col.green = 0xE5E5; btn_col.blue = 0xEAEA;
+			dc->setforeground(btn_col);
+			dc->setfillstyle(FillSolid, nil, 0, 0);
+			dc->fillroundrect(trect, btn_radius);
+			// Thin border around the button.
+			dc->setforeground(border_col);
+			dc->drawroundrect(trect, btn_radius, true);
+			// Downward "v" chevron stroke, drawn directly to avoid the
+			// theme early-return inside drawarrow().
+			{
+				int2 aw = (trect.width  * 6) / 16;  // chevron width (~38% of button)
+				int2 ah = (aw * 6) / 10;             // chevron height (shallower angle)
+				int2 ax = trect.x + (trect.width  - aw) / 2;
+				int2 ay = trect.y + (trect.height - ah) / 2;
+				// Three points: top-left -> tip -> top-right
+				MCPoint ap[3];
+				ap[0].x = ax;          ap[0].y = ay;
+				ap[1].x = ax + aw / 2; ap[1].y = ay + ah;
+				ap[2].x = ax + aw;     ap[2].y = ay;
+				MCColor chevron_col;
+				chevron_col.red = chevron_col.green = chevron_col.blue =
+				    (flags & F_DISABLED) ? 0xAAAA : 0x3333;
+				dc->setforeground(chevron_col);
+				// Draw with 2px round-capped line for a clean stroke chevron.
+				uint2 t_lsize, t_lstyle, t_lcap, t_ljoin;
+				dc->getlineatts(t_lsize, t_lstyle, t_lcap, t_ljoin);
+				dc->setlineatts(2, LineSolid, CapRound, JoinRound);
+				dc->drawlines(ap, 3);
+				dc->setlineatts(t_lsize, t_lstyle, t_lcap, t_ljoin);
+			}
 		}
 		break;
 	case LF_WIN95:
@@ -1632,7 +1686,53 @@ void MCButton::drawtabs(MCDC *dc, MCRectangle &srect)
 		}
 		else
 			if (reversetext)
-				setforeground(dc, DI_PSEUDO_BUTTON_TEXT_SEL, False, True);
+			{
+#ifdef _MACOSX
+                // HXT: On the native macOS theme the selected tab is filled with
+                // the user's accent colour, so the tab label must always be white.
+                // DI_PSEUDO_BUTTON_TEXT_SEL resolves to DI_BACK, which walks up
+                // to the stack and returns whatever background colour the developer
+                // has set — causing the text to disappear or match the background.
+                // Force white here when the native tab theme is active; fall back
+                // to the inherited colour only for the non-native (LF_MAC) path,
+                // where reversetext is set for MAC_SHADOW-filled hovered tabs and
+                // the original lookup is correct.
+                if (MCcurtheme && MCcurtheme->iswidgetsupported(WTHEME_TYPE_TAB))
+                {
+                    // Active window: white text over accent-colour fill.
+                    // Inactive window: the text colour depends on appearance:
+                    //   Light mode — medium grey (~0.50) over a light fill (0.75)
+                    //   Dark mode  — lighter grey (~0.62) over a dark fill (0.20)
+                    // The lighter value for dark mode is intentional: fill and
+                    // text swap roles (dark fill / light text) to match macOS's
+                    // standard inactive-tab appearance in dark Aqua.
+                    if (MCappisactive)
+                    {
+                        dc->setforeground(dc->getwhite());
+                    }
+                    else if (
+#if defined(__arm64__) || defined(__aarch64__)
+                             MCplatformIsDarkMode()
+#else
+                             false
+#endif
+                             )
+                    {
+                        // ~RGB(158,158,158) — lighter than getgray() (~128) to
+                        // sit visibly above the 0.20-white dark inactive fill.
+                        MCColor t_light_gray = { 0x9E9E, 0x9E9E, 0x9E9E };
+                        dc->setforeground(t_light_gray);
+                    }
+                    else
+                    {
+                        dc->setforeground(dc->getgray());
+                    }
+                    dc->setfillstyle(FillSolid, nil, 0, 0);
+                }
+                else
+#endif
+                    setforeground(dc, DI_PSEUDO_BUTTON_TEXT_SEL, False, True);
+			}
 			else
 				setforeground(dc, DI_PSEUDO_BUTTON_TEXT, False);
         // AL-2014-09-24: [[ Bug 13528 ]] Don't draw character indicating button is disabled
@@ -1948,6 +2048,10 @@ void MCButton::getwidgetthemeinfo(MCWidgetInfo &widgetinfo)
 	// MW-2005-07-25: [[Bug 2574]] A 'hilited' push-button, should actually be pressed
 	if (widgetinfo . type == WTHEME_TYPE_PUSHBUTTON && state & CS_HILITED)
 		wstate |= WTHEME_STATE_PRESSED;
+	
+	// Set widget type based on button style - rectangle buttons should use WTHEME_TYPE_RECTANGLE_BUTTON
+	if ((widgetinfo.type == WTHEME_TYPE_PUSHBUTTON || widgetinfo.type == WTHEME_TYPE_BEVELBUTTON) && getstyleint(flags) == F_RECTANGLE)
+		widgetinfo.type = WTHEME_TYPE_RECTANGLE_BUTTON;
 	
 	widgetinfo.state = wstate;
 }

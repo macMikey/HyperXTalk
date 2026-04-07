@@ -88,6 +88,7 @@ public foreign handler MCBrowserLoadHTMLText(in pBrowser as MCBrowserRef, in pHT
 public foreign handler MCBrowserStopLoading(in pBrowser as MCBrowserRef) returns CBool binds to "<builtin>"
 public foreign handler MCBrowserReload(in pBrowser as MCBrowserRef) returns CBool binds to "<builtin>"
 public foreign handler MCBrowserEvaluateJavaScript(in pBrowser as MCBrowserRef, in pScript as ZStringUTF8, out rResult as optional ZStringUTF8) returns CBool binds to "<builtin>"
+public foreign handler MCBrowserSetAppearance(in pBrowser as MCBrowserRef, in pDark as CBool) returns CBool binds to "<builtin>"
 
 ----------
 

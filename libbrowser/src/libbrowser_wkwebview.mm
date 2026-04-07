@@ -44,6 +44,32 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
+// MCWKContainerView — NSView subclass that explicitly propagates effective
+// appearance changes down to the hosted WKWebView.
+//
+// WKWebView is created unparented (detached from any window) and its container
+// starts life hidden.  AppKit does not reliably call
+// viewDidChangeEffectiveAppearance on views whose ancestors were hidden or
+// unparented at the time the system appearance changed, so prefers-color-scheme
+// never updates in the web content.  Overriding the method here and explicitly
+// setting the WKWebView's appearance fixes this for all macOS versions.
+
+#if !defined(TARGET_SUBPLATFORM_IPHONE)
+@interface MCWKContainerView : NSView
+@property (nonatomic, assign) WKWebView *webView;
+@end
+
+@implementation MCWKContainerView
+- (void)viewDidChangeEffectiveAppearance
+{
+    [super viewDidChangeEffectiveAppearance];
+    if (_webView != nil)
+        [_webView setAppearance:self.effectiveAppearance];
+}
+@end
+#endif // !TARGET_SUBPLATFORM_IPHONE
+
+////////////////////////////////////////////////////////////////////////////////
 // Shared WKProcessPool — keeps the WebContent process alive across all
 // WKWebView instances so that Init() never has to wait for a cold process
 // launch on the main thread.
@@ -1178,6 +1204,23 @@ bool MCWKWebViewBrowser::EvaluateJavaScript(const char *p_script, char *&r_resul
 
 ////////////////////////////////////////////////////////////////////////////////
 
+bool MCWKWebViewBrowser::SetAppearance(bool p_dark)
+{
+#if !defined(TARGET_SUBPLATFORM_IPHONE)
+	WKWebView *t_view;
+	if (!GetWebView(t_view))
+		return false;
+
+	NSAppearanceName t_name = p_dark ? NSAppearanceNameDarkAqua : NSAppearanceNameAqua;
+	[t_view setAppearance:[NSAppearance appearanceNamed:t_name]];
+	return true;
+#else
+	return true;
+#endif
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
 bool MCWKWebViewBrowser::GetWebView(WKWebView *&r_view)
 {
 	if (m_view == nil)
@@ -1218,7 +1261,11 @@ bool MCWKWebViewBrowser::Init(void)
 
 		if (t_success)
 		{
+#if defined(TARGET_SUBPLATFORM_IPHONE)
 			t_container_view = [[MCPlatformView alloc] initWithFrame:MCPlatformViewMakeRect(0, 0, 0, 0)];
+#else
+			t_container_view = [[MCWKContainerView alloc] initWithFrame:MCPlatformViewMakeRect(0, 0, 0, 0)];
+#endif
 			t_success = t_container_view != nil;
 		}
 
@@ -1283,6 +1330,14 @@ bool MCWKWebViewBrowser::Init(void)
 			[t_container_view setAutoresizesSubviews:YES];
 			[t_container_view addSubview:t_view];
 			[t_container_view setHidden: YES];
+
+#if !defined(TARGET_SUBPLATFORM_IPHONE)
+			// Wire up the appearance-forwarding property so that
+			// MCWKContainerView::viewDidChangeEffectiveAppearance can push
+			// the correct NSAppearance to the WKWebView when the system
+			// appearance changes.
+			((MCWKContainerView *)t_container_view).webView = t_view;
+#endif
 
 			m_view = t_view;
 			m_container_view = t_container_view;

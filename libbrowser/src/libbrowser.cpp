@@ -606,8 +606,17 @@ bool MCBrowserEvaluateJavaScript(MCBrowserRef p_browser, const char *p_script, c
 {
 	if (p_browser == nil)
 		return false;
-	
+
 	return p_browser->EvaluateJavaScript(p_script, r_result);
+}
+
+MC_BROWSER_DLLEXPORT_DEF
+bool MCBrowserSetAppearance(MCBrowserRef p_browser, bool p_dark)
+{
+	if (p_browser == nil)
+		return false;
+
+	return p_browser->SetAppearance(p_dark);
 }
 
 //////////

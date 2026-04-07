@@ -717,7 +717,7 @@ getProp footerHeight
 end footerHeight
 
 setProp hilitedTabColor pColor
-  put pColor into TAB_SELECTED_COLOR
+   put pColor into TAB_SELECTED_COLOR
 end hilitedTabColor
 
 setProp navigationDisplayStyle pStyle

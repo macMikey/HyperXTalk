@@ -1,4 +1,4 @@
-﻿script "revInspectorBehavior"
+﻿script "revInspectorBehavior" with behavior "revPaletteBehavior"
 constant kMaxLabelSize = 200
 
 # The inspector data
@@ -40,6 +40,8 @@ before openStack
    set the stackfiles of me to tStackFiles
    revIDEPopDefaultFolder
    put true into sStackIsInFront
+   
+   set the backgroundColor of this stack to (the systemWindowColor)  // HXT
 end openStack
 
 on resizeInspector
@@ -752,3 +754,14 @@ on ideStyleTextRequest pWhich, pValue, pSelectedChunk, pSelectedObject
       end if
    end if
 end ideStyleTextRequest
+
+// HXT
+on systemAppearanceChanged pMode, pWindowColor
+   set the cInspectorBackgroundColor of stack "revPreferences" to pWindowColor
+   set the backgroundColor of this stack to pWindowColor
+   if pMode is "dark" then
+      set the foreColor of me to "white"
+   else
+      set the foreColor of me to "black"
+   end if
+end systemAppearanceChanged
