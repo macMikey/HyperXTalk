@@ -1,4 +1,4 @@
-﻿script "revProjectBrowserBehavior"
+﻿script "revProjectBrowserBehavior" with behavior "revPaletteBehavior"
 local sDisplayArray, sLongIDToRow, sObjectToParent
 
 on arrowKey pDirection
@@ -122,6 +122,10 @@ on preOpenStack
    else
       set the textSize of me to tTextSize
    end if
+   
+   // HXT dark mode
+   set the backgroundColor of me to (the systemWindowColor)
+   set the foregroundColor of me to (the systemTextColor)
    
    put empty into sDisplayArray
    loadImages
@@ -2541,3 +2545,8 @@ command setConnectorIcon pControl, pState
          break
    end switch
 end setConnectorIcon
+
+on SystemAppearanceChanged pMode, pWindowColor, pTextColor
+   set the backgroundColor of me to pWindowColor
+   set the foregroundColor of me to pTextColor
+end SystemAppearanceChanged
