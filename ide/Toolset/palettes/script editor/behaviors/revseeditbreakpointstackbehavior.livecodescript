@@ -46,17 +46,7 @@ on preOpenCard
    
    __UpdateConditionColors
    __UpdateConditionFont
-   
-   set the backgroundColor of this stack to (the systemWindowColor)
-   set the foregroundColor of this stack to (the systemTextColor)
 end preOpenCard
-
-
-on SystemAppearanceChanged pMode, pWindowColor, pTextColor
-   set the backgroundColor of this stack to pWindowColor
-   set the foregroundColor of this stack to pTextColor
-end SystemAppearanceChanged
-
 
 on mouseUp
    if the short name of the target is "Breakpoint" then
@@ -240,7 +230,7 @@ command updateWatch
    
    local tHandlers
    put the revAvailableHandlers of tObject into tHandlers
-   
+      
    local tDisplayHandlers
    put "Global Scope" & return into tDisplayHandlers
    repeat for each line tHandler in tHandlers
@@ -358,13 +348,12 @@ private command updateBreakpoint
    dispatch "revSEColorizeField" to stack "revSEUtilities" with the long id of field "Condition" of me
 end updateBreakpoint
 
-// HXT
---on textChanged
---   if the short name of the target is "Condition" then
---      dispatch "revSEColorizeField" to stack "revSEUtilities" with the long id of field "Condition" of me
---   end if
---end textChanged
-
+on textChanged
+   if the short name of the target is "Condition" then
+      dispatch "revSEColorizeField" to stack "revSEUtilities" with the long id of field "Condition" of me
+   end if
+end textChanged
+  
 on idePreferenceChanged pPreference, pValue
    lock screen
    switch pPreference
@@ -386,11 +375,10 @@ private command __UpdateConditionFont
    
    set the textFont of field "condition" of me to tFont
    set the textSize of field "condition" of me to tSize
-   set the foregroundColor of field "Condition" of me to (the systemTextColor)
 end __UpdateConditionFont
 
 private command __UpdateConditionColors
    local tColor
    put revIDEGetPreference("cScriptEditor,editor,backgroundcolor") into tColor
-   set the backgroundColor of field "condition" of me to EMPTY
+   set the backgroundColor of field "condition" of me to tColor
 end __UpdateConditionColors

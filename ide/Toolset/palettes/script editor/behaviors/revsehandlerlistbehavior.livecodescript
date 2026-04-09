@@ -258,13 +258,6 @@ command update
    set the height of me to the height of field "Handlers" of me
    set the topLeft of field "Handlers" of me to the topLeft of me
    set the topRight of me to tOldTopRight
-   // HXT dark mode
-   if (the systemAppearance = "dark") then
-      set the backgroundColor of field "Handlers" of me to "black"
-   else
-      set the backgroundColor of field "Handlers" of me to "white"
-   end if
-   set the foregroundColor of field "Handlers" of me to (the systemTextColor)
    unlock screen
 end update
 
