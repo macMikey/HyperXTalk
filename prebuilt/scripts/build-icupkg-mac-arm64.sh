@@ -69,10 +69,18 @@ echo "Installing to ${ICU_INSTALL}..."
 make install 2>&1 | tail -5
 
 # ── 3. Place the binary ───────────────────────────────────────────────────────
-BUILT_ICUPKG="${ICU_INSTALL}/bin/icupkg"
+# ICU's 'make install' puts data-building tools (icupkg, genccode, …) under
+# sbin/, not bin/. Look in both.
+BUILT_ICUPKG=""
+for candidate in "${ICU_INSTALL}/bin/icupkg" "${ICU_INSTALL}/sbin/icupkg"; do
+    if [ -f "${candidate}" ]; then
+        BUILT_ICUPKG="${candidate}"
+        break
+    fi
+done
 
-if [ ! -f "${BUILT_ICUPKG}" ]; then
-    echo "ERROR: icupkg not found at ${BUILT_ICUPKG}"
+if [ -z "${BUILT_ICUPKG}" ]; then
+    echo "ERROR: icupkg not found under ${ICU_INSTALL}/{bin,sbin}/"
     exit 1
 fi
 
