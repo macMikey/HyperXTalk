@@ -54,7 +54,7 @@ if [ ! -z "${PREBUILT_CACHE_DIR}" ] ; then
 fi
 
 function fetchLibrary {
-	local LIBURL=$1
+	local LIBURL="${!1}"
 	local LIB=$2
 	local PLATFORM=$3
 	local ARCH=$4
@@ -180,10 +180,10 @@ for PLATFORM in ${SELECTED_PLATFORMS} ; do
 		for LIB in "${LIBS[@]}" ; do
 			if [ ! -z "${SUBPLATFORMS}" ] ; then
 				for SUBPLATFORM in "${SUBPLATFORMS[@]}" ; do
-					fetchLibrary "${ARCH}URL" "${LIB}" "${PLATFORM}" "${ARCH}" "${SUBPLATFORM}"
+					fetchLibrary "URL${LIB}" "${LIB}" "${PLATFORM}" "${ARCH}" "${SUBPLATFORM}"
 				done
 			else
-				fetchLibrary "${ARCH}URL" "${LIB}" "${PLATFORM}" "${ARCH}"
+				fetchLibrary "URL${LIB}" "${LIB}" "${PLATFORM}" "${ARCH}"
 			fi
 		done
 	done
