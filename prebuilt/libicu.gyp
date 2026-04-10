@@ -23,7 +23,11 @@
 				{
 					'variables':
 					{
-						'prebuilt_icu_bin_dir': 'bin/mac/<(target_arch)',
+						# prebuilt/bin/mac/icupkg is shipped as a single
+						# arch-independent host tool — no per-arch subdir.
+						# See commit 39a6a2af ("prebuilt: ship real arm64
+						# icupkg binary...").
+						'prebuilt_icu_bin_dir': 'bin/mac',
 						'prebuilt_icu_share_dir': 'share',
 					},
 				},
@@ -318,7 +322,7 @@
 					],
 					'action':
 					[
-						'python',
+						'python3',
 						'../util/remove_matching.py',
 						'<(INTERMEDIATE_DIR)/data/icudata-full-list.txt',
 #						'<(INTERMEDIATE_DIR)/data/out/tmp/icudata.lst',

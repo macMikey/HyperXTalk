@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # Copyright (C) 2017 LiveCode Ltd.
 #
 # This file is part of LiveCode.
@@ -186,9 +186,9 @@ def do_bin_archive():
 	return bin_archive(target)
 
 def do_bin_extract():
-	exit_status = subprocess.call(['python', 'prebuilt/extract.py'])
+	exit_status = subprocess.call(['python3', 'prebuilt/extract.py'])
 	if 0 == exit_status and "commercial" == get_build_edition():
-		args = ["python", "../prebuilt/extract.py"]
+		args = ["python3", "../prebuilt/extract.py"]
 		exit_status = subprocess.call(args)
 
 	return exit_status

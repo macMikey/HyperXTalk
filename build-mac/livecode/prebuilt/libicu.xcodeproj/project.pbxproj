@@ -522,7 +522,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "exec python ../util/remove_matching.py \"${INTERMEDIATE_DIR}/data/icudata-full-list.txt\" rsrc/icudata-minimal-list.txt \"${INTERMEDIATE_DIR}/data/icudata-remove-list.txt\"\nexit 1\n";
+			shellScript = "exec python3 ../util/remove_matching.py \"${INTERMEDIATE_DIR}/data/icudata-full-list.txt\" rsrc/icudata-minimal-list.txt \"${INTERMEDIATE_DIR}/data/icudata-remove-list.txt\"\nexit 1\n";
 			showEnvVarsInLog = 0;
 		};
 		35BCEFB298EA11D01CA944E0 /* Action "minimal_icu_data" */ = {
@@ -609,7 +609,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "exec python ../util/remove_matching.py \"${INTERMEDIATE_DIR}/data/icudata-full-list.txt\" rsrc/icudata-minimal-list.txt \"${INTERMEDIATE_DIR}/data/icudata-remove-list.txt\"\nexit 1\n";
+			shellScript = "exec python3 ../util/remove_matching.py \"${INTERMEDIATE_DIR}/data/icudata-full-list.txt\" rsrc/icudata-minimal-list.txt \"${INTERMEDIATE_DIR}/data/icudata-remove-list.txt\"\nexit 1\n";
 			showEnvVarsInLog = 0;
 		};
 		EB2BB4139CA37DEA7CFDFA35 /* Action "encode_minimal_icu_data" */ = {
