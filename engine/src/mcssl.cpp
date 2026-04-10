@@ -958,10 +958,10 @@ bool export_system_root_cert_stack(STACK_OF(X509) *&r_x509_stack)
 			
 			if (t_success)
 			{
-#				const unsigned char* t_cert_data_ptr = CFDataGetBytePtr(t_cert_data_ref);
-#				CFIndex t_cert_data_len = CFDataGetLength(t_cert_data_ref);
-#				t_success = NULL != (t_x509 = d2i_X509(NULL, &t_cert_data_ptr, t_cert_data_len));
-#				CFRelease(t_cert_data_ref);
+//				const unsigned char* t_cert_data_ptr = CFDataGetBytePtr(t_cert_data_ref);
+//				CFIndex t_cert_data_len = CFDataGetLength(t_cert_data_ref);
+//				t_success = NULL != (t_x509 = d2i_X509(NULL, &t_cert_data_ptr, t_cert_data_len));
+//				CFRelease(t_cert_data_ref);
 
 				t_data_ptr = t_cert_data.Data;
 				t_data_len = t_cert_data.Length;
