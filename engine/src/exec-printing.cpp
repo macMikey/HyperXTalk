@@ -38,6 +38,9 @@ along with LiveCode.  If not see <http://www.gnu.org/licenses/>.  */
 
 #include "exec.h"
 
+// 2023.06.13 mdw feature_linux_printing : avoid magic strings thusly
+const char * C_FNAME = "/tmp/tmpprintfile.ps";
+
 ////////////////////////////////////////////////////////////////////////////////
 
 static MCExecSetTypeElementInfo _kMCPrintingPrinterFeaturesElementInfo[] =
@@ -139,8 +142,7 @@ static void MCPrintingPrintDeviceOutputParse(MCExecContext& ctxt, MCStringRef p_
 	if (MCStringIsEqualToCString(p_input, "device", kMCCompareCaseless))
 	{
 		r_output -> type = PRINTER_OUTPUT_DEVICE;
-		r_output -> location = nil;
-		return;
+//	2023.06.13 mdw feature_linux_printing : don't set location to nil
 	}
 	
 	MCAutoStringRef t_head, t_tail;
@@ -165,6 +167,9 @@ static void MCPrintingPrintDeviceOutputFormat(MCExecContext& ctxt, const MCPrint
 	switch(p_input -> type)
 	{
 		case PRINTER_OUTPUT_DEVICE:
+// 2023.06.13 mdw feature_linux_printing
+			if (MCStringFormat(r_output, "file:%@", C_FNAME))
+				{}
 			if (MCStringCreateWithCString("device", r_output))
 				return;
 			break;
@@ -776,7 +781,12 @@ void MCPrintingGetPrintDeviceOutput(MCExecContext& ctxt, MCPrintingPrintDeviceOu
 		}
 	}
 	else
-		r_output . location = nil;
+// 2023.06.13 mdw feature_linux_printing
+		if (!MCStringCreateWithBytes((byte_t*)C_FNAME, strlen(C_FNAME), kMCStringEncodingUTF8, false, r_output . location))
+		{
+			ctxt . Throw();
+			return;
+		}
 	
 	r_output . type = t_output_type;
 }
