@@ -50,8 +50,12 @@ along with LiveCode.  If not see <http://www.gnu.org/licenses/>.  */
 #include "lnxans.h"
 
 #include "graphicscontext.h"
+// mdw 2022-05-19 # feature_linux_printing.
+// NOTE: cups requires sudo apt install libcups2-dev on the build machine
+#include <cups/cups.h>
 
-#define C_FNAME "/tmp/tmpprintfile.ps"
+// 2023.06.13 mdw feature_linux_printing : avoid magic strings thusly
+const char * PS_FNAME = "/tmp/tmpprintfile.ps";
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -243,9 +247,8 @@ MCPrinterResult MCPSPrinter::DoBeginPrint(MCStringRef p_document, MCPrinterDevic
 {
 	const char *t_output_file;
 	if (GetDeviceOutputType() == PRINTER_OUTPUT_FILE)
-		t_output_file = GetDeviceOutputLocation();
-	else
-        t_output_file = C_FNAME;
+// 2023.06.13 mdw feature_linux_printing
+        t_output_file = PS_FNAME;
     
     // Create a stringref from the output path.
     MCAutoStringRef t_path;
@@ -263,6 +266,14 @@ MCPrinterResult MCPSPrinter::DoBeginPrint(MCStringRef p_document, MCPrinterDevic
 
 MCPrinterResult MCPSPrinter::DoEndPrint(MCPrinterDevice* p_device)
 {
+// 2023.06.13 mdw feature_linux_printing : cups printing
+    const char *name;
+    const char    *title = "hello";
+    int num_options = 0;/* I - Number of options */
+    cups_option_t *options = NULL;	/* I - Options */
+	int jobID;
+	ipp_status_t status;
+
     // If we have no PDF printer, then we can't do anything.
     if (m_pdf_printer == nil)
         return PRINTER_RESULT_ERROR;
@@ -275,41 +286,54 @@ MCPrinterResult MCPSPrinter::DoEndPrint(MCPrinterDevice* p_device)
 	
         if (GetDeviceOutputType() == PRINTER_OUTPUT_DEVICE)
         {
-            char buffer[1024];
-            
-            sprintf(buffer, "lp " ) ;
-            
+
+// mdw 2022-05-19 # can't use lp - needs elevated privileges.
             if ( m_printersettings . printername != NULL )
-                sprintf( buffer, "%s -d %s", buffer, m_printersettings . printername ) ;
-            
-            if ( m_printersettings . copies > 1 )
-                sprintf ( buffer, "%s -n %d", buffer, m_printersettings . copies ) ;
-            
+                name = m_printersettings . printername ;
+            else
+                name = cupsGetDefault() ;
+
             if ( m_printersettings . orientation != PRINTER_ORIENTATION_PORTRAIT )
-                sprintf(buffer, "%s -o landscape", buffer );
+               num_options = cupsAddOption ("orientation", "landscape", num_options, &options);
+            else
+               num_options = cupsAddOption ("orientation", "portrait", num_options, &options);
             
             if ( m_printersettings . collate )
-                sprintf(buffer, "%s -o collate=true", buffer ) ;
+                num_options = cupsAddOption ("Collate", "True", num_options, &options);
             
-            if ( m_printersettings . duplex_mode == PRINTER_DUPLEX_MODE_SHORT_EDGE )
-                sprintf(buffer, "%s -sides=two-sided-short-edge", buffer );
+            switch ( m_printersettings . duplex_mode )
+            {
+                    case PRINTER_DUPLEX_MODE_SHORT_EDGE:
+                        num_options = cupsAddOption ("Duplex", "DuplexTumble", num_options, &options);
+                       break;
+                    case PRINTER_DUPLEX_MODE_LONG_EDGE:
+                        num_options = cupsAddOption ("Duplex", "DuplexNoTumble", num_options, &options);
+                        break;
+                    default:
+                        num_options = cupsAddOption ("Duplex", "None", num_options, &options);
+                        break;
+            }
             
-            if ( m_printersettings . duplex_mode == PRINTER_DUPLEX_MODE_LONG_EDGE )
-                sprintf(buffer, "%s -sides=two-sided-long-edge", buffer );
-            
-            sprintf( buffer, "%s %s\n", buffer, C_FNAME ) ;
-            
-            if (GetDeviceCommand() != NULL)
-                sprintf(buffer, GetDeviceCommand(), C_FNAME ) ;
-            
-            exec_command(buffer);
+            jobID = cupsPrintFile(name,	// I - Printer or class name
+                          PS_FNAME,	    // I - File to print
+                          title,	    // I - Title of job
+                          num_options,  // I - Number of options
+                          options);	    // I - Options
+            status = cupsLastError();
+            cupsFreeOptions(num_options, options);
         }
     }
+// mdw 2022-05-19 # end of cups changes.
     
     delete m_pdf_printer;
     m_pdf_printer = nil;
-	
+
+// 2023.06.13 mdw feature_linux_printing : could check error status
+// just not sure what would process the result of this function	
+	// if (IPP_OK == status)
 	return PRINTER_RESULT_SUCCESS;
+	// else
+	// return PRINTER_RESULT_CANCEL;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

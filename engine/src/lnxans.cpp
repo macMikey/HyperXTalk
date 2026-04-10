@@ -870,7 +870,8 @@ MCPrinterDialogResult MCA_gtk_printer_setup ( PSPrinterSettings &p_settings )
 
 		if ( p_settings . outputfilename != NULL ) 
 			delete (p_settings . outputfilename - 7 );
-		p_settings . outputfilename = NULL ;
+// 2023.06.13 mdw feature_linux_printing : place the output file in the proper place
+		p_settings . outputfilename = "/tmp/tmpprintfile.ps" ;
 		p_settings . printertype = PRINTER_OUTPUT_DEVICE ;
 		
         GtkPrintSettings* t_printer_settings ;
