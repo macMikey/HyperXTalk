@@ -124,9 +124,8 @@ on preOpenStack
    end if
    
    // HXT dark mode
-   set the backgroundColor of me to (the systemWindowColor)
-   set the foregroundColor of me to (the systemTextColor)
-   
+   hxtApplyAppearance
+
    put empty into sDisplayArray
    loadImages
    setUpProjectView
@@ -134,6 +133,38 @@ on preOpenStack
    set the rect of group "content" of card 1 of me to the contentRect of me
    ideSelectedObjectChanged
 end preOpenStack
+
+on openStack
+   // HXT dark mode: re-apply on every open, not just preOpenStack, because
+   // palette stacks in HyperXTalk can be reopened without preOpenStack firing
+   hxtApplyAppearance
+   pass openStack
+end openStack
+
+// HXT dark mode: direct paint of the stack + dataView backgrounds from
+// revIDEColor. We can't rely on the dataView's viewProp["row color"] because
+// the baked row template widgets paint their own "Background" controls, and
+// the row behaviors explicitly clear graphic "background" to empty, so the
+// only path that produces a reliably dark body is to set the stack, the
+// objectList group, and the internal dvBackground graphic directly.
+command hxtApplyAppearance
+   local tRowColor, tTextColor
+   put revIDEColor("dataView_rowColor") into tRowColor
+   put revIDEColor("text_1") into tTextColor
+
+   set the backgroundColor of me to tRowColor
+   set the foregroundColor of me to tTextColor
+   if there is a group "objectList" of me then
+      set the backgroundColor of group "objectList" of me to tRowColor
+      try
+         set the backgroundColor of graphic "dvBackground" of group "objectList" of me to tRowColor
+      end try
+      // Re-apply the row color viewProps too in case any code path reads them
+      set the viewProp["row color"] of group "objectList" of me to tRowColor
+      set the viewProp["alternate row color"] of group "objectList" of me to revIDEColor("dataView_rowAlternateColor")
+      set the viewProp["hilite color"] of group "objectList" of me to revIDEColor("dataView_HiliteColor")
+   end if
+end hxtApplyAppearance
 
 on resizeStack
    lock screen
@@ -2547,6 +2578,12 @@ command setConnectorIcon pControl, pState
 end setConnectorIcon
 
 on SystemAppearanceChanged pMode, pWindowColor, pTextColor
-   set the backgroundColor of me to pWindowColor
-   set the foregroundColor of me to pTextColor
+   // HXT dark mode: hxtApplyAppearance reads from revIDEColor which is
+   // already systemAppearance-aware, so we use it as the single source of
+   // truth rather than the pWindowColor/pTextColor params (those are just
+   // the OS window/text colors, which don't match the dataView row palette).
+   hxtApplyAppearance
+   if there is a group "objectList" of me then
+      refreshProjectView
+   end if
 end SystemAppearanceChanged

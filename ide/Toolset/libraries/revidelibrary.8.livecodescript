@@ -2491,7 +2491,58 @@ function revIDEColor pTag
    if pTag is "edition_color" then
       return revEnvironmentEditionProperty("color")
    end if
-   
+
+   // HXT dark mode: return dark-appropriate values for the IDE palette
+   // colors when the OS is in dark appearance. Light-mode path below is
+   // left byte-identical to the pre-dark-mode behavior.
+   if the systemAppearance is "dark" then
+      switch pTag
+         case "text_1"
+            return "230,230,230"
+            break
+         case "text_2"
+            return "160,160,160"
+            break
+         case "text_3"
+            return "120,120,120"
+            break
+         case "dataView_rowColor"
+            return "36,36,38"
+            break
+         case "dataView_rowAlternateColor"
+            return "44,44,46"
+            break
+         case "dataView_hiliteColor"
+            return "10,95,175"
+            break
+         case "dataView_alternateHiliteColor"
+            return "8,80,150"
+            break
+         case "dataView_TextHiliteColor"
+            return "255,255,255"
+            break
+         case "dataView_scriptBackgroundColor"
+            return "8,80,150"
+            break
+         case "dataView_scriptErrorBackgroundColor"
+            return "255,0,0"
+            break
+         case "dataView_disclosureIconColor"
+            return "180,180,180"
+            break
+         case "dataView_disclosureIconHiliteColor"
+            return "230,230,230"
+            break
+         case "palette_background"
+            return the systemWindowColor
+            break
+         case "propertyInspector_multiValueBackground"
+            return "55,60,70"
+            break
+      end switch
+      // fall through to ideColorGet() for any tag not overridden above
+   end if
+
    switch pTag
       case "text_1"
          return "0,0,0"
@@ -2525,10 +2576,10 @@ function revIDEColor pTag
          break
       case "dataView_disclosureIconColor"
          return "99,99,99"
-         break         
+         break
       case "dataView_disclosureIconHiliteColor"
          return "216,216,216"
-         break 
+         break
       case "palette_background"
          if the platform is "Win32" then
             return "240,240,240"
@@ -2540,7 +2591,7 @@ function revIDEColor pTag
          return "200,206,215"
          break
    end switch
-   
+
    return ideColorGet(pTag)
 end revIDEColor
 
