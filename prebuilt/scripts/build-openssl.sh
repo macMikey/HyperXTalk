@@ -149,7 +149,15 @@ function buildOpenSSL {
 	CUSTOM_SPEC="livecode_${SPEC}"
 
 	OPENSSL_ARCH_SRC="${OPENSSL_SRC}-${PLATFORM_NAME}-${ARCH}"
-	OPENSSL_ARCH_CONFIG="no-rc5 no-hw no-threads shared -DOPENSSL_NO_ASYNC=1 --prefix=${INSTALL_DIR}/${NAME} ${CUSTOM_SPEC} ${EXTRA_OPTIONS}"
+
+	# OpenSSL 3.0 dropped the `no-hw` and `no-rc5` Configure options (hw
+	# engine support was deleted outright, and RC5 moved into the legacy
+	# provider). Pass them only for 1.1.x builds.
+	OPENSSL_LEGACY_DISABLE=""
+	if [[ "${OpenSSL_VERSION}" == 1.* ]] ; then
+		OPENSSL_LEGACY_DISABLE="no-rc5 no-hw"
+	fi
+	OPENSSL_ARCH_CONFIG="${OPENSSL_LEGACY_DISABLE} no-threads shared -DOPENSSL_NO_ASYNC=1 --prefix=${INSTALL_DIR}/${NAME} ${CUSTOM_SPEC} ${EXTRA_OPTIONS}"
 
 	# Copy the source to a target-specific directory
 	if [ ! -d "${OPENSSL_ARCH_SRC}" ] ; then

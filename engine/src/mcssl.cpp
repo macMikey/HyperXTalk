@@ -41,6 +41,9 @@ along with LiveCode.  If not see <http://www.gnu.org/licenses/>.  */
 #include <openssl/rsa.h>
 #include <openssl/ssl.h>
 #include <openssl/x509v3.h>
+#if OPENSSL_VERSION_NUMBER >= 0x30000000L
+#include <openssl/provider.h>
+#endif
 
 #ifdef TARGET_PLATFORM_MACOS_X
 #include <Security/SecTrust.h>
@@ -112,12 +115,23 @@ Boolean InitSSLCrypt()
 
 #ifdef MCSSL
         OPENSSL_init_ssl(0, NULL);
-        
+
+#if OPENSSL_VERSION_NUMBER >= 0x30000000L
+        // OpenSSL 3.x moved legacy algorithms (RC4, DES, Blowfish, CAST5,
+        // IDEA, MD4, MDC2, RIPEMD160) into a separate "legacy" provider that
+        // is not loaded by default. HyperXTalk's `encrypt`/`decrypt` command
+        // exposes arbitrary cipher names via EVP_get_cipherbyname(), and
+        // deploy_sign.cpp calls EVP_rc4() for Windows PVK signing. Load both
+        // default and legacy providers so those paths keep working.
+        OSSL_PROVIDER_load(NULL, "default");
+        OSSL_PROVIDER_load(NULL, "legacy");
+#endif
+
         uint32_t t_randomseed_bytes[4];
 		RAND_seed(t_randomseed_bytes, sizeof(t_randomseed_bytes));
         MCrandomseed = t_randomseed_bytes[0];
 		cryptinited = True;
-		
+
 		s_ssl_system_root_certs = nil;
 		s_ssl_system_crls = nil;
 #endif
@@ -481,7 +495,7 @@ char *SSL_encode(Boolean isdecrypt, const char *ciphername,
 	if (keylen && EVP_CIPHER_CTX_set_key_length(*ctx, keylen/8) == 0)
 		return NULL;
 	//get new keylength in bytes
-	int4 curkeylength = EVP_CIPHER_CTX_key_length(*ctx);
+	int4 curkeylength = EVP_CIPHER_CTX_get_key_length(*ctx);
 	//zero key and iv
 	memset((void *)key,0,EVP_MAX_KEY_LENGTH);
 	memset((void *)iv,0,EVP_MAX_IV_LENGTH);
@@ -546,7 +560,7 @@ char *SSL_encode(Boolean isdecrypt, const char *ciphername,
 
 	//allocate memory to hold encrypted/decrypted data + an extra block + null terminator for block ciphers.
 	unsigned char *outdata = nil;
-	if (!MCMemoryAllocate(inlen + EVP_CIPHER_CTX_block_size(*ctx) + 1 + sizeof(magic) + sizeof(saltbuf), outdata))
+	if (!MCMemoryAllocate(inlen + EVP_CIPHER_CTX_get_block_size(*ctx) + 1 + sizeof(magic) + sizeof(saltbuf), outdata))
 	{
 		outlen = 791;
 		return NULL;
@@ -615,7 +629,7 @@ void list_ciphers_cb(const OBJ_NAME *name,void *buffer)
 		MCAutoStringRef t_string;
 		const EVP_CIPHER *cipher=EVP_get_cipherbyname(name->name);
 		if (cipher)
-			t_context->success = MCStringFormat(&t_string, "%s,%d", name->name, EVP_CIPHER_key_length(cipher) * 8) &&
+			t_context->success = MCStringFormat(&t_string, "%s,%d", name->name, EVP_CIPHER_get_key_length(cipher) * 8) &&
 			MCListAppend(t_context->list, *t_string);
 		else
 			t_context->success = MCListAppendCString(t_context->list, name->name);

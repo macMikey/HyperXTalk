@@ -21,8 +21,7 @@
 #   - Copies the ICU static libs produced by build-icupkg-mac-arm64.sh
 #     into prebuilt/lib/mac
 #   - Supplies libcustomcrypto.a / libcustomssl.a from Homebrew openssl@3
-#     plus a small compat shim that provides the OpenSSL 1.x symbol names
-#     still required by sslstubs.mac.symlist
+#     (engine now targets the 3.x symbol names directly; no compat shim)
 #   - Writes empty stub libpq.a and libmysql.a so the dbpostgresql /
 #     dbmysql externals can link via -undefined dynamic_lookup
 #
@@ -175,38 +174,6 @@ if [ -z "${OPENSSL_PREFIX}" ] || [ ! -f "${OPENSSL_PREFIX}/lib/libcrypto.a" ]; t
 fi
 cp "${OPENSSL_PREFIX}/lib/libcrypto.a" "${PREBUILT_LIB}/libcustomcrypto.a"
 cp "${OPENSSL_PREFIX}/lib/libssl.a"    "${PREBUILT_LIB}/libcustomssl.a"
-
-# Small shim providing OpenSSL 1.x names as wrappers around 3.x equivalents.
-# sslstubs.mac.symlist still lists the old names for engine parts compiled
-# against pre-3.0 headers; without these trampolines revsecurity.dylib's
-# -exported_symbols_list link fails with 'Undefined symbols'.
-SHIM_C="${LIBZIP_BUILD}/openssl-compat-shim.c"
-cat > "${SHIM_C}" <<'EOF'
-/* OpenSSL 1.x -> 3.x name aliases for revsecurity.dylib linking.
- * Added to libcustomcrypto.a / libcustomssl.a so the exported symbol
- * list is satisfied. */
-extern int EVP_CIPHER_CTX_get_block_size(const void *ctx);
-extern int EVP_CIPHER_CTX_get_key_length(const void *ctx);
-extern int EVP_CIPHER_get_key_length(const void *cipher);
-extern void *SSL_get1_peer_certificate(const void *s);
-
-int EVP_CIPHER_CTX_block_size(const void *ctx) {
-    return EVP_CIPHER_CTX_get_block_size(ctx);
-}
-int EVP_CIPHER_CTX_key_length(const void *ctx) {
-    return EVP_CIPHER_CTX_get_key_length(ctx);
-}
-int EVP_CIPHER_key_length(const void *cipher) {
-    return EVP_CIPHER_get_key_length(cipher);
-}
-void *SSL_get_peer_certificate(const void *s) {
-    return SSL_get1_peer_certificate(s);
-}
-EOF
-SHIM_O="${LIBZIP_BUILD}/openssl-compat-shim.o"
-clang -arch arm64 -mmacosx-version-min=11.0 -O2 -c "${SHIM_C}" -o "${SHIM_O}"
-ar rs "${PREBUILT_LIB}/libcustomcrypto.a" "${SHIM_O}" >/dev/null 2>&1
-ar rs "${PREBUILT_LIB}/libcustomssl.a"    "${SHIM_O}" >/dev/null 2>&1
 
 # ── 5. Stub libpq.a and libmysql.a ───────────────────────────────────────────
 # dbpostgresql.bundle and dbmysql.dylib link with -undefined dynamic_lookup
