@@ -78,9 +78,9 @@
 			{
 				'variables':
 				{
-					# Default to using the OpenSSL 1.1.0 API
-#					'openssl_api_compat%': '0x10100000L',
-					'openssl_api_compat%': '0x30401000L',
+					# Default to the OpenSSL 3.4.0 API level — more generic
+					# than 3.4.1 so any 3.4.x host headers are accepted.
+					'openssl_api_compat%': '0x30400000L',
 				},
 				
 				'conditions':
