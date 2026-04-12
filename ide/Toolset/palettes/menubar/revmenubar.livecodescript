@@ -382,11 +382,14 @@ on generateMenubarUI
          set the filename of image tName of group "toolbar" of me to revMenubarButtonNameToIconPath(tItem)
          set the visible of image tName to (the systemAppearance is "light")
          // HXT dark mode
-         put tItem & tDividerCount & "-DM" into tName
-         create image tName in group "toolbar" of me
+         local tDarkModeName
+         put tItem & tDividerCount & "-DM" into tDarkModeName
+         create image tDarkModeName in group "toolbar" of me
          set the id of it to revIDENewIconID()
-         set the filename of image tName of group "toolbar" of me to revMenubarButtonNameToDMIconPath(tItem & "-DM")
-         set the visible of image tName to (the systemAppearance is "dark")
+         set the filename of image tDarkModeName of group "toolbar" of me to revMenubarButtonNameToDMIconPath(tItem)
+         set the visible of image tDarkModeName to (the systemAppearance is "dark")
+         set the visible of image tDarkModeName to (the systemAppearance is "light")  // HXT debug
+         set the visible of image tDarkModeName to (the systemAppearance is "dark")
          add 1 to tDividerCount
       else
          create invisible image tItem in group "icons" of me
@@ -645,22 +648,28 @@ on layoutMenu
    local tTopLeft
    put the topleft of me into tTopLeft
    
-   local tLastDivide
+   local tLastDivide, tLastDivideLight
+   local tLastWasDivide
+   put false into tLastWasDivide
    repeat for each item tItem in revMenubarItems()
       if tItem is "Divide" then
          local tName
          put tItem & tDividerCount into tName
          set the rect of image tName of group "toolbar" of me to 0, 0, kDividerWidth, kDividerHeight
          set the topleft of image tName of group "toolbar" of me to tLeft + kPadding / 2 - kDividerWidth / 2, tTop
+         set the visible of image tName of group "toolbar" of me to (the systemAppearance is "light")
+         put the long id of image tName into tLastDivideLight
          //add 1 to tDividerCount
-         add kPadding to tLeft
+         //add kPadding to tLeft
          // HXT dark mode
          put tItem & tDividerCount & "-DM" into tName
          set the rect of image tName of group "toolbar" of me to 0, 0, kDividerWidth, kDividerHeight
          set the topleft of image tName of group "toolbar" of me to tLeft + kPadding / 2 - kDividerWidth / 2, tTop
+         set the visible of image tName of group "toolbar" of me to (the systemAppearance is "dark")
          add 1 to tDividerCount
          add kPadding to tLeft
          put the long id of image tName into tLastDivide
+         put true into tLastWasDivide
       else
          local tWidth, tHeight
          set the textStyle["bold"] of button tItem of group "toolbar" of me to false
@@ -672,12 +681,17 @@ on layoutMenu
          set the width of button (tItem & "-DM") of group "toolbar" of me to (the width of button tItem of group "toolbar" of me)
          set the topLeft of button (tItem & "-DM") of group "toolbar" of me to (the topLeft of button tItem of group "toolbar" of me)
          set the visible of button (tItem & "-DM") of group "toolbar" of me to (the systemAppearance is "dark")
-         
+
          add tWidth to tLeft
+         put false into tLastWasDivide
       end if
    end repeat
-   
-   hide tLastDivide
+
+   // Only hide the trailing divider (both light and dark) if the last menu item was a divider
+   if tLastWasDivide then
+      hide tLastDivideLight
+      hide tLastDivide
+   end if
    hide group "tutorial" of me
    hide group "upgrade" of me
    
@@ -695,7 +709,7 @@ end layoutMenu
 
 function revMenubarItems
    return "Inspector,Code,Message Box,Divide,Group,Edit Group,Select Grouped,Divide,Messages,Errors,Divide,Dictionary"
---   Sample Stacks,Tutorials,Resources,Dictionary,Divide,Test,Divide"
+   --   Sample Stacks,Tutorials,Resources,Dictionary,Divide,Test,Divide"
 end revMenubarItems
 
 on updateMenubarPreference
