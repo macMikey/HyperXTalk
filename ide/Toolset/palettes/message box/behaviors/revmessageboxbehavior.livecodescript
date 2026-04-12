@@ -1,4 +1,4 @@
-﻿script "revMessageBoxBehavior"
+﻿script "revMessageBoxBehavior" with behavior "revPaletteBehavior"
 ##GH created 12/11/2014
 ##GH last updated 31/12/2014
 
