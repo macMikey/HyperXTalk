@@ -52,7 +52,7 @@ on preOpenStack
    set the filled to true
 end preOpenStack
 
-on openStack
+on openStack   
    lock screen
    layoutpalette
    registerForMessages
@@ -361,7 +361,7 @@ on generatePalette
             create widget tControlTypeID as "com.livecode.widget.svgpath" in group tView of group "contents"
             set the width of widget tControlTypeID to BLOCK_SIZE * 2
             set the height of widget tControlTypeID to BLOCK_SIZE
-            set the foregroundColor of widget tControlTypeID to 100,100,100
+            set the foregroundColor of widget tControlTypeID to toolIconColor(the systemAppearance)
             set the iconpath of widget tControlTypeID to sViewsData[tView][tControlTypeID]["svgicon"]
             set the cType of widget tControlTypeID to tView
             set the cStyle of widget tControlTypeID to sViewsData[tView][tControlTypeID]["properties"]["style"]["default"]
@@ -902,7 +902,7 @@ on toolEnable pWhich
       enable button pWhich of me
    else
       set the cDisabled of widget pWhich of me to false
-      set the foregroundColor of widget pWhich of me to 100,100,100
+      set the foregroundColor of widget pWhich of me to toolIconColor(the systemAppearance)
    end if
 end toolEnable
 
@@ -1265,7 +1265,41 @@ end moveStack
 
 
 // HXT
+-- Returns the foreground colour to use for enabled SVG path widgets given the
+-- current (or supplied) appearance mode.  "dark" → light grey so icons are
+-- visible on dark chrome; anything else → medium grey for light chrome.
+function toolIconColor pMode
+   if pMode is empty then put the systemAppearance into pMode
+   if pMode is "dark" then
+      return "200,200,200"
+   else
+      return "100,100,100"
+   end if
+end toolIconColor
+
 on systemAppearanceChanged pMode, pWindowColor, pTextColor
    set the backgroundColor of this stack to pWindowColor
-   set the forgroundColor of this stack to pTextColor
+   set the foregroundColor of this stack to pTextColor
+
+   -- LCB widgets sit outside the LiveCode Script message hierarchy and cannot
+   -- receive SystemAppearanceChanged themselves.  Drive the appearance change
+   -- by updating the foregroundColor of every SVG path widget in the palette;
+   -- their OnPaint handler uses "my foreground paint", so they repaint
+   -- automatically when the property changes.
+   if there is a group "contents" of me then
+      local tIconColor
+      put toolIconColor(pMode) into tIconColor
+      repeat for each item tView in "widget,classic,graphic,graphictools,paint"
+         if there is a group tView of group "contents" of me then
+            repeat with i = 1 to the number of controls of group tView of group "contents" of me
+               local tCtl
+               put the long id of control i of group tView of group "contents" of me into tCtl
+               if word 1 of tCtl is "widget" and \
+                     the cDisabled of tCtl is not true then
+                  set the foregroundColor of tCtl to tIconColor
+               end if
+            end repeat
+         end if
+      end repeat
+   end if
 end systemAppearanceChanged
