@@ -66,22 +66,6 @@ typedef int my_socket;
 #endif /* _WIN32 && ! MYSQL_ABI_CHECK */
 #endif /* my_socket_defined */
 
-// net_async_status is normally defined in my_io.h, which mysql_com.h includes
-// inside a #ifndef my_socket_defined guard.  Since mysql.h defines
-// my_socket_defined above before including mysql_com.h, that guard is always
-// skipped and my_io.h is never pulled in.  Define the enum here so it is
-// available for the non-blocking API declarations later in this file.
-// (brew mysql-client does not ship my_io.h in the client-only headers.)
-#ifndef NET_ASYNC_STATUS_DEFINED
-#define NET_ASYNC_STATUS_DEFINED
-enum net_async_status {
-  NET_ASYNC_COMPLETE = 0,
-  NET_ASYNC_NOT_READY,
-  NET_ASYNC_ERROR,
-  NET_ASYNC_COMPLETE_NO_MORE_RESULTS
-};
-#endif /* NET_ASYNC_STATUS_DEFINED */
-
 // Small extra definition to avoid pulling in my_compiler.h in client code.
 // IWYU pragma: no_include "my_compiler.h"
 #ifndef MY_COMPILER_INCLUDED
@@ -110,6 +94,9 @@ enum net_async_status {
 
 // The error messages are part of our public API.
 #include "errmsg.h"  // IWYU pragma: keep
+
+// net_async_status is required by the non-blocking API prototypes below.
+#include "my_io.h"
 
 #ifdef __cplusplus
 extern "C" {

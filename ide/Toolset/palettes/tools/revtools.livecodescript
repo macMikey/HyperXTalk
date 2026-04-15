@@ -2,6 +2,7 @@
 constant BLOCK_SIZE = 20
 
 constant kToolsColumnCountDefault = 3
+local sApplicationDidLaunch
 on preOpenStack
    dispatch "setAsBehavior" to revIDEFrameBehavior() with the long id of me
    
@@ -61,7 +62,7 @@ on openStack
    set the backColor of me to (the systemWindowColor)
    set the foreColor of me to (the systemTextColor)
    
-   set the visible of me to true
+   --   set the visible of me to true
    unlock screen
 end openStack
 
