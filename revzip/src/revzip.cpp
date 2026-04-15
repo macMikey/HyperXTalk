@@ -72,9 +72,9 @@ const char* kErrNoCurrentOperation = "ziperr,no current operation";
 /* -----------------------------------------------------------------------
  * zip_stat_index_compat: ABI bridge between old and new libzip.
  *
- * revzip.cpp is compiled against the NEW zip.h (2021), but links against a
- * pre-built libzip.lib built from the OLD API.  The OLD and NEW zip_stat
- * structs have completely different layouts:
+ * On Windows, revzip.cpp is compiled against the NEW zip.h (2021) but links
+ * against a pre-built libzip.lib built from the OLD API.  The OLD and NEW
+ * zip_stat structs have completely different layouts:
  *
  * OLD (x64 Windows, off_t=4, time_t=8, ptr=8):
  *   offset  0: const char *name       (8)
@@ -100,16 +100,24 @@ const char* kErrNoCurrentOperation = "ziperr,no current operation";
  *   offset 56: zip_uint32_t flags     (4)
  *   total: 60 bytes
  *
- * We call zip_stat_index with a raw 64-byte buffer so old libzip writes
- * the OLD layout, then we manually copy fields into the new struct.
+ * On macOS/Linux we build libzip 1.10.1 from source, which produces the NEW
+ * layout directly, so zip_stat_index fills a real zip_stat_t correctly and
+ * no offset remapping is needed.  The raw-buffer trick is only needed on
+ * Windows where the prebuilt libzip uses the OLD layout.
  * ----------------------------------------------------------------------- */
 static int zip_stat_index_compat(struct zip *za, zip_int64_t index,
                                   zip_flags_t flags, zip_stat_t *new_stat)
 {
+#if defined(_MACOSX) || defined(_LINUX) || \
+    defined(TARGET_SUBPLATFORM_IPHONE) || defined(TARGET_SUBPLATFORM_ANDROID)
+    /* Native libzip built from source — zip_stat_t layout matches zip.h */
+    memset(new_stat, 0, sizeof(*new_stat));
+    return zip_stat_index(za, (zip_uint64_t)index, flags, new_stat);
+#else
     unsigned char buf[64];
     memset(buf, 0, sizeof(buf));
 
-    /* Pass buf as zip_stat_t* – old libzip fills it with OLD layout */
+    /* Pass buf as zip_stat_t* – old Windows libzip fills it with OLD layout */
     int result = zip_stat_index(za, (zip_uint64_t)index, flags,
                                 (zip_stat_t *)(void *)buf);
     if (result == 0)
@@ -147,6 +155,7 @@ static int zip_stat_index_compat(struct zip *za, zip_int64_t index,
                           ZIP_STAT_COMP_METHOD;
     }
     return result;
+#endif
 }
 
 static bool wrongNumberOfArguments(unsigned int pNumArguments, unsigned int pNumber)

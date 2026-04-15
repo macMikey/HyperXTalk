@@ -1,28 +1,9 @@
-Files in this folder use MySQL C API (libmysqlclient) version 9.6.0.
+Files in this folder use MySQL C API (libmysqlclient) from Homebrew.
 
-  Version : MySQL 9.6.0
-
-macOS
------
-  Source  : Homebrew mysql-client formula
   Formula : mysql-client
+  Version : MySQL 9.6.0
   Prefix  : /opt/homebrew/opt/mysql-client
 
-  To rebuild prebuilt/lib/mac/libmysql.a:
-    brew install mysql-client
-    sh prebuilt/scripts/build-libmysql-mac-arm64.sh
-
-Windows
--------
-  Source  : Scoop mysql package (mysql-9.6.0-winx64)
-  Install : scoop install mysql
-
-  After installing, run setup-mysql-win.bat (in the repo root) once to copy
-  libmysql.lib and libmysql.dll from the Scoop installation into the project's
-  prebuilt directories.  build-engine-x64.bat calls this automatically if
-  libmysql.lib is missing.
-
-  Files populated by setup-mysql-win.bat:
-    prebuilt/unpacked/Thirdparty/x86_64-win32-v142_static_Debug/lib/libmysql.lib
-    build-win-x86_64/livecode/Debug/lib/libmysql.lib
-    build-win-x86_64/livecode/Debug/libmysql.dll   (runtime dependency)
+To rebuild prebuilt/lib/mac/libmysql.a:
+  brew install mysql-client
+  sh prebuilt/scripts/build-libmysql-mac-arm64.sh

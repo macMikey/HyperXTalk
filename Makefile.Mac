@@ -20,6 +20,24 @@ ifneq ($(TRAVIS),undefined)
 	@echo "travis_fold:start:compile"
 	@echo "COMPILE"
 endif
+	@# Pre-build and sign server-community before the main xcodebuild runs.
+	@# The lcs-extensions script phase uses server-community as a build-time
+	@# tool to compile LCS scripts.  On macOS with AMFI enabled, an unsigned
+	@# binary has its com.apple.security.cs.allow-jit entitlement ignored, so
+	@# libffi's MAP_JIT call returns EPERM and the process crashes (signal 11).
+	@# Building kernel-server first and ad-hoc signing it ensures the binary
+	@# is valid before any extension script phase tries to invoke it.
+	@echo "Pre-building server-community for extension script phases..."
+	@$(XCODEBUILD) -project "build-mac/livecode/engine/kernel-server.xcodeproj" \
+	  -configuration $(BUILDTYPE) -target "kernel-server" \
+	  $(XCODEBUILD_FILTER) 2>/dev/null || true
+	@if [ -f "_build/mac/$(BUILDTYPE)/server-community" ]; then \
+	  codesign --force --sign "$(CODESIGN_IDENTITY)" \
+	    --options runtime \
+	    --entitlements HyperXTalk.entitlements \
+	    "_build/mac/$(BUILDTYPE)/server-community" 2>/dev/null && \
+	  echo "Pre-signed server-community ($(BUILDTYPE))." || true; \
+	fi
 	$(XCODEBUILD) -project "build-mac$(BUILD_SUBDIR)/$(BUILD_PROJECT).xcodeproj" -configuration $(BUILDTYPE) -target default \
 	  $(XCODEBUILD_FILTER)
 	@# Sign the app with Hardened Runtime (--options runtime) so that all

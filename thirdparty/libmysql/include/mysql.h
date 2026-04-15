@@ -95,9 +95,6 @@ typedef int my_socket;
 // The error messages are part of our public API.
 #include "errmsg.h"  // IWYU pragma: keep
 
-// net_async_status is required by the non-blocking API prototypes below.
-#include "my_io.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif

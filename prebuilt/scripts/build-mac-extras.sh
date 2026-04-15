@@ -83,6 +83,30 @@ sed -i '' \
     -e 's|^#define HAVE_LIBZSTD$|/* #undef HAVE_LIBZSTD */|' \
     -e 's|^#define HAVE_OPENSSL$|/* #undef HAVE_OPENSSL */|' \
     -e 's|^#define HAVE_FTS_H$|/* #undef HAVE_FTS_H */|' \
+    -e 's|^/\* #undef HAVE_UNISTD_H \*/$|#define HAVE_UNISTD_H|' \
+    -e 's|^/\* #undef HAVE_STRCASECMP \*/$|#define HAVE_STRCASECMP|' \
+    -e 's|^/\* #undef HAVE_STRINGS_H \*/$|#define HAVE_STRINGS_H|' \
+    -e 's|^/\* #undef HAVE_STDBOOL_H \*/$|#define HAVE_STDBOOL_H|' \
+    -e 's|^/\* #undef HAVE_DIRENT_H \*/$|#define HAVE_DIRENT_H|' \
+    -e 's|^/\* #undef HAVE_FILENO \*/$|#define HAVE_FILENO|' \
+    -e 's|^/\* #undef HAVE_FCHMOD \*/$|#define HAVE_FCHMOD|' \
+    -e 's|^/\* #undef HAVE_LOCALTIME_R \*/$|#define HAVE_LOCALTIME_R|' \
+    -e 's|^/\* #undef HAVE_MKSTEMP \*/$|#define HAVE_MKSTEMP|' \
+    -e 's|^/\* #undef HAVE_STRDUP \*/$|#define HAVE_STRDUP|' \
+    -e 's|^/\* #undef HAVE_STRTOLL \*/$|#define HAVE_STRTOLL|' \
+    -e 's|^/\* #undef HAVE_STRTOULL \*/$|#define HAVE_STRTOULL|' \
+    -e 's|^/\* #undef HAVE_STRUCT_TM_TM_ZONE \*/$|#define HAVE_STRUCT_TM_TM_ZONE|' \
+    -e 's|^/\* #undef HAVE_ARC4RANDOM \*/$|#define HAVE_ARC4RANDOM|' \
+    -e 's|^/\* #undef HAVE_GETPROGNAME \*/$|#define HAVE_GETPROGNAME|' \
+    -e 's|^/\* #undef HAVE_NULLABLE \*/$|#define HAVE_NULLABLE|' \
+    -e 's|^#define HAVE_MEMCPY_S$|/* #undef HAVE_MEMCPY_S */|' \
+    -e 's|^#define HAVE_STRNCPY_S$|/* #undef HAVE_STRNCPY_S */|' \
+    -e 's|^#define HAVE__SNPRINTF_S$|/* #undef HAVE__SNPRINTF_S */|' \
+    -e 's|^#define HAVE__SNWPRINTF_S$|/* #undef HAVE__SNWPRINTF_S */|' \
+    -e 's|^#define HAVE_LOCALTIME_S$|/* #undef HAVE_LOCALTIME_S */|' \
+    -e 's|^#define HAVE_SNPRINTF_S$|/* #undef HAVE_SNPRINTF_S */|' \
+    -e 's|^#define HAVE_STRERROR_S$|/* #undef HAVE_STRERROR_S */|' \
+    -e 's|^#define HAVE_STRERRORLEN_S$|/* #undef HAVE_STRERRORLEN_S */|' \
     "${LIBZIP_CONFIG}"
 
 LIBZIP_SOURCES=(
@@ -128,6 +152,9 @@ LIBZIP_CFLAGS=(
     -arch arm64 -O0 -g -w -fvisibility=hidden
     -I"${LIBZIP_SRC}" -I"${REPO_ROOT}/thirdparty/libz/include"
     -DCROSS_COMPILE_TARGET -DTARGET_PLATFORM_MACOS_X -D_MACOSX -D_DEBUG
+    # macOS has native fseeko/ftello; prevent compat.h from redefining them
+    # as macros, which corrupts the system stdio.h function declarations.
+    -DHAVE_FSEEKO -DHAVE_FTELLO
 )
 
 LIBZIP_OBJS=()

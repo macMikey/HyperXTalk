@@ -110,7 +110,10 @@ xmlSAXHandler CXMLDocument::SAXHandlerTable = {
     attributeDecl,
     elementDecl,
     unparsedEntityDecl,
-    setDocumentLocator,
+    NULL, // setDocumentLocator — deprecated in libxml2 2.12+; it is a no-op
+          // in all libxml2 versions and calling it via the SAXv1 path triggers
+          // a deprecation warning and potential crash on macOS Sequoia's
+          // system libxml2 (2.12+). Safe to omit.
     startDocumentCallback,//startDocument
     endDocumentCallback,//endDocument
     startElementCallback,//startElement
