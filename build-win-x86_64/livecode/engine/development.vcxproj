@@ -129,8 +129,8 @@
       <AdditionalOptions>/MACHINE:x64 %(AdditionalOptions)</AdditionalOptions>
     </Lib>
     <Link>
-      <AdditionalDependencies>kernel.lib;kernel-development.lib;libFoundation.lib;libScript.lib;libGraphics.lib;libCore.lib;libExternal.lib;libbrowser.lib;libcef_library_wrapper.lib;libcef_stubs.lib;libcompile-target.lib;lc-compile-lib-target.lib;stdscript.lib;security-community.lib;grts.lib;libcairo.lib;libxml.lib;libxslt.lib;libsqlite.lib;libmysql.lib;libpq.lib;libzip.lib;comdlg32.lib;crypt32.lib;gdi32.lib;iphlpapi.lib;imm32.lib;mscms.lib;msimg32.lib;psapi.lib;ole32.lib;rpcrt4.lib;shell32.lib;shlwapi.lib;strmiids.lib;user32.lib;usp10.lib;version.lib;winmm.lib;winspool.lib;ws2_32.lib;oleaut32.lib;sicuin.lib;sicutu.lib;sicuuc.lib;sicudt.lib;advapi32.lib;libz.lib;libgif.lib;libpng.lib;libjpeg.lib;libskia.lib;libskia_opt_none.lib;libskia_opt_arm.lib;libskia_opt_sse2.lib;libskia_opt_sse3.lib;libskia_opt_sse41.lib;libskia_opt_sse42.lib;libskia_opt_avx.lib;libskia_opt_hsw.lib;libffi.lib;libpcre.lib;libssl.lib;libcrypto.lib;WebView2Loader.dll.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(MSBuildThisFileDirectory)..\libfoundation\$(Configuration)\lib;$(MSBuildThisFileDirectory)..\libcore\$(Configuration)\lib;$(MSBuildThisFileDirectory)..\thirdparty\libcef\$(Configuration)\lib;$(MSBuildThisFileDirectory)..\$(Configuration)\lib;..\..\..\prebuilt\unpacked\icu\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\lib;..\..\..\prebuilt\unpacked\Thirdparty\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\lib;..\..\..\prebuilt\unpacked\openssl3\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\lib;..\..\..\prebuilt\unpacked\cef\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\lib\CEF;$(MSBuildThisFileDirectory)..\..\..\packages\Microsoft.Web.WebView2.1.0.3912.50\build\native\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>kernel.lib;kernel-development.lib;libFoundation.lib;libScript.lib;libGraphics.lib;libCore.lib;libExternal.lib;libbrowser.lib;libcompile-target.lib;lc-compile-lib-target.lib;stdscript.lib;security-community.lib;grts.lib;libcairo.lib;libxml.lib;libxslt.lib;libsqlite.lib;libmysql.lib;libpq.lib;libzip.lib;comdlg32.lib;crypt32.lib;gdi32.lib;iphlpapi.lib;imm32.lib;mscms.lib;msimg32.lib;psapi.lib;ole32.lib;rpcrt4.lib;shell32.lib;shlwapi.lib;strmiids.lib;user32.lib;usp10.lib;version.lib;winmm.lib;winspool.lib;ws2_32.lib;oleaut32.lib;sicuin.lib;sicutu.lib;sicuuc.lib;sicudt.lib;advapi32.lib;libz.lib;libgif.lib;libpng.lib;libjpeg.lib;libskia.lib;libskia_opt_none.lib;libskia_opt_arm.lib;libskia_opt_sse2.lib;libskia_opt_sse3.lib;libskia_opt_sse41.lib;libskia_opt_sse42.lib;libskia_opt_avx.lib;libskia_opt_hsw.lib;libffi.lib;libpcre.lib;libssl.lib;libcrypto.lib;WebView2Loader.dll.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(MSBuildThisFileDirectory)..\libfoundation\$(Configuration)\lib;$(MSBuildThisFileDirectory)..\libcore\$(Configuration)\lib;$(MSBuildThisFileDirectory)..\thirdparty\libcef\$(Configuration)\lib;$(MSBuildThisFileDirectory)..\$(Configuration)\lib;..\..\..\prebuilt\unpacked\icu\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\lib;..\..\..\prebuilt\unpacked\Thirdparty\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\lib;..\..\..\prebuilt\unpacked\openssl3\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\lib;$(MSBuildThisFileDirectory)..\..\..\packages\Microsoft.Web.WebView2.1.0.3912.50\build\native\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>/MACHINE:x64 /ALTERNATENAME:SSL_get_peer_certificate=SSL_get1_peer_certificate /ALTERNATENAME:EVP_CIPHER_key_length=EVP_CIPHER_get_key_length /ALTERNATENAME:EVP_CIPHER_CTX_block_size=EVP_CIPHER_CTX_get_block_size /ALTERNATENAME:EVP_CIPHER_CTX_key_length=EVP_CIPHER_CTX_get_key_length %(AdditionalOptions)</AdditionalOptions>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -442,18 +442,6 @@
     </ProjectReference>
     <ProjectReference Include="..\libbrowser\libbrowser.vcxproj">
       <Project>{1C6790C4-D026-3A36-83A4-F3643401EEA1}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="..\prebuilt\libcef.vcxproj">
-      <Project>{0525BA25-863A-D337-9039-8F4A44C346C1}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="..\thirdparty\libcef\libcef_library_wrapper.vcxproj">
-      <Project>{FBDCFAA5-430C-C805-C30E-C60EADC911C3}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="..\thirdparty\libcef\libcef_stubs.vcxproj">
-      <Project>{4BF90F90-FCE1-3483-6D59-2798502DDBD1}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <!-- libopenssl_stubs replaced by direct OpenSSL 3 static linking -->

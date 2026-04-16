@@ -17,7 +17,7 @@
         - Git   - https://git-scm.com/
 
 .PARAMETER OpenSSLTag
-    Git tag to check out.  Defaults to "openssl-3.4.1".
+    Git tag to check out.  Defaults to "openssl-3.6.1".
 
 .PARAMETER SkipIfExists
     Skip the build if output libs are already present.
@@ -28,7 +28,7 @@
     .\setup-openssl3.ps1
 #>
 param(
-    [string]$OpenSSLTag   = "openssl-3.4.1",
+    [string]$OpenSSLTag   = "openssl-3.6.1",
     [switch]$SkipIfExists
 )
 
@@ -104,7 +104,16 @@ if (-not (Test-Path $SrcDir)) {
     Write-Host "[setup-openssl3] Cloning OpenSSL $OpenSSLTag ..." -ForegroundColor Cyan
     git clone --depth 1 --branch $OpenSSLTag https://github.com/openssl/openssl.git $SrcDir
 } else {
-    Write-Host "[setup-openssl3] Source already present at $SrcDir - skipping clone." -ForegroundColor Cyan
+    # Source exists - check whether it's already at the requested tag.
+    $currentTag = & git -C $SrcDir describe --tags --exact-match HEAD 2>$null
+    if ($currentTag -eq $OpenSSLTag) {
+        Write-Host "[setup-openssl3] Source already at $OpenSSLTag - skipping fetch." -ForegroundColor Cyan
+    } else {
+        Write-Host "[setup-openssl3] Source is at '$currentTag', switching to $OpenSSLTag ..." -ForegroundColor Cyan
+        & git -C $SrcDir fetch --depth 1 origin "refs/tags/${OpenSSLTag}:refs/tags/${OpenSSLTag}"
+        & git -C $SrcDir checkout $OpenSSLTag
+        & git -C $SrcDir clean -fdx
+    }
 }
 
 # ---------------------------------------------------------------------------

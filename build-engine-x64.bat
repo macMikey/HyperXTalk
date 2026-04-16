@@ -29,13 +29,29 @@ if not exist "%DEBUG_MYSQL_LIB%" (
     echo.
 )
 
+:: ----------------------------------------------------------
+:: Locate MSBuild via a temp PS1 file (avoids cmd mishandling of
+:: parentheses inside %ProgramFiles(x86)% in inline commands)
+:: ----------------------------------------------------------
+set "FIND_PS1=%TEMP%\hxt_find_msbuild.ps1"
+echo $pf = [System.Environment]::GetEnvironmentVariable('ProgramFiles(x86)')> "%FIND_PS1%"
+echo $vs = "$pf\Microsoft Visual Studio\Installer\vswhere.exe">> "%FIND_PS1%"
+echo if (Test-Path $vs) { ^& $vs -latest -products * -requires Microsoft.Component.MSBuild -find 'MSBuild\**\Bin\MSBuild.exe' ^| Select-Object -First 1 }>> "%FIND_PS1%"
+for /f "tokens=*" %%i in ('powershell -NoProfile -ExecutionPolicy Bypass -File "%FIND_PS1%"') do set "MSBUILD=%%i"
+del "%FIND_PS1%" 2>nul
+if not defined MSBUILD (
+    echo ERROR: MSBuild.exe not found. Install Visual Studio 2019 Build Tools with C++ workload.
+    exit /b 1
+)
+echo Using MSBuild: %MSBUILD%
+
 echo Build started: %DATE% %TIME%
 echo Build started: %DATE% %TIME% > "%LOGFILE%"
 echo. >> "%LOGFILE%"
 
 echo Building libbrowser (WebView2 fix) ...
 echo Building libbrowser (WebView2 fix) ... >> "%LOGFILE%"
-msbuild %VCXPROJ_BROWSER% /p:Configuration=Debug /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
+"%MSBUILD%" %VCXPROJ_BROWSER% /p:Configuration=Debug /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
 if errorlevel 1 (
     echo.
     echo LIBBROWSER BUILD FAILED. Errors:
@@ -48,7 +64,7 @@ echo libbrowser OK.
 echo.
 echo Building dbmysql (MySQL 9.6.0 database driver) ...
 echo Building dbmysql ... >> "%LOGFILE%"
-msbuild %VCXPROJ_DBMYSQL% /p:Configuration=Debug /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
+"%MSBUILD%" %VCXPROJ_DBMYSQL% /p:Configuration=Debug /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
 if errorlevel 1 (
     echo.
     echo DBMYSQL BUILD FAILED. Errors:
@@ -74,7 +90,7 @@ if not exist "%EXE%" (
     )
 )
 
-msbuild %VCXPROJ_ENGINE% /p:Configuration=Debug /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo > "%ENGINE_LOG%" 2>&1
+"%MSBUILD%" %VCXPROJ_ENGINE% /p:Configuration=Debug /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo > "%ENGINE_LOG%" 2>&1
 set BUILD_ERR=%ERRORLEVEL%
 
 :: Show the engine build output (errors and warnings) on the console.
@@ -89,10 +105,4 @@ if %BUILD_ERR% NEQ 0 (
 
 if not exist "%EXE%" (
     echo.
-    echo ENGINE BUILD FAILED - HyperXTalk.exe was not created.
-    exit /b 1
-)
-
-echo.
-echo BUILD SUCCEEDED.
-echo Output: %EXE%
+    echo ENGINE BUILD FAILED - Hyper
