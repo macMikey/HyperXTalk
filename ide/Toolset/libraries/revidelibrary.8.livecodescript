@@ -9852,7 +9852,7 @@ command revIDERestoreDevelopmentTools
 end revIDERestoreDevelopmentTools
 
 command revIDECheckForUpdates
-   if line 3 of revLicenseInfo is not "evaluation" then
+   if true then
       local tCommand
       set the itemdelimiter to "/"
       switch the platform

@@ -2988,7 +2988,7 @@ end revCheckObject
 
 function revSBEnginePath pPlatform
    local tEdition
-   put the editionType into tEdition
+   put "community" into tEdition
    // SN-2015-07-09: [[ StandaloneDeployment ]] Gypified Standalone-<edition>.app building does not
    //  allow to create broken applications, so that the executable file in it bears the edition.
    if tEdition is not "community" then
@@ -3087,24 +3087,8 @@ function revSBLicensedToDeployToTarget pTarget
       return true
    end if
    
-   -- In development mode, check the revLicenseInfo
-   local tLicensedTargets
-   put line 5 of revLicenseInfo into tLicensedTargets
-   
-   local tPlatform
-   put revSBTargetToPlatform(pTarget) into tPlatform
-   
-   local tLicensePlatform
-   switch tPlatform
-      case "MacOSX"
-         put "Mac OS X" into tLicensePlatform
-         break
-      default
-         put tPlatform into tLicensePlatform
-         break
-   end switch
-   
-   return tLicensePlatform is among the items of tLicensedTargets
+   -- HXT: All platforms licensed, no revLicenseInfo needed
+   return true
 end revSBLicensedToDeployToTarget
 
 function revSBNoPlatforms pSettings

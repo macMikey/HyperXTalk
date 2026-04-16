@@ -2180,9 +2180,10 @@ private command revCopyDatabaseDrivers pPlatform, pStackFilePath, pStandalonePat
       if tPlatform is "Linux" and tDriver is "Oracle" then
          revStandaloneAddWarning "Linux, Oracle is not currently supported on this platform"
          next repeat
-      else if tDriver is "Oracle" and line 3 of the revlicenseinfo is "Community" then
+      else if tDriver is "Oracle" then
          -- SN-2015-03-06: [[ DBDriverInclusion ]] Under community, the Oracle database
          -- is not visible, and should simply be ignored as it will fail.
+         -- HXT: Always skip Oracle (community edition, revlicenseinfo removed)
          next repeat
       end if
       

@@ -1885,7 +1885,7 @@ end revEnvironmentToolsetPath
 
 function revEnvironmentEditionProperty pProp, pEdition
    if pEdition is empty then
-      put the editionType into pEdition
+      put "community" into pEdition
    end if
    
    if pProp is "skin" then
@@ -1991,11 +1991,7 @@ function revEnvironmentEditionProperty pProp, pEdition
             case "open_source_required"
                return false
             case "splash_strap"
-               if revLicenseInfo["com.livecode.norevenuelimit"] is not empty then
-                  return empty
-               else
-                  return "<p>This Indy license is only valid for organizations with annual revenues of $500,000 USD or less</p>"
-               end if
+               return empty
             case "upgrade_mini_url"
                return empty
             case "upgrade_url"
