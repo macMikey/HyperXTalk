@@ -1,7 +1,7 @@
 #ifndef XML_MEMORY_H_PRIVATE__
 #define XML_MEMORY_H_PRIVATE__
 
-#include "../../libxml.h"
+#include "libxml.h"
 
 #include <limits.h>
 #include <stddef.h>

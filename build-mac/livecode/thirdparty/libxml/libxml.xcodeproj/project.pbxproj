@@ -10,7 +10,6 @@
 		02CC263CADDB9F913F352F67 /* xmlwriter.c in Sources */ = {isa = PBXBuildFile; fileRef = 26DAACE62C00594DE3939BDB /* xmlwriter.c */; };
 		065E7CC557CC45103437D2A2 /* xpointer.c in Sources */ = {isa = PBXBuildFile; fileRef = 6D1CC0E741AE55F7207D7A56 /* xpointer.c */; };
 		0FFC5D2FF678A9916B99A2C8 /* schematron.c in Sources */ = {isa = PBXBuildFile; fileRef = 8C7AD05F708082DAE8F9EEEC /* schematron.c */; };
-		10CDBE3C88CA72719F29EEC4 /* DOCBparser.c in Sources */ = {isa = PBXBuildFile; fileRef = 320420047C5552BD8B5518FF /* DOCBparser.c */; };
 		14749ECDA0E5D3EE45EC202B /* valid.c in Sources */ = {isa = PBXBuildFile; fileRef = D63936F5B3BFE8FFFB59540A /* valid.c */; };
 		1B326BC14A6C2B0910D7BF56 /* xpath.c in Sources */ = {isa = PBXBuildFile; fileRef = 53B736415B7782207DA93D3C /* xpath.c */; };
 		285215671FE6B02F8A98FB11 /* xmlreader.c in Sources */ = {isa = PBXBuildFile; fileRef = 1188CA40417A3D7CE0B0B754 /* xmlreader.c */; };
@@ -20,7 +19,6 @@
 		3AF62E7D03797CBBF0CEC77B /* xmlmemory.c in Sources */ = {isa = PBXBuildFile; fileRef = DC9C47FC7E5ACE4A86B62BA2 /* xmlmemory.c */; };
 		3C834F28C496B0C4A760D974 /* xmlcatalog.c in Sources */ = {isa = PBXBuildFile; fileRef = C10AF84A7504F8189976495F /* xmlcatalog.c */; };
 		40DD347F5AADDFAC680E6C73 /* tree.c in Sources */ = {isa = PBXBuildFile; fileRef = FE7D86F4C012BB4C923EA74B /* tree.c */; };
-		4501D6F114ADF6D627D1408E /* SAX.c in Sources */ = {isa = PBXBuildFile; fileRef = DFE55AB63C36EFB89A72B7D6 /* SAX.c */; };
 		526159CB9CB83CB4CC132129 /* nanohttp.c in Sources */ = {isa = PBXBuildFile; fileRef = ABA41D81C9C6697A78539F01 /* nanohttp.c */; };
 		5D91096190052890279CB478 /* dict.c in Sources */ = {isa = PBXBuildFile; fileRef = 1416635CA11FC67269F9365B /* dict.c */; };
 		6DDB2F850461AA81010DABC1 /* SAX2.c in Sources */ = {isa = PBXBuildFile; fileRef = ED534B55D1C27A69ECEB3994 /* SAX2.c */; };
@@ -29,7 +27,6 @@
 		776E717D0567786BF7FAF924 /* c14n.c in Sources */ = {isa = PBXBuildFile; fileRef = B3B833C4A7E4C133730EEEEA /* c14n.c */; };
 		78F24478282BD29B54360249 /* xmlregexp.c in Sources */ = {isa = PBXBuildFile; fileRef = 6898323A050832A3646BF849 /* xmlregexp.c */; };
 		81A4DE13E38CF85D357B297E /* pattern.c in Sources */ = {isa = PBXBuildFile; fileRef = CE0CD94502D3D531F040370B /* pattern.c */; };
-		8ACF1C8062E7A5FDE795C62D /* xmlunicode.c in Sources */ = {isa = PBXBuildFile; fileRef = 228F2E1676A9AFADEA9915F1 /* xmlunicode.c */; };
 		90E0947C5AE161D221F26BCC /* xinclude.c in Sources */ = {isa = PBXBuildFile; fileRef = A42B0262A75F18ED0ADC0BAF /* xinclude.c */; };
 		93B9188989C33DF54C5D306B /* globals.c in Sources */ = {isa = PBXBuildFile; fileRef = 86F83ED5386AC4FC77E5D5F7 /* globals.c */; };
 		9C3C1E19536BBBF7A30F80BA /* relaxng.c in Sources */ = {isa = PBXBuildFile; fileRef = 6DE161F7D675894AE73F09BB /* relaxng.c */; };
@@ -38,8 +35,6 @@
 		B1DF5AED99F944C1157F768D /* catalog.c in Sources */ = {isa = PBXBuildFile; fileRef = 4753013B585D0530A8219A44 /* catalog.c */; };
 		BDAE210F59F7113ADD88BFCA /* HTMLtree.c in Sources */ = {isa = PBXBuildFile; fileRef = 4FFC1D2B9AB392DABA1B05B0 /* HTMLtree.c */; };
 		BFBC8ABF6810CF09B0F2CDCD /* xmlstring.c in Sources */ = {isa = PBXBuildFile; fileRef = 8CAAA555E10FCE9DA5FDED51 /* xmlstring.c */; };
-		C5960F22E62FDD24EA5EB7C7 /* legacy.c in Sources */ = {isa = PBXBuildFile; fileRef = 152B526AA041CC41C2281DB2 /* legacy.c */; };
-		CB6CC9B89E0506197A0EF00A /* nanoftp.c in Sources */ = {isa = PBXBuildFile; fileRef = E56F05D320AC323E2861EE67 /* nanoftp.c */; };
 		CF8FCA199E30335C648B4DCB /* debugXML.c in Sources */ = {isa = PBXBuildFile; fileRef = 842033BA9248975474B4B2CD /* debugXML.c */; };
 		D6D9DDEA43E8F9F714C982AA /* entities.c in Sources */ = {isa = PBXBuildFile; fileRef = 599A5D389227C6D72D1AEC82 /* entities.c */; };
 		D70B66ACC81573AEBCA66F7B /* list.c in Sources */ = {isa = PBXBuildFile; fileRef = A94DB2C1E2B3D6B0ECAFB5C9 /* list.c */; };
@@ -56,36 +51,26 @@
 
 /* Begin PBXFileReference section */
 		004D58079AC6D47144FB5BAC /* chvalid.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = chvalid.c; sourceTree = "<group>"; };
-		01DFDDF3A909E52D667C66BA /* wsockcompat.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wsockcompat.h; sourceTree = "<group>"; };
-		01FCBF8FF07EA7F56034C9B4 /* DOCBparser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DOCBparser.h; sourceTree = "<group>"; };
 		05F869081FDB653726EE94B3 /* encoding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = encoding.h; sourceTree = "<group>"; };
-		0653E42A4C421708612E6D37 /* triop.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = triop.h; sourceTree = "<group>"; };
 		1188CA40417A3D7CE0B0B754 /* xmlreader.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = xmlreader.c; sourceTree = "<group>"; };
 		11A5B650A23340A828BA596E /* linux.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = linux.gypi; path = ../../config/linux.gypi; sourceTree = "<group>"; };
 		1416635CA11FC67269F9365B /* dict.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = dict.c; sourceTree = "<group>"; };
-		152B526AA041CC41C2281DB2 /* legacy.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = legacy.c; sourceTree = "<group>"; };
 		169A1DFE9E77E38109B647E3 /* list.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = list.h; sourceTree = "<group>"; };
 		1B6A454CB1CB6BADD496557B /* libxml.gyp */ = {isa = PBXFileReference; explicitFileType = sourcecode; path = libxml.gyp; sourceTree = "<group>"; };
 		1BFC3561CC03EE92B22B76B8 /* schematron.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = schematron.h; sourceTree = "<group>"; };
 		1C7F3203EDCD3588CA5475F3 /* HTMLparser.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = HTMLparser.c; sourceTree = "<group>"; };
 		1E7ADAF0A23747A331FF28AF /* parser.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = parser.c; sourceTree = "<group>"; };
-		228F2E1676A9AFADEA9915F1 /* xmlunicode.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = xmlunicode.c; sourceTree = "<group>"; };
 		24F5E04F8EAF8CC0EFB50F4E /* catalog.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = catalog.h; sourceTree = "<group>"; };
 		26DAACE62C00594DE3939BDB /* xmlwriter.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = xmlwriter.c; sourceTree = "<group>"; };
 		27D2F6568C11E18BA5CE80F7 /* xmlreader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = xmlreader.h; sourceTree = "<group>"; };
-		28023B3A4DAB3166F7D812AE /* triostr.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = triostr.c; sourceTree = "<group>"; };
 		29F229A9E7EE9B8E33E9ADD6 /* xmlsave.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = xmlsave.c; sourceTree = "<group>"; };
-		29F8CB3C3C1A02E4C291982C /* triodef.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = triodef.h; sourceTree = "<group>"; };
 		2A34B19A9970232A3DFFBB06 /* xmlerror.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = xmlerror.h; sourceTree = "<group>"; };
 		2D5885A0F556B00C93E92ECF /* xmlmemory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = xmlmemory.h; sourceTree = "<group>"; };
 		301B5A2DD3507EF3920D2C9D /* xmlunicode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = xmlunicode.h; sourceTree = "<group>"; };
-		320420047C5552BD8B5518FF /* DOCBparser.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = DOCBparser.c; sourceTree = "<group>"; };
 		34803374E1371DED93B8FEC1 /* version.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = version.gypi; path = ../../config/version.gypi; sourceTree = "<group>"; };
 		36208206F1F9F9A97DB7AA25 /* uri.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = uri.h; sourceTree = "<group>"; };
 		396164F4A1AB82FCDDCD1004 /* target_os.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = target_os.gypi; path = ../../config/target_os.gypi; sourceTree = "<group>"; };
-		3A78D9817A2A406C45F86547 /* trio.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = trio.c; sourceTree = "<group>"; };
 		3A9738A64AFF4CF2848545D7 /* yacc.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = yacc.gypi; path = ../../config/yacc.gypi; sourceTree = "<group>"; };
-		3B14BC48564311C5069D8754 /* triostr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = triostr.h; sourceTree = "<group>"; };
 		3BBA903F239915AA0A5236B0 /* chvalid.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = chvalid.h; sourceTree = "<group>"; };
 		3C442D5B0877FCE6A095D79C /* xlink.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = xlink.h; sourceTree = "<group>"; };
 		3F07D497C8A0F392D3DFA34D /* xmlmodule.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = xmlmodule.c; sourceTree = "<group>"; };
@@ -95,8 +80,6 @@
 		4753013B585D0530A8219A44 /* catalog.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = catalog.c; sourceTree = "<group>"; };
 		4CB9F4EBE7B1AE26B18959C3 /* nanohttp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = nanohttp.h; sourceTree = "<group>"; };
 		4DDF6C3BD5AC83821F46C6A7 /* arch.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = arch.gypi; path = ../../config/arch.gypi; sourceTree = "<group>"; };
-		4E6006F8D6D7DB84F238246B /* acconfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = acconfig.h; sourceTree = "<group>"; };
-		4E8C982D46A9B9CB56F01F9D /* win32config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = win32config.h; sourceTree = "<group>"; };
 		4FFC1D2B9AB392DABA1B05B0 /* HTMLtree.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = HTMLtree.c; sourceTree = "<group>"; };
 		526769D9025F5B8443EF46E1 /* threads.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = threads.c; sourceTree = "<group>"; };
 		53B736415B7782207DA93D3C /* xpath.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = xpath.c; sourceTree = "<group>"; };
@@ -124,11 +107,9 @@
 		8CB6C2380E56E468673A4ECC /* libxml.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = libxml.h; sourceTree = "<group>"; };
 		8D17FF2F48E3AFF557649AC8 /* version */ = {isa = PBXFileReference; lastKnownFileType = text; path = version; sourceTree = "<group>"; };
 		8F942422A25372C0385023E9 /* xmlIO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = xmlIO.h; sourceTree = "<group>"; };
-		917E44D577B51BB7EB8DC643 /* trionan.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = trionan.h; sourceTree = "<group>"; };
 		93638B897CACFA8DAC8048CE /* hash.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = hash.h; sourceTree = "<group>"; };
 		94B7F036B7EF52266337AC46 /* linux-settings.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = "linux-settings.gypi"; path = "../../config/linux-settings.gypi"; sourceTree = "<group>"; };
 		95BFA7D6FA3BEDB65AB6742E /* common.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = common.gypi; path = ../../common.gypi; sourceTree = "<group>"; };
-		96398E69671DABECEC46DAE4 /* trionan.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = trionan.c; sourceTree = "<group>"; };
 		9771592F5DBD013205C4C147 /* xmlschemastypes.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = xmlschemastypes.c; sourceTree = "<group>"; };
 		9D2BB6FB354F5B0E3588935A /* parser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = parser.h; sourceTree = "<group>"; };
 		9D9A9F38A82D08D0D02AEC3A /* win32.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = win32.gypi; path = ../../config/win32.gypi; sourceTree = "<group>"; };
@@ -157,11 +138,9 @@
 		BFAF7F067846798A6B32E7BF /* crosscompile.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = crosscompile.gypi; path = ../../config/crosscompile.gypi; sourceTree = "<group>"; };
 		C10AF84A7504F8189976495F /* xmlcatalog.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = xmlcatalog.c; sourceTree = "<group>"; };
 		C184059DFD4B098E63F6035A /* threads.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = threads.h; sourceTree = "<group>"; };
-		C5F48BC584F6E59002A80429 /* trio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = trio.h; sourceTree = "<group>"; };
 		C7B1CE167940909201E2A382 /* config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
 		CA462A005B3FB3A7883A6D17 /* SAX.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SAX.h; sourceTree = "<group>"; };
 		CE0CD94502D3D531F040370B /* pattern.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = pattern.c; sourceTree = "<group>"; };
-		D12822F174DE59DDB34048F8 /* elfgcchack.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = elfgcchack.h; sourceTree = "<group>"; };
 		D63936F5B3BFE8FFFB59540A /* valid.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = valid.c; sourceTree = "<group>"; };
 		D776F6DF3083FB6015A6AC92 /* HTMLtree.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HTMLtree.h; sourceTree = "<group>"; };
 		D8577492FB8CB599CC935495 /* xmlregexp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = xmlregexp.h; sourceTree = "<group>"; };
@@ -169,11 +148,9 @@
 		DC9C47FC7E5ACE4A86B62BA2 /* xmlmemory.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = xmlmemory.c; sourceTree = "<group>"; };
 		DD5885920F29E7201C9D32E4 /* mac.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = mac.gypi; path = ../../config/mac.gypi; sourceTree = "<group>"; };
 		DEBCF26976637CF536D62DAA /* xmlschemas.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = xmlschemas.c; sourceTree = "<group>"; };
-		DFE55AB63C36EFB89A72B7D6 /* SAX.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = SAX.c; sourceTree = "<group>"; };
 		E100517F3D58C0BEA77E42BA /* thirdparty.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = thirdparty.gypi; path = ../../config/thirdparty.gypi; sourceTree = "<group>"; };
 		E1716964167974AD206629A4 /* debugXML.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = debugXML.h; sourceTree = "<group>"; };
 		E4CF09D6E8B6AC86347DAD04 /* HTMLparser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HTMLparser.h; sourceTree = "<group>"; };
-		E56F05D320AC323E2861EE67 /* nanoftp.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = nanoftp.c; sourceTree = "<group>"; };
 		E614B7B21075C547B6B2CD59 /* xmlsave.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = xmlsave.h; sourceTree = "<group>"; };
 		EA44DEA7A546A68F9FD78503 /* globals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = globals.h; sourceTree = "<group>"; };
 		ED534B55D1C27A69ECEB3994 /* SAX2.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = SAX2.c; sourceTree = "<group>"; };
@@ -217,7 +194,6 @@
 		7CC4FC65E9E779723574F573 /* include/libxml */ = {
 			isa = PBXGroup;
 			children = (
-				01FCBF8FF07EA7F56034C9B4 /* DOCBparser.h */,
 				E4CF09D6E8B6AC86347DAD04 /* HTMLparser.h */,
 				D776F6DF3083FB6015A6AC92 /* HTMLtree.h */,
 				CA462A005B3FB3A7883A6D17 /* SAX.h */,
@@ -310,12 +286,9 @@
 		BF699C540CB804BF2E6AE5CB /* src */ = {
 			isa = PBXGroup;
 			children = (
-				320420047C5552BD8B5518FF /* DOCBparser.c */,
 				1C7F3203EDCD3588CA5475F3 /* HTMLparser.c */,
 				4FFC1D2B9AB392DABA1B05B0 /* HTMLtree.c */,
-				DFE55AB63C36EFB89A72B7D6 /* SAX.c */,
 				ED534B55D1C27A69ECEB3994 /* SAX2.c */,
-				4E6006F8D6D7DB84F238246B /* acconfig.h */,
 				7E9CDC20AC3578D2749502C0 /* buf.c */,
 				72E847495656F46AD869E28E /* buf.h */,
 				B3B833C4A7E4C133730EEEEA /* c14n.c */,
@@ -324,17 +297,13 @@
 				C7B1CE167940909201E2A382 /* config.h */,
 				842033BA9248975474B4B2CD /* debugXML.c */,
 				1416635CA11FC67269F9365B /* dict.c */,
-				D12822F174DE59DDB34048F8 /* elfgcchack.h */,
-				AD22EF3EEA7954CBEC36821B /* enc.h */,
 				B8C9732EC6B5C027186D27FF /* encoding.c */,
 				599A5D389227C6D72D1AEC82 /* entities.c */,
 				B2A4AC49179BC043E57C9C50 /* error.c */,
 				86F83ED5386AC4FC77E5D5F7 /* globals.c */,
 				70A2FE95626D9A9F9A1CD891 /* hash.c */,
-				152B526AA041CC41C2281DB2 /* legacy.c */,
 				8CB6C2380E56E468673A4ECC /* libxml.h */,
 				A94DB2C1E2B3D6B0ECAFB5C9 /* list.c */,
-				E56F05D320AC323E2861EE67 /* nanoftp.c */,
 				ABA41D81C9C6697A78539F01 /* nanohttp.c */,
 				1E7ADAF0A23747A331FF28AF /* parser.c */,
 				A0F494CFE57C1203860611A1 /* parserInternals.c */,
@@ -345,18 +314,8 @@
 				526769D9025F5B8443EF46E1 /* threads.c */,
 				FCAA102A658F100DDB2A9550 /* timsort.h */,
 				FE7D86F4C012BB4C923EA74B /* tree.c */,
-				3A78D9817A2A406C45F86547 /* trio.c */,
-				C5F48BC584F6E59002A80429 /* trio.h */,
-				29F8CB3C3C1A02E4C291982C /* triodef.h */,
-				96398E69671DABECEC46DAE4 /* trionan.c */,
-				917E44D577B51BB7EB8DC643 /* trionan.h */,
-				0653E42A4C421708612E6D37 /* triop.h */,
-				28023B3A4DAB3166F7D812AE /* triostr.c */,
-				3B14BC48564311C5069D8754 /* triostr.h */,
 				EF6628371DD3810BC3C5122F /* uri.c */,
 				D63936F5B3BFE8FFFB59540A /* valid.c */,
-				4E8C982D46A9B9CB56F01F9D /* win32config.h */,
-				01DFDDF3A909E52D667C66BA /* wsockcompat.h */,
 				A42B0262A75F18ED0ADC0BAF /* xinclude.c */,
 				432C926515533D7EF916C0EE /* xlink.c */,
 				6B01400C772BEC9B2C573B25 /* xmlIO.c */,
@@ -370,7 +329,6 @@
 				DEBCF26976637CF536D62DAA /* xmlschemas.c */,
 				9771592F5DBD013205C4C147 /* xmlschemastypes.c */,
 				8CAAA555E10FCE9DA5FDED51 /* xmlstring.c */,
-				228F2E1676A9AFADEA9915F1 /* xmlunicode.c */,
 				26DAACE62C00594DE3939BDB /* xmlwriter.c */,
 				53B736415B7782207DA93D3C /* xpath.c */,
 				6D1CC0E741AE55F7207D7A56 /* xpointer.c */,
@@ -429,7 +387,6 @@
 				A89B2CE60E0A599CBF650D41 /* chvalid.c in Sources */,
 				CF8FCA199E30335C648B4DCB /* debugXML.c in Sources */,
 				5D91096190052890279CB478 /* dict.c in Sources */,
-				10CDBE3C88CA72719F29EEC4 /* DOCBparser.c in Sources */,
 				D9A598C8C0F36C7217F0A927 /* encoding.c in Sources */,
 				D6D9DDEA43E8F9F714C982AA /* entities.c in Sources */,
 				F901E3057775630E17563505 /* error.c in Sources */,
@@ -437,15 +394,12 @@
 				2E5D3AE83F289539C4A012B3 /* hash.c in Sources */,
 				F06A822AE2FFA32BE6DE7D7E /* HTMLparser.c in Sources */,
 				BDAE210F59F7113ADD88BFCA /* HTMLtree.c in Sources */,
-				C5960F22E62FDD24EA5EB7C7 /* legacy.c in Sources */,
 				D70B66ACC81573AEBCA66F7B /* list.c in Sources */,
-				CB6CC9B89E0506197A0EF00A /* nanoftp.c in Sources */,
 				526159CB9CB83CB4CC132129 /* nanohttp.c in Sources */,
 				F0D02D7B80DC773A8C1994B5 /* parser.c in Sources */,
 				70CF92FF3C372CD7345E5284 /* parserInternals.c in Sources */,
 				81A4DE13E38CF85D357B297E /* pattern.c in Sources */,
 				9C3C1E19536BBBF7A30F80BA /* relaxng.c in Sources */,
-				4501D6F114ADF6D627D1408E /* SAX.c in Sources */,
 				6DDB2F850461AA81010DABC1 /* SAX2.c in Sources */,
 				0FFC5D2FF678A9916B99A2C8 /* schematron.c in Sources */,
 				EF3F2979BD209A65C3243B84 /* threads.c in Sources */,
@@ -464,7 +418,6 @@
 				32C8DA0E8293655E557B54EF /* xmlschemas.c in Sources */,
 				B04EBAD39C5AC49A2FEA359C /* xmlschemastypes.c in Sources */,
 				BFBC8ABF6810CF09B0F2CDCD /* xmlstring.c in Sources */,
-				8ACF1C8062E7A5FDE795C62D /* xmlunicode.c in Sources */,
 				02CC263CADDB9F913F352F67 /* xmlwriter.c in Sources */,
 				1B326BC14A6C2B0910D7BF56 /* xpath.c in Sources */,
 				065E7CC557CC45103437D2A2 /* xpointer.c in Sources */,
@@ -512,7 +465,6 @@
 				GCC_INHIBIT_ALL_WARNINGS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"LIBXML_STATIC_FOR_DLL=1",
-					"TRIO_HAVE_CONFIG_H=1",
 					CROSS_COMPILE_TARGET,
 					TARGET_PLATFORM_MACOS_X,
 					_MACOSX,
@@ -573,7 +525,6 @@
 				GCC_INHIBIT_ALL_WARNINGS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"LIBXML_STATIC_FOR_DLL=1",
-					"TRIO_HAVE_CONFIG_H=1",
 					CROSS_COMPILE_TARGET,
 					TARGET_PLATFORM_MACOS_X,
 					_MACOSX,
@@ -633,7 +584,6 @@
 				GCC_INHIBIT_ALL_WARNINGS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"LIBXML_STATIC_FOR_DLL=1",
-					"TRIO_HAVE_CONFIG_H=1",
 					CROSS_COMPILE_TARGET,
 					TARGET_PLATFORM_MACOS_X,
 					_MACOSX,
