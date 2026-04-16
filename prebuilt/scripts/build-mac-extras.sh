@@ -14,10 +14,6 @@
 #
 # Then this script:
 #   - Builds libgif/libjpeg/libpng/libpcre via xcodebuild and installs them
-#   - Compiles libzip 1.10.1 manually from the CMakeLists source list
-#     (the generated libzip.xcodeproj file list is stale and can't build
-#     cleanly against the modern libzip source; see the 'build-mac: prefer
-#     libzip src/ over include/' commit for context)
 #   - Supplies libcustomcrypto.a / libcustomssl.a from Homebrew openssl@3
 #     (engine now targets the 3.x symbol names directly; no compat shim)
 #   - Writes empty stub libpq.a and libmysql.a so the dbpostgresql /
@@ -56,18 +52,7 @@ for LIB in libgif libjpeg libpng libpcre; do
     cp "${DEBUG_OUT}/${LIB}.a" "${PREBUILT_LIB}/${LIB}.a"
 done
 
-# ── 2. ICU static libs (from build-icupkg-mac-arm64.sh output) ───────────────
-ICU_INSTALL="/tmp/icu58_arm64_build/icu_install"
-echo "=== Installing ICU static libs from ${ICU_INSTALL} ==="
-if [ ! -d "${ICU_INSTALL}/lib" ]; then
-    echo "ERROR: ${ICU_INSTALL}/lib not found — run prebuilt/scripts/build-icupkg-mac-arm64.sh first"
-    exit 1
-fi
-for f in libicudata.a libicui18n.a libicuio.a libicutu.a libicuuc.a; do
-    cp "${ICU_INSTALL}/lib/$f" "${PREBUILT_LIB}/$f"
-done
-
-# ── 3. libcustomcrypto / libcustomssl from Homebrew openssl@3 + compat shim ──
+# ── 2. libcustomcrypto / libcustomssl from Homebrew openssl@3 ────────────────
 echo "=== Supplying libcustomcrypto/libcustomssl from Homebrew openssl@3 ==="
 OPENSSL_PREFIX="$(brew --prefix openssl@3 2>/dev/null || true)"
 if [ -z "${OPENSSL_PREFIX}" ] || [ ! -f "${OPENSSL_PREFIX}/lib/libcrypto.a" ]; then
@@ -77,7 +62,7 @@ fi
 cp "${OPENSSL_PREFIX}/lib/libcrypto.a" "${PREBUILT_LIB}/libcustomcrypto.a"
 cp "${OPENSSL_PREFIX}/lib/libssl.a"    "${PREBUILT_LIB}/libcustomssl.a"
 
-# ── 4. Stub libpq.a and libmysql.a ───────────────────────────────────────────
+# ── 3. Stub libpq.a and libmysql.a ───────────────────────────────────────────
 # dbpostgresql.bundle and dbmysql.dylib link with -undefined dynamic_lookup
 # so unresolved symbols are deferred to load time. The linker still insists
 # on being able to find -lpq and -lmysql as files, so provide minimal
@@ -85,14 +70,16 @@ cp "${OPENSSL_PREFIX}/lib/libssl.a"    "${PREBUILT_LIB}/libcustomssl.a"
 # use these database drivers — install real libpq / libmysqlclient and
 # replace these if you need that functionality.
 echo "=== Creating stub libpq.a and libmysql.a ==="
-STUB_C="${LIBZIP_BUILD}/db-driver-stub.c"
+STUB_DIR="/tmp/hxt-mac-extras"
+mkdir -p "${STUB_DIR}"
+STUB_C="${STUB_DIR}/db-driver-stub.c"
 cat > "${STUB_C}" <<'EOF'
 /* Stub archive marker for dbpostgresql / dbmysql link-time satisfaction.
  * These drivers actually resolve symbols at dlopen time; see
  * prebuilt/scripts/build-mac-extras.sh for context. */
 int _hxt_db_driver_stub(void) { return 0; }
 EOF
-STUB_O="${LIBZIP_BUILD}/db-driver-stub.o"
+STUB_O="${STUB_DIR}/db-driver-stub.o"
 clang -arch arm64 -c "${STUB_C}" -o "${STUB_O}"
 ar rcs "${PREBUILT_LIB}/libpq.a"    "${STUB_O}"
 ar rcs "${PREBUILT_LIB}/libmysql.a" "${STUB_O}"

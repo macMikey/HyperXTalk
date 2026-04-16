@@ -102,8 +102,8 @@ pass. Source is fetched to `prebuilt/build/icu-58-mac-arm64/` (gitignored).
 
 ### 6. Populate the remaining prebuilts
 
-libgif, libjpeg, libpng, libpcre, libzip, libcustomcrypto/ssl, and the
-stub libpq/libmysql archives.
+libgif, libjpeg, libpng, libpcre, libcustomcrypto/ssl, and the stub
+libpq/libmysql archives.
 
 ```bash
 brew install openssl@3     # if not already installed
