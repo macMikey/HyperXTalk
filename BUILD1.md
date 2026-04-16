@@ -38,11 +38,16 @@ cd ~/Developer/HyperXTalk
 make prebuilt-mac    # builds libffi, libskia & friends, libz, ICU, openssl
                      #   extras, libpq, libmysql — about 10 min on an M1
 make compile-mac
+make package-mac-bin
 ```
 
-> ⚠️ `make compile-mac` ends with a code signing error on the very last line.
-> This is expected — look for `** BUILD SUCCEEDED **` just above it.
-> The signing step that follows handles it correctly.
+> **Note:** both `make compile-mac` and `make package-mac-bin` perform code signing
+> internally. Pass your identity if you have a Developer ID certificate:
+> ```bash
+> make compile-mac CODESIGN_IDENTITY="Developer ID Application: Emily-Elizabeth Howard (XXXXX)"
+> make package-mac-bin CODESIGN_IDENTITY="Developer ID Application: Emily-Elizabeth Howard (XXXXX)"
+> ```
+> Without `CODESIGN_IDENTITY`, both steps fall back to ad-hoc signing (`-`).
 
 ### What `make prebuilt-mac` does
 
@@ -82,19 +87,3 @@ sh rebuild-dbmysql.sh
 On a fresh tree, `make compile-mac` alone is enough — the drivers link
 against the real libraries from `make prebuilt-mac` directly.
 
----
-
-### Code sign `mac-bin`
-
-```bash
-REPO=~/Developer/HyperXTalk
-MACBIN="$REPO/mac-bin"
-find "$MACBIN" -not -name "*.dSYM" | while read F; do
-    if [[ -f "$F" ]] && file "$F" | grep -qE "Mach-O|bundle"; then
-        codesign --force --sign - "$F" 2>/dev/null && echo "Signed: $(basename $F)"
-    fi
-done
-find "$MACBIN" -name "*.app" -exec codesign --force --options runtime \
-  --entitlements "$REPO/HyperXTalk.entitlements" --sign - {} \;
-echo "Done signing."
-```
