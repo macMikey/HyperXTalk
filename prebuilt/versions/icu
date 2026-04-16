@@ -1,9 +1,13 @@
-58.3
-63.2
-# 63.2 is as far as I can get without dumping core
-65.1 # 65 dumps core during ACTION Generating full lc-compile grammar out/Debug/obj.target/lc-compile-stage2/geni/stage2/grammar_full.g
-64.1 # 64 needs distutils which has disappeared in python 3.12
-58.2 # LC original value
+58.2
+# SHA256 of source tarball:
+# 2b0a4410153a9b20de0e20c7d8b66049a72aef244b53683d0d7521371683da0c
+# URL: https://github.com/unicode-org/icu/releases/download/release-58-2/icu4c-58_2-src.tgz
+#
+# Attempted-bump history (keep for context — bumping is a separate task):
+#   58.3  — headers-only bump that was never followed up on
+#   63.2  — as far as one can get without dumping core
+#   65.1  — dumps core during `Generating full lc-compile grammar`
+#   64.1  — needs distutils (removed from Python 3.12)
 
 # only the first line counts
 # change the variable in libicu.gyp if you change this value

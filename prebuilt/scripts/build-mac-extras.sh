@@ -9,12 +9,15 @@
 #      libcairo libxslt libiodbc)
 #   3. sh prebuilt/scripts/build-libz-mac-arm64.sh  (or a prebuilt libz.a)
 #   4. the copy step into prebuilt/lib/mac
-#   5. sh prebuilt/scripts/build-icupkg-mac-arm64.sh
+#   5. sh prebuilt/scripts/build-icu-mac-arm64.sh
+#      (builds icupkg AND the five libicu*.a static libs in one step)
 #
 # Then this script:
 #   - Builds libgif/libjpeg/libpng/libpcre via xcodebuild and installs them
-#   - Copies the ICU static libs produced by build-icupkg-mac-arm64.sh
-#     into prebuilt/lib/mac
+#   - Compiles libzip 1.10.1 manually from the CMakeLists source list
+#     (the generated libzip.xcodeproj file list is stale and can't build
+#     cleanly against the modern libzip source; see the 'build-mac: prefer
+#     libzip src/ over include/' commit for context)
 #   - Supplies libcustomcrypto.a / libcustomssl.a from Homebrew openssl@3
 #     (engine now targets the 3.x symbol names directly; no compat shim)
 #   - Writes empty stub libpq.a and libmysql.a so the dbpostgresql /
