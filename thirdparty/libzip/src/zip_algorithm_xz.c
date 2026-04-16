@@ -1,7 +1,7 @@
 /*
   zip_algorithm_xz.c -- LZMA/XZ (de)compression routines
   Bazed on zip_algorithm_deflate.c -- deflate (de)compression routines
-  Copyright (C) 2017-2021 Dieter Baron and Thomas Klausner
+  Copyright (C) 2017-2023 Dieter Baron and Thomas Klausner
 
   This file is part of libzip, a library to manipulate ZIP archives.
   The authors can be contacted at <info@libzip.org>
@@ -302,11 +302,11 @@ input(void *ud, zip_uint8_t *data, zip_uint64_t length) {
 }
 
 
-static void
-end_of_input(void *ud) {
+static bool end_of_input(void *ud) {
     struct ctx *ctx = (struct ctx *)ud;
 
     ctx->end_of_input = true;
+    return ctx->zstr.avail_in != 0;
 }
 
 

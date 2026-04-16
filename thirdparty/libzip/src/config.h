@@ -3,15 +3,27 @@
 #ifndef _HAD_ZIPCONF_H
 #include "zipconf.h"
 #endif
-/* BEGIN DEFINES - Windows MSVC configuration */
+
+/*
+ * Portable config.h for HyperXTalk's vendored libzip.
+ * Branches on target platform — mac/linux use the POSIX feature set;
+ * Windows keeps the MSVC defines. No optional compression backends
+ * (bz2/lzma/zstd) and no crypto — the engine does not link against them.
+ */
+
+#define PACKAGE "libzip"
+#define VERSION "1.11.4"
+
 #define ENABLE_FDOPEN
-/* #undef HAVE___PROGNAME */
+
+#if defined(_WIN32) || defined(_WIN64)
+
+/* ── Windows / MSVC ────────────────────────────────────────────────────── */
 #define HAVE__CLOSE
 #define HAVE__DUP
 #define HAVE__FDOPEN
 #define HAVE__FILENO
 #define HAVE__SETMODE
-/* #undef HAVE__SNPRINTF */
 #define HAVE__SNPRINTF_S
 #define HAVE__SNWPRINTF_S
 #define HAVE__STRDUP
@@ -19,55 +31,56 @@
 #define HAVE__STRTOI64
 #define HAVE__STRTOUI64
 #define HAVE__UNLINK
-/* #undef HAVE_ARC4RANDOM */
-/* #undef HAVE_CLONEFILE */
-/* #undef HAVE_COMMONCRYPTO */
-/* #undef HAVE_CRYPTO */
-/* #undef HAVE_FICLONERANGE */
-/* #undef HAVE_FILENO */
-/* #undef HAVE_FCHMOD */
-/* #undef HAVE_FSEEKO */
-/* #undef HAVE_FTELLO */
-/* #undef HAVE_GETPROGNAME */
-/* #undef HAVE_GNUTLS */
-/* #undef HAVE_LIBBZ2 */
-/* #undef HAVE_LIBLZMA */
-/* #undef HAVE_LIBZSTD */
-/* #undef HAVE_LOCALTIME_R */
 #define HAVE_LOCALTIME_S
 #define HAVE_MEMCPY_S
-/* #undef HAVE_MBEDTLS */
-/* #undef HAVE_MKSTEMP */
-/* #undef HAVE_NULLABLE */
-/* #undef HAVE_OPENSSL */
 #define HAVE_SETMODE
 #define HAVE_SNPRINTF
 #define HAVE__SNPRINTF
 #define HAVE_SNPRINTF_S
-/* #undef HAVE_STRCASECMP */
-/* #undef HAVE_STRDUP */
 #define HAVE_STRERROR_S
 #define HAVE_STRERRORLEN_S
 #define HAVE_STRICMP
 #define HAVE_STRNCPY_S
-/* #undef HAVE_STRTOLL */
-/* #undef HAVE_STRTOULL */
-/* #undef HAVE_STRUCT_TM_TM_ZONE */
-/* #undef HAVE_STDBOOL_H */
-/* #undef HAVE_STRINGS_H */
-/* #undef HAVE_UNISTD_H */
-/* #undef HAVE_WINDOWS_CRYPTO */
 #define SIZEOF_OFF_T 4
 #define SIZEOF_SIZE_T 8
-/* #undef HAVE_DIRENT_H */
-/* #undef HAVE_FTS_H */
-/* #undef HAVE_NDIR_H */
-/* #undef HAVE_SYS_DIR_H */
-/* #undef HAVE_SYS_NDIR_H */
-/* #undef WORDS_BIGENDIAN */
-/* #undef HAVE_SHARED */
-/* END DEFINES */
-#define PACKAGE "libzip"
-#define VERSION "1.10.1"
+
+#elif defined(__APPLE__) || defined(__linux__) || defined(__unix__)
+
+/* ── macOS / Linux / POSIX ─────────────────────────────────────────────── */
+#define HAVE_UNISTD_H
+#define HAVE_STDBOOL_H
+#define HAVE_STRINGS_H
+#define HAVE_DIRENT_H
+#define HAVE_STRCASECMP
+#define HAVE_STRDUP
+#define HAVE_FILENO
+#define HAVE_FCHMOD
+#define HAVE_FSEEKO
+#define HAVE_FTELLO
+#define HAVE_MKSTEMP
+#define HAVE_LOCALTIME_R
+#define HAVE_SNPRINTF
+#define HAVE_STRTOLL
+#define HAVE_STRTOULL
+#define HAVE_STRUCT_TM_TM_ZONE
+#define HAVE_NULLABLE
+#define SIZEOF_OFF_T 8
+#define SIZEOF_SIZE_T 8
+
+#if defined(__APPLE__)
+#define HAVE_ARC4RANDOM
+#define HAVE_GETPROGNAME
+#endif
+
+/* glibc gained arc4random in 2.36 (Aug 2022). Older glibc falls back to
+ * libzip's internal PRNG path. */
+#if defined(__linux__) && defined(__GLIBC__) && \
+    (__GLIBC__ > 2 || (__GLIBC__ == 2 && __GLIBC_MINOR__ >= 36))
+#define HAVE_ARC4RANDOM
+#endif
+
+#else
+#error "libzip config.h: unsupported platform"
+#endif
 
 #endif /* HAD_CONFIG_H */

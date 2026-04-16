@@ -1,10 +1,9 @@
 /*
-  nonrandomopen.c -- override zip_secure_random
+  zip_source_get_dostime.c -- get modification time in DOS format from source
+  Copyright (C) 2024 Dieter Baron and Thomas Klausner
 
-  Copyright (C) 2017-2021 Dieter Baron and Thomas Klausner
-
-  This file is part of ckmame, a program to check rom sets for MAME.
-  The authors can be contacted at <ckmame@nih.at>
+  This file is part of libzip, a library to manipulate ZIP archives.
+  The authors can be contacted at <info@libzip.org>
 
   Redistribution and use in source and binary forms, with or without
   modification, are permitted provided that the following conditions
@@ -15,7 +14,7 @@
      notice, this list of conditions and the following disclaimer in
      the documentation and/or other materials provided with the
      distribution.
-  3. The name of the author may not be used to endorse or promote
+  3. The names of the authors may not be used to endorse or promote
      products derived from this software without specific prior
      written permission.
 
@@ -32,13 +31,42 @@
   IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include <string.h>
 
 #include "zipint.h"
 
-bool
-zip_secure_random(zip_uint8_t *buffer, zip_uint16_t length) {
-    memset(buffer, 0, length);
+/* Returns -1 on error, 0 on no dostime available, 1 for dostime returned */
+int
+zip_source_get_dos_time(zip_source_t *src, zip_dostime_t *dos_time) {
+    if (src->source_closed) {
+        return -1;
+    }
+    if (dos_time == NULL) {
+        zip_error_set(&src->error, ZIP_ER_INVAL, 0);
+        return -1;
+    }
 
-    return true;
+    if (src->write_state == ZIP_SOURCE_WRITE_REMOVED) {
+        zip_error_set(&src->error, ZIP_ER_READ, ENOENT);
+    }
+
+    if (zip_source_supports(src) & ZIP_SOURCE_MAKE_COMMAND_BITMASK(ZIP_SOURCE_GET_DOS_TIME)) {
+        zip_int64_t n = _zip_source_call(src, dos_time, sizeof(*dos_time), ZIP_SOURCE_GET_DOS_TIME);
+
+        if (n < 0) {
+            return -1;
+        }
+        else if (n == 0) {
+            return 0;
+        }
+        else if (n == sizeof(*dos_time)) {
+            return 1;
+        }
+        else {
+            zip_error_set(&src->error, ZIP_ER_INTERNAL, 0);
+            return -1;
+        }
+    }
+    else {
+        return 0;
+    }
 }

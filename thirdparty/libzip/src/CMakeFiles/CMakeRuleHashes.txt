@@ -1,2 +1,0 @@
-# Hashes of file build rules.
-f0c00c30557b2f314abda3ef410b387b zip_err_str.c

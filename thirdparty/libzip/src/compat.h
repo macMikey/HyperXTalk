@@ -3,7 +3,7 @@
 
 /*
   compat.h -- compatibility defines.
-  Copyright (C) 1999-2021 Dieter Baron and Thomas Klausner
+  Copyright (C) 1999-2022 Dieter Baron and Thomas Klausner
 
   This file is part of libzip, a library to manipulate ZIP archives.
   The authors can be contacted at <info@libzip.org>
@@ -41,10 +41,8 @@
 /* to have *_MAX definitions for all types when compiling with g++ */
 #define __STDC_LIMIT_MACROS
 
-/* to have ISO C secure library functions (not needed on MSVC - it provides _s functions natively) */
-#ifndef _MSC_VER
+/* to have ISO C secure library functions */
 #define __STDC_WANT_LIB_EXT1__ 1
-#endif
 
 #ifdef _WIN32
 #ifndef ZIP_EXTERN
@@ -59,11 +57,9 @@
 #ifdef HAVE_STDBOOL_H
 #include <stdbool.h>
 #else
-#ifndef __cplusplus
 typedef char bool;
 #define true 1
 #define false 0
-#endif
 #endif
 
 #include <errno.h>
@@ -127,13 +123,63 @@ typedef char bool;
 #endif
 #endif
 
-#ifndef HAVE_FSEEKO
-#define fseeko(s, o, w) (fseek((s), (long int)(o), (w)))
+
+#if defined(HAVE__FSEEKI64) && defined(HAVE__FSTAT64) && defined(HAVE__SEEK64)
+/* Windows API using int64 */
+typedef zip_int64_t zip_off_t;
+typedef struct _stat64 zip_os_stat_t;
+#define zip_os_stat _stat64
+#define zip_os_fstat _fstat64
+#define zip_os_seek _fseeki64
+#define ZIP_FSEEK_MAX ZIP_INT64_MAX
+#define ZIP_FSEEK_MIN ZIP_INT64_MIN
+#else
+
+/* Normal API */
+#include <sys/stat.h>
+typedef struct stat zip_os_stat_t;
+#define zip_os_fstat fstat
+#define zip_os_stat stat
+
+#if defined(HAVE_FTELLO) && defined(HAVE_FSEEKO)
+/* Using off_t */
+typedef off_t zip_off_t;
+#if SIZEOF_OFF_T == 8
+#define ZIP_OFF_MAX ZIP_INT64_MAX
+#define ZIP_OFF_MIN ZIP_INT64_MIN
+#elif SIZEOF_OFF_T == 4
+#define ZIP_OFF_MAX ZIP_INT32_MAX
+#define ZIP_OFF_MIN ZIP_INT32_MIN
+#elif SIZEOF_OFF_T == 2
+#define ZIP_OFF_MAX ZIP_INT16_MAX
+#define ZIP_OFF_MIN ZIP_INT16_MIN
+#else
+#error unsupported size of off_t
+#endif
+
+#define ZIP_FSEEK_MAX ZIP_OFF_MAX
+#define ZIP_FSEEK_MIN ZIP_OFF_MIN
+
+#define zip_os_fseek fseeko
+#define zip_os_ftell ftello
+#else
+
+/* Using long */
+typedef long zip_off_t;
+#include <limits.h>
+#define ZIP_FSEEK_MAX LONG_MAX
+#define ZIP_FSEEK_MIN LONG_MIN
+
+#define zip_os_fseek fseek
+#define zip_os_ftell ftell
+#endif
+
 #endif
 
 #ifndef HAVE_FTELLO
 #define ftello(s) ((long)ftell((s)))
 #endif
+
 
 #ifdef HAVE_LOCALTIME_S
 #ifdef _WIN32
@@ -183,27 +229,6 @@ typedef char bool;
 #endif
 #endif
 
-#if SIZEOF_OFF_T == 8
-#define ZIP_OFF_MAX ZIP_INT64_MAX
-#define ZIP_OFF_MIN ZIP_INT64_MIN
-#elif SIZEOF_OFF_T == 4
-#define ZIP_OFF_MAX ZIP_INT32_MAX
-#define ZIP_OFF_MIN ZIP_INT32_MIN
-#elif SIZEOF_OFF_T == 2
-#define ZIP_OFF_MAX ZIP_INT16_MAX
-#define ZIP_OFF_MIN ZIP_INT16_MIN
-#else
-#error unsupported size of off_t
-#endif
-
-#if defined(HAVE_FTELLO) && defined(HAVE_FSEEKO)
-#define ZIP_FSEEK_MAX ZIP_OFF_MAX
-#define ZIP_FSEEK_MIN ZIP_OFF_MIN
-#else
-#include <limits.h>
-#define ZIP_FSEEK_MAX LONG_MAX
-#define ZIP_FSEEK_MIN LONG_MIN
-#endif
 
 #ifndef SIZE_MAX
 #if SIZEOF_SIZE_T == 8

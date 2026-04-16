@@ -98,7 +98,7 @@ sh prebuilt/scripts/build-icupkg-mac-arm64.sh
 ---
 
 ### 6. Populate the remaining prebuilts (libgif, libjpeg, libpng, libpcre,
-###    libzip, ICU libs, libcustomcrypto/ssl, stub libpq/libmysql)
+###    ICU libs, libcustomcrypto/ssl, stub libpq/libmysql)
 
 ```bash
 brew install openssl@3     # if not already installed

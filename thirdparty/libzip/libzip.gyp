@@ -3,17 +3,17 @@
 	[
 		'../../common.gypi',
 	],
-	
+
 	'targets':
 	[
 		{
 			'target_name': 'libzip',
-			
+
 			'dependencies':
 			[
 				'../libz/libz.gyp:libz',
 			],
-			
+
 			'conditions':
 			[
 				[
@@ -21,69 +21,64 @@
 					{
 						'target_name': 'libzip',
 						'type': 'static_library',
-						
+
 						'variables':
 						{
 							'library_for_module': 1,
 							'silence_warnings': 1,
 						},
-						
-						'defines':
-						[
-#							'HAVE_CRYPTO',
-#							'HAVE_OPENSSL',
-#							'HAVE_SECURE_RANDOM',
-						],
-						
+
+						# Source list derived from libzip-1.11.4/lib/CMakeLists.txt
+						# (add_library(zip ...) block and the `else(WIN32)` branch).
+						# Optional compression backends (bzip2/xz/zstd) and crypto
+						# (openssl / commoncrypto / gnutls / mbedtls / winzip-aes)
+						# are intentionally excluded — the engine does not link
+						# against them.
+
 						'include_dirs':
 						[
 							'src',
 						],
-						
+
 						'sources':
 						[
 							'src/compat.h',
-							#'src/config.h',
 							'src/zip.h',
-							
 							'src/zipconf.h',
 							'src/zip_crypto.h',
-							'src/zip_commoncrypto.h',
+							'src/zip_crypto_commoncrypto.h',
 							'src/zip_crypto_gnutls.h',
+							'src/zip_crypto_mbedtls.h',
 							'src/zip_crypto_openssl.h',
 							'src/zipint.h',
-							
-							'src/mkstemp.c',
+							'src/zip_source_file.h',
+							'src/zip_source_file_stdio.h',
+
+							'src/zip_add.c',
+							'src/zip_add_dir.c',
 							'src/zip_add_entry.c',
-							'src/zip_algorithm_bzip2.c',
 							'src/zip_algorithm_deflate.c',
-							'src/zip_algorithm_xz.c',
-							'src/zip_algorithm_zstd.c',
 							'src/zip_buffer.c',
 							'src/zip_close.c',
-
-							#'src/zip_crypto_commoncrypto.c',
-							#'src/zip_crypto_gnutls.c',
-							#'src/zip_crypto_mbedtls.c',
-							#'src/zip_crypto_openssl.c',
-
 							'src/zip_delete.c',
 							'src/zip_dir_add.c',
 							'src/zip_dirent.c',
 							'src/zip_discard.c',
 							'src/zip_entry.c',
-							#'src/zip_entry_free.c',
-							#'src/zip_entry_new.c',
 							'src/zip_err_str.c',
 							'src/zip_error.c',
 							'src/zip_error_clear.c',
+							'src/zip_error_get.c',
+							'src/zip_error_get_sys_type.c',
 							'src/zip_error_strerror.c',
+							'src/zip_error_to_str.c',
 							'src/zip_extra_field.c',
 							'src/zip_extra_field_api.c',
 							'src/zip_fclose.c',
 							'src/zip_fdopen.c',
 							'src/zip_file_add.c',
 							'src/zip_file_error_clear.c',
+							'src/zip_file_error_get.c',
 							'src/zip_file_get_comment.c',
 							'src/zip_file_get_external_attributes.c',
 							'src/zip_file_get_offset.c',
@@ -101,12 +96,13 @@
 							'src/zip_fread.c',
 							'src/zip_fseek.c',
 							'src/zip_ftell.c',
-
 							'src/zip_get_archive_comment.c',
 							'src/zip_get_archive_flag.c',
 							'src/zip_get_encryption_implementation.c',
+							'src/zip_get_file_comment.c',
 							'src/zip_get_name.c',
 							'src/zip_get_num_entries.c',
+							'src/zip_get_num_files.c',
 							'src/zip_hash.c',
 							'src/zip_io_util.c',
 							'src/zip_libzip_version.c',
@@ -116,11 +112,13 @@
 							'src/zip_open.c',
 							'src/zip_pkware.c',
 							'src/zip_progress.c',
-							'src/zip_random_unix.c',
-#							'src/zip_recompress.c',
+							'src/zip_realloc.c',
+							'src/zip_rename.c',
+							'src/zip_replace.c',
 							'src/zip_set_archive_comment.c',
 							'src/zip_set_archive_flag.c',
 							'src/zip_set_default_password.c',
+							'src/zip_set_file_comment.c',
 							'src/zip_set_file_compression.c',
 							'src/zip_set_name.c',
 							'src/zip_source_accept_empty.c',
@@ -135,10 +133,9 @@
 							'src/zip_source_error.c',
 							'src/zip_source_file_common.c',
 							'src/zip_source_file_stdio.c',
-							'src/zip_source_file_stdio_named.c',
 							'src/zip_source_free.c',
 							'src/zip_source_function.c',
-
+							'src/zip_source_get_dostime.c',
 							'src/zip_source_get_file_attributes.c',
 							'src/zip_source_is_deleted.c',
 							'src/zip_source_layered.c',
@@ -156,11 +153,6 @@
 							'src/zip_source_tell.c',
 							'src/zip_source_tell_write.c',
 							'src/zip_source_window.c',
-
-							'src/zip_source_winzip_aes_decode.c',
-							'src/zip_source_winzip_aes_encode.c',
-							'src/zip_winzip_aes.c',
-
 							'src/zip_source_write.c',
 							'src/zip_source_zip.c',
 							'src/zip_source_zip_new.c',
@@ -175,26 +167,13 @@
 							'src/zip_unchange_data.c',
 							'src/zip_utf-8.c',
 
-							'src/nonrandomopen.c',
-# DEPRECATED but revzip uses them
-							'src/zip_add_dir.c',
-							'src/zip_rename.c',
-							'src/zip_replace.c',
-							'src/zip_set_file_comment.c',
-							'src/zip_error_get_sys_type.c',
-							'src/zip_error_get.c',
-							'src/zip_error_to_str.c',
-							'src/zip_file_error_get.c',
-							'src/zip_source_zip.c',
-							'src/zip_get_file_comment.c',
-							'src/zip_get_num_files.c',
-							'src/zip_add.c',
-# NOT USED
-#							'src/zip_set_progress_callback.c',
-#							'src/zipcmp.c',
-#							'src/ziptool.c',
+							# Unix platforms (mac/linux/ios/android/emscripten).
+							# Windows overrides these under the OS=="win"
+							# condition below.
+							'src/zip_source_file_stdio_named.c',
+							'src/zip_random_unix.c',
 						],
-						
+
 						'conditions':
 						[
 							[
@@ -202,10 +181,17 @@
 								{
 									'sources/':
 									[
-										'src/zipintw32.h',
-										'src/w32support.cpp',
-										'src/zip_random_uwp.c',
-										'src/zip_crypto_win.c',
+										['exclude', '^src/zip_source_file_stdio_named\\.c$'],
+										['exclude', '^src/zip_random_unix\\.c$'],
+									],
+									'sources':
+									[
+										'src/zip_source_file_win32.h',
+										# src/zip_crypto_win.c intentionally
+										# excluded — upstream gates it on
+										# HAVE_WINDOWS_CRYPTO; we ship without
+										# Windows crypto matching the other
+										# excluded crypto backends.
 										'src/zip_random_win32.c',
 										'src/zip_source_file_win32.c',
 										'src/zip_source_file_win32_ansi.c',
@@ -227,7 +213,7 @@
 					},
 					{
 						'type': 'none',
-						
+
 						'direct_dependent_settings':
 						{
 							'libraries':

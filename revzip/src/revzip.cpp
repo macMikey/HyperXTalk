@@ -100,10 +100,11 @@ const char* kErrNoCurrentOperation = "ziperr,no current operation";
  *   offset 56: zip_uint32_t flags     (4)
  *   total: 60 bytes
  *
- * On macOS/Linux we build libzip 1.10.1 from source, which produces the NEW
- * layout directly, so zip_stat_index fills a real zip_stat_t correctly and
- * no offset remapping is needed.  The raw-buffer trick is only needed on
- * Windows where the prebuilt libzip uses the OLD layout.
+ * On macOS/Linux we build libzip 1.11.4 from source, which produces the NEW
+ * layout directly (struct zip_stat is unchanged since the 1.x series), so
+ * zip_stat_index fills a real zip_stat_t correctly and no offset remapping
+ * is needed. The raw-buffer trick is only needed on Windows where the
+ * prebuilt libzip still uses the OLD layout.
  * ----------------------------------------------------------------------- */
 static int zip_stat_index_compat(struct zip *za, zip_int64_t index,
                                   zip_flags_t flags, zip_stat_t *new_stat)

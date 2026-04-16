@@ -1,11 +1,9 @@
 /*
-  $NiH: zip_entry_free.c,v 1.1 2004/11/30 21:37:01 wiz Exp $
-
-  zip_entry_free.c -- free struct zip_entry
-  Copyright (C) 1999, 2003, 2004 Dieter Baron and Thomas Klausner
+  zip_realloc.c -- reallocate with additional elements
+  Copyright (C) 2009-2025 Dieter Baron and Thomas Klausner
 
   This file is part of libzip, a library to manipulate ZIP archives.
-  The authors can be contacted at <nih@giga.or.at>
+  The authors can be contacted at <info@libzip.org>
 
   Redistribution and use in source and binary forms, with or without
   modification, are permitted provided that the following conditions
@@ -19,7 +17,7 @@
   3. The names of the authors may not be used to endorse or promote
      products derived from this software without specific prior
      written permission.
- 
+
   THIS SOFTWARE IS PROVIDED BY THE AUTHORS ``AS IS'' AND ANY EXPRESS
   OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
   WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -33,20 +31,32 @@
   IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-
-
 #include <stdlib.h>
 
-#include "zip.h"
 #include "zipint.h"
 
-
+bool zip_realloc(void **memory, zip_uint64_t *alloced_elements, zip_uint64_t element_size, zip_uint64_t additional_elements, zip_error_t *error) {
+    zip_uint64_t new_alloced_elements;
+    void *new_memory;
 
-void
-_zip_entry_free(struct zip_entry *ze)
-{
-    free(ze->ch_filename);
-    ze->ch_filename = NULL;
+    if (additional_elements == 0) {
+        return true;
+    }
 
-    _zip_unchange_data(ze);
+    new_alloced_elements = *alloced_elements + additional_elements;
+
+    if (new_alloced_elements < additional_elements || new_alloced_elements > SIZE_MAX / element_size) {
+        zip_error_set(error, ZIP_ER_MEMORY, 0);
+        return false;
+    }
+
+    if ((new_memory = realloc(*memory, (size_t)(new_alloced_elements * element_size))) == NULL) {
+        zip_error_set(error, ZIP_ER_MEMORY, 0);
+        return false;
+    }
+
+    *memory = new_memory;
+    *alloced_elements = new_alloced_elements;
+
+    return true;
 }

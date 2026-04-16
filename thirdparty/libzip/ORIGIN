@@ -1,3 +1,21 @@
-Files in this folder are based on libzip
+libzip 1.11.4
 
-Original source archives are available from <http://www.nih.at/libzip/>
+Upstream: https://libzip.org/
+Tarball:  https://libzip.org/download/libzip-1.11.4.tar.gz
+SHA256:   82e9f2f2421f9d7c2466bbc3173cd09595a88ea37db0d559a9d0a2dc60dc722e
+
+Layout
+------
+  src/          — contents of upstream lib/ plus two generated files:
+                  zip_err_str.c  (from cmake/GenerateZipErrorStrings.cmake)
+                  zipconf.h      (from cmake-zipconf.h.in)
+  src/config.h  — HyperXTalk-specific portable config (NOT upstream).
+                  Preprocessor-branched on _WIN32 / __APPLE__ / __linux__;
+                  replaces the cmake-generated config.h so we can build
+                  without running cmake at engine-build time.
+  include/      — public headers (zip.h + zipconf.h), copied from src/
+                  for consumers (revzip) that only want the public API.
+
+Optional features excluded from libzip.gyp: bzip2, xz (lzma), zstd,
+winzip AES, OpenSSL, CommonCrypto, GnuTLS, mbed TLS. The engine does
+not link against any of them.

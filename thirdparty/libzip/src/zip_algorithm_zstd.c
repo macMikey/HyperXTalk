@@ -1,6 +1,6 @@
 /*
   zip_algorithm_zstd.c -- zstd (de)compression routines
-  Copyright (C) 2020-2021 Dieter Baron and Thomas Klausner
+  Copyright (C) 2020-2023 Dieter Baron and Thomas Klausner
 
   This file is part of libzip, a library to manipulate ZIP archives.
   The authors can be contacted at <info@libzip.org>
@@ -211,11 +211,11 @@ input(void *ud, zip_uint8_t *data, zip_uint64_t length) {
 }
 
 
-static void
-end_of_input(void *ud) {
+static bool end_of_input(void *ud) {
     struct ctx *ctx = (struct ctx *)ud;
 
     ctx->end_of_input = true;
+    return ctx->in.pos != ctx->in.size;
 }
 
 
