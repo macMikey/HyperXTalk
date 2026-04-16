@@ -5,6 +5,28 @@
 # Prettifying output for CI builds
 XCODEBUILD_FILTER ?=
 
+# Build all macOS arm64 prebuilt dependencies in one pass.
+# Replaces the 7-step manual ritual previously documented in BUILD1.md.
+# Requires Homebrew prereqs: openssl@3, libpq, mysql-client.
+prebuilt-mac:
+	@echo "=== Verifying Homebrew prereqs ==="
+	@for formula in openssl@3 libpq mysql-client; do \
+	  if ! brew --prefix $$formula >/dev/null 2>&1; then \
+	    echo "ERROR: Homebrew formula '$$formula' not installed."; \
+	    echo "  Run: brew install openssl@3 libpq mysql-client"; \
+	    exit 1; \
+	  fi; \
+	done
+	sh prebuilt/scripts/build-libffi-mac-arm64.sh
+	sh prebuilt/scripts/build-thirdparty-mac-arm64.sh
+	sh prebuilt/scripts/build-libz-mac-arm64.sh
+	sh prebuilt/scripts/build-icu-mac-arm64.sh
+	sh prebuilt/scripts/build-mac-extras.sh
+	sh prebuilt/scripts/build-libpq-mac-arm64.sh
+	sh prebuilt/scripts/build-libmysql-mac-arm64.sh
+	@echo ""
+	@echo "=== prebuilt-mac: done. Next: make compile-mac ==="
+
 config-mac:
 ifneq ($(TRAVIS),undefined)
 	@echo "travis_fold:start:config"
