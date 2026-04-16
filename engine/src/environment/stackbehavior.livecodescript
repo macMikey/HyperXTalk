@@ -847,8 +847,8 @@ command licenseUnlock pLicense
 
    put pLicense["name"] into tSettings["name"]
    put pLicense["organization"] into tSettings["organization"]
-   --   put "community" into tSettings["class"]
-   put "commercial" into tSettings["class"]
+   put "community" into tSettings["class"]
+   --put "commercial" into tSettings["class"]
    put 1 into tSettings["multiplicity"]
    --put "macosx,windows,linux,ios,android,html5,wasm" into tSettings["deploy"]
 

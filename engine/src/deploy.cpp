@@ -784,13 +784,14 @@ void MCIdeDeploy::exec_ctxt(MCExecContext& ctxt)
     t_has_error = !t_params.InitWithArray(ctxt, *t_array);
 	
 	// If platform is iOS and we are not Mac then error
-#ifndef _MACOSX
+	if (m_platform == PLATFORM_IOS)
 	{
+#ifndef _MACOSX
 		ctxt . SetTheResultToCString("ios deployment not supported on this platform");
 		t_soft_error = true;
         t_has_error = true;
-	}
 #endif
+	}
 
 	// If the banner_class field is set and we are not a trial license, we
 	// override the license class with that specified.
@@ -829,7 +830,7 @@ void MCIdeDeploy::exec_ctxt(MCExecContext& ctxt)
 	bool t_is_licensed;
 	t_is_licensed = false;
 	
-    if (MCnoui && MClicenseparameters . license_class == kMCLicenseClassCommunity)
+    if (MClicenseparameters . license_class == kMCLicenseClassCommunity)
         t_is_licensed = true;
 	else if (t_is_trial)
 		t_is_licensed = true;

@@ -71,9 +71,9 @@ private command updateTabButtons pSettings
    end repeat
    
    set the wholeMatches to true
-   set the enabled of button "OS X" of group "cards" of me to ("Mac OS X" is among the items of line 5 of the revLicenseInfo)
-   set the enabled of button "Windows" of group "cards" of me to ("Windows" is among the items of line 5 of the revLicenseInfo)
-   set the enabled of button "Unix" of group "cards" of me to ("Linux" is among the items of line 5 of the revLicenseInfo)
+   set the enabled of button "OS X" of group "cards" of me to TRUE  // HXT ("Mac OS X" is among the items of line 5 of the revLicenseInfo)
+   set the enabled of button "Windows" of group "cards" of me to TRUE  // HXT ("Windows" is among the items of line 5 of the revLicenseInfo)
+   set the enabled of button "Unix" of group "cards" of me to TRUE  // HXT ("Linux" is among the items of line 5 of the revLicenseInfo)
 end updateTabButtons
 
 on buildForEnabled pPlatform

@@ -31,7 +31,16 @@ along with LiveCode.  If not see <http://www.gnu.org/licenses/>.  */
 void MCStackSecurityInit(void)
 {
 	// MW-2013-11-07: [[ CmdLineStack ]] Mark the license type as community.
-	MClicenseparameters . license_class = kMCLicenseClassCommunity;  
+	MClicenseparameters . license_class = kMCLicenseClassCommunity;
+	// Allow deployment to all desktop/server platforms for community builds.
+	// Without this, line 5 of revLicenseInfo is empty and revSBLicensedToDeployToTarget
+	// returns false for every target, blocking standalone creation entirely.
+	MClicenseparameters . deploy_targets =
+		kMCLicenseDeployToWindows |
+		kMCLicenseDeployToMacOSX  |
+		kMCLicenseDeployToLinux   |
+		kMCLicenseDeployToServer  |
+		kMCLicenseDeployToHTML5;
 }
 
 ///////////

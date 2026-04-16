@@ -10,6 +10,8 @@ set VCXPROJ_LCB_MODULES=build-win-x86_64\livecode\engine\engine_lcb_modules.vcxp
 set VCXPROJ_LIBFFI=build-win-x86_64\livecode\thirdparty\libffi\libffi.vcxproj
 set VCXPROJ_LIBFOUNDATION=build-win-x86_64\livecode\libfoundation\libFoundation.vcxproj
 set VCXPROJ_LIBSCRIPT=build-win-x86_64\livecode\libscript\libScript.vcxproj
+set VCXPROJ_STANDALONE=build-win-x86_64\livecode\engine\standalone.vcxproj
+set VCXPROJ_KERNEL_STANDALONE=build-win-x86_64\livecode\engine\kernel-standalone.vcxproj
 
 :: ----------------------------------------------------------
 :: MySQL 9.6.0 prerequisite check
@@ -195,6 +197,64 @@ if not exist "%EXE%" (
 
 echo Engine built: %EXE%
 
+echo.
+:: ----------------------------------------------------------
+:: Build kernel-standalone.lib for x64.
+:: The pre-built lib shipped as x86; we must compile it for x64 so that
+:: standalone-community.exe can link against it.  Only the two mode source
+:: files (mode_standalone.cpp, lextable.cpp) are compiled here — the
+:: winnt.h SDK conflict does NOT affect these files.
+:: BuildProjectReferences=false: encode_version and perfect are already
+:: present from the engine build; no need to rebuild them.
+:: ----------------------------------------------------------
+echo Building kernel-standalone (x64 mode library) ...
+echo Building kernel-standalone ... >> "%LOGFILE%"
+set "KSTD_LOG=%~dp0build-kernel-standalone.log"
+"%MSBUILD%" %VCXPROJ_KERNEL_STANDALONE% /t:Rebuild /p:Configuration=Debug /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo > "%KSTD_LOG%" 2>&1
+set KSTD_ERR=%ERRORLEVEL%
+type "%KSTD_LOG%"
+type "%KSTD_LOG%" >> "%LOGFILE%"
+if %KSTD_ERR% NEQ 0 (
+    echo.
+    echo KERNEL-STANDALONE BUILD FAILED. See %KSTD_LOG% for details.
+    exit /b 1
+)
+echo kernel-standalone OK.
+
+echo.
+:: ----------------------------------------------------------
+:: Build standalone-community.exe (required by the standalone builder).
+:: The IDE's revSBEnginePath resolves to standalone-community.exe when
+:: editionType is "community" (or falls back to it for community builds).
+:: ----------------------------------------------------------
+echo Building standalone-community.exe ...
+echo Building standalone-community.exe ... >> "%LOGFILE%"
+set "STANDALONE_LOG=%~dp0build-standalone.log"
+set "STANDALONE_EXE=build-win-x86_64\livecode\Debug\standalone-community.exe"
+:: BuildProjectReferences=false: kernel-standalone.lib, security-community.lib and
+:: kernel.lib are already pre-built; we just link against them without rebuilding
+:: (rebuilding them triggers winnt.h SDK conflicts in those older vcxprojs).
+"%MSBUILD%" %VCXPROJ_STANDALONE% /p:Configuration=Debug /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo > "%STANDALONE_LOG%" 2>&1
+set STANDALONE_ERR=%ERRORLEVEL%
+type "%STANDALONE_LOG%" >> "%LOGFILE%"
+if %STANDALONE_ERR% NEQ 0 goto standalone_failed
+echo standalone-community.exe OK.
+goto standalone_done
+:standalone_failed
+echo.
+:: Write filtered errors to a small file for easy inspection.
+set "STANDALONE_ERRORS=%~dp0build-standalone-errors.log"
+findstr /v /r "LNK4099\|LNK4075" "%STANDALONE_LOG%" > "%STANDALONE_ERRORS%"
+echo STANDALONE BUILD FAILED. Filtered errors (excluding LNK4099/LNK4075 noise):
+type "%STANDALONE_ERRORS%"
+if not exist "%STANDALONE_EXE%" (
+    echo ERROR: standalone-community.exe is missing and could not be built.
+    exit /b 1
+)
+echo WARNING: Using existing standalone-community.exe from a previous build.
+:standalone_done
+
+echo.
 :: ----------------------------------------------------------
 :: Recompile browser widget (browser.lcb → module.lcm).
 :: We invoke lc-compile.exe directly rather than going through

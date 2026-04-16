@@ -3060,7 +3060,14 @@ function revSBEnginePath pPlatform
             return tBinariesPath & "/Standalone-" & tEdition & ".app/Contents/MacOS/Standalone-" & tEdition
             break;
          case "Windows"
-            return tBinariesPath & slash & "standalone-" & tEdition & ".exe"
+            -- HyperXTalk community builds produce standalone-community.exe only.
+            -- Fall back to it when the commercial variant is not present.
+            local tWinStandalonePath
+            put tBinariesPath & slash & "standalone-" & tEdition & ".exe" into tWinStandalonePath
+            if there is not a file tWinStandalonePath then
+               put tBinariesPath & slash & "standalone-community.exe" into tWinStandalonePath
+            end if
+            return tWinStandalonePath
             break
          case "Linux"
             return tBinariesPath & slash & "standalone-" & toLower(tEdition)
