@@ -10,7 +10,8 @@
 #      xcodebuild; this script rebuilds it manually below.
 #   3. sh prebuilt/scripts/build-libz-mac-arm64.sh  (or a prebuilt libz.a)
 #   4. the copy step into prebuilt/lib/mac
-#   5. sh prebuilt/scripts/build-icupkg-mac-arm64.sh
+#   5. sh prebuilt/scripts/build-icu-mac-arm64.sh
+#      (builds icupkg AND the five libicu*.a static libs in one step)
 #
 # Then this script:
 #   - Builds libgif/libjpeg/libpng/libpcre via xcodebuild and installs them
@@ -18,8 +19,6 @@
 #     (the generated libzip.xcodeproj file list is stale and can't build
 #     cleanly against the modern libzip source; see the 'build-mac: prefer
 #     libzip src/ over include/' commit for context)
-#   - Copies the ICU static libs produced by build-icupkg-mac-arm64.sh
-#     into prebuilt/lib/mac
 #   - Supplies libcustomcrypto.a / libcustomssl.a from Homebrew openssl@3
 #     (engine now targets the 3.x symbol names directly; no compat shim)
 #   - Writes empty stub libpq.a and libmysql.a so the dbpostgresql /
@@ -181,18 +180,7 @@ trap - EXIT
 
 echo "libzip.a built with ${#LIBZIP_OBJS[@]} objects"
 
-# ── 3. ICU static libs (from build-icupkg-mac-arm64.sh output) ───────────────
-ICU_INSTALL="/tmp/icu58_arm64_build/icu_install"
-echo "=== Installing ICU static libs from ${ICU_INSTALL} ==="
-if [ ! -d "${ICU_INSTALL}/lib" ]; then
-    echo "ERROR: ${ICU_INSTALL}/lib not found — run prebuilt/scripts/build-icupkg-mac-arm64.sh first"
-    exit 1
-fi
-for f in libicudata.a libicui18n.a libicuio.a libicutu.a libicuuc.a; do
-    cp "${ICU_INSTALL}/lib/$f" "${PREBUILT_LIB}/$f"
-done
-
-# ── 4. libcustomcrypto / libcustomssl from Homebrew openssl@3 + compat shim ──
+# ── 3. libcustomcrypto / libcustomssl from Homebrew openssl@3 ───────────────
 echo "=== Supplying libcustomcrypto/libcustomssl from Homebrew openssl@3 ==="
 OPENSSL_PREFIX="$(brew --prefix openssl@3 2>/dev/null || true)"
 if [ -z "${OPENSSL_PREFIX}" ] || [ ! -f "${OPENSSL_PREFIX}/lib/libcrypto.a" ]; then
@@ -202,7 +190,7 @@ fi
 cp "${OPENSSL_PREFIX}/lib/libcrypto.a" "${PREBUILT_LIB}/libcustomcrypto.a"
 cp "${OPENSSL_PREFIX}/lib/libssl.a"    "${PREBUILT_LIB}/libcustomssl.a"
 
-# ── 5. Stub libpq.a and libmysql.a ───────────────────────────────────────────
+# ── 4. Stub libpq.a and libmysql.a ───────────────────────────────────────────
 # dbpostgresql.bundle and dbmysql.dylib link with -undefined dynamic_lookup
 # so unresolved symbols are deferred to load time. The linker still insists
 # on being able to find -lpq and -lmysql as files, so provide minimal
