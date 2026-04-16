@@ -116,12 +116,22 @@ the comment at the top of `build-mac-extras.sh` for details.
 
 ---
 
-### 7. Bake in database client libraries (optional but recommended)
+### 7. Bake in database client libraries
 
-Skipping this step is safe — the database driver bundles will still build and
-load, but end-users will need a PostgreSQL or MySQL client installed on their
-own machine to make connections. Running it bakes the libraries in statically
-so no user-side installation is required.
+Required for functional DB drivers. The default prebuilts from step 6 are
+720-byte stub archives — enough for the linker to succeed, but the driver
+bundles end up with unresolved `PQconnectdb` / `mysql_init` symbols.
+
+- `dbmysql` has a `dlsym(RTLD_DEFAULT, "mysql_init")` guard and returns a
+  clean error if you skip this step
+  (`revdb/src/mysql_connection.cpp:37-50`).
+- `dbpostgresql` has no such guard — calling any PostgreSQL function on a
+  build that skipped this step crashes the engine.
+
+The first two scripts replace the stubs in `prebuilt/lib/mac/` with real
+static libraries from Homebrew, so step 8's `make compile-mac` links the
+bundles against them. The `rebuild-db*.sh` calls only matter when re-baking
+after an existing build; on a fresh tree, step 8 alone is enough.
 
 ```bash
 brew install libpq mysql-client
