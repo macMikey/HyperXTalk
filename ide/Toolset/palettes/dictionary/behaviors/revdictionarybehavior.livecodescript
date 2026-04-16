@@ -22,18 +22,19 @@ on openStack
    lock screen
    --Force the browser to actually resize
    set the rect of widget "Dictionary" of me to 0,0,0,0
-   set the javascripthandlers of widget "Dictionary" of me to "linkClicked" // HXT & return & "showUpgradeOptions"
+   set the javascripthandlers of widget "Dictionary" of me to "linkClicked" & return & "browserNavigateComplete" // HXT (was: & return & "showUpgradeOptions")
    set the width of me to tMinWidth
    set the minWidth of me to tMinWidth
    set the title of me to "Dictionary"
-   set the backColor of me to kBackColor
+   set the backColor of me to (the systemWindowColor)
    if sTab is empty then
       put "api" into sTab
    end if
    revIDEGenerateDictionaryHTML sTab, sEntry["library"], sEntry["entry"], sEntry["type"]
    put empty into sEntry
    showTab sTab
-   set the cantModify of me to true	
+   --   resizeStack
+   set the cantModify of me to true
    unlock screen
 end openStack
 

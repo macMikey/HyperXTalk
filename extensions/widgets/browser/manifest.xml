@@ -11,11 +11,11 @@
   <requires name="com.livecode.widget"/>
   <requires name="com.livecode.library.widgetutils"/>
   <requires name="com.livecode.array"/>
+  <requires name="com.livecode.logic"/>
+  <requires name="com.livecode.string"/>
   <requires name="com.livecode.arithmetic"/>
   <requires name="com.livecode.binary"/>
   <requires name="com.livecode.list"/>
-  <requires name="com.livecode.logic"/>
-  <requires name="com.livecode.string"/>
   <requires name="com.livecode.type"/>
   <requires name="com.livecode.char"/>
   <requires name="com.livecode.canvas"/>

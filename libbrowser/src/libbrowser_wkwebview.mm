@@ -1815,7 +1815,37 @@ void MCWKWebViewBrowserNavigationRequest::Cancel()
 	MCBrowserRunBlockOnMainFiber(^{
 		if (request.htmlText == nil)
 		{
-			[webView loadRequest:[NSURLRequest requestWithURL:request.url]];
+			// For file:// URLs use loadFileURL:allowingReadAccessToURL: so that
+			// the page can load resources (CSS, JS, data files) from directories
+			// other than its own.  loadRequest: restricts file access to the
+			// HTML file's immediate directory, which breaks the LiveCode
+			// dictionary whose HTML lives in Application Support but references
+			// assets inside the app bundle and a sibling IDE/ subfolder.
+			if (request.url.isFileURL)
+			{
+				// loadFileURL:allowingReadAccessToURL: does not invoke
+				// decidePolicyForNavigationAction on all WebKit/macOS versions, so
+				// m_current_request would never be set and didFinishNavigation would
+				// silently return early (browserNavigateComplete never fires).
+				// Mirror what continueRequest:withDecisionHandler: does so the state
+				// machine is correct regardless of whether the delegate fires.
+				// The m_pending_request == nil early-return guard in
+				// decidePolicyForNavigationAction will harmlessly allow any subsequent
+				// policy call without modifying m_current_request.
+				if (m_current_request != nil)
+					[self finishNavigationWithError:"navigation request cancelled"];
+				if (m_current_request != nil)
+					[m_current_request release];
+				m_current_request = m_pending_request;
+				m_pending_request = nil;
+
+				NSURL *t_root = [NSURL fileURLWithPath:@"/"];
+				[webView loadFileURL:request.url allowingReadAccessToURL:t_root];
+			}
+			else
+			{
+				[webView loadRequest:[NSURLRequest requestWithURL:request.url]];
+			}
 		}
 		else
 		{

@@ -536,48 +536,38 @@ private unsafe handler InitBrowserView()
 	variable tDisplay as optional Pointer
 	variable tBrowserView as Pointer
 
-	log "HTX: InitBrowserView entered"
-
 	// put my native window into tParent
 	MCWidgetGetMyStackNativeView(tParent)
-	if tParent is nothing then
-		log "HTX: tParent is nothing"
-	else
-		log "HTX: tParent is not nothing"
-	end if
 
 	if not MCBrowserFactoryGet(the empty string, tFactory) then
 		put kOpenStateFailed into mOpenState
-		log "HTX: MCBrowserFactoryGet FAILED"
 		throw "error getting browser factory"
 	end if
-	log "HTX: MCBrowserFactoryGet succeeded"
 
 	MCWidgetGetMyStackNativeDisplay(tDisplay)
 
 	if not MCBrowserFactoryCreateBrowser(tFactory, tDisplay, tParent, mBrowser) then
 		put kOpenStateFailed into mOpenState
-		log "HTX: MCBrowserFactoryCreateBrowser FAILED"
 		throw "error creating browser"
 	end if
-	log "HTX: MCBrowserFactoryCreateBrowser succeeded"
 	put kOpenStateOpen into mOpenState
 
 	put MCBrowserGetNativeLayer(mBrowser) into tBrowserView
-	if tBrowserView is nothing then
-		log "HTX: tBrowserView is nothing"
-	else
-		log "HTX: tBrowserView is not nothing"
-	end if
 	set my native layer to tBrowserView
-	log "HTX: native layer set"
 
 	// tell native layer that we can't render a snapshot of the browser view.
 	MCWidgetSetMyNativeLayerCanRenderToContext(false)
 
-	// Note: MCBrowserSet*Handler calls fail with "unexpected libffi failure" on Windows
-	// because this LCB version cannot create FFI closures for callbacks with foreign enum
-	// parameters. Skipping for now — browser renders without navigation/progress events.
+	// Register navigation/JS/progress callbacks via LCB→C FFI closures.
+	// Requires executable memory (allow-jit + allow-unsigned-executable-memory
+	// entitlements). These are present in HyperXTalk.entitlements so this works
+	// on macOS. If a future platform lacks JIT support, this block can be guarded
+	// by checking MCHandlerGetFunctionPtr return value first.
+	unsafe
+		MCBrowserSetNavigationHandler(mBrowser, OnNavigationCallback, nothing)
+		MCBrowserSetJavaScriptHandler(mBrowser, OnJavaScriptCallback, nothing)
+		MCBrowserSetProgressHandler(mBrowser, OnProgressCallback, nothing)
+	end unsafe
 
 	applyProperties(mProperties)
 end handler

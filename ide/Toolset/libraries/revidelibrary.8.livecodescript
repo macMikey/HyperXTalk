@@ -4152,10 +4152,12 @@ function revIDESpecialFolderPath pKey, pParam
          return item 1 to -3 of the filename of stack "home" & "/Toolset/resources/supporting_files/global_properties"
          break
       case "ide guides"
-         return item 1 to -3 of the filename of stack "home" & "/Documentation/guides" into tPath
+         put item 1 to -3 of the filename of stack "home" & "/Documentation/guides" into tPath
+         return tPath
          break
       case "repo guides"
-         return revEnvironmentRepositoryPath() & "/docs/guides" into tPath
+         put revEnvironmentRepositoryPath() & "/docs/guides" into tPath
+         return tPath
          break
    end switch
 end revIDESpecialFolderPath
@@ -11310,26 +11312,45 @@ end revIDEGetDictionaryHTMLTemplate
 on revIDEGenerateDictionaryHTML pWhich, pInitialLibrary, pInitialEntryName, pInitialEntryType
    local tGeneratedHTMLFile
    put revIDEGetDictionaryUrl(pWhich) into tGeneratedHTMLFile
-   
+
+   -- Ensure the docs-cache directory (e.g. 9_7_0_dp_1_/) exists before
+   -- writing api.html into it, and also ensure IDE/ exists for built_api.js.
+   -- revIDESetUTF8FileContents silently fails when the parent folder is absent,
+   -- which leaves GoToURL unable to find the file and throws "error launching url".
+   revIDEEnsurePath revEnvironmentUserDocsPath()
+   revIDEEnsurePath revEnvironmentUserDocsPath() & slash & "IDE"
+
    local tLibraryName, tEntryName, tEntryType
    put pInitialLibrary into tLibraryName
    put pInitialEntryName into tEntryName
    put pInitialEntryType into tEntryType
-   
+
    local tDocsBase
    put revIDESpecialFolderPath("documentation") & slash & "html_viewer" into tDocsBase
    
    local tDocsCSSFolder, tDocsJSFolder, tDataPath
    put tDocsBase & slash & "css" into tDocsCSSFolder
    put tDocsBase & slash & "js" into tDocsJSFolder
-   put revIDESpecialFolderPath("documentation cache") & slash & "built_" & pWhich & ".js" into tDataPath
-   
+   -- Use a relative path (IDE/built_<pWhich>.js) so WKWebView resolves it relative
+   -- to api.html's own directory inside the docs cache. This avoids any cross-directory
+   -- file-access trust issues and eliminates space-encoding problems entirely.
+   put "IDE/built_" & pWhich & ".js" into tDataPath
+
    local tIDEGuidesFolder, tRepoGuidesFolder
    put revIDESpecialFolderPath("ide guides") into tIDEGuidesFolder
    put revIDESpecialFolderPath("repo guides") into tRepoGuidesFolder
-   
+
+   -- URL-encode spaces in absolute paths used in HTML src/href attributes.
+   replace " " with "%20" in tDocsCSSFolder
+   replace " " with "%20" in tDocsJSFolder
+   replace " " with "%20" in tIDEGuidesFolder
+   replace " " with "%20" in tRepoGuidesFolder
+
    local tTemplate
-   put revIDEUTF8FileContents(revIDEGetDictionaryHTMLTemplate(pWhich)) into tTemplate
+   local tTemplateFile
+   put revIDEGetDictionaryHTMLTemplate(pWhich) into tTemplateFile
+   put revIDEUTF8FileContents(tTemplateFile) into tTemplate
+
    put merge(tTemplate) into tTemplate
    revIDESetUTF8FileContents tGeneratedHTMLFile, tTemplate
 end revIDEGenerateDictionaryHTML

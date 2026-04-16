@@ -340,9 +340,16 @@
 			setActions();
 			dataFilter();
 			displayLibraryChooser();
-			
+
 			goEntryName('[[tLibraryName]]', '[[tEntryName]]', '[[tEntryType]]');
 			document.getElementById("ui_filer").focus();
+
+			// Notify LiveCode that the page is ready.
+			// browserNavigateComplete callbacks are unavailable via libffi;
+			// use the JS bridge instead.
+			if (typeof liveCode !== 'undefined') {
+				liveCode.browserNavigateComplete();
+			}
 		});
 	</script>
 </body>
