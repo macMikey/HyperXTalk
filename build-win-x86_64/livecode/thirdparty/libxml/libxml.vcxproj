@@ -364,7 +364,6 @@
     <ClCompile Include="..\..\..\..\thirdparty\libxml\src\chvalid.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libxml\src\debugXML.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libxml\src\dict.c"/>
-    <ClCompile Include="..\..\..\..\thirdparty\libxml\src\DOCBparser.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libxml\src\encoding.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libxml\src\entities.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libxml\src\error.c"/>
@@ -372,15 +371,12 @@
     <ClCompile Include="..\..\..\..\thirdparty\libxml\src\hash.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libxml\src\HTMLparser.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libxml\src\HTMLtree.c"/>
-    <ClCompile Include="..\..\..\..\thirdparty\libxml\src\legacy.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libxml\src\list.c"/>
-    <ClCompile Include="..\..\..\..\thirdparty\libxml\src\nanoftp.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libxml\src\nanohttp.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libxml\src\parser.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libxml\src\parserInternals.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libxml\src\pattern.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libxml\src\relaxng.c"/>
-    <ClCompile Include="..\..\..\..\thirdparty\libxml\src\SAX.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libxml\src\SAX2.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libxml\src\schematron.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libxml\src\threads.c"/>
@@ -399,19 +395,9 @@
     <ClCompile Include="..\..\..\..\thirdparty\libxml\src\xmlschemas.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libxml\src\xmlschemastypes.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libxml\src\xmlstring.c"/>
-    <ClCompile Include="..\..\..\..\thirdparty\libxml\src\xmlunicode.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libxml\src\xmlwriter.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libxml\src\xpath.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libxml\src\xpointer.c"/>
-    <ClCompile Include="..\..\..\..\thirdparty\libxml\src\trio.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\thirdparty\libxml\src\trionan.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\thirdparty\libxml\src\triostr.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\thirdparty\libxml\src\xmllint.c">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>

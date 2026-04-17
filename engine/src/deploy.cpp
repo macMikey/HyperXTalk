@@ -818,18 +818,10 @@ void MCIdeDeploy::exec_ctxt(MCExecContext& ctxt)
 	// mode, however, all platforms are licensed (apart from embedded) they just will
 	// timeout.
 	bool t_is_licensed;
-	t_is_licensed = false;
-	
-    if (MClicenseparameters . license_class == kMCLicenseClassCommunity)
-        t_is_licensed = true;
-	else if (t_is_trial)
-		t_is_licensed = true;
-	else if (m_platform == PLATFORM_WINDOWS)
-		t_is_licensed = (MClicenseparameters . deploy_targets & kMCLicenseDeployToWindows) != 0;
-	else if (m_platform == PLATFORM_MACOSX)
-		t_is_licensed = (MClicenseparameters . deploy_targets & kMCLicenseDeployToMacOSX) != 0;
-	else if (m_platform == PLATFORM_LINUX)
-		t_is_licensed = (MClicenseparameters . deploy_targets & kMCLicenseDeployToLinux) != 0;
+	// HXT: Community build — all desktop platform deployments are always licensed.
+	t_is_licensed = (m_platform == PLATFORM_WINDOWS ||
+	                 m_platform == PLATFORM_MACOSX  ||
+	                 m_platform == PLATFORM_LINUX);
 
 	if (!t_is_licensed)
 	{
@@ -1324,3 +1316,4 @@ void MCIdeExtract::exec_ctxt(MCExecContext& ctxt)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+                                                                                                                                                                                                                                                                  

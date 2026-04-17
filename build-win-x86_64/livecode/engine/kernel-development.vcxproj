@@ -108,6 +108,7 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <DisableSpecificWarnings>4577;4800;4244</DisableSpecificWarnings>
       <ExceptionHandling>false</ExceptionHandling>
+      <ForcedIncludeFiles>$(MSBuildThisFileDirectory)..\..\..\engine\src\winnt_fix.h</ForcedIncludeFiles>
       <Optimization>Disabled</Optimization>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PreprocessorDefinitions>_DEBUG;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_DISABLE_PERFCRIT_LOCKS;__LITTLE_ENDIAN__;WINVER=0x0601;_WIN32_WINNT=0x0601;MODE_DEVELOPMENT;U_STATIC_IMPLEMENTATION=1;OPENSSL_API_COMPAT=0x10100000L;CROSS_COMPILE_TARGET;_WINDOWS;WIN32;TARGET_PLATFORM_WINDOWS;OPENSSL_API_COMPAT=0x10100000L;%(PreprocessorDefinitions)</PreprocessorDefinitions>

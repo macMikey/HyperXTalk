@@ -11,7 +11,13 @@ set VCXPROJ_LIBFFI=build-win-x86_64\livecode\thirdparty\libffi\libffi.vcxproj
 set VCXPROJ_LIBFOUNDATION=build-win-x86_64\livecode\libfoundation\libFoundation.vcxproj
 set VCXPROJ_LIBSCRIPT=build-win-x86_64\livecode\libscript\libScript.vcxproj
 set VCXPROJ_STANDALONE=build-win-x86_64\livecode\engine\standalone.vcxproj
+set VCXPROJ_KERNEL=build-win-x86_64\livecode\engine\kernel.vcxproj
 set VCXPROJ_KERNEL_STANDALONE=build-win-x86_64\livecode\engine\kernel-standalone.vcxproj
+set VCXPROJ_KERNEL_DEVELOPMENT=build-win-x86_64\livecode\engine\kernel-development.vcxproj
+set VCXPROJ_SECURITY_COMMUNITY=build-win-x86_64\livecode\engine\security-community.vcxproj
+set VCXPROJ_LIBXML=build-win-x86_64\livecode\thirdparty\libxml\libxml.vcxproj
+set VCXPROJ_LIBXSLT=build-win-x86_64\livecode\thirdparty\libxslt\libxslt.vcxproj
+set VCXPROJ_REVXML=build-win-x86_64\livecode\revxml\external-revxml.vcxproj
 
 :: ----------------------------------------------------------
 :: MySQL 9.6.0 prerequisite check
@@ -161,6 +167,110 @@ if errorlevel 1 (
 echo LCB modules OK.
 
 echo.
+:: ----------------------------------------------------------
+:: Build security-community.lib (stacksecurity.cpp — sets
+:: license_class and deploy_targets for community builds).
+:: Must be explicit because development.vcxproj uses
+:: BuildProjectReferences=false.
+:: ----------------------------------------------------------
+echo Building security-community ...
+echo Building security-community ... >> "%LOGFILE%"
+set "SECCOM_LOG=%~dp0build-security-community.log"
+"%MSBUILD%" %VCXPROJ_SECURITY_COMMUNITY% /p:Configuration=Debug /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo > "%SECCOM_LOG%" 2>&1
+set SECCOM_ERR=%ERRORLEVEL%
+type "%SECCOM_LOG%"
+type "%SECCOM_LOG%" >> "%LOGFILE%"
+if %SECCOM_ERR% NEQ 0 (
+    echo.
+    echo SECURITY-COMMUNITY BUILD FAILED. See %SECCOM_LOG% for details.
+    exit /b 1
+)
+echo security-community OK.
+
+echo.
+:: ----------------------------------------------------------
+:: Build kernel.lib — the main engine object library (~300 source files).
+::
+:: Root cause of previous winnt.h(24176) C2059 failures (now fixed):
+::   sysdefs.h defined #define None 0 which collided with the
+::   IMAGE_POLICY_ENTRY.None union member added in Windows SDK 26100.
+::   Fixed in engine\src\w32prefix.h: #undef None before <windows.h>,
+::   #define None 0 restored after.  All engine files can now compile.
+::
+:: /p:OutDir="..\Debug\" overrides the standalone output directory so
+:: kernel.lib lands in build-win-x86_64\livecode\Debug\lib\kernel.lib —
+:: the same path that development.vcxproj links against.  Without this,
+:: a standalone kernel.vcxproj build puts the lib under engine\Debug\lib\
+:: which development.vcxproj never finds.
+:: ----------------------------------------------------------
+echo Building kernel ...
+echo Building kernel ... >> "%LOGFILE%"
+set "KERNEL_LOG=%~dp0build-kernel.log"
+:: OutDir quoting note:
+::   The C runtime's CommandLineToArgvW treats \" as an escaped quote, so
+::   "/p:OutDir=..\Debug\" would consume the rest of the command line.
+::   Fix: use an absolute path and end with \\ inside the quotes — the C
+::   runtime converts \\" to one literal \ followed by the closing quote.
+set "KERNEL_OUTDIR=%~dp0build-win-x86_64\livecode\Debug"
+"%MSBUILD%" %VCXPROJ_KERNEL% /p:Configuration=Debug /p:Platform=x64 "/p:OutDir=%KERNEL_OUTDIR%\\" /p:BuildProjectReferences=false /v:minimal /nologo > "%KERNEL_LOG%" 2>&1
+set KERNEL_ERR=%ERRORLEVEL%
+type "%KERNEL_LOG%"
+type "%KERNEL_LOG%" >> "%LOGFILE%"
+if %KERNEL_ERR% NEQ 0 (
+    echo.
+    echo KERNEL BUILD FAILED. See %KERNEL_LOG% for details.
+    exit /b 1
+)
+echo kernel OK.
+
+echo.
+:: ----------------------------------------------------------
+:: Build kernel-development.lib — contains the bulk of engine
+:: source files (deploy.cpp, license.cpp, etc.).  Must be built
+:: explicitly because development.vcxproj uses
+:: BuildProjectReferences=false and will fail with LNK1181 if
+:: this lib is missing or stale.
+:: ----------------------------------------------------------
+echo Building kernel-development ...
+echo Building kernel-development ... >> "%LOGFILE%"
+set "KDEV_LOG=%~dp0build-kernel-development.log"
+"%MSBUILD%" %VCXPROJ_KERNEL_DEVELOPMENT% /p:Configuration=Debug /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo > "%KDEV_LOG%" 2>&1
+set KDEV_ERR=%ERRORLEVEL%
+type "%KDEV_LOG%"
+type "%KDEV_LOG%" >> "%LOGFILE%"
+if %KDEV_ERR% NEQ 0 (
+    echo.
+    echo KERNEL-DEVELOPMENT BUILD FAILED. See %KDEV_LOG% for details.
+    exit /b 1
+)
+echo kernel-development OK.
+
+echo.
+:: ----------------------------------------------------------
+:: Build libxml2 and libxslt BEFORE the engine — development.vcxproj
+:: links libxml.lib and libxslt.lib directly, so they must exist on
+:: disk before the link step runs.  revxml (a DLL loaded at runtime)
+:: is built after standalone-community.exe.
+:: ----------------------------------------------------------
+echo Building libxml2 (2.15.3) ...
+echo Building libxml2 ... >> "%LOGFILE%"
+"%MSBUILD%" %VCXPROJ_LIBXML% /t:Rebuild /p:Configuration=Debug /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
+if %ERRORLEVEL% NEQ 0 (
+    echo ERROR: libxml2 build failed. See %LOGFILE%
+    exit /b 1
+)
+echo libxml2 OK.
+
+echo Building libxslt ...
+echo Building libxslt ... >> "%LOGFILE%"
+"%MSBUILD%" %VCXPROJ_LIBXSLT% /t:Rebuild /p:Configuration=Debug /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
+if %ERRORLEVEL% NEQ 0 (
+    echo ERROR: libxslt build failed. See %LOGFILE%
+    exit /b 1
+)
+echo libxslt OK.
+
+echo.
 echo Building engine ...
 
 set "EXE=build-win-x86_64\livecode\Debug\HyperXTalk.exe"
@@ -253,6 +363,22 @@ if not exist "%STANDALONE_EXE%" (
 )
 echo WARNING: Using existing standalone-community.exe from a previous build.
 :standalone_done
+
+echo.
+:: ----------------------------------------------------------
+:: Build revxml (IDE XML external).
+:: libxml.lib / libxslt.lib were already built before the engine above.
+:: revxml.dll is loaded at runtime by the IDE — it does not need to
+:: exist before the engine links.
+:: ----------------------------------------------------------
+echo Building revxml (IDE XML external) ...
+echo Building revxml ... >> "%LOGFILE%"
+"%MSBUILD%" %VCXPROJ_REVXML% /p:Configuration=Debug /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
+if %ERRORLEVEL% NEQ 0 (
+    echo ERROR: revxml build failed. See %LOGFILE%
+    exit /b 1
+)
+echo revxml OK.
 
 echo.
 :: ----------------------------------------------------------

@@ -220,9 +220,12 @@ on revInternal__openStack
       end if
       
       if tSuccess and not revEnvironmentIsInstalled() then
-         hxtInternal__setSplashStatus "Building Dictionary..."
-         revInternal__BuildDictionary
-         put the result into tSuccess
+         -- HXT: Run BuildDictionary asynchronously so it doesn't block IDE startup.
+         -- On first run revIDEGenerateDistributedDocs can take several minutes; deferring
+         -- it means the IDE window opens immediately and docs finish building in the background.
+         hxtInternal__setSplashStatus "Building Dictionary (background)..."
+         send "revInternal__BuildDictionary" to me in 0 milliseconds
+         put true into tSuccess
       end if
       
       if tSuccess then
@@ -2364,3 +2367,4 @@ function revEnvironmentPlatform
    return tPlatform
 end revEnvironmentPlatform
 */
+                                                                                                                                                                                                                                                                        

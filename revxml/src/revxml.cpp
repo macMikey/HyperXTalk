@@ -3113,7 +3113,12 @@ EXTERNAL_END_DECLARATIONS
 extern void REVXML_INIT();
 extern void REVXML_QUIT();
 
+/* In libxml2 2.15.3+, threads.h declares xmlDllMain when both
+ * LIBXML_STATIC_FOR_DLL and LIBXML_THREAD_ENABLED are defined.
+ * Only provide our own forward-declaration when that header won't. */
+#if !defined(LIBXML_STATIC_FOR_DLL)
 extern "C" BOOL XMLCALL xmlDllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved);
+#endif
 
 BOOL WINAPI DllMain(HINSTANCE tInstance, DWORD dwReason, LPVOID lpReserved)
 {

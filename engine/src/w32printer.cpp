@@ -1325,12 +1325,18 @@ void MCWindowsPrinter::DoInitialize(void)
 	//  initialisation
 	MCValueAssign(m_name, kMCEmptyString);
 	m_devmode = NULL;
-	
+
 	m_dc = NULL;
 	m_dc_locked = false;
 	m_dc_changed = false;
 
-	DoReset(kMCEmptyString);
+	// HXT: Do NOT call DoReset(kMCEmptyString) here.
+	// DoReset calls DocumentPropertiesW which loads the printer driver DLL
+	// (e.g. PrintConfig.dll via xpsservices.dll).  Windows then validates the
+	// driver's Authenticode signature via CRL, making a blocking network call
+	// to Microsoft's CDN (Akamai) that can stall startup for 30+ seconds.
+	// The printer is initialised lazily on first use instead (DoReset is
+	// called when the user opens a print dialog, sets the printer name, etc.).
 }
 
 void MCWindowsPrinter::DoFinalize(void)
