@@ -4,15 +4,24 @@ setlocal EnableDelayedExpansion
 cd /d "%~dp0"
 
 :: ============================================================
-:: compile-printer.bat
+:: compile-printer.bat  [Debug|Release]
 ::
-:: Compiles engine\src\w32printer.cpp and engine\src\customprinter.cpp
-:: then replaces their members in build-win-x86_64\livecode\Debug\lib\kernel.lib
+:: Compiles three printer source files and replaces their members in
+:: kernel.lib for the given configuration (default: Debug).
 ::
-:: Why two files?
-::   A previous run accidentally removed customprinter.obj because findstr
-::   matched "customprinter.obj" when searching for "printer.obj".
-::   This script compiles both and restores kernel.lib cleanly.
+::   engine\src\printer.cpp       — MCPrinter base class (printer_base.obj)
+::   engine\src\w32printer.cpp    — Windows MCWindowsPrinter subclass (printer.obj)
+::   engine\src\customprinter.cpp — MCCustomPrinter implementation (customprinter.obj)
+::
+:: Why three files?
+::   The linker needs both the base MCPrinter class (printer.cpp) AND the
+::   Windows subclass (w32printer.cpp).  Previously only the subclass was
+::   compiled here, leaving 44 MCPrinter:: unresolved externals at link time.
+::   printer.cpp is compiled to printer_base.obj to avoid a name collision
+::   with the existing printer.obj slot used for the Windows subclass.
+::
+::   customprinter.obj is also included because a previous run accidentally
+::   removed it when findstr matched "customprinter.obj" for "printer.obj".
 ::
 :: Root cause of the original winnt.h C2059 errors (now fixed):
 ::   sysdefs.h(811): #define None 0  collided with _IMAGE_POLICY_ENTRY.None
@@ -20,21 +29,33 @@ cd /d "%~dp0"
 ::   undefining None before #include <windows.h> and restoring it after.
 :: ============================================================
 
+:: Accept optional configuration parameter — default to Debug.
+set "CONFIG=%~1"
+if /i "!CONFIG!" == "Release" (
+    set "CONFIG=Release"
+) else (
+    set "CONFIG=Debug"
+)
+
+set "SRC_BASE=%~dp0engine\src\printer.cpp"
 set "SRC_PRINTER=%~dp0engine\src\w32printer.cpp"
 set "SRC_CUSTOM=%~dp0engine\src\customprinter.cpp"
-set "KERNEL_LIB=%~dp0build-win-x86_64\livecode\Debug\lib\kernel.lib"
-set "IBASE=%~dp0build-win-x86_64\livecode\engine\Debug"
+set "KERNEL_LIB=%~dp0build-win-x86_64\livecode\!CONFIG!\lib\kernel.lib"
+set "IBASE=%~dp0build-win-x86_64\livecode\engine\!CONFIG!"
 set "OBJDIR=%IBASE%\x64\obj\kernel"
+set "OBJ_BASE=%OBJDIR%\printer_base.obj"
 set "OBJ_PRINTER=%OBJDIR%\printer.obj"
 set "OBJ_CUSTOM=%OBJDIR%\customprinter.obj"
-set "LOGFILE=%~dp0compile-printer.log"
+set "LOGFILE=%~dp0compile-printer-!CONFIG!.log"
 
-echo compile-printer.bat started: %DATE% %TIME% > "%LOGFILE%"
+echo compile-printer.bat [%CONFIG%] started: %DATE% %TIME% > "%LOGFILE%"
+echo [Config: %CONFIG%]
 echo.
 
 :: ============================================================
 :: Validate inputs
 :: ============================================================
+if not exist "%SRC_BASE%"    ( echo ERROR: Not found: %SRC_BASE%    & exit /b 1 )
 if not exist "%SRC_PRINTER%" ( echo ERROR: Not found: %SRC_PRINTER% & exit /b 1 )
 if not exist "%SRC_CUSTOM%"  ( echo ERROR: Not found: %SRC_CUSTOM%  & exit /b 1 )
 if not exist "%KERNEL_LIB%"  ( echo ERROR: Not found: %KERNEL_LIB%  & exit /b 1 )
@@ -88,13 +109,22 @@ echo Step 3: Preparing compiler options ...
 
 set "RSP=%TEMP%\hxt_printer_cl.rsp"
 
-:: Flags exactly matching kernel.vcxproj Debug|x64 ClCompile.
+:: Flags matching kernel.vcxproj ClCompile for the chosen configuration.
 :: No /std:c++ flag — matches kernel.vcxproj default (C++14).
 :: The winnt.h C2059 'constant' issue is fixed in w32prefix.h, not here.
-echo /c /nologo /MTd /ZI /RTC1 /GS- /EHs-c- /wd4577 /wd4800 /wd4244 > "%RSP%"
+if /i "!CONFIG!" == "Release" (
+    echo /c /nologo /MT /O2 /Oi /Gy /GS- /EHs-c- /wd4577 /wd4800 /wd4244 > "%RSP%"
+) else (
+    echo /c /nologo /MTd /ZI /RTC1 /GS- /EHs-c- /wd4577 /wd4800 /wd4244 > "%RSP%"
+)
 
 :: Preprocessor definitions
-echo /D_DEBUG >> "%RSP%"
+if /i "!CONFIG!" == "Release" (
+    echo /D_RELEASE >> "%RSP%"
+    echo /DNDEBUG >> "%RSP%"
+) else (
+    echo /D_DEBUG >> "%RSP%"
+)
 echo /D_CRT_NONSTDC_NO_DEPRECATE >> "%RSP%"
 echo /D_CRT_SECURE_NO_DEPRECATE >> "%RSP%"
 echo /D_CRT_DISABLE_PERFCRIT_LOCKS >> "%RSP%"
@@ -132,10 +162,29 @@ echo /I"%~dp0thirdparty\libz\include" >> "%RSP%"
 echo /I"%IBASE%\x64\obj\shared_intermediate\include" >> "%RSP%"
 
 :: ============================================================
-:: Step 4: Compile w32printer.cpp
+:: Step 4: Compile printer.cpp (MCPrinter base class)
 :: ============================================================
-echo Step 4: Compiling w32printer.cpp ...
+echo Step 4: Compiling printer.cpp (MCPrinter base class) ...
 set "CL_LOG=%TEMP%\hxt_cl_out.txt"
+cl.exe @"%RSP%" /Fo"%OBJ_BASE%" "%SRC_BASE%" > "%CL_LOG%" 2>&1
+set CL_ERR=%ERRORLEVEL%
+type "%CL_LOG%"
+type "%CL_LOG%" >> "%LOGFILE%"
+del "%CL_LOG%" 2>nul
+if %CL_ERR% NEQ 0 (
+    echo.
+    echo *** printer.cpp COMPILE FAILED *** See %LOGFILE%
+    del "%RSP%" 2>nul
+    exit /b 1
+)
+if not exist "%OBJ_BASE%" ( echo ERROR: Output not found: %OBJ_BASE% & del "%RSP%" 2>nul & exit /b 1 )
+echo Compiled OK: %OBJ_BASE%
+echo.
+
+:: ============================================================
+:: Step 5: Compile w32printer.cpp (MCWindowsPrinter subclass)
+:: ============================================================
+echo Step 5: Compiling w32printer.cpp (MCWindowsPrinter subclass) ...
 cl.exe @"%RSP%" /Fo"%OBJ_PRINTER%" "%SRC_PRINTER%" > "%CL_LOG%" 2>&1
 set CL_ERR=%ERRORLEVEL%
 type "%CL_LOG%"
@@ -152,9 +201,10 @@ echo Compiled OK: %OBJ_PRINTER%
 echo.
 
 :: ============================================================
-:: Step 5: Compile customprinter.cpp
+:: Step 6: Compile customprinter.cpp
 :: ============================================================
-echo Step 5: Compiling customprinter.cpp ...
+echo Step 6: Compiling customprinter.cpp ...
+set "CL_LOG=%TEMP%\hxt_cl_out.txt"
 cl.exe @"%RSP%" /Fo"%OBJ_CUSTOM%" "%SRC_CUSTOM%" > "%CL_LOG%" 2>&1
 set CL_ERR=%ERRORLEVEL%
 type "%CL_LOG%"
@@ -171,26 +221,39 @@ echo Compiled OK: %OBJ_CUSTOM%
 echo.
 
 :: ============================================================
-:: Step 6: Find member names in kernel.lib
+:: Step 7: Find member names in kernel.lib
 ::
-:: IMPORTANT: search for printer.obj but EXCLUDE customprinter.obj
-:: (findstr substring match would otherwise return customprinter.obj
-::  for a "printer.obj" search, causing the wrong member to be removed)
+:: We look for three members:
+::   printer_base.obj  — MCPrinter base class (may not exist yet)
+::   printer.obj       — w32printer Windows subclass (exclude customprinter)
+::   customprinter.obj — MCCustomPrinter
+::
+:: IMPORTANT: search for printer.obj but EXCLUDE customprinter.obj and
+:: printer_base.obj — findstr substring match would otherwise confuse them.
 :: ============================================================
-echo Step 6: Locating members in kernel.lib ...
+echo Step 7: Locating members in kernel.lib ...
 
 lib.exe /NOLOGO /LIST "%KERNEL_LIB%" > "%TEMP%\hxt_lib_list.txt" 2>> "%LOGFILE%"
 
-:: printer.obj member: must contain "printer.obj" but NOT "customprinter"
-findstr /i "printer\.obj"     "%TEMP%\hxt_lib_list.txt" > "%TEMP%\hxt_all_printer.txt"
-findstr /iv "customprinter"   "%TEMP%\hxt_all_printer.txt" > "%TEMP%\hxt_printer_member.txt"
-del "%TEMP%\hxt_all_printer.txt" 2>nul
+:: printer_base.obj member
+findstr /i "printer_base\.obj" "%TEMP%\hxt_lib_list.txt" > "%TEMP%\hxt_base_member.txt"
+
+:: printer.obj member: must contain "printer.obj" but NOT "customprinter" or "printer_base"
+findstr /i "printer\.obj"       "%TEMP%\hxt_lib_list.txt" > "%TEMP%\hxt_all_printer.txt"
+findstr /iv "customprinter"     "%TEMP%\hxt_all_printer.txt" > "%TEMP%\hxt_all_printer2.txt"
+findstr /iv "printer_base"      "%TEMP%\hxt_all_printer2.txt" > "%TEMP%\hxt_printer_member.txt"
+del "%TEMP%\hxt_all_printer.txt"  2>nul
+del "%TEMP%\hxt_all_printer2.txt" 2>nul
 
 :: customprinter.obj member
 findstr /i "customprinter\.obj" "%TEMP%\hxt_lib_list.txt" > "%TEMP%\hxt_custom_member.txt"
 
 del "%TEMP%\hxt_lib_list.txt" 2>nul
 
+set "MEMBER_BASE="
+for /f "tokens=*" %%L in (%TEMP%\hxt_base_member.txt) do (
+    if not defined MEMBER_BASE set "MEMBER_BASE=%%L"
+)
 set "MEMBER_PRINTER="
 for /f "tokens=*" %%L in (%TEMP%\hxt_printer_member.txt) do (
     if not defined MEMBER_PRINTER set "MEMBER_PRINTER=%%L"
@@ -199,12 +262,19 @@ set "MEMBER_CUSTOM="
 for /f "tokens=*" %%L in (%TEMP%\hxt_custom_member.txt) do (
     if not defined MEMBER_CUSTOM set "MEMBER_CUSTOM=%%L"
 )
+del "%TEMP%\hxt_base_member.txt"    2>nul
 del "%TEMP%\hxt_printer_member.txt" 2>nul
-del "%TEMP%\hxt_custom_member.txt" 2>nul
+del "%TEMP%\hxt_custom_member.txt"  2>nul
 
+if defined MEMBER_BASE (
+    echo   printer_base member:  [!MEMBER_BASE!]
+    echo   printer_base member:  [!MEMBER_BASE!] >> "%LOGFILE%"
+) else (
+    echo   printer_base.obj not found in lib - will add as new member
+)
 if defined MEMBER_PRINTER (
-    echo   printer member:     [!MEMBER_PRINTER!]
-    echo   printer member: [!MEMBER_PRINTER!] >> "%LOGFILE%"
+    echo   printer member:       [!MEMBER_PRINTER!]
+    echo   printer member:       [!MEMBER_PRINTER!] >> "%LOGFILE%"
 ) else (
     echo   printer.obj not found in lib - will add as new member
 )
@@ -217,17 +287,18 @@ if defined MEMBER_CUSTOM (
 echo.
 
 :: ============================================================
-:: Step 7: Build REMOVE arguments dynamically
+:: Step 8: Build REMOVE arguments dynamically
 :: ============================================================
 set "REMOVE_ARGS="
+if defined MEMBER_BASE     set "REMOVE_ARGS=!REMOVE_ARGS! /REMOVE:"!MEMBER_BASE!""
 if defined MEMBER_PRINTER  set "REMOVE_ARGS=!REMOVE_ARGS! /REMOVE:"!MEMBER_PRINTER!""
 if defined MEMBER_CUSTOM   set "REMOVE_ARGS=!REMOVE_ARGS! /REMOVE:"!MEMBER_CUSTOM!""
 
 :: ============================================================
-:: Step 8: Patch kernel.lib
+:: Step 9: Patch kernel.lib
 ::   Remove old members (if present), then add freshly compiled ones.
 :: ============================================================
-echo Step 7: Patching kernel.lib ...
+echo Step 9: Patching kernel.lib ...
 
 set "LIB_TEMP=%KERNEL_LIB%.patch_tmp"
 
@@ -245,7 +316,7 @@ if defined REMOVE_ARGS (
 )
 
 :: Add new objs → final kernel.lib
-lib.exe /NOLOGO /OUT:"%KERNEL_LIB%" "%LIB_TEMP%" "%OBJ_PRINTER%" "%OBJ_CUSTOM%" >> "%LOGFILE%" 2>&1
+lib.exe /NOLOGO /OUT:"%KERNEL_LIB%" "%LIB_TEMP%" "%OBJ_BASE%" "%OBJ_PRINTER%" "%OBJ_CUSTOM%" >> "%LOGFILE%" 2>&1
 if errorlevel 1 (
     echo ERROR: lib.exe /ADD failed. See %LOGFILE%
     del "%LIB_TEMP%" 2>nul
@@ -259,11 +330,16 @@ del "%LIB_TEMP%" 2>nul
 echo.
 echo ============================================================
 echo  SUCCESS: kernel.lib updated
-echo    - w32printer.obj: lazy-init fix (no DocumentPropertiesW at startup)
-echo    - customprinter.obj: freshly compiled (restored after accidental removal)
+echo    - printer_base.obj: MCPrinter base class (fixes 44 unresolved externals)
+echo    - printer.obj:      w32printer Windows subclass (lazy-init fix)
+echo    - customprinter.obj: freshly compiled
 echo ============================================================
 echo.
-echo Now run build-engine-x64.bat to link HyperXTalk.exe.
+if /i "!CONFIG!" == "Release" (
+    echo Now run build-release-x64.bat to link HyperXTalk.exe.
+) else (
+    echo Now run build-engine-x64.bat to link HyperXTalk.exe.
+)
 echo.
 
 echo SUCCESS >> "%LOGFILE%"

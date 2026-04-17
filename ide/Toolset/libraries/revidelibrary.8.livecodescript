@@ -4094,7 +4094,17 @@ function revIDESpecialFolderPath pKey, pParam
          return item 1 to -3 of the filename of stack "home" & "/Toolset/resources/supporting_files/images"
          break
       case "extensions"
-         put  revEnvironmentExtensionsPath() into tPath
+         -- In an installed build revEnvironmentExtensionsPath() returns
+         -- sToolsPath & "/Extensions" (set up for dev/repo layout), but
+         -- the actual bundled extensions ship in packaged_extensions.
+         -- Redirect to that folder so that extension-utils and all LCB
+         -- widgets load correctly from the installed location.
+         if revEnvironmentIsInstalled() then
+            put item 1 to -3 of (the filename of stack "home") & \
+                  "/packaged_extensions" into tPath
+         else
+            put revEnvironmentExtensionsPath() into tPath
+         end if
          revIDEEnsurePath tPath
          return tPath
          break
@@ -5429,9 +5439,17 @@ end revIDELastModifiedTimeOfFilesInFolder
 function revIDEExtensionFolders
    local tFoldersA
    put revIDESpecialFolderPath("user extensions") into tFoldersA["user"]
-   
+
    local tCount = 0
    repeat for each line tFolder in revEnvironmentExtensionsPaths()
+      -- In an installed build revEnvironmentExtensionsPaths() returns
+      -- sToolsPath & "/Extensions" (the dev layout path), whereas the
+      -- bundled extensions actually live in packaged_extensions.
+      -- revIDESpecialFolderPath("extensions") already handles this
+      -- redirect, so delegate to it in installed mode.
+      if revEnvironmentIsInstalled() then
+         put revIDESpecialFolderPath("extensions") into tFolder
+      end if
       add 1 to tCount
       put tFolder into tFoldersA["ide" && tCount]
    end repeat

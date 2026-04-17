@@ -1,0 +1,678 @@
+@echo off
+setlocal
+
+cd /d "%~dp0"
+set LOGFILE=%~dp0build-release-x64.log
+set VCXPROJ_ENGINE=build-win-x86_64\livecode\engine\development.vcxproj
+set VCXPROJ_BROWSER=build-win-x86_64\livecode\libbrowser\libbrowser.vcxproj
+set VCXPROJ_DBMYSQL=build-win-x86_64\livecode\revdb\dbmysql.vcxproj
+set VCXPROJ_LCB_MODULES=build-win-x86_64\livecode\engine\engine_lcb_modules.vcxproj
+set VCXPROJ_LIBFFI=build-win-x86_64\livecode\thirdparty\libffi\libffi.vcxproj
+set VCXPROJ_LIBFOUNDATION=build-win-x86_64\livecode\libfoundation\libFoundation.vcxproj
+set VCXPROJ_LIBSCRIPT=build-win-x86_64\livecode\libscript\libScript.vcxproj
+set VCXPROJ_STANDALONE=build-win-x86_64\livecode\engine\standalone.vcxproj
+set VCXPROJ_KERNEL=build-win-x86_64\livecode\engine\kernel.vcxproj
+set VCXPROJ_KERNEL_STANDALONE=build-win-x86_64\livecode\engine\kernel-standalone.vcxproj
+set VCXPROJ_KERNEL_DEVELOPMENT=build-win-x86_64\livecode\engine\kernel-development.vcxproj
+set VCXPROJ_SECURITY_COMMUNITY=build-win-x86_64\livecode\engine\security-community.vcxproj
+set VCXPROJ_LIBXML=build-win-x86_64\livecode\thirdparty\libxml\libxml.vcxproj
+set VCXPROJ_LIBXSLT=build-win-x86_64\livecode\thirdparty\libxslt\libxslt.vcxproj
+set VCXPROJ_REVXML=build-win-x86_64\livecode\revxml\external-revxml.vcxproj
+set VCXPROJ_REVBROWSER=build-win-x86_64\livecode\revbrowser\external-revbrowser.vcxproj
+set VCXPROJ_REVDB=build-win-x86_64\livecode\revdb\external-revdb.vcxproj
+set VCXPROJ_REVSECURITY=build-win-x86_64\livecode\thirdparty\libopenssl\revsecurity.vcxproj
+set VCXPROJ_LIBEXTERNAL=build-win-x86_64\livecode\libexternal\libExternal.vcxproj
+set VCXPROJ_LIBZ=build-win-x86_64\livecode\thirdparty\libz\libz.vcxproj
+set VCXPROJ_LIBGIF=build-win-x86_64\livecode\thirdparty\libgif\libgif.vcxproj
+set VCXPROJ_LIBPNG=build-win-x86_64\livecode\thirdparty\libpng\libpng.vcxproj
+set VCXPROJ_LIBJPEG=build-win-x86_64\livecode\thirdparty\libjpeg\libjpeg.vcxproj
+set VCXPROJ_LIBPCRE=build-win-x86_64\livecode\thirdparty\libpcre\libpcre.vcxproj
+set VCXPROJ_LIBCAIRO=build-win-x86_64\livecode\thirdparty\libcairo\libcairo.vcxproj
+set VCXPROJ_LIBZIP=build-win-x86_64\livecode\thirdparty\libzip\libzip.vcxproj
+set VCXPROJ_LIBSKIA=build-win-x86_64\livecode\thirdparty\libskia\libskia.vcxproj
+set VCXPROJ_LIBSKIA_NONE=build-win-x86_64\livecode\thirdparty\libskia\libskia_opt_none.vcxproj
+set VCXPROJ_LIBSKIA_ARM=build-win-x86_64\livecode\thirdparty\libskia\libskia_opt_arm.vcxproj
+set VCXPROJ_LIBSKIA_SSE2=build-win-x86_64\livecode\thirdparty\libskia\libskia_opt_sse2.vcxproj
+set VCXPROJ_LIBSKIA_SSE3=build-win-x86_64\livecode\thirdparty\libskia\libskia_opt_sse3.vcxproj
+set VCXPROJ_LIBSKIA_SSE41=build-win-x86_64\livecode\thirdparty\libskia\libskia_opt_sse41.vcxproj
+set VCXPROJ_LIBSKIA_SSE42=build-win-x86_64\livecode\thirdparty\libskia\libskia_opt_sse42.vcxproj
+set VCXPROJ_LIBSKIA_AVX=build-win-x86_64\livecode\thirdparty\libskia\libskia_opt_avx.vcxproj
+set VCXPROJ_LIBSKIA_HSW=build-win-x86_64\livecode\thirdparty\libskia\libskia_opt_hsw.vcxproj
+set VCXPROJ_LIBGRAPHICS=build-win-x86_64\livecode\libgraphics\libGraphics.vcxproj
+set VCXPROJ_STDSCRIPT=build-win-x86_64\livecode\libscript\stdscript.vcxproj
+set VCXPROJ_LIBEXTERNAL_EXPORTS=build-win-x86_64\livecode\libexternal\libExternal-symbol-exports.vcxproj
+set VCXPROJ_LIBCORE=build-win-x86_64\livecode\libcore\libCore.vcxproj
+
+:: ----------------------------------------------------------
+:: Release output directory.
+:: All build artifacts land here; the installer picks them up
+:: from this location.
+:: ----------------------------------------------------------
+set "OUTDIR=%~dp0build-win-x86_64\livecode\Release"
+
+:: ----------------------------------------------------------
+:: Mirror Debug import libs into the Release equivalents.
+::
+:: Two consumers, two locations:
+::
+::   dbmysql.vcxproj  AdditionalLibraryDirectories uses $(Configuration),
+::   so Release links against:
+::     prebuilt\unpacked\Thirdparty\x86_64-win32-v142_static_Release\lib
+::
+::   development.vcxproj links against:
+::     build-win-x86_64\livecode\Release\lib
+::
+:: setup-mysql-win.bat only populates the Debug variants of both.
+:: We copy from Debug → Release here so no extra Scoop installs are needed.
+:: ----------------------------------------------------------
+set "PREBUILT_DBG=%~dp0prebuilt\unpacked\Thirdparty\x86_64-win32-v142_static_Debug\lib"
+set "PREBUILT_REL=%~dp0prebuilt\unpacked\Thirdparty\x86_64-win32-v142_static_Release\lib"
+set "DEBUG_LIB_DIR=%~dp0build-win-x86_64\livecode\Debug\lib"
+set "RELEASE_LIB_DIR=%OUTDIR%\lib"
+
+if not exist "%RELEASE_LIB_DIR%" mkdir "%RELEASE_LIB_DIR%"
+if not exist "%PREBUILT_REL%"    mkdir "%PREBUILT_REL%"
+
+:: ---- Ensure Debug prebuilt libs exist (run setup scripts if needed) ----
+set "DBG_MYSQL_PREBUILT=%PREBUILT_DBG%\libmysql.lib"
+if exist "%DBG_MYSQL_PREBUILT%" goto mysql_src_ok
+echo.
+echo NOTE: libmysql.lib not in prebuilt Debug dir. Running setup-mysql-win.bat ...
+echo.
+call setup-mysql-win.bat
+if errorlevel 1 ( echo MySQL setup failed. Install MySQL via Scoop: scoop install mysql & exit /b 1 )
+:mysql_src_ok
+
+set "DBG_PG_LIB=%DEBUG_LIB_DIR%\libpq.lib"
+if exist "%DBG_PG_LIB%" goto pg_src_ok
+echo.
+echo NOTE: libpq.lib not found. Running setup-pgsql-win.bat ...
+echo.
+call setup-pgsql-win.bat
+if errorlevel 1 ( echo PostgreSQL setup failed. Install PostgreSQL via Scoop: scoop install postgresql & exit /b 1 )
+:pg_src_ok
+
+:: ---- Mirror the entire Debug prebuilt lib directory to Release ----
+:: The Release prebuilt dir ships with 9-byte stub files; we overwrite
+:: them unconditionally so the Release linker gets the real libraries.
+echo Mirroring prebuilt libs Debug -> Release ...
+for %%F in ("%PREBUILT_DBG%\*.lib") do (
+    copy /Y "%%F" "%PREBUILT_REL%\%%~nxF" > nul
+)
+
+:: ---- Also mirror to Release\lib for development.vcxproj ----
+copy /Y "%DEBUG_LIB_DIR%\libmysql.lib" "%RELEASE_LIB_DIR%\libmysql.lib" > nul 2>nul
+copy /Y "%DBG_PG_LIB%"                 "%RELEASE_LIB_DIR%\libpq.lib"    > nul 2>nul
+
+:: ----------------------------------------------------------
+:: Locate MSBuild
+:: ----------------------------------------------------------
+set "FIND_PS1=%TEMP%\hxt_find_msbuild.ps1"
+echo $pf = [System.Environment]::GetEnvironmentVariable('ProgramFiles(x86)')> "%FIND_PS1%"
+echo $vs = "$pf\Microsoft Visual Studio\Installer\vswhere.exe">> "%FIND_PS1%"
+echo if (Test-Path $vs) { ^& $vs -latest -products * -requires Microsoft.Component.MSBuild -find 'MSBuild\**\Bin\MSBuild.exe' ^| Select-Object -First 1 }>> "%FIND_PS1%"
+for /f "tokens=*" %%i in ('powershell -NoProfile -ExecutionPolicy Bypass -File "%FIND_PS1%"') do set "MSBUILD=%%i"
+del "%FIND_PS1%" 2>nul
+if not defined MSBUILD (
+    echo ERROR: MSBuild.exe not found. Install Visual Studio 2019+ with C++ workload.
+    exit /b 1
+)
+echo Using MSBuild: %MSBUILD%
+
+echo Build started: %DATE% %TIME%
+echo Build started: %DATE% %TIME% > "%LOGFILE%"
+echo. >> "%LOGFILE%"
+
+echo Building libCore (Release) ...
+echo Building libCore ... >> "%LOGFILE%"
+"%MSBUILD%" %VCXPROJ_LIBCORE% /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
+if errorlevel 1 ( echo LIBCORE BUILD FAILED. See %LOGFILE% & exit /b 1 )
+echo libCore OK.
+
+echo.
+echo Building libExternal (Release) ...
+echo Building libExternal ... >> "%LOGFILE%"
+"%MSBUILD%" %VCXPROJ_LIBEXTERNAL% /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
+if errorlevel 1 ( echo LIBEXTERNAL BUILD FAILED. See %LOGFILE% & exit /b 1 )
+echo libExternal OK.
+
+echo.
+echo Building libExternal-symbol-exports (Release) ...
+echo Building libExternal-symbol-exports ... >> "%LOGFILE%"
+"%MSBUILD%" %VCXPROJ_LIBEXTERNAL_EXPORTS% /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
+if errorlevel 1 ( echo LIBEXTERNAL-SYMBOL-EXPORTS BUILD FAILED. See %LOGFILE% & exit /b 1 )
+echo libExternal-symbol-exports OK.
+
+echo.
+echo Building libbrowser (Release) ...
+echo Building libbrowser ... >> "%LOGFILE%"
+"%MSBUILD%" %VCXPROJ_BROWSER% /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
+if errorlevel 1 ( echo LIBBROWSER BUILD FAILED. See %LOGFILE% & exit /b 1 )
+echo libbrowser OK.
+
+echo.
+echo Building dbmysql (Release) ...
+echo Building dbmysql ... >> "%LOGFILE%"
+"%MSBUILD%" %VCXPROJ_DBMYSQL% /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
+if errorlevel 1 ( echo DBMYSQL BUILD FAILED. See %LOGFILE% & exit /b 1 )
+echo dbmysql OK.
+
+echo.
+echo Building libffi (Release) ...
+echo Building libffi ... >> "%LOGFILE%"
+"%MSBUILD%" %VCXPROJ_LIBFFI% /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
+if errorlevel 1 ( echo LIBFFI BUILD FAILED. See %LOGFILE% & exit /b 1 )
+echo libffi OK.
+
+echo.
+echo Building libFoundation (Release) ...
+echo Building libFoundation ... >> "%LOGFILE%"
+"%MSBUILD%" %VCXPROJ_LIBFOUNDATION% /t:Rebuild /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
+if errorlevel 1 ( echo LIBFOUNDATION BUILD FAILED. See %LOGFILE% & exit /b 1 )
+echo libFoundation OK.
+
+echo.
+echo Building libScript (Release) ...
+echo Building libScript ... >> "%LOGFILE%"
+"%MSBUILD%" %VCXPROJ_LIBSCRIPT% /t:Rebuild /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
+if errorlevel 1 ( echo LIBSCRIPT BUILD FAILED. See %LOGFILE% & exit /b 1 )
+echo libScript OK.
+
+echo.
+:: ----------------------------------------------------------
+:: Build thirdparty libs in Release.
+::
+:: These must be Release-compiled to avoid pulling in debug-CRT
+:: symbols (_CrtDbgReport from Skia, _chvalidator from libpcre)
+:: and LiveCode debug macros (__MCAssert etc. from libGraphics)
+:: when linking the Release engine.
+::
+:: Build order:
+::   libz first (libpng, libcairo, libzip depend on it)
+::   image libs (libgif, libpng, libjpeg) before libcairo/libGraphics
+::   libskia variants before libGraphics
+::   libGraphics last (depends on all of the above)
+:: ----------------------------------------------------------
+echo Building libz (Release) ...
+"%MSBUILD%" %VCXPROJ_LIBZ% /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
+if errorlevel 1 ( echo LIBZ BUILD FAILED. See %LOGFILE% & exit /b 1 )
+echo libz OK.
+
+echo Building libgif (Release) ...
+"%MSBUILD%" %VCXPROJ_LIBGIF% /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
+if errorlevel 1 ( echo LIBGIF BUILD FAILED. See %LOGFILE% & exit /b 1 )
+echo libgif OK.
+
+echo Building libpng (Release) ...
+"%MSBUILD%" %VCXPROJ_LIBPNG% /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
+if errorlevel 1 ( echo LIBPNG BUILD FAILED. See %LOGFILE% & exit /b 1 )
+echo libpng OK.
+
+echo Building libjpeg (Release) ...
+"%MSBUILD%" %VCXPROJ_LIBJPEG% /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
+if errorlevel 1 ( echo LIBJPEG BUILD FAILED. See %LOGFILE% & exit /b 1 )
+echo libjpeg OK.
+
+echo Building libpcre (Release) ...
+"%MSBUILD%" %VCXPROJ_LIBPCRE% /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
+if errorlevel 1 ( echo LIBPCRE BUILD FAILED. See %LOGFILE% & exit /b 1 )
+echo libpcre OK.
+
+echo Building libcairo (Release) ...
+"%MSBUILD%" %VCXPROJ_LIBCAIRO% /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
+if errorlevel 1 ( echo LIBCAIRO BUILD FAILED. See %LOGFILE% & exit /b 1 )
+echo libcairo OK.
+
+:: libzip: w32support.cpp is missing from the source tree; the vcxproj
+:: references it but the file does not exist.  The bootstrapped Debug
+:: libzip.lib (copied to Release\lib by the bootstrap step above) is
+:: a safe fallback — libzip is pure C with no debug-CRT assertions.
+echo Building libzip (Release) -- may use Debug bootstrap if source missing ...
+"%MSBUILD%" %VCXPROJ_LIBZIP% /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
+if errorlevel 1 (
+    if not exist "%RELEASE_LIB_DIR%\libzip.lib" (
+        echo LIBZIP BUILD FAILED and no bootstrap copy available. See %LOGFILE%
+        exit /b 1
+    )
+    echo libzip Release build failed -- using bootstrapped Debug copy.
+) else (
+    echo libzip OK.
+)
+
+echo Building libskia (Release) -- 530 source files, this will take a few minutes ...
+"%MSBUILD%" %VCXPROJ_LIBSKIA% /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
+if errorlevel 1 ( echo LIBSKIA BUILD FAILED. See %LOGFILE% & exit /b 1 )
+echo libskia OK.
+
+echo Building libskia_opt variants (Release) ...
+"%MSBUILD%" %VCXPROJ_LIBSKIA_NONE%  /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
+if errorlevel 1 ( echo LIBSKIA_OPT_NONE BUILD FAILED. See %LOGFILE% & exit /b 1 )
+"%MSBUILD%" %VCXPROJ_LIBSKIA_ARM%   /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
+if errorlevel 1 ( echo LIBSKIA_OPT_ARM BUILD FAILED. See %LOGFILE% & exit /b 1 )
+"%MSBUILD%" %VCXPROJ_LIBSKIA_SSE2%  /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
+if errorlevel 1 ( echo LIBSKIA_OPT_SSE2 BUILD FAILED. See %LOGFILE% & exit /b 1 )
+"%MSBUILD%" %VCXPROJ_LIBSKIA_SSE3%  /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
+if errorlevel 1 ( echo LIBSKIA_OPT_SSE3 BUILD FAILED. See %LOGFILE% & exit /b 1 )
+"%MSBUILD%" %VCXPROJ_LIBSKIA_SSE41% /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
+if errorlevel 1 ( echo LIBSKIA_OPT_SSE41 BUILD FAILED. See %LOGFILE% & exit /b 1 )
+"%MSBUILD%" %VCXPROJ_LIBSKIA_SSE42% /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
+if errorlevel 1 ( echo LIBSKIA_OPT_SSE42 BUILD FAILED. See %LOGFILE% & exit /b 1 )
+"%MSBUILD%" %VCXPROJ_LIBSKIA_AVX%   /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
+if errorlevel 1 ( echo LIBSKIA_OPT_AVX BUILD FAILED. See %LOGFILE% & exit /b 1 )
+"%MSBUILD%" %VCXPROJ_LIBSKIA_HSW%   /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
+if errorlevel 1 ( echo LIBSKIA_OPT_HSW BUILD FAILED. See %LOGFILE% & exit /b 1 )
+echo libskia_opt variants OK.
+
+echo Building libGraphics (Release) ...
+"%MSBUILD%" %VCXPROJ_LIBGRAPHICS% /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
+if errorlevel 1 ( echo LIBGRAPHICS BUILD FAILED. See %LOGFILE% & exit /b 1 )
+echo libGraphics OK.
+
+echo Building stdscript (Release) ...
+"%MSBUILD%" %VCXPROJ_STDSCRIPT% /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
+if errorlevel 1 ( echo STDSCRIPT BUILD FAILED. See %LOGFILE% & exit /b 1 )
+echo stdscript OK.
+
+echo.
+:: ----------------------------------------------------------
+:: Bootstrap lc-compile.exe into the Release output dir.
+::
+:: lc-compile is a self-hosting LCB compiler whose toolchain
+:: (stage2, gentle, reflex targets) only exists in the Debug
+:: output.  Building the full Release toolchain requires those
+:: Debug helpers.  For the Release build we copy the Debug
+:: lc-compile.exe to the Release dir; the compiled .lcm bytecode
+:: it produces is identical regardless of the host's optimisation
+:: level.  The copied exe is also the one shipped in the installer.
+:: ----------------------------------------------------------
+set "DBG_DIR=%~dp0build-win-x86_64\livecode\Debug"
+set "LC_COMPILE_DBG=%DBG_DIR%\lc-compile.exe"
+set "LC_COMPILE_REL=%OUTDIR%\lc-compile.exe"
+if not exist "%LC_COMPILE_DBG%" (
+    echo ERROR: lc-compile.exe not found in Debug output.
+    echo        Run the Debug build ^(build-engine-x64.bat^) first to produce it.
+    exit /b 1
+)
+:: ----------------------------------------------------------
+:: Bootstrap missing Release\lib entries from Debug\lib.
+::
+:: Many thirdparty and toolchain static libs (libgif, libpng,
+:: libjpeg, libskia variants, libz, libpcre, libcairo, libzip,
+:: ICU, OpenSSL, grts, lc-compile-lib-target, libcompile-target,
+:: libGraphics, stdscript …) are only available in Debug\lib.
+:: They are built from source by vcxproj files whose full Release
+:: build chains (thirdparty, toolchain) are not in this script.
+::
+:: These are prebuilt data/utility libs whose Debug vs Release
+:: difference is optimisation level only (no ABI difference).
+:: We copy them once at bootstrap; any lib already built for
+:: Release by this script is NOT overwritten.
+:: ----------------------------------------------------------
+echo Bootstrapping missing libs: Debug\lib -> Release\lib ...
+if not exist "%RELEASE_LIB_DIR%" mkdir "%RELEASE_LIB_DIR%"
+for %%F in ("%DEBUG_LIB_DIR%\*.lib") do (
+    if not exist "%RELEASE_LIB_DIR%\%%~nxF" (
+        copy /Y "%%F" "%RELEASE_LIB_DIR%\%%~nxF" > nul
+    )
+)
+echo Lib bootstrap OK.
+
+:: Also mirror ICU and OpenSSL prebuilt lib dirs (same stub issue as Thirdparty)
+set "ICU_DBG=%~dp0prebuilt\unpacked\icu\x86_64-win32-v142_static_Debug\lib"
+set "ICU_REL=%~dp0prebuilt\unpacked\icu\x86_64-win32-v142_static_Release\lib"
+set "SSL_DBG=%~dp0prebuilt\unpacked\openssl3\x86_64-win32-v142_static_Debug\lib"
+set "SSL_REL=%~dp0prebuilt\unpacked\openssl3\x86_64-win32-v142_static_Release\lib"
+if not exist "%ICU_REL%"  mkdir "%ICU_REL%"
+if not exist "%SSL_REL%"  mkdir "%SSL_REL%"
+for %%F in ("%ICU_DBG%\*.lib")  do ( copy /Y "%%F" "%ICU_REL%\%%~nxF"  > nul )
+for %%F in ("%SSL_DBG%\*.lib")  do ( copy /Y "%%F" "%SSL_REL%\%%~nxF"  > nul )
+echo ICU + OpenSSL prebuilt lib bootstrap OK.
+
+:: WebView2 import lib — only in the Debug|x64 AdditionalLibraryDirectories of
+:: development.vcxproj; copy it into Release\lib so the Release linker finds it.
+set "WV2_LIB=%~dp0packages\Microsoft.Web.WebView2.1.0.3912.50\build\native\x64\WebView2Loader.dll.lib"
+set "WV2_DLL=%~dp0packages\Microsoft.Web.WebView2.1.0.3912.50\build\native\x64\WebView2Loader.dll"
+if exist "%WV2_LIB%" (
+    copy /Y "%WV2_LIB%" "%RELEASE_LIB_DIR%\WebView2Loader.dll.lib" > nul
+    if exist "%WV2_DLL%" copy /Y "%WV2_DLL%" "%OUTDIR%\WebView2Loader.dll" > nul
+    echo WebView2 bootstrap OK.
+) else (
+    echo WARNING: WebView2Loader.dll.lib not found at %WV2_LIB%
+)
+
+echo Bootstrapping lc-compile.exe + ICU DLLs from Debug output ...
+copy /Y "%LC_COMPILE_DBG%"          "%LC_COMPILE_REL%"            > nul
+copy /Y "%DBG_DIR%\icudt58.dll"     "%OUTDIR%\icudt58.dll"        > nul 2>nul
+copy /Y "%DBG_DIR%\icuin58.dll"     "%OUTDIR%\icuin58.dll"        > nul 2>nul
+copy /Y "%DBG_DIR%\icutu58.dll"     "%OUTDIR%\icutu58.dll"        > nul 2>nul
+copy /Y "%DBG_DIR%\icuuc58.dll"     "%OUTDIR%\icuuc58.dll"        > nul 2>nul
+copy /Y "%DBG_DIR%\libcrypto-3-x64.dll" "%OUTDIR%\libcrypto-3-x64.dll" > nul 2>nul
+copy /Y "%DBG_DIR%\libssl-3-x64.dll"    "%OUTDIR%\libssl-3-x64.dll"    > nul 2>nul
+echo lc-compile.exe bootstrap OK.
+
+:: ----------------------------------------------------------
+:: Bootstrap startupstack.cpp into the Release shared_intermediate.
+::
+:: startupstack.cpp is generated by the encode_environment_stack
+:: project (python compress_data.py → server-community.exe chain).
+:: It compresses the IDE environment stack into a C++ byte array.
+:: The content is deterministic from the source .livecode files and
+:: is identical for Debug and Release configurations.
+:: The development.vcxproj ClCompile item references it at:
+::   $(obj)\..\shared_intermediate\src\startupstack.cpp
+:: where $(obj) = Release\x64\obj\development\
+:: so the resolved path is Release\x64\obj\shared_intermediate\src\
+:: ----------------------------------------------------------
+set "DBG_SHARED_SRC=%~dp0build-win-x86_64\livecode\engine\Debug\x64\obj\shared_intermediate\src"
+set "REL_SHARED_SRC=%~dp0build-win-x86_64\livecode\engine\Release\x64\obj\shared_intermediate\src"
+if not exist "%REL_SHARED_SRC%" mkdir "%REL_SHARED_SRC%"
+if exist "%DBG_SHARED_SRC%\startupstack.cpp" (
+    copy /Y "%DBG_SHARED_SRC%\startupstack.cpp" "%REL_SHARED_SRC%\startupstack.cpp" > nul
+    echo startupstack.cpp bootstrap OK.
+) else (
+    echo ERROR: startupstack.cpp not found in Debug shared_intermediate.
+    echo        Run the Debug build ^(build-engine-x64.bat^) first to produce it.
+    exit /b 1
+)
+
+echo.
+echo Building LCB engine modules (Release) ...
+echo Building LCB engine modules ... >> "%LOGFILE%"
+"%MSBUILD%" %VCXPROJ_LCB_MODULES% /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
+if errorlevel 1 ( echo LCB MODULES BUILD FAILED. See %LOGFILE% & exit /b 1 )
+echo LCB modules OK.
+
+echo.
+echo Building security-community (Release) ...
+echo Building security-community ... >> "%LOGFILE%"
+set "SECCOM_LOG=%~dp0build-security-community-release.log"
+"%MSBUILD%" %VCXPROJ_SECURITY_COMMUNITY% /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo > "%SECCOM_LOG%" 2>&1
+set SECCOM_ERR=%ERRORLEVEL%
+type "%SECCOM_LOG%"
+type "%SECCOM_LOG%" >> "%LOGFILE%"
+if %SECCOM_ERR% NEQ 0 ( echo SECURITY-COMMUNITY BUILD FAILED. See %SECCOM_LOG% & exit /b 1 )
+echo security-community OK.
+
+echo.
+:: ----------------------------------------------------------
+:: Build kernel.lib (Release).
+:: ----------------------------------------------------------
+echo Building kernel (Release) ...
+echo Building kernel ... >> "%LOGFILE%"
+set "KERNEL_LOG=%~dp0build-kernel-release.log"
+set "KERNEL_OUTDIR=%OUTDIR%"
+"%MSBUILD%" %VCXPROJ_KERNEL% /p:Configuration=Release /p:Platform=x64 "/p:OutDir=%KERNEL_OUTDIR%\\" /p:BuildProjectReferences=false /v:minimal /nologo > "%KERNEL_LOG%" 2>&1
+set KERNEL_ERR=%ERRORLEVEL%
+type "%KERNEL_LOG%"
+type "%KERNEL_LOG%" >> "%LOGFILE%"
+if %KERNEL_ERR% NEQ 0 ( echo KERNEL BUILD FAILED. See %KERNEL_LOG% & exit /b 1 )
+echo kernel OK.
+
+echo.
+:: ----------------------------------------------------------
+:: Patch kernel.lib with printer base class (MCPrinter) and
+:: Windows subclass — same requirement as the Debug build.
+:: ----------------------------------------------------------
+echo Patching kernel.lib with printer objects (Release) ...
+echo Patching kernel.lib with printer objects ... >> "%LOGFILE%"
+set "PRINTER_LOG=%~dp0compile-printer-Release.log"
+call "%~dp0compile-printer.bat" Release >> "%LOGFILE%" 2>&1
+if errorlevel 1 (
+    echo PRINTER PATCH FAILED. See %PRINTER_LOG% for details.
+    exit /b 1
+)
+echo Printer patch OK.
+
+echo.
+:: ----------------------------------------------------------
+:: Build kernel-development.lib (Release).
+:: ----------------------------------------------------------
+echo Building kernel-development (Release) ...
+echo Building kernel-development ... >> "%LOGFILE%"
+set "KDEV_LOG=%~dp0build-kernel-development-release.log"
+"%MSBUILD%" %VCXPROJ_KERNEL_DEVELOPMENT% /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo > "%KDEV_LOG%" 2>&1
+set KDEV_ERR=%ERRORLEVEL%
+type "%KDEV_LOG%"
+type "%KDEV_LOG%" >> "%LOGFILE%"
+if %KDEV_ERR% NEQ 0 ( echo KERNEL-DEVELOPMENT BUILD FAILED. See %KDEV_LOG% & exit /b 1 )
+echo kernel-development OK.
+
+echo.
+echo Building libxml2 (Release) ...
+"%MSBUILD%" %VCXPROJ_LIBXML% /t:Rebuild /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
+if %ERRORLEVEL% NEQ 0 ( echo libxml2 build failed. See %LOGFILE% & exit /b 1 )
+echo libxml2 OK.
+
+echo Building libxslt (Release) ...
+"%MSBUILD%" %VCXPROJ_LIBXSLT% /t:Rebuild /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
+if %ERRORLEVEL% NEQ 0 ( echo libxslt build failed. See %LOGFILE% & exit /b 1 )
+echo libxslt OK.
+
+echo.
+echo Building engine (Release) ...
+
+set "EXE=%OUTDIR%\HyperXTalk.exe"
+set "ENGINE_LOG=%~dp0build-engine-step-release.log"
+set "LINK_TLOG=build-win-x86_64\livecode\engine\Release\x64\obj\development\development.tlog\link.write.1.tlog"
+
+if not exist "%EXE%" (
+    if exist "%LINK_TLOG%" del /F /Q "%LINK_TLOG%"
+)
+
+"%MSBUILD%" %VCXPROJ_ENGINE% /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo > "%ENGINE_LOG%" 2>&1
+set BUILD_ERR=%ERRORLEVEL%
+type "%ENGINE_LOG%"
+type "%ENGINE_LOG%" >> "%LOGFILE%"
+
+if %BUILD_ERR% NEQ 0 ( echo. & echo ENGINE BUILD FAILED. & exit /b 1 )
+if not exist "%EXE%" ( echo. & echo ENGINE BUILD FAILED - HyperXTalk.exe was not produced. & exit /b 1 )
+echo Engine built: %EXE%
+
+echo.
+echo Building kernel-standalone (Release) ...
+echo Building kernel-standalone ... >> "%LOGFILE%"
+set "KSTD_LOG=%~dp0build-kernel-standalone-release.log"
+"%MSBUILD%" %VCXPROJ_KERNEL_STANDALONE% /t:Rebuild /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo > "%KSTD_LOG%" 2>&1
+set KSTD_ERR=%ERRORLEVEL%
+type "%KSTD_LOG%"
+type "%KSTD_LOG%" >> "%LOGFILE%"
+if %KSTD_ERR% NEQ 0 ( echo KERNEL-STANDALONE BUILD FAILED. See %KSTD_LOG% & exit /b 1 )
+echo kernel-standalone OK.
+
+echo.
+echo Building standalone-community.exe (Release) ...
+echo Building standalone-community.exe ... >> "%LOGFILE%"
+set "STANDALONE_LOG=%~dp0build-standalone-release.log"
+set "STANDALONE_EXE=%OUTDIR%\standalone-community.exe"
+"%MSBUILD%" %VCXPROJ_STANDALONE% /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo > "%STANDALONE_LOG%" 2>&1
+set STANDALONE_ERR=%ERRORLEVEL%
+type "%STANDALONE_LOG%"
+type "%STANDALONE_LOG%" >> "%LOGFILE%"
+if %STANDALONE_ERR% NEQ 0 goto standalone_failed_rel
+echo standalone-community.exe OK.
+goto standalone_done_rel
+:standalone_failed_rel
+set "STANDALONE_ERRORS=%~dp0build-standalone-errors-release.log"
+findstr /v /r "LNK4099\|LNK4075" "%STANDALONE_LOG%" > "%STANDALONE_ERRORS%"
+echo STANDALONE BUILD FAILED. Filtered errors:
+type "%STANDALONE_ERRORS%"
+if not exist "%STANDALONE_EXE%" ( echo ERROR: standalone-community.exe missing. & exit /b 1 )
+echo WARNING: Using existing standalone-community.exe from a previous build.
+:standalone_done_rel
+
+echo.
+echo Building revxml (Release) ...
+"%MSBUILD%" %VCXPROJ_REVXML% /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
+if %ERRORLEVEL% NEQ 0 ( echo revxml build failed. See %LOGFILE% & exit /b 1 )
+echo revxml OK.
+
+echo.
+:: ----------------------------------------------------------
+:: External DLLs: revbrowser, revdb, revsecurity.
+::
+:: These have deep ProjectReference chains (CEF, OpenSSL wrappers)
+:: that don't fully resolve with BuildProjectReferences=false.
+:: Strategy: attempt a Release build with /p:OutDir forced to the
+:: Release output dir; if it fails or produces no DLL, fall back
+:: to the Debug output.  The DLLs are thin wrappers whose Debug vs
+:: Release difference is optimisation only — ABI is identical.
+:: ----------------------------------------------------------
+echo Building revbrowser (Release) ...
+"%MSBUILD%" %VCXPROJ_REVBROWSER% /p:Configuration=Release /p:Platform=x64 "/p:OutDir=%OUTDIR%\\" /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
+if %ERRORLEVEL% NEQ 0 goto revbrowser_fallback
+if not exist "%OUTDIR%\revbrowser.dll" goto revbrowser_fallback
+echo revbrowser Release OK.
+goto revbrowser_done
+:revbrowser_fallback
+if not exist "%DBG_DIR%\revbrowser.dll" ( echo ERROR: revbrowser.dll missing from both Release build and Debug output. & exit /b 1 )
+copy /Y "%DBG_DIR%\revbrowser.dll" "%OUTDIR%\revbrowser.dll" > nul
+echo revbrowser: using Debug bootstrap.
+:revbrowser_done
+
+echo.
+echo Building revdb (Release) ...
+"%MSBUILD%" %VCXPROJ_REVDB% /p:Configuration=Release /p:Platform=x64 "/p:OutDir=%OUTDIR%\\" /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
+if %ERRORLEVEL% NEQ 0 goto revdb_fallback
+if not exist "%OUTDIR%\revdb.dll" goto revdb_fallback
+echo revdb Release OK.
+goto revdb_done
+:revdb_fallback
+if not exist "%DBG_DIR%\revdb.dll" ( echo ERROR: revdb.dll missing from both Release build and Debug output. & exit /b 1 )
+copy /Y "%DBG_DIR%\revdb.dll" "%OUTDIR%\revdb.dll" > nul
+echo revdb: using Debug bootstrap.
+:revdb_done
+
+echo.
+echo Building revsecurity (Release) ...
+"%MSBUILD%" %VCXPROJ_REVSECURITY% /p:Configuration=Release /p:Platform=x64 "/p:OutDir=%OUTDIR%\\" /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
+if %ERRORLEVEL% NEQ 0 goto revsecurity_fallback
+if not exist "%OUTDIR%\revsecurity.dll" goto revsecurity_fallback
+echo revsecurity Release OK.
+goto revsecurity_done
+:revsecurity_fallback
+if not exist "%DBG_DIR%\revsecurity.dll" ( echo ERROR: revsecurity.dll missing from both Release build and Debug output. & exit /b 1 )
+copy /Y "%DBG_DIR%\revsecurity.dll" "%OUTDIR%\revsecurity.dll" > nul
+echo revsecurity: using Debug bootstrap.
+:revsecurity_done
+
+echo.
+echo Compiling browser widget (Release) ...
+echo Compiling browser widget ... >> "%LOGFILE%"
+set "LC_COMPILE=%OUTDIR%\lc-compile.exe"
+set "LCI_DIR=%OUTDIR%\modules\lci"
+set "BROWSER_PKG=%OUTDIR%\packaged_extensions\com.livecode.widget.browser"
+set "BROWSER_LCB=extensions\widgets\browser\browser.lcb"
+
+if not exist "%LC_COMPILE%" (
+    echo ERROR: lc-compile.exe not found in Release output. Build the engine first.
+    exit /b 1
+)
+
+:: ----------------------------------------------------------
+:: Bootstrap browser widget package dir + widgetutils dependency.
+::
+:: The browser widget package dir must exist with manifest.xml
+:: before lc-compile is invoked (it reads --manifest from there).
+::
+:: com.livecode.library.widgetutils is a dependency of browser.lcb;
+:: its .lci interface file must be in the modulepath so lc-compile
+:: can resolve the 'use com.livecode.library.widgetutils' import.
+:: The .lcm bytecode is configuration-independent, so we bootstrap
+:: both from the Debug output / source tree.
+:: ----------------------------------------------------------
+if not exist "%BROWSER_PKG%" mkdir "%BROWSER_PKG%"
+copy /Y "extensions\widgets\browser\manifest.xml" "%BROWSER_PKG%\manifest.xml" > nul
+echo Browser widget package dir OK.
+
+set "WU_SRC=%~dp0extensions\modules\widget-utils"
+set "WU_PKG=%OUTDIR%\packaged_extensions\com.livecode.library.widgetutils"
+set "WU_LCI_SRC=%DBG_DIR%\modules\lci\com.livecode.library.widgetutils.lci"
+if not exist "%WU_PKG%" mkdir "%WU_PKG%"
+copy /Y "%WU_SRC%\module.lcm"  "%WU_PKG%\module.lcm"  > nul
+copy /Y "%WU_SRC%\manifest.xml" "%WU_PKG%\manifest.xml" > nul
+if exist "%WU_LCI_SRC%" (
+    copy /Y "%WU_LCI_SRC%" "%LCI_DIR%\com.livecode.library.widgetutils.lci" > nul
+) else (
+    echo ERROR: com.livecode.library.widgetutils.lci not found in Debug lci dir.
+    echo        Run the Debug build first to produce it.
+    exit /b 1
+)
+echo widgetutils bootstrap OK.
+
+if exist "%BROWSER_PKG%\module.lcm" del /F /Q "%BROWSER_PKG%\module.lcm"
+
+set "LCOMPILE_LOG=%~dp0build-browser-widget-release.log"
+"%LC_COMPILE%" --modulepath "%BROWSER_PKG%" --modulepath "%LCI_DIR%" --manifest "%BROWSER_PKG%\manifest.xml" --output "%BROWSER_PKG%\module.lcm" "%BROWSER_LCB%" > "%LCOMPILE_LOG%" 2>&1
+set LC_ERR=%ERRORLEVEL%
+type "%LCOMPILE_LOG%"
+type "%LCOMPILE_LOG%" >> "%LOGFILE%"
+if %LC_ERR% NEQ 0 ( echo BROWSER WIDGET COMPILE FAILED. & exit /b 1 )
+if not exist "%BROWSER_PKG%\module.lcm" ( echo BROWSER WIDGET COMPILE FAILED - module.lcm not produced. & exit /b 1 )
+copy /Y "%BROWSER_LCB%" "%BROWSER_PKG%\browser.lcb" > nul
+echo Browser widget OK.
+
+echo.
+:: ----------------------------------------------------------
+:: Bootstrap all remaining packaged_extensions from Debug.
+::
+:: LCB bytecode (.lcm) is configuration-independent — the output
+:: of lc-compile is identical regardless of whether the host
+:: engine was built Debug or Release.
+::
+:: The Release build only produces two extensions itself:
+::   com.livecode.widget.browser   (compiled above)
+::   com.livecode.library.widgetutils (bootstrapped above)
+::
+:: All other widgets and library modules (clock, treeview, svgpath,
+:: segmented, spinner, navbar, iconpicker, headerbar, gradientrampeditor,
+:: colorswatch, linegraph, tile, switchbutton, paletteactions,
+:: canvas, iconsvg, json, ini, scriptitems, timezone, objectrepository,
+:: diff, drawing, dropbox, getopt, httpd, mime, oauth2, qr, ...) must
+:: be copied from the Debug output.
+::
+:: macOS-only extensions (com.hyperxtalk.macos*, native.mac.*) are
+:: intentionally excluded — they don't run on Windows.
+:: ----------------------------------------------------------
+echo Bootstrapping packaged_extensions from Debug output ...
+set "DBG_EXT=%DBG_DIR%\packaged_extensions"
+set "REL_EXT=%OUTDIR%\packaged_extensions"
+if not exist "%REL_EXT%" mkdir "%REL_EXT%"
+
+for /D %%E in ("%DBG_EXT%\*") do (
+    set "EXTNAME=%%~nxE"
+    :: Skip macOS-specific extensions
+    echo %%~nxE | findstr /i "macos native.mac hyperxtalk" > nul
+    if errorlevel 1 (
+        if not exist "%REL_EXT%\%%~nxE" (
+            xcopy /E /I /Y /Q "%%E" "%REL_EXT%\%%~nxE" > nul
+        )
+    )
+)
+echo packaged_extensions bootstrap OK.
+
+:: ----------------------------------------------------------
+:: Bootstrap missing .lci interface files from Debug lci dir.
+::
+:: The Release modules/lci dir only contains engine built-ins
+:: (produced by the LCB modules build step).  Widget and library
+:: .lci files are needed so lc-compile can resolve imports when
+:: compiling user extensions at runtime.
+:: ----------------------------------------------------------
+echo Bootstrapping modules/lci from Debug output ...
+set "DBG_LCI=%DBG_DIR%\modules\lci"
+for %%F in ("%DBG_LCI%\*.lci") do (
+    if not exist "%LCI_DIR%\%%~nxF" (
+        copy /Y "%%F" "%LCI_DIR%\%%~nxF" > nul
+    )
+)
+echo modules/lci bootstrap OK.
+
+echo.
+echo ============================================================
+echo  Release build complete: %DATE% %TIME%
+echo  Output: %OUTDIR%
+echo  Next:   run installer\HyperXTalk-setup.iss in Inno Setup
+echo          to produce the installer.
+echo ============================================================
+echo Build completed: %DATE% %TIME% >> "%LOGFILE%"
+echo Full log: %LOGFILE%

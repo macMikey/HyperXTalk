@@ -225,6 +225,31 @@ echo kernel OK.
 
 echo.
 :: ----------------------------------------------------------
+:: Patch kernel.lib with printer base class (MCPrinter) and Windows
+:: subclass (MCWindowsPrinter).
+::
+:: kernel.vcxproj compiles printer.cpp, w32printer.cpp, and
+:: customprinter.cpp, but the winnt.h SDK conflict historically prevented
+:: w32printer.cpp from compiling correctly inside vcxproj.  compile-printer.bat
+:: compiles all three with the correct flags and patches the resulting objects
+:: into kernel.lib so the linker can always resolve all MCPrinter:: symbols.
+::
+:: This must run AFTER the kernel build (so kernel.lib exists) and BEFORE
+:: the engine link step (so the symbols are present when needed).
+:: ----------------------------------------------------------
+echo Patching kernel.lib with printer objects ...
+echo Patching kernel.lib with printer objects ... >> "%LOGFILE%"
+set "PRINTER_LOG=%~dp0compile-printer.log"
+call "%~dp0compile-printer.bat" Debug >> "%LOGFILE%" 2>&1
+if errorlevel 1 (
+    echo.
+    echo PRINTER PATCH FAILED. See %PRINTER_LOG% for details.
+    exit /b 1
+)
+echo Printer patch OK.
+
+echo.
+:: ----------------------------------------------------------
 :: Build kernel-development.lib — contains the bulk of engine
 :: source files (deploy.cpp, license.cpp, etc.).  Must be built
 :: explicitly because development.vcxproj uses

@@ -663,6 +663,57 @@ LRESULT CALLBACK MCWindowProc(HWND hwnd, UINT msg, WPARAM wParam,
 		((MCScreenDC *)MCscreen) -> processdesktopchanged(true);
 	}
 	break;
+
+	// HXT: Handle Per-Monitor V2 DPI changes at runtime.
+	//
+	// When a window moves to a monitor with a different DPI (or the user changes
+	// the system scale setting), Windows sends WM_DPICHANGED to each top-level
+	// window.  wParam carries the new DPI (LOWORD = x, HIWORD = y); lParam is a
+	// RECT* with the suggested new position/size already scaled for the new DPI.
+	//
+	// Strategy: update in-place without recreating the window.
+	//   1. Apply the suggested rect so the window is the right physical size.
+	//   2. Update the engine's cached screen DPI so MCWin32GetLogicalToScreenScale
+	//      returns the correct value for all subsequent coordinate transforms.
+	//   3. Update the backing scale stored in the MCStack for this window.
+	//      This resizes the tilecache to match the new physical pixel density.
+	//   4. Mark all content dirty and schedule a repaint.
+	//
+	// We deliberately do NOT call reopenallstackwindows() here.  That function
+	// destroys and recreates the window, which is unsafe to do from inside its
+	// own message handler and would also call configure() which resets the
+	// physical window size back to the old scale.
+	case WM_DPICHANGED:
+	{
+		extern MCGFloat MCWin32GetLogicalToScreenScale();
+
+		// 1. Apply Windows' suggested window rect.
+		const RECT *t_rect = reinterpret_cast<const RECT *>(lParam);
+		SetWindowPos(hwnd, NULL,
+		             t_rect->left, t_rect->top,
+		             t_rect->right  - t_rect->left,
+		             t_rect->bottom - t_rect->top,
+		             SWP_NOZORDER | SWP_NOACTIVATE);
+
+		// 2. Update the engine's global screen DPI.
+		UINT t_dpi_x = LOWORD(wParam);
+		UINT t_dpi_y = HIWORD(wParam);
+		((MCScreenDC *)MCscreen)->updatescreendpi(t_dpi_x, t_dpi_y);
+
+		// 3+4. For the stack owning this window: update backing scale
+		//      (which flushes and rebuilds the tilecache at the new DPI)
+		//      then mark all content dirty and queue a screen update.
+		MCStack *t_dpi_stack = MCdispatcher->findstackd(dw);
+		if (t_dpi_stack != nil)
+		{
+			MCGFloat t_new_scale = MCWin32GetLogicalToScreenScale();
+			t_dpi_stack->view_setbackingscale(t_new_scale);
+			t_dpi_stack->dirtyall();
+			MCRedrawScheduleUpdateForStack(t_dpi_stack);
+		}
+	}
+	break;
+
 	case WM_PALETTECHANGED:
 		dw->handle.window = (MCSysWindowHandle)wParam;
 		if (MCdispatcher->findstackd(dw) == NULL)

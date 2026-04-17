@@ -594,12 +594,50 @@ private command revStandaloneCopyInclusions pStack, pStackFileList, pStackSource
    end if
    revCopyExternals pTarget, pStackSourceFile, pEngineSourceFile, pStandalonePath
    
-   // IM-2015-10-14: [[ BrowserWidget ]] Copy CEF files needed for the browser widget.
-   // IM-2014-03-20: [[ revBrowserCEF ]] Ensure CEF support files are copied if requested
+   // HXT: Replaced CEF with WebView2.
+   // revBrowser and the browser widget now use the system WebView2 runtime
+   // via WebView2Loader.dll instead of the bundled CEF binaries.
+   // When the browser is included in the standalone, copy WebView2Loader.dll
+   // from the engine folder alongside the output executable (Windows only).
    local tRevBrowser, tLibBrowser
    put "Browser (CEF)" is among the lines of sStandaloneSettingsA["scriptLibraries"] into tRevBrowser
    put "com.livecode.widget.browser" is among the lines of sStandaloneSettingsA["extensions"] into tLibBrowser
-   revCopyCEFResources pTarget, pStandalonePath, tRevBrowser, tLibBrowser
+   if (tRevBrowser or tLibBrowser) and pTarget begins with "Windows" then
+      local tEngineFolder, tWebView2Dll, tOutFolder
+      set the itemDelimiter to slash
+      put item 1 to -2 of pEngineSourceFile into tEngineFolder
+      put tEngineFolder & slash & "WebView2Loader.dll" into tWebView2Dll
+      put item 1 to -2 of pStandalonePath into tOutFolder
+      revSBCopyFileToFolder tWebView2Dll, tOutFolder, "revStandaloneProgressCallback", the long id of me
+      if the result is not empty then
+         revStandaloneAddWarning "Windows, WebView2 failed to copy:" && quote & tWebView2Dll & quote
+      end if
+   end if
+
+   // HXT: Copy ICU runtime DLLs for Windows standalones.
+   // The engine links against ICU (International Components for Unicode) and
+   // requires icudt58.dll, icuin58.dll, icutu58.dll, and icuuc58.dll at runtime.
+   // These are not captured by the externals or database-driver copy logic, so
+   // we copy them explicitly from the engine folder to the standalone output folder.
+   if pTarget begins with "Windows" then
+      local tIcuEngineFolder, tIcuOutFolder, tIcuDll
+      set the itemDelimiter to slash
+      put item 1 to -2 of pEngineSourceFile into tIcuEngineFolder
+      put item 1 to -2 of pStandalonePath into tIcuOutFolder
+      local tIcuDlls
+      put "icudt58.dll" & return & "icuin58.dll" & return & "icutu58.dll" & return & "icuuc58.dll" into tIcuDlls
+      repeat for each line tIcuName in tIcuDlls
+         put tIcuEngineFolder & slash & tIcuName into tIcuDll
+         if there is a file tIcuDll then
+            revSBCopyFileToFolder tIcuDll, tIcuOutFolder, "revStandaloneProgressCallback", the long id of me
+            if the result is not empty then
+               revStandaloneAddWarning "Windows, ICU DLL failed to copy:" && quote & tIcuDll & quote
+            end if
+         else
+            revStandaloneAddWarning "Windows, ICU DLL not found:" && quote & tIcuDll & quote
+         end if
+      end repeat
+   end if
 end revStandaloneCopyInclusions
 
 local sLastUsedSettingsA
@@ -964,17 +1002,17 @@ command revSaveAsWindowsStandalone pStack, pRestoreFileName, pFolder, @xStandalo
       
       local tManifestApplication
       
-      // IM-2014-08-15: [[ Bug 13118 ]] Pull in dpiAware section if set.
-      if sStandaloneSettingsA["Windows,usePixelScaling"] is empty or sStandaloneSettingsA["Windows,usePixelScaling"] is true then
-         local tManifestApplicationPath
-         put revEnvironmentRuntimePath() & "/Windows/" & tRuntimeDir & "/w32-manifest-template-dpiaware.xml" into tManifestApplicationPath
-         
-         if there is not a file tManifestApplicationPath then
-            revStandaloneAddWarning "Windows, manifest dpiaware template not found: " & quote & tManifestApplicationPath & quote
-         else
-            put url ("file:" & tManifestApplicationPath) into tManifestApplication
-            put true into tManifestNeeded
-         end if
+      // HXT: Always embed Per-Monitor V2 DPI awareness — high-DPI displays are
+      // universal and the engine fully supports it. The usePixelScaling toggle
+      // is no longer consulted; all Windows standalones get the dpiaware section.
+      local tManifestApplicationPath
+      put revEnvironmentRuntimePath() & "/Windows/" & tRuntimeDir & "/w32-manifest-template-dpiaware.xml" into tManifestApplicationPath
+
+      if there is not a file tManifestApplicationPath then
+         revStandaloneAddWarning "Windows, manifest dpiaware template not found: " & quote & tManifestApplicationPath & quote
+      else
+         put url ("file:" & tManifestApplicationPath) into tManifestApplication
+         put true into tManifestNeeded
       end if
       
       if tManifestNeeded and tManifestData is not empty then
