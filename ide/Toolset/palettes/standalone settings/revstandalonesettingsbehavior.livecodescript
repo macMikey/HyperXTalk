@@ -3,11 +3,11 @@ on preOpenStack
    local tLicenseType
    
    start using stack "revSaveAsStandalone"
-  
+   
    if getTargetStackName() is not among the lines of the mainStacks then
       revStandaloneSettings the mainStack of the topStack
    end if
-
+   
    repeat with X=1 to the number of buttons of group "flavors" of card "Unix"
       set the enabled of button X of group "flavors" of card "Unix" to true
    end repeat
@@ -20,7 +20,26 @@ on preOpenStack
       set the showBorder of button X of group "cards" to false
    end repeat
    helpButtons
+   
+   set the backgroundColor of this stack to (the systemWindowColor)
+   set the foregroundColor of this stack to (the systemTextColor)
 end preOpenStack
+
+
+on SystemAppearanceChanged pMode, pWindowColor, pTextColor
+   set the backgroundColor of this stack to pWindowColor
+   set the foregroundColor of this stack to pTextColor
+end SystemAppearanceChanged
+
+
+on CommandKeyDown pKey
+   if (pKey = "w") then
+      close this stack
+   else
+      pass CommandKeyDown
+   end if
+end CommandKeyDown
+
 
 constant kButtonList = "General,Stacks,Copy Files,Inclusions,OS X,Windows,Unix,Bug Reports"
 private command updateTabButtons pSettings
