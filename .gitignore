@@ -72,3 +72,4 @@ build-win-x86_64/livecode/thirdparty/libcef/Debug/lib/libcef_library_wrapper.lib
 build-win-x86_64/livecode/Debug/Externals/CEF/libcef.dll
 build/engine/Debug/Externals/CEF 
 build/engine/Release/Externals/CEF 
+/thirdparty/libcef
