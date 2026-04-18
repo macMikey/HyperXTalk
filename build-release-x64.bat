@@ -626,12 +626,24 @@ echo revsecurity: using Debug bootstrap.
 
 echo.
 echo Building revzip (Release) ...
-"%MSBUILD%" %VCXPROJ_REVZIP% /p:Configuration=Release /p:Platform=x64 "/p:OutDir=%OUTDIR%\\" /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
-if %ERRORLEVEL% NEQ 0 goto revzip_fallback
+set "REVZIP_LOG=%~dp0build-revzip-release.log"
+"%MSBUILD%" %VCXPROJ_REVZIP% /p:Configuration=Release /p:Platform=x64 "/p:OutDir=%OUTDIR%\\" /p:BuildProjectReferences=false /v:minimal /nologo > "%REVZIP_LOG%" 2>&1
+set REVZIP_ERR=%ERRORLEVEL%
+type "%REVZIP_LOG%"
+type "%REVZIP_LOG%" >> "%LOGFILE%"
+if %REVZIP_ERR% NEQ 0 goto revzip_fallback
 if not exist "%OUTDIR%\revzip.dll" goto revzip_fallback
 echo revzip Release OK.
 goto revzip_done
 :revzip_fallback
+echo revzip Release build failed -- attempting Debug bootstrap build ...
+:: Build libzip Debug so Debug\lib\libzip.lib exists for revzip Debug link.
+"%MSBUILD%" %VCXPROJ_LIBZIP% /p:Configuration=Debug /p:Platform=x64 /p:BuildProjectReferences=false "/p:SolutionDir=%~dp0build-win-x86_64\livecode\\" /v:minimal /nologo >> "%LOGFILE%" 2>&1
+:: Build revzip Debug into DBG_DIR so the copy below succeeds.
+set "REVZIP_DBG_LOG=%~dp0build-revzip-debug.log"
+"%MSBUILD%" %VCXPROJ_REVZIP% /p:Configuration=Debug /p:Platform=x64 "/p:OutDir=%DBG_DIR%\\" /p:BuildProjectReferences=false /v:minimal /nologo > "%REVZIP_DBG_LOG%" 2>&1
+type "%REVZIP_DBG_LOG%"
+type "%REVZIP_DBG_LOG%" >> "%LOGFILE%"
 if not exist "%DBG_DIR%\revzip.dll" ( echo ERROR: revzip.dll missing from both Release build and Debug output. & exit /b 1 )
 copy /Y "%DBG_DIR%\revzip.dll" "%OUTDIR%\revzip.dll" > nul
 echo revzip: using Debug bootstrap.

@@ -19,6 +19,11 @@
 #if defined(_WIN32) || defined(_WIN64)
 
 /* ── Windows / MSVC ────────────────────────────────────────────────────── */
+/* HAVE_CRYPTO tells zip_random_win32.c to include zip_crypto.h, which pulls
+   in zip_crypto_win.h and defines HAVE_SECURE_RANDOM, suppressing the
+   duplicate CryptGenRandom fallback that would otherwise collide with the
+   BCryptGenRandom implementation in zip_crypto_win.c (LNK2005). */
+#define HAVE_CRYPTO
 #define HAVE_WINDOWS_CRYPTO
 #define HAVE__CLOSE
 #define HAVE__DUP
