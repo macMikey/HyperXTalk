@@ -295,7 +295,9 @@ echo libcairo OK.
 :: in Release\lib\libzip.lib (matching where external-revzip.vcxproj looks).
 echo Building libzip (Release) ...
 echo Building libzip ... >> "%LOGFILE%"
-"%MSBUILD%" %VCXPROJ_LIBZIP% /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false "/p:SolutionDir=%~dp0build-win-x86_64\livecode\\" /v:minimal /nologo >> "%LOGFILE%" 2>&1
+:: /t:Rebuild ensures obj files are recompiled from scratch so that changes to
+:: vendored headers like thirdparty/libzip/src/config.h are always picked up.
+"%MSBUILD%" %VCXPROJ_LIBZIP% /t:Rebuild /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false "/p:SolutionDir=%~dp0build-win-x86_64\livecode\\" /v:minimal /nologo >> "%LOGFILE%" 2>&1
 if errorlevel 1 ( echo LIBZIP BUILD FAILED. See %LOGFILE% & exit /b 1 )
 if not exist "%RELEASE_LIB_DIR%\libzip.lib" ( echo ERROR: libzip.lib not found in %RELEASE_LIB_DIR% & exit /b 1 )
 echo libzip OK.
@@ -638,7 +640,8 @@ goto revzip_done
 :revzip_fallback
 echo revzip Release build failed -- attempting Debug bootstrap build ...
 :: Build libzip Debug so Debug\lib\libzip.lib exists for revzip Debug link.
-"%MSBUILD%" %VCXPROJ_LIBZIP% /p:Configuration=Debug /p:Platform=x64 /p:BuildProjectReferences=false "/p:SolutionDir=%~dp0build-win-x86_64\livecode\\" /v:minimal /nologo >> "%LOGFILE%" 2>&1
+:: /t:Rebuild ensures fresh compilation picks up config.h changes.
+"%MSBUILD%" %VCXPROJ_LIBZIP% /t:Rebuild /p:Configuration=Debug /p:Platform=x64 /p:BuildProjectReferences=false "/p:SolutionDir=%~dp0build-win-x86_64\livecode\\" /v:minimal /nologo >> "%LOGFILE%" 2>&1
 :: Build revzip Debug into DBG_DIR so the copy below succeeds.
 set "REVZIP_DBG_LOG=%~dp0build-revzip-debug.log"
 "%MSBUILD%" %VCXPROJ_REVZIP% /p:Configuration=Debug /p:Platform=x64 "/p:OutDir=%DBG_DIR%\\" /p:BuildProjectReferences=false /v:minimal /nologo > "%REVZIP_DBG_LOG%" 2>&1
