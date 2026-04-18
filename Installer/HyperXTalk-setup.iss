@@ -139,6 +139,27 @@ Source: "{#SourceDir}\dbmysql.dll"; \
 Source: "{#SourceDir}\dbmysql.dll"; \
     DestDir: "{app}\Runtime\Windows\x86-64\Externals\Database Drivers"; \
     Flags: ignoreversion skipifsourcedoesntexist
+; libmysql.dll — runtime dependency of dbmysql.dll (libmysql.lib is an import lib,
+; not a static lib, so the DLL must be present at load time).  Must be co-located
+; with dbmysql.dll so Windows finds it when dbmysql.dll is loaded via LoadLibrary.
+; libssl-3-x64.dll / libcrypto-3-x64.dll — libmysql.dll's OpenSSL dependencies.
+;   * In the installed IDE, the versions in {app}\ (installed below) are found when
+;     libmysql.dll searches the process EXE directory.
+;   * In built standalones, Database Drivers.txt lists these DLLs so the standalone
+;     builder copies them into Externals/database_drivers/ alongside libmysql.dll.
+;     The Runtime\ copies below make them available to that copy step.
+Source: "{#SourceDir}\libmysql.dll"; \
+    DestDir: "{app}\Externals\Database Drivers"; \
+    Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#SourceDir}\libmysql.dll"; \
+    DestDir: "{app}\Runtime\Windows\x86-64\Externals\Database Drivers"; \
+    Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#SourceDir}\libssl-3-x64.dll"; \
+    DestDir: "{app}\Runtime\Windows\x86-64\Externals\Database Drivers"; \
+    Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#SourceDir}\libcrypto-3-x64.dll"; \
+    DestDir: "{app}\Runtime\Windows\x86-64\Externals\Database Drivers"; \
+    Flags: ignoreversion skipifsourcedoesntexist
 Source: "{#SourceDir}\dbodbc.dll"; \
     DestDir: "{app}\Externals\Database Drivers"; \
     Flags: ignoreversion skipifsourcedoesntexist

@@ -412,6 +412,14 @@ copy /Y "%DBG_DIR%\icutu58.dll"     "%OUTDIR%\icutu58.dll"        > nul 2>nul
 copy /Y "%DBG_DIR%\icuuc58.dll"     "%OUTDIR%\icuuc58.dll"        > nul 2>nul
 copy /Y "%DBG_DIR%\libcrypto-3-x64.dll" "%OUTDIR%\libcrypto-3-x64.dll" > nul 2>nul
 copy /Y "%DBG_DIR%\libssl-3-x64.dll"    "%OUTDIR%\libssl-3-x64.dll"    > nul 2>nul
+:: libmysql.dll — runtime DLL required by dbmysql.dll (libmysql.lib is an import lib).
+:: setup-mysql-win.bat copies it to Debug\; we mirror it to Release\ so the installer
+:: can stage it alongside dbmysql.dll in Externals\Database Drivers\.
+copy /Y "%DBG_DIR%\libmysql.dll" "%OUTDIR%\libmysql.dll" > nul 2>nul
+if not exist "%OUTDIR%\libmysql.dll" (
+    echo WARNING: libmysql.dll not found in Debug output. MySQL driver will not work.
+    echo          Run setup-mysql-win.bat to copy libmysql.dll from your Scoop MySQL install.
+)
 echo lc-compile.exe bootstrap OK.
 
 :: ----------------------------------------------------------

@@ -1,4 +1,4 @@
-MySQL,dbmysql.dll
+MySQL,dbmysql.dll,libmysql.dll,libssl-3-x64.dll,libcrypto-3-x64.dll
 ODBC,dbodbc.dll
 PostgreSQL,dbpostgresql.dll
 SQLite,dbsqlite.dll
