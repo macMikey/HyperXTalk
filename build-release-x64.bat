@@ -667,17 +667,26 @@ echo revspeech: using Debug bootstrap.
 
 echo.
 echo Building revpdfprinter (Release) ...
-"%MSBUILD%" %VCXPROJ_REVPDFPRINTER% /p:Configuration=Release /p:Platform=x64 "/p:OutDir=%OUTDIR%\\" /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
-if %ERRORLEVEL% NEQ 0 goto revpdf_fallback
+set "REVPDF_LOG=%~dp0build-revpdfprinter-release.log"
+"%MSBUILD%" %VCXPROJ_REVPDFPRINTER% /p:Configuration=Release /p:Platform=x64 "/p:OutDir=%OUTDIR%\\" /p:BuildProjectReferences=false "/p:SolutionDir=%~dp0build-win-x86_64\livecode\\" /v:minimal /nologo > "%REVPDF_LOG%" 2>&1
+set REVPDF_ERR=%ERRORLEVEL%
+type "%REVPDF_LOG%"
+type "%REVPDF_LOG%" >> "%LOGFILE%"
+if %REVPDF_ERR% NEQ 0 goto revpdf_fallback
 if not exist "%OUTDIR%\revpdfprinter.dll" goto revpdf_fallback
 echo revpdfprinter Release OK.
 goto revpdf_done
 :revpdf_fallback
+echo revpdfprinter Release build failed -- attempting Debug bootstrap build ...
+set "REVPDF_DBG_LOG=%~dp0build-revpdfprinter-debug.log"
+"%MSBUILD%" %VCXPROJ_REVPDFPRINTER% /p:Configuration=Debug /p:Platform=x64 "/p:OutDir=%DBG_DIR%\\" /p:BuildProjectReferences=false "/p:SolutionDir=%~dp0build-win-x86_64\livecode\\" /v:minimal /nologo > "%REVPDF_DBG_LOG%" 2>&1
+type "%REVPDF_DBG_LOG%"
+type "%REVPDF_DBG_LOG%" >> "%LOGFILE%"
 if exist "%DBG_DIR%\revpdfprinter.dll" (
     copy /Y "%DBG_DIR%\revpdfprinter.dll" "%OUTDIR%\revpdfprinter.dll" > nul
     echo revpdfprinter: using Debug bootstrap.
 ) else (
-    echo WARNING: revpdfprinter.dll not found in Debug output. PDF printing will not work.
+    echo WARNING: revpdfprinter.dll missing from both Release and Debug output. PDF printing will not work.
 )
 :revpdf_done
 
