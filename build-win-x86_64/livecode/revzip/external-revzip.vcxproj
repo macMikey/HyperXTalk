@@ -122,7 +122,9 @@
     </Lib>
     <Link>
       <AdditionalDependencies>oleaut32.lib;libzip.lib;libz.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\..\prebuilt\unpacked\Thirdparty\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <!-- Prepend $(SolutionDir)$(Configuration)\lib so the freshly-built libzip.lib
+           (output by libzip.vcxproj) takes priority over the prebuilt Thirdparty stub. -->
+      <AdditionalLibraryDirectories>$(SolutionDir)$(Configuration)\lib;..\..\..\prebuilt\unpacked\Thirdparty\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>/MACHINE:x64 %(AdditionalOptions)</AdditionalOptions>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -266,7 +268,10 @@
     </Lib>
     <Link>
       <AdditionalDependencies>oleaut32.lib;libzip.lib;libz.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\..\prebuilt\unpacked\Thirdparty\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <!-- Prepend $(SolutionDir)$(Configuration)\lib so the freshly-built libzip.lib
+           (output by libzip.vcxproj with explicit SolutionDir) takes priority over
+           the prebuilt Thirdparty stub which does not contain libzip.lib. -->
+      <AdditionalLibraryDirectories>$(SolutionDir)$(Configuration)\lib;..\..\..\prebuilt\unpacked\Thirdparty\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>/MACHINE:x64 %(AdditionalOptions)</AdditionalOptions>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <GenerateDebugInformation>true</GenerateDebugInformation>

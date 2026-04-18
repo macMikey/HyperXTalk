@@ -299,7 +299,11 @@
     <ClInclude Include="..\..\..\..\thirdparty\libzip\src\zipintw32.h"/>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\w32support.cpp"/>
+    <!-- w32support.cpp was removed from the libzip source tree; excluded to avoid
+         a missing-file MSBuild error.  No symbols from it are referenced. -->
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\w32support.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\thirdparty\libzip\src\mkstemp.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_add.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_close.c"/>

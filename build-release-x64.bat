@@ -290,21 +290,15 @@ echo Building libcairo (Release) ...
 if errorlevel 1 ( echo LIBCAIRO BUILD FAILED. See %LOGFILE% & exit /b 1 )
 echo libcairo OK.
 
-:: libzip: w32support.cpp is missing from the source tree; the vcxproj
-:: references it but the file does not exist.  The bootstrapped Debug
-:: libzip.lib (copied to Release\lib by the bootstrap step above) is
-:: a safe fallback — libzip is pure C with no debug-CRT assertions.
-echo Building libzip (Release) -- may use Debug bootstrap if source missing ...
-"%MSBUILD%" %VCXPROJ_LIBZIP% /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
-if errorlevel 1 (
-    if not exist "%RELEASE_LIB_DIR%\libzip.lib" (
-        echo LIBZIP BUILD FAILED and no bootstrap copy available. See %LOGFILE%
-        exit /b 1
-    )
-    echo libzip Release build failed -- using bootstrapped Debug copy.
-) else (
-    echo libzip OK.
-)
+:: libzip: w32support.cpp was removed from the source tree and is excluded
+:: in libzip.vcxproj.  Pass SolutionDir explicitly so the lib output lands
+:: in Release\lib\libzip.lib (matching where external-revzip.vcxproj looks).
+echo Building libzip (Release) ...
+echo Building libzip ... >> "%LOGFILE%"
+"%MSBUILD%" %VCXPROJ_LIBZIP% /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false "/p:SolutionDir=%~dp0build-win-x86_64\livecode\\" /v:minimal /nologo >> "%LOGFILE%" 2>&1
+if errorlevel 1 ( echo LIBZIP BUILD FAILED. See %LOGFILE% & exit /b 1 )
+if not exist "%RELEASE_LIB_DIR%\libzip.lib" ( echo ERROR: libzip.lib not found in %RELEASE_LIB_DIR% & exit /b 1 )
+echo libzip OK.
 
 echo Building libskia (Release) -- 530 source files, this will take a few minutes ...
 "%MSBUILD%" %VCXPROJ_LIBSKIA% /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
@@ -722,171 +716,4 @@ set "LCOMPILE_LOG=%~dp0build-browser-widget-release.log"
 "%LC_COMPILE%" --modulepath "%BROWSER_PKG%" --modulepath "%LCI_DIR%" --manifest "%BROWSER_PKG%\manifest.xml" --output "%BROWSER_PKG%\module.lcm" "%BROWSER_LCB%" > "%LCOMPILE_LOG%" 2>&1
 set LC_ERR=%ERRORLEVEL%
 type "%LCOMPILE_LOG%"
-type "%LCOMPILE_LOG%" >> "%LOGFILE%"
-if %LC_ERR% NEQ 0 ( echo BROWSER WIDGET COMPILE FAILED. & exit /b 1 )
-if not exist "%BROWSER_PKG%\module.lcm" ( echo BROWSER WIDGET COMPILE FAILED - module.lcm not produced. & exit /b 1 )
-copy /Y "%BROWSER_LCB%" "%BROWSER_PKG%\browser.lcb" > nul
-echo Browser widget OK.
-
-echo.
-:: ----------------------------------------------------------
-:: Bootstrap all remaining packaged_extensions from Debug.
-::
-:: LCB bytecode (.lcm) is configuration-independent — the output
-:: of lc-compile is identical regardless of whether the host
-:: engine was built Debug or Release.
-::
-:: The Release build only produces two extensions itself:
-::   com.livecode.widget.browser   (compiled above)
-::   com.livecode.library.widgetutils (bootstrapped above)
-::
-:: All other widgets and library modules (clock, treeview, svgpath,
-:: segmented, spinner, navbar, iconpicker, headerbar, gradientrampeditor,
-:: colorswatch, linegraph, tile, switchbutton, paletteactions,
-:: canvas, iconsvg, json, ini, scriptitems, timezone, objectrepository,
-:: diff, drawing, dropbox, getopt, httpd, mime, oauth2, qr, ...) must
-:: be copied from the Debug output.
-::
-:: macOS-only extensions (com.hyperxtalk.macos*, native.mac.*) are
-:: intentionally excluded — they don't run on Windows.
-:: ----------------------------------------------------------
-echo Bootstrapping packaged_extensions from Debug output ...
-set "DBG_EXT=%DBG_DIR%\packaged_extensions"
-set "REL_EXT=%OUTDIR%\packaged_extensions"
-if not exist "%REL_EXT%" mkdir "%REL_EXT%"
-
-for /D %%E in ("%DBG_EXT%\*") do (
-    set "EXTNAME=%%~nxE"
-    :: Skip macOS-specific extensions
-    echo %%~nxE | findstr /i "macos native.mac hyperxtalk" > nul
-    if errorlevel 1 (
-        if not exist "%REL_EXT%\%%~nxE" (
-            xcopy /E /I /Y /Q "%%E" "%REL_EXT%\%%~nxE" > nul
-        )
-    )
-)
-echo packaged_extensions bootstrap OK.
-
-:: ----------------------------------------------------------
-:: Bootstrap missing .lci interface files from Debug lci dir.
-::
-:: The Release modules/lci dir only contains engine built-ins
-:: (produced by the LCB modules build step).  Widget and library
-:: .lci files are needed so lc-compile can resolve imports when
-:: compiling user extensions at runtime.
-:: ----------------------------------------------------------
-echo Bootstrapping modules/lci from Debug output ...
-set "DBG_LCI=%DBG_DIR%\modules\lci"
-for %%F in ("%DBG_LCI%\*.lci") do (
-    if not exist "%LCI_DIR%\%%~nxF" (
-        copy /Y "%%F" "%LCI_DIR%\%%~nxF" > nul
-    )
-)
-echo modules/lci bootstrap OK.
-
-:: ----------------------------------------------------------
-:: Stage all built binaries into win-x86_64-bin\ so the macOS
-:: app bundle (Runtime/Windows/x86-64/) can be kept up to date.
-::
-:: Layout expected by the macOS standalone builder:
-::   win-x86_64-bin\                  <- flat root (HyperXTalk.exe, standalone, DLLs)
-::   win-x86_64-bin\Externals\CEF\    <- revbrowser CEF resources
-:: ----------------------------------------------------------
-echo.
-echo Staging binaries into win-x86_64-bin\ ...
-set "STAGE=%~dp0win-x86_64-bin"
-
-:: Core engine + standalone template
-copy /Y "%OUTDIR%\HyperXTalk.exe"           "%STAGE%\HyperXTalk.exe"            > nul 2>nul
-copy /Y "%OUTDIR%\standalone-community.exe" "%STAGE%\standalone-community.exe"  > nul 2>nul
-copy /Y "%OUTDIR%\lc-compile.exe"           "%STAGE%\lc-compile.exe"            > nul 2>nul
-
-:: Support DLLs
-copy /Y "%OUTDIR%\revsecurity.dll"          "%STAGE%\revsecurity.dll"           > nul 2>nul
-copy /Y "%OUTDIR%\revpdfprinter.dll"        "%STAGE%\revpdfprinter.dll"         > nul 2>nul
-
-:: External DLLs
-copy /Y "%OUTDIR%\revbrowser.dll"           "%STAGE%\revbrowser.dll"            > nul 2>nul
-copy /Y "%OUTDIR%\revdb.dll"               "%STAGE%\revdb.dll"                 > nul 2>nul
-copy /Y "%OUTDIR%\revxml.dll"              "%STAGE%\revxml.dll"                > nul 2>nul
-copy /Y "%OUTDIR%\revzip.dll"              "%STAGE%\revzip.dll"                > nul 2>nul
-copy /Y "%OUTDIR%\revspeech.dll"           "%STAGE%\revspeech.dll"             > nul 2>nul
-
-:: DB driver DLLs
-copy /Y "%OUTDIR%\dbmysql.dll"             "%STAGE%\dbmysql.dll"               > nul 2>nul
-copy /Y "%OUTDIR%\dbodbc.dll"              "%STAGE%\dbodbc.dll"                > nul 2>nul
-copy /Y "%OUTDIR%\dbpostgresql.dll"        "%STAGE%\dbpostgresql.dll"          > nul 2>nul
-copy /Y "%OUTDIR%\dbsqlite.dll"            "%STAGE%\dbsqlite.dll"              > nul 2>nul
-
-:: SSL + ICU runtime DLLs (needed alongside the standalone and IDE)
-copy /Y "%OUTDIR%\libssl-3-x64.dll"        "%STAGE%\libssl-3-x64.dll"          > nul 2>nul
-copy /Y "%OUTDIR%\libcrypto-3-x64.dll"     "%STAGE%\libcrypto-3-x64.dll"       > nul 2>nul
-copy /Y "%OUTDIR%\libmysql.dll"            "%STAGE%\libmysql.dll"              > nul 2>nul
-copy /Y "%OUTDIR%\icudt58.dll"             "%STAGE%\icudt58.dll"               > nul 2>nul
-copy /Y "%OUTDIR%\icuin58.dll"             "%STAGE%\icuin58.dll"               > nul 2>nul
-copy /Y "%OUTDIR%\icutu58.dll"             "%STAGE%\icutu58.dll"               > nul 2>nul
-copy /Y "%OUTDIR%\icuuc58.dll"             "%STAGE%\icuuc58.dll"               > nul 2>nul
-
-:: WebView2Loader.dll — the browser widget and revBrowser external both use the
-:: system WebView2 runtime via this loader DLL.  It ships in the NuGet package
-:: and must live alongside the standalone exe and the IDE exe at runtime.
-:: The standalone builder copies it from the engine folder (Runtime\Windows\x86-64\)
-:: to the standalone output directory automatically when the browser is included.
-set "WV2_DLL=%~dp0packages\Microsoft.Web.WebView2.1.0.3912.50\runtimes\win-x64\native\WebView2Loader.dll"
-if exist "%WV2_DLL%" (
-    copy /Y "%WV2_DLL%" "%OUTDIR%\WebView2Loader.dll" > nul
-    copy /Y "%WV2_DLL%" "%STAGE%\WebView2Loader.dll"  > nul
-    echo WebView2Loader.dll staged.
-) else (
-    echo WARNING: WebView2Loader.dll not found at %WV2_DLL%
-    echo          Browser widget and revBrowser will not work in standalones.
-)
-
-:: packaged_extensions
-if exist "%OUTDIR%\packaged_extensions" (
-    xcopy /E /I /Y /Q "%OUTDIR%\packaged_extensions\*"  "%STAGE%\packaged_extensions\" > nul
-    echo packaged_extensions staged.
-)
-
-echo Staging complete: %STAGE%
-
-:: ----------------------------------------------------------
-:: Also update the IDE Runtime directory so macOS standalone
-:: builder picks up fresh Release binaries immediately.
-:: The macOS app reads:  ide\Runtime\Windows\x86-64\Standalone
-::                       ide\Runtime\Windows\x86-64\Support\revsecurity.dll
-::                       ide\Runtime\Windows\x86-64\icuXX.dll
-::                       ide\Runtime\Windows\x86-64\WebView2Loader.dll
-:: ----------------------------------------------------------
-set "RUNTIME=%~dp0ide\Runtime\Windows\x86-64"
-echo.
-echo Updating ide\Runtime\Windows\x86-64\ ...
-
-copy /Y "%OUTDIR%\standalone-community.exe" "%RUNTIME%\Standalone"           > nul
-copy /Y "%OUTDIR%\revsecurity.dll"          "%RUNTIME%\Support\revsecurity.dll" > nul
-copy /Y "%OUTDIR%\revpdfprinter.dll"        "%RUNTIME%\Support\revpdfprinter.dll" > nul 2>nul
-copy /Y "%OUTDIR%\revbrowser.dll"           "%RUNTIME%\Externals\revbrowser.dll"  > nul 2>nul
-copy /Y "%OUTDIR%\revdb.dll"               "%RUNTIME%\Externals\revdb.dll"        > nul 2>nul
-copy /Y "%OUTDIR%\revxml.dll"              "%RUNTIME%\Externals\revxml.dll"       > nul 2>nul
-copy /Y "%OUTDIR%\revzip.dll"              "%RUNTIME%\Externals\revzip.dll"       > nul 2>nul
-copy /Y "%OUTDIR%\revspeech.dll"           "%RUNTIME%\Externals\revspeech.dll"    > nul 2>nul
-copy /Y "%OUTDIR%\dbmysql.dll"             "%RUNTIME%\Externals\Database Drivers\dbmysql.dll"    > nul 2>nul
-copy /Y "%OUTDIR%\dbodbc.dll"              "%RUNTIME%\Externals\Database Drivers\dbodbc.dll"     > nul 2>nul
-copy /Y "%OUTDIR%\dbpostgresql.dll"        "%RUNTIME%\Externals\Database Drivers\dbpostgresql.dll" > nul 2>nul
-copy /Y "%OUTDIR%\dbsqlite.dll"            "%RUNTIME%\Externals\Database Drivers\dbsqlite.dll"   > nul 2>nul
-copy /Y "%OUTDIR%\icudt58.dll"             "%RUNTIME%\icudt58.dll"               > nul
-copy /Y "%OUTDIR%\icuin58.dll"             "%RUNTIME%\icuin58.dll"               > nul
-copy /Y "%OUTDIR%\icutu58.dll"             "%RUNTIME%\icutu58.dll"               > nul
-copy /Y "%OUTDIR%\icuuc58.dll"             "%RUNTIME%\icuuc58.dll"               > nul
-if exist "%WV2_DLL%" copy /Y "%WV2_DLL%"  "%RUNTIME%\WebView2Loader.dll"        > nul
-echo ide\Runtime update complete.
-
-echo.
-echo ============================================================
-echo  Release build complete: %DATE% %TIME%
-echo  Output: %OUTDIR%
-echo  Next:   run installer\HyperXTalk-setup.iss in Inno Setup
-echo          to produce the installer.
-echo ============================================================
-echo Build completed: %DATE% %TIME% >> "%LOGFILE%"
-echo Full log: %LOGFILE%
+type "%LCOMPILE_LOG%" >> "%LOGFILE
