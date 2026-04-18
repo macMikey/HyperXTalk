@@ -365,10 +365,27 @@ def guess_java_home(platform):
     # More guesses
     try:
         if os.path.isfile('/usr/libexec/java_home'):
-            return subprocess.check_output('/usr/libexec/java_home').strip().decode('utf-8')
+            candidate = subprocess.check_output('/usr/libexec/java_home').strip().decode('utf-8')
+            # Verify the candidate actually has jni.h — the old JavaAppletPlugin
+            # path is still returned by /usr/libexec/java_home on some systems
+            # even though the plugin was removed from macOS years ago.
+            if os.path.isfile(os.path.join(candidate, 'include', 'jni.h')):
+                return candidate
     except subprocess.CalledProcessError as e:
         print(e)
         pass
+
+    # Fall back to scanning installed JVMs directly
+    import glob as _glob
+    for pattern in (
+        '/Library/Java/JavaVirtualMachines/*/Contents/Home',
+        '/usr/local/lib/java/*/Contents/Home',
+        '/opt/homebrew/opt/openjdk*/libexec/openjdk.jdk/Contents/Home',
+    ):
+        for d in sorted(_glob.glob(pattern), reverse=True):  # newest first
+            if os.path.isfile(os.path.join(d, 'include', 'jni.h')):
+                return d
+
     for d in ('/usr/lib/jvm/default', '/usr/lib/jvm/default-java'):
         if os.path.isdir(d):
             return d
