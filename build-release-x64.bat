@@ -26,6 +26,9 @@ set VCXPROJ_REVXML=build-win-x86_64\livecode\revxml\external-revxml.vcxproj
 set VCXPROJ_REVBROWSER=build-win-x86_64\livecode\revbrowser\external-revbrowser.vcxproj
 set VCXPROJ_REVDB=build-win-x86_64\livecode\revdb\external-revdb.vcxproj
 set VCXPROJ_REVSECURITY=build-win-x86_64\livecode\thirdparty\libopenssl\revsecurity.vcxproj
+set VCXPROJ_REVZIP=build-win-x86_64\livecode\revzip\external-revzip.vcxproj
+set VCXPROJ_REVSPEECH=build-win-x86_64\livecode\revspeech\external-revspeech.vcxproj
+set VCXPROJ_REVPDFPRINTER=build-win-x86_64\livecode\revpdfprinter\external-revpdfprinter.vcxproj
 set VCXPROJ_LIBEXTERNAL=build-win-x86_64\livecode\libexternal\libExternal.vcxproj
 set VCXPROJ_LIBZ=build-win-x86_64\livecode\thirdparty\libz\libz.vcxproj
 set VCXPROJ_LIBGIF=build-win-x86_64\livecode\thirdparty\libgif\libgif.vcxproj
@@ -574,7 +577,7 @@ echo WARNING: Using existing standalone-community.exe from a previous build.
 
 echo.
 echo Building revxml (Release) ...
-"%MSBUILD%" %VCXPROJ_REVXML% /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
+"%MSBUILD%" %VCXPROJ_REVXML% /p:Configuration=Release /p:Platform=x64 "/p:OutDir=%OUTDIR%\\" /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
 if %ERRORLEVEL% NEQ 0 ( echo revxml build failed. See %LOGFILE% & exit /b 1 )
 echo revxml OK.
 
@@ -626,6 +629,48 @@ if not exist "%DBG_DIR%\revsecurity.dll" ( echo ERROR: revsecurity.dll missing f
 copy /Y "%DBG_DIR%\revsecurity.dll" "%OUTDIR%\revsecurity.dll" > nul
 echo revsecurity: using Debug bootstrap.
 :revsecurity_done
+
+echo.
+echo Building revzip (Release) ...
+"%MSBUILD%" %VCXPROJ_REVZIP% /p:Configuration=Release /p:Platform=x64 "/p:OutDir=%OUTDIR%\\" /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
+if %ERRORLEVEL% NEQ 0 goto revzip_fallback
+if not exist "%OUTDIR%\revzip.dll" goto revzip_fallback
+echo revzip Release OK.
+goto revzip_done
+:revzip_fallback
+if not exist "%DBG_DIR%\revzip.dll" ( echo ERROR: revzip.dll missing from both Release build and Debug output. & exit /b 1 )
+copy /Y "%DBG_DIR%\revzip.dll" "%OUTDIR%\revzip.dll" > nul
+echo revzip: using Debug bootstrap.
+:revzip_done
+
+echo.
+echo Building revspeech (Release) ...
+"%MSBUILD%" %VCXPROJ_REVSPEECH% /p:Configuration=Release /p:Platform=x64 "/p:OutDir=%OUTDIR%\\" /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
+if %ERRORLEVEL% NEQ 0 goto revspeech_fallback
+if not exist "%OUTDIR%\revspeech.dll" goto revspeech_fallback
+echo revspeech Release OK.
+goto revspeech_done
+:revspeech_fallback
+if not exist "%DBG_DIR%\revspeech.dll" ( echo ERROR: revspeech.dll missing from both Release build and Debug output. & exit /b 1 )
+copy /Y "%DBG_DIR%\revspeech.dll" "%OUTDIR%\revspeech.dll" > nul
+echo revspeech: using Debug bootstrap.
+:revspeech_done
+
+echo.
+echo Building revpdfprinter (Release) ...
+"%MSBUILD%" %VCXPROJ_REVPDFPRINTER% /p:Configuration=Release /p:Platform=x64 "/p:OutDir=%OUTDIR%\\" /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
+if %ERRORLEVEL% NEQ 0 goto revpdf_fallback
+if not exist "%OUTDIR%\revpdfprinter.dll" goto revpdf_fallback
+echo revpdfprinter Release OK.
+goto revpdf_done
+:revpdf_fallback
+if exist "%DBG_DIR%\revpdfprinter.dll" (
+    copy /Y "%DBG_DIR%\revpdfprinter.dll" "%OUTDIR%\revpdfprinter.dll" > nul
+    echo revpdfprinter: using Debug bootstrap.
+) else (
+    echo WARNING: revpdfprinter.dll not found in Debug output. PDF printing will not work.
+)
+:revpdf_done
 
 echo.
 echo Compiling browser widget (Release) ...
@@ -738,6 +783,72 @@ for %%F in ("%DBG_LCI%\*.lci") do (
     )
 )
 echo modules/lci bootstrap OK.
+
+:: ----------------------------------------------------------
+:: Stage all built binaries into win-x86_64-bin\ so the macOS
+:: app bundle (Runtime/Windows/x86-64/) can be kept up to date.
+::
+:: Layout expected by the macOS standalone builder:
+::   win-x86_64-bin\                  <- flat root (HyperXTalk.exe, standalone, DLLs)
+::   win-x86_64-bin\Externals\CEF\    <- revbrowser CEF resources
+:: ----------------------------------------------------------
+echo.
+echo Staging binaries into win-x86_64-bin\ ...
+set "STAGE=%~dp0win-x86_64-bin"
+
+:: Core engine + standalone template
+copy /Y "%OUTDIR%\HyperXTalk.exe"           "%STAGE%\HyperXTalk.exe"            > nul 2>nul
+copy /Y "%OUTDIR%\standalone-community.exe" "%STAGE%\standalone-community.exe"  > nul 2>nul
+copy /Y "%OUTDIR%\lc-compile.exe"           "%STAGE%\lc-compile.exe"            > nul 2>nul
+
+:: Support DLLs
+copy /Y "%OUTDIR%\revsecurity.dll"          "%STAGE%\revsecurity.dll"           > nul 2>nul
+copy /Y "%OUTDIR%\revpdfprinter.dll"        "%STAGE%\revpdfprinter.dll"         > nul 2>nul
+
+:: External DLLs
+copy /Y "%OUTDIR%\revbrowser.dll"           "%STAGE%\revbrowser.dll"            > nul 2>nul
+copy /Y "%OUTDIR%\revdb.dll"               "%STAGE%\revdb.dll"                 > nul 2>nul
+copy /Y "%OUTDIR%\revxml.dll"              "%STAGE%\revxml.dll"                > nul 2>nul
+copy /Y "%OUTDIR%\revzip.dll"              "%STAGE%\revzip.dll"                > nul 2>nul
+copy /Y "%OUTDIR%\revspeech.dll"           "%STAGE%\revspeech.dll"             > nul 2>nul
+
+:: DB driver DLLs
+copy /Y "%OUTDIR%\dbmysql.dll"             "%STAGE%\dbmysql.dll"               > nul 2>nul
+copy /Y "%OUTDIR%\dbodbc.dll"              "%STAGE%\dbodbc.dll"                > nul 2>nul
+copy /Y "%OUTDIR%\dbpostgresql.dll"        "%STAGE%\dbpostgresql.dll"          > nul 2>nul
+copy /Y "%OUTDIR%\dbsqlite.dll"            "%STAGE%\dbsqlite.dll"              > nul 2>nul
+
+:: SSL + ICU runtime DLLs (needed alongside the standalone and IDE)
+copy /Y "%OUTDIR%\libssl-3-x64.dll"        "%STAGE%\libssl-3-x64.dll"          > nul 2>nul
+copy /Y "%OUTDIR%\libcrypto-3-x64.dll"     "%STAGE%\libcrypto-3-x64.dll"       > nul 2>nul
+copy /Y "%OUTDIR%\libmysql.dll"            "%STAGE%\libmysql.dll"              > nul 2>nul
+copy /Y "%OUTDIR%\icudt58.dll"             "%STAGE%\icudt58.dll"               > nul 2>nul
+copy /Y "%OUTDIR%\icuin58.dll"             "%STAGE%\icuin58.dll"               > nul 2>nul
+copy /Y "%OUTDIR%\icutu58.dll"             "%STAGE%\icutu58.dll"               > nul 2>nul
+copy /Y "%OUTDIR%\icuuc58.dll"             "%STAGE%\icuuc58.dll"               > nul 2>nul
+
+:: WebView2Loader.dll — the browser widget and revBrowser external both use the
+:: system WebView2 runtime via this loader DLL.  It ships in the NuGet package
+:: and must live alongside the standalone exe and the IDE exe at runtime.
+:: The standalone builder copies it from the engine folder (Runtime\Windows\x86-64\)
+:: to the standalone output directory automatically when the browser is included.
+set "WV2_DLL=%~dp0packages\Microsoft.Web.WebView2.1.0.3912.50\runtimes\win-x64\native\WebView2Loader.dll"
+if exist "%WV2_DLL%" (
+    copy /Y "%WV2_DLL%" "%OUTDIR%\WebView2Loader.dll" > nul
+    copy /Y "%WV2_DLL%" "%STAGE%\WebView2Loader.dll"  > nul
+    echo WebView2Loader.dll staged.
+) else (
+    echo WARNING: WebView2Loader.dll not found at %WV2_DLL%
+    echo          Browser widget and revBrowser will not work in standalones.
+)
+
+:: packaged_extensions
+if exist "%OUTDIR%\packaged_extensions" (
+    xcopy /E /I /Y /Q "%OUTDIR%\packaged_extensions\*"  "%STAGE%\packaged_extensions\" > nul
+    echo packaged_extensions staged.
+)
+
+echo Staging complete: %STAGE%
 
 echo.
 echo ============================================================
