@@ -925,7 +925,7 @@ command revSaveAsWindowsStandalone pStack, pRestoreFileName, pFolder, @xStandalo
       -- put the path to the engine into tEngineSourceFile
       put revSBEnginePath(tTarget) into tEngineSourceFile
       
-      -- Allows the test system to build a standalone against any version   
+      -- Allows the test system to build a standalone against any version
       if revOverrideRuntimePath() is not empty then
          put revOverrideRuntimePath() into tEngineSourceFile
       end if
@@ -935,7 +935,16 @@ command revSaveAsWindowsStandalone pStack, pRestoreFileName, pFolder, @xStandalo
          throw "Standalone: Ensure that you have not renamed the main LiveCode executable file: " \
                & return & tEngineSourceFile
       end if
-      
+
+      -- HXT: Guard against the 0-byte placeholder that lives in the Runtime
+      -- until a real Windows build has been staged.  The deploy external's
+      -- PE parser will crash the engine (no crash report) if given an empty file.
+      if the size of file tEngineSourceFile is 0 then
+         throw "Standalone: The Windows standalone engine is a placeholder (0 bytes)." & return & \
+               "Run build-release-x64.bat on Windows and commit the output, then try again." & return & \
+               tEngineSourceFile
+      end if
+
       put tDirectory & sStandaloneSettingsA["name"] into tStandalonePath
       -- add ".exe" to windows standalone file
       put ".exe" after tStandalonePath
