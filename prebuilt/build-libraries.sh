@@ -62,7 +62,7 @@ case "${PLATFORM}" in
 		PREBUILT_LIBS="openssl curl icu cef libz libzip libgif libjpeg libpng libfreetype libiodbc"
 		;;
 	linux)
-		PREBUILT_LIBS="openssl curl icu cef libz libzip libgif libjpeg libpng libfreetype libiodbc"
+		PREBUILT_LIBS="openssl curl icu cef libz libgif libjpeg libpng libfreetype libiodbc"
 		;;
 	emscripten)
 		PREBUILT_LIBS="icu libz libzip libgif libjpeg libpng libfreetype libiodbc"

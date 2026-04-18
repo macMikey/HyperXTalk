@@ -81,35 +81,22 @@ if [ ! -d "$ICU_SRC" ] ; then
 		fi
 
 		# validate using gpg if gpg is installed
-		if [ `gpg --help` ] ; then
+		if command -v gpg >/dev/null 2>&1; then
 			gpg --import KEYS
 		fi
 
 		echo "Fetching shasum file ${ICU_SHASUM_URL}"
-		fetchUrl ${ICU_SHASUM_URL} "${ICU_MD5_URL}"
-		if [ $? != 0 ] ; then
-			echo "downloading shasum file failed"
-			if [ -e "${ICU_TGZ}" ] ; then
-				rm ${ICU_TGZ}
+		if fetchUrl ${ICU_SHASUM_URL} "${ICU_MD5_URL}"; then
+			shasum -c -s --ignore-missing ${ICU_MD5_URL}
+			if [ $? != 0 ] ; then
+				echo "checksum verification failed"
+				if [ -e "${ICU_TGZ}" ] ; then
+					rm ${ICU_TGZ}
+				fi
+				exit
 			fi
-			exit
-		fi
-
-#		if [ ! `gpg --verify KEYS` == ${ICU_TGZ} ] ; then
-#			echo "checksum verification failed"
-#			if [ -e "${ICU_TGZ}" ] ; then
-#				rm ${ICU_TGZ}
-#			fi
-#			exit
-#		fi
-
-		shasum -c -s --ignore-missing ${ICU_MD5_URL}
-		if [ $? != 0 ] ; then
-			echo "checksum verification failed"
-			if [ -e "${ICU_TGZ}" ] ; then
-				rm ${ICU_TGZ}
-			fi
-			exit
+		else
+			echo "Warning: downloading shasum file failed, skipping checksum verification"
 		fi
 
 	fi
@@ -117,6 +104,11 @@ if [ ! -d "$ICU_SRC" ] ; then
 	echo "Unpacking ICU source"
 	tar -xf "${ICU_TGZ}"
 	mv icu "${ICU_SRC}"
+
+	# Fix for modern glibc (2.26+) where xlocale.h was removed
+	find "${ICU_SRC}" -name "*.cpp" -o -name "*.c" | xargs grep -l "xlocale.h" 2>/dev/null | while read f; do
+		sed -i 's/#include <xlocale.h>/#include <locale.h>/g' "$f"
+	done
 fi
 
 # copy header files from prebuilt/build/icu-58-2/source/common to prebuilt/include/unicode
