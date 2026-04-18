@@ -19,6 +19,7 @@
 #if defined(_WIN32) || defined(_WIN64)
 
 /* ── Windows / MSVC ────────────────────────────────────────────────────── */
+#define HAVE_WINDOWS_CRYPTO
 #define HAVE__CLOSE
 #define HAVE__DUP
 #define HAVE__FDOPEN
