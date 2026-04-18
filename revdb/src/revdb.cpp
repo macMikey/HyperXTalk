@@ -306,8 +306,15 @@ DATABASEREC *LoadDatabaseDriver(const char *p_type)
     else
     {
         t_database_rec = LoadDatabaseDriverInFolder(".", t_type);
-        
-        
+
+        /* The Windows standalone builder (revCopyDatabaseDrivers) copies
+           database driver DLLs into Externals/database_drivers/ relative
+           to the standalone executable.  Search that path so standalones
+           work without needing a prior revSetDatabaseDriverPath call. */
+        if (t_database_rec == nullptr)
+            t_database_rec = LoadDatabaseDriverInFolder("./Externals/database_drivers",
+                                                        t_type);
+
         if (t_database_rec == nullptr)
             t_database_rec = LoadDatabaseDriverInFolder("./Database Drivers",
                                                         t_type);
