@@ -59,6 +59,7 @@
 
 /* Begin PBXBuildFile section */
 		0CF0448A88523E5494105938 /* dummy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6A743D720E9F49790C29E7E /* dummy.cpp */; };
+		CE9D5B13FA046E78901234CD /* revsecurity_compat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD8C4A02E9F35D67890123BC /* revsecurity_compat.cpp */; };
 		4E718BF0345D6181A93E8290 /* libcustomssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EC41BE319B6EE5C76A31E50C /* libcustomssl.a */; };
 		806D2C7F4176FEED98DDEB68 /* ssl.mac.stubs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 556F3F3BAEA55CFFA5E08CAC /* ssl.mac.stubs.cpp */; };
 		B5B671D17D212B7C8664D5A4 /* libcustomcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6350B659646A07A5285D9DA3 /* libcustomcrypto.a */; };
@@ -179,6 +180,7 @@
 		DFAA9D78B62EA33ECB172F86 /* target_os.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = target_os.gypi; path = ../../config/target_os.gypi; sourceTree = "<group>"; };
 		E2E1858653DDE7785DDC6C6F /* sslstubs.mac.symlist */ = {isa = PBXFileReference; lastKnownFileType = text; path = sslstubs.mac.symlist; sourceTree = "<group>"; };
 		E6A743D720E9F49790C29E7E /* dummy.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = dummy.cpp; sourceTree = "<group>"; };
+		BD8C4A02E9F35D67890123BC /* revsecurity_compat.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = revsecurity_compat.cpp; sourceTree = "<group>"; };
 		EC41BE319B6EE5C76A31E50C /* libcustomssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcustomssl.a; path = ../../prebuilt/lib/mac/libcustomssl.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -237,10 +239,19 @@
 			isa = PBXGroup;
 			children = (
 				8A90E437532418133B9FD7EE /* engine/src */,
+				AC7B3F91D8E24C56789012AB /* thirdparty/libopenssl/src */,
 				132DCBA6AEA54089BCA4F4EF /* util */,
 				CD80B0844B26CE8FE35911DD /* version */,
 			);
 			path = ../..;
+			sourceTree = "<group>";
+		};
+		AC7B3F91D8E24C56789012AB /* thirdparty/libopenssl/src */ = {
+			isa = PBXGroup;
+			children = (
+				BD8C4A02E9F35D67890123BC /* revsecurity_compat.cpp */,
+			);
+			path = thirdparty/libopenssl/src;
 			sourceTree = "<group>";
 		};
 		44C824D4051D107B3B3A40F3 /* Products */ = {
@@ -470,6 +481,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0CF0448A88523E5494105938 /* dummy.cpp in Sources */,
+				CE9D5B13FA046E78901234CD /* revsecurity_compat.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
