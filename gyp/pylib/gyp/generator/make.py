@@ -931,7 +931,7 @@ $(obj).$(TOOLSET)/$(TARGET)/%%.o: $(obj)/%%%s FORCE_DO_CMD
                    '%s%s'
                    % (name, cd_action, command))
       self.WriteLn()
-      outputs = map(self.Absolutify, outputs)
+      outputs = list(map(self.Absolutify, outputs))
       # The makefile rules are all relative to the top dir, but the gyp actions
       # are defined relative to their containing dir.  This replaces the obj
       # variable for the action rule with an absolute version so that the output
@@ -1021,7 +1021,7 @@ $(obj).$(TOOLSET)/$(TARGET)/%%.o: $(obj)/%%%s FORCE_DO_CMD
         outputs = [gyp.xcode_emulation.ExpandEnvVars(o, env) for o in outputs]
         inputs = [gyp.xcode_emulation.ExpandEnvVars(i, env) for i in inputs]
 
-        outputs = map(self.Absolutify, outputs)
+        outputs = list(map(self.Absolutify, outputs))
         all_outputs += outputs
         # Only write the 'obj' and 'builddir' rules for the "primary" output
         # (:1); it's superfluous for the "extra outputs", and this avoids
@@ -1725,8 +1725,8 @@ $(obj).$(TOOLSET)/$(TARGET)/%%.o: $(obj)/%%%s FORCE_DO_CMD
     phony: if true, the rule does not actually generate the named output, the
            output is just a name to run the rule
     """
-    outputs = map(QuoteSpaces, outputs)
-    inputs = map(QuoteSpaces, inputs)
+    outputs = list(map(QuoteSpaces, outputs))
+    inputs = list(map(QuoteSpaces, inputs))
 
     if comment:
       self.WriteLn('# ' + comment)
