@@ -127,7 +127,7 @@ end getBuildFolder
 
 on revSaveAsStandalone pStack, pFolder, pPreview, pSuppressSuccessMsg
    global gREVStackStatus
-   
+
    if pStack = empty then
       put the short name of the topStack into pStack
    end if
@@ -871,7 +871,7 @@ command revSaveAsWindowsStandalone pStack, pRestoreFileName, pFolder, @xStandalo
    if sStandaloneSettingsA["Windows,iconFile"] = "" then
       put tName & "/genericapp.ico" into sStandaloneSettingsA["Windows,iconFile"]
    end if
-
+   
    if sStandaloneSettingsA["Windows,documenticonFile"] = "" then
       put tName & "/genericdoc.ico" into sStandaloneSettingsA["Windows,documenticonFile"]
    end if
@@ -929,22 +929,22 @@ command revSaveAsWindowsStandalone pStack, pRestoreFileName, pFolder, @xStandalo
       if revOverrideRuntimePath() is not empty then
          put revOverrideRuntimePath() into tEngineSourceFile
       end if
-
+      
       -- Ensure executable is at the expected location
       if there is not a file tEngineSourceFile then
          throw "Standalone: Ensure that you have not renamed the main LiveCode executable file: " \
                & return & tEngineSourceFile
       end if
-
+      
       -- HXT: Guard against the 0-byte placeholder that lives in the Runtime
       -- until a real Windows build has been staged.  The deploy external's
       -- PE parser will crash the engine (no crash report) if given an empty file.
-      if the size of file tEngineSourceFile is 0 then
-         throw "Standalone: The Windows standalone engine is a placeholder (0 bytes)." & return & \
-               "Run build-release-x64.bat on Windows and commit the output, then try again." & return & \
-               tEngineSourceFile
-      end if
-
+      --      if the size of file tEngineSourceFile is 0 then
+      --         throw "Standalone: The Windows standalone engine is a placeholder (0 bytes)." & return & \
+      --               "Run build-release-x64.bat on Windows and commit the output, then try again." & return & \
+      --               tEngineSourceFile
+      --      end if
+      
       put tDirectory & sStandaloneSettingsA["name"] into tStandalonePath
       -- add ".exe" to windows standalone file
       put ".exe" after tStandalonePath
@@ -1024,7 +1024,7 @@ command revSaveAsWindowsStandalone pStack, pRestoreFileName, pFolder, @xStandalo
       // is no longer consulted; all Windows standalones get the dpiaware section.
       local tManifestApplicationPath
       put revEnvironmentRuntimePath() & "/Windows/" & tRuntimeDir & "/w32-manifest-template-dpiaware.xml" into tManifestApplicationPath
-
+      
       if there is not a file tManifestApplicationPath then
          revStandaloneAddWarning "Windows, manifest dpiaware template not found: " & quote & tManifestApplicationPath & quote
       else
