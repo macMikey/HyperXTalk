@@ -8085,6 +8085,8 @@ on revIDESaveAsStandalone pTarget
    //ideMessagesSupressSet "true" - This was in the old message library. In 8.0 messages can't be supressed. Might want to add this in ideMessageSend
    try
       revSaveAsStandalone tStack
+   catch tError
+      answer error "Standalone build error:" & return & tError
    finally
       # Bug 5111: Standalone has been built, process should now be interruptable.
       set the allowInterrupts to true

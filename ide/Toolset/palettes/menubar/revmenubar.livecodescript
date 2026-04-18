@@ -1499,7 +1499,7 @@ private function revMenubarFileMenu pContext
    put "-" & return after tFile
    
    put enableMenuItem("Standalone Application Settings...", tIsUserTarget) & return after tFile
-   put enableMenuItem("Save as Standalone Application...", tIsUserTarget) & return after tFile
+   put enableMenuItem("Save As Standalone Application...", tIsUserTarget) & return after tFile
    put "-" & return after tFile
    
    put "P&age Setup..." & return after tFile
