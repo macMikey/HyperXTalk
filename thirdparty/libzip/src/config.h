@@ -42,9 +42,11 @@
 #define HAVE_SETMODE
 #define HAVE_SNPRINTF
 #define HAVE__SNPRINTF
-#define HAVE_SNPRINTF_S
+/* HAVE_SNPRINTF_S / HAVE_STRERRORLEN_S intentionally omitted:
+   MSVC 14.x CRT does not export these as linkable symbols without
+   __STDC_WANT_LIB_EXT1__ globally defined; zip_error_strerror.c
+   uses snprintf + a fixed 256-byte buffer instead. */
 #define HAVE_STRERROR_S
-#define HAVE_STRERRORLEN_S
 #define HAVE_STRICMP
 #define HAVE_STRNCPY_S
 #define SIZEOF_OFF_T 4

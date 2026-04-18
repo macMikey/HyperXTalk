@@ -52,7 +52,7 @@ zip_error_strerror(zip_error_t *err) {
         if (system_error_buffer == NULL) {
             return _zip_err_str[ZIP_ER_MEMORY].description;
         }
-        snprintf_s(system_error_buffer, 128, "Unknown error %d", err->zip_err);
+        snprintf(system_error_buffer, 128, "Unknown error %d", err->zip_err);
         system_error_buffer[128 - 1] = '\0'; /* make sure string is NUL-terminated */
         zip_error_string = NULL;
         system_error_string = system_error_buffer;
@@ -62,7 +62,9 @@ zip_error_strerror(zip_error_t *err) {
 
         switch (_zip_err_str[err->zip_err].type) {
             case ZIP_ET_SYS: {
-                size_t len = strerrorlen_s(err->sys_err) + 1;
+                /* strerrorlen_s is not exported by all MSVC CRT builds;
+                   256 bytes is more than sufficient for any OS error string. */
+                size_t len = 256;
                 system_error_buffer = malloc(len);
                 if (system_error_buffer == NULL) {
                     return _zip_err_str[ZIP_ER_MEMORY].description;
@@ -88,7 +90,7 @@ zip_error_strerror(zip_error_t *err) {
                     if (system_error_buffer == NULL) {
                         return _zip_err_str[ZIP_ER_MEMORY].description;
                     }
-                    snprintf_s(system_error_buffer, 128, "invalid detail error %u", error);
+                    snprintf(system_error_buffer, 128, "invalid detail error %u", error);
                     system_error_buffer[128 - 1] = '\0'; /* make sure string is NUL-terminated */
                     system_error_string = system_error_buffer;
                 }
@@ -97,7 +99,7 @@ zip_error_strerror(zip_error_t *err) {
                     if (system_error_buffer == NULL) {
                         return _zip_err_str[ZIP_ER_MEMORY].description;
                     }
-                    snprintf_s(system_error_buffer, 128, "entry %d: %s", index, _zip_err_details[error].description);
+                    snprintf(system_error_buffer, 128, "entry %d: %s", index, _zip_err_details[error].description);
                     system_error_buffer[128 - 1] = '\0'; /* make sure string is NUL-terminated */
                     system_error_string = system_error_buffer;
                 }
@@ -131,7 +133,7 @@ zip_error_strerror(zip_error_t *err) {
             return _zip_err_str[ZIP_ER_MEMORY].description;
         }
 
-        snprintf_s(s, length + 1, "%s%s%s", (zip_error_string ? zip_error_string : ""), (zip_error_string ? ": " : ""), system_error_string);
+        snprintf(s, length + 1, "%s%s%s", (zip_error_string ? zip_error_string : ""), (zip_error_string ? ": " : ""), system_error_string);
         err->str = s;
 
         free(system_error_buffer);
