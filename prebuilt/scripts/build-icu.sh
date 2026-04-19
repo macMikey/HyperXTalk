@@ -93,7 +93,7 @@ if [ ! -d "$ICU_SRC" ] ; then
 				if [ -e "${ICU_TGZ}" ] ; then
 					rm ${ICU_TGZ}
 				fi
-				exit
+				exit 1
 			fi
 		else
 			echo "Error: downloading shasum file failed, cannot verify integrity" && exit 1
