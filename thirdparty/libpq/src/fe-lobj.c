@@ -203,7 +203,7 @@ lo_truncate(PGconn *conn, int fd, size_t len)
  * returns -1 upon failure
  */
 int
-lo_truncate64(PGconn *conn, int fd, pg_int64 len)
+lo_truncate64(PGconn *conn, int fd, int64_t len)
 {
 	PQArgBlock	argv[2];
 	PGresult   *res;
@@ -406,12 +406,12 @@ lo_lseek(PGconn *conn, int fd, int offset, int whence)
  * lo_lseek64
  *	  change the current read or write location on a large object
  */
-pg_int64
-lo_lseek64(PGconn *conn, int fd, pg_int64 offset, int whence)
+int64_t
+lo_lseek64(PGconn *conn, int fd, int64_t offset, int whence)
 {
 	PQArgBlock	argv[3];
 	PGresult   *res;
-	pg_int64	retval;
+	int64_t		retval;
 	int			result_len;
 
 	if (conn == NULL || conn->lobjfuncs == NULL)
@@ -581,10 +581,10 @@ lo_tell(PGconn *conn, int fd)
  * lo_tell64
  *	  returns the current seek location of the large object
  */
-pg_int64
+int64_t
 lo_tell64(PGconn *conn, int fd)
 {
-	pg_int64	retval;
+	int64_t		retval;
 	PQArgBlock	argv[1];
 	PGresult   *res;
 	int			result_len;

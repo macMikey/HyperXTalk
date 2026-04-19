@@ -10,6 +10,11 @@
 		# in prebuilt/lib/mac/ by prebuilt/scripts/build-libmysql-mac-arm64.sh)
 		# instead of attempting to compile the MySQL 5.x source against 9.x headers.
 		'use_system_libmysql': 1,
+
+		# On macOS, use the prebuilt libpq.a from Homebrew (placed
+		# in prebuilt/lib/mac/ by prebuilt/scripts/build-libpq-mac-arm64.sh)
+		# instead of attempting to compile the PostgreSQL 9.x source against 18.x headers.
+		'use_system_libpq': 1,
 	},
 
 	'xcode_config_file': '../version',

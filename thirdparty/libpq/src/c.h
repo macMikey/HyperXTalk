@@ -175,6 +175,9 @@
 
 #ifndef __cplusplus
 
+/* In C23, bool/true/false are keywords — typedef char bool would be rejected */
+#if !defined(__STDC_VERSION__) || __STDC_VERSION__ < 202311L
+
 #ifndef bool
 typedef char bool;
 #endif
@@ -186,6 +189,8 @@ typedef char bool;
 #ifndef false
 #define false	((bool) 0)
 #endif
+
+#endif   /* C < C23 */
 #endif   /* not C++ */
 
 typedef bool *BoolPtr;

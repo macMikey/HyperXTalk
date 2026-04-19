@@ -82,7 +82,7 @@ enum enum_mysql_timestamp_type {
 typedef struct MYSQL_TIME {
   unsigned int year, month, day, hour, minute, second;
   unsigned long second_part; /**< microseconds */
-  my_bool neg;
+  bool neg;
   enum enum_mysql_timestamp_type time_type;
   /// The time zone displacement, specified in seconds.
   int time_zone_displacement;

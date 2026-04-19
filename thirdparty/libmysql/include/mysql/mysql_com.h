@@ -126,7 +126,6 @@
   obfuscated password, received from client
 */
 #define SCRAMBLE_LENGTH 20
-#define SCRAMBLE_LENGTH_323 8
 #define AUTH_PLUGIN_DATA_PART_1_LENGTH 8
 /** length of password stored in the db: new passwords are preceded with '*'*/
 #define SCRAMBLED_PASSWORD_CHAR_LENGTH (SCRAMBLE_LENGTH * 2 + 1)
@@ -894,8 +893,8 @@ enum SERVER_STATUS_flags_enum {
 #define ONLY_KILL_QUERY 1
 
 #ifndef MYSQL_VIO
-struct st_vio;
-#define MYSQL_VIO struct st_vio *
+struct Vio;
+#define MYSQL_VIO struct Vio *
 #endif
 
 #define MAX_TINYINT_WIDTH 3   /**< Max width for a TINY w.o. sign */
@@ -931,7 +930,7 @@ typedef struct NET {
   unsigned int *return_status;
   unsigned char reading_or_writing;
   unsigned char save_char;
-  my_bool compress;
+  bool compress;
   unsigned int last_errno;
   unsigned char error;
   /** Client library error message buffer. Actually belongs to struct MYSQL. */
@@ -947,7 +946,6 @@ typedef struct NET {
     to maintain the server internal instrumentation for the connection.
   */
   void *extension;
-  unsigned char unused; /* padding/compat with MySQL 5.x net_serv.c */
 } NET;
 
 #define packet_error (~(unsigned long)0)
@@ -1092,15 +1090,15 @@ enum enum_session_state_type {
 
 #define net_new_transaction(net) ((net)->pkt_nr = 0)
 
-my_bool my_net_init(struct NET *net, MYSQL_VIO vio);
+bool my_net_init(struct NET *net, MYSQL_VIO vio);
 void my_net_local_init(struct NET *net);
 void net_end(struct NET *net);
-void net_clear(struct NET *net, my_bool check_buffer);
-void net_claim_memory_ownership(struct NET *net, my_bool claim);
-my_bool net_realloc(struct NET *net, size_t length);
-my_bool net_flush(struct NET *net);
-my_bool my_net_write(struct NET *net, const unsigned char *packet, size_t len);
-my_bool net_write_command(struct NET *net, unsigned char command,
+void net_clear(struct NET *net, bool check_buffer);
+void net_claim_memory_ownership(struct NET *net, bool claim);
+bool net_realloc(struct NET *net, size_t length);
+bool net_flush(struct NET *net);
+bool my_net_write(struct NET *net, const unsigned char *packet, size_t len);
+bool net_write_command(struct NET *net, unsigned char command,
                        const unsigned char *header, size_t head_len,
                        const unsigned char *packet, size_t len);
 bool net_write_packet(struct NET *net, const unsigned char *packet,
@@ -1151,7 +1149,7 @@ const char *mysql_errno_to_sqlstate(unsigned int mysql_errno);
 
 /* Some other useful functions */
 
-my_bool my_thread_init(void);
+bool my_thread_init(void);
 void my_thread_end(void);
 
 #ifdef STDCALL

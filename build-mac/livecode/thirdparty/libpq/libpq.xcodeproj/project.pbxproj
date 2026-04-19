@@ -213,6 +213,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 12F599A77051BD4E9625DBD4 /* Build configuration list for PBXNativeTarget "libpq" */;
 			buildPhases = (
+				B1C2D3E4F5A6B7C8D9E0F1A2 /* Copy prebuilt libpq.a */,
 				D7191ECB336A7AE56CDA0BA7 /* Sources */,
 				F32E3E3E395EF6DBF98DC16A /* Frameworks */,
 			);
@@ -246,34 +247,28 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		B1C2D3E4F5A6B7C8D9E0F1A2 /* Copy prebuilt libpq.a */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy prebuilt libpq.a";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\nSRC=\"${SRCROOT}/../../prebuilt/lib/mac/libpq.a\"\nDST=\"${BUILT_PRODUCTS_DIR}/libpq.a\"\necho \"Copying prebuilt libpq.a to ${DST}\"\ncp \"${SRC}\" \"${DST}\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		D7191ECB336A7AE56CDA0BA7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6BFEEFA83D8DE860405B9841 /* chklocale.c in Sources */,
-				966A92A9C5AD6E05471AC292 /* encnames.c in Sources */,
-				B7DE33C36079E974B3128C61 /* fe-auth.c in Sources */,
-				D29D5FCB792373BEF1D5DFF4 /* fe-connect.c in Sources */,
-				3F7D8C087599374FD3F0A655 /* fe-exec.c in Sources */,
-				92470EFD23612A087D38B3D9 /* fe-lobj.c in Sources */,
-				EC3932DA575AC08A76D9DB8A /* fe-misc.c in Sources */,
-				5736717D1E1EC851F15F82C7 /* fe-print.c in Sources */,
-				C81295FEFF3396030EBDD496 /* fe-protocol2.c in Sources */,
-				4D5C408A4D693A318022D5D7 /* fe-protocol3.c in Sources */,
-				7EDE3C77B5B2929825BE4571 /* fe-secure.c in Sources */,
-				7F6A15DB525348275B0C2291 /* getpeereid.c in Sources */,
-				2BC57C64814404A93908ED39 /* inet_net_ntop.c in Sources */,
-				BEAF1F39823F58578E60C3BF /* ip.c in Sources */,
-				7B1F21063478FEAD93196C74 /* libpq-events.c in Sources */,
-				FE2583405757D3054DE33785 /* md5.c in Sources */,
-				0D43C06BC5674C303F1369DC /* noblock.c in Sources */,
-				DC67289353D087BE93C78C78 /* pgsleep.c in Sources */,
-				3B6864CDABE32EE1E5B4D4B0 /* pgstrcasecmp.c in Sources */,
-				6F850779667F928537F145B7 /* pqexpbuffer.c in Sources */,
-				531F3B1AC5A4EC551D08B47F /* pqsignal.c in Sources */,
-				E5204675F39D7F6E400EBFB6 /* thread.c in Sources */,
-				9FE281F65B6CD1056E0F16CF /* wchar.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -359,7 +354,7 @@
 				HEADER_SEARCH_PATHS = (
 					include,
 					src,
-					../../prebuilt/include/openssl,
+					../../prebuilt/include,
 				);
 				OTHER_LDFLAGS = (
 					"-Wl,-platform_version",
@@ -389,7 +384,7 @@
 				HEADER_SEARCH_PATHS = (
 					include,
 					src,
-					../../prebuilt/include/openssl,
+					../../prebuilt/include,
 				);
 				OTHER_LDFLAGS = (
 					"-Wl,-platform_version",
@@ -418,7 +413,7 @@
 				HEADER_SEARCH_PATHS = (
 					include,
 					src,
-					../../prebuilt/include/openssl,
+					../../prebuilt/include,
 				);
 				OTHER_LDFLAGS = (
 					"-Wl,-platform_version",

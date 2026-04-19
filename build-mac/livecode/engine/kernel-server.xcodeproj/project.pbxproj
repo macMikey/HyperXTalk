@@ -156,6 +156,7 @@
 		23DFD903F3DB7B0431A2E307 /* scrollbardraw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C899DFB59B9FCDB7E387ED89 /* scrollbardraw.cpp */; };
 		24556F96778098612E853DA3 /* module-engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD5AEC0ED33F1B72B798B94A /* module-engine.cpp */; };
 		246C781887CE6B136D1C11B8 /* stack3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8302920D48B2F98F031917FF /* stack3.cpp */; };
+		2498A9E2A7D0138DCE4E085E /* libcustomssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 05258B830C125EA963A3577C /* libcustomssl.a */; };
 		2541911F94928E8343561FB9 /* exec-misc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FF20BD45A7D3A3744706E3A6 /* exec-misc.cpp */; };
 		2574EC7081B0101E5CE55AD7 /* answer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3F210B6EAC23268D2A56D1EB /* answer.cpp */; };
 		25D752E1F71BFB0859ACB75E /* cmds.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8E1E3BB0296DF15E8988CC66 /* cmds.cpp */; };
@@ -163,7 +164,6 @@
 		25F498C712EF746009F6A070 /* ifile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1CC80F85DB42A5E99B01A55 /* ifile.cpp */; };
 		26082C290296365EBC2D2962 /* libjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 88B9B2407A2ECB2F5162CC68 /* libjpeg.a */; };
 		26A212FD8104EE7E9CF70BC2 /* widget-ref.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B710A22EF1A5CC2AD07C1317 /* widget-ref.cpp */; };
-		26D4255BF4FFF5D90EF49320 /* libcustomssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A3C8126B52365B87876D283C /* libcustomssl.a */; };
 		2789A326FDCDE1CBEB40D2F2 /* image_rep_encoded.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DB9E8782831FB290E6EB3BF3 /* image_rep_encoded.cpp */; };
 		288321C3561212E8B51BA0DB /* exec-interface-vclip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F27F83CCE562D1D1EC185993 /* exec-interface-vclip.cpp */; };
 		28A480E95ED777F44B139E21 /* eventqueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C094585CEFCFBE43484F5F1B /* eventqueue.cpp */; };
@@ -430,7 +430,6 @@
 		A27E9431237DFF89C202F28B /* sysspec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ABEF4BAD87A1322C5630A2E0 /* sysspec.cpp */; };
 		A287C17A214FE4DF76C4E638 /* libicuuc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 51E26D3BABC4AB7123F8F00D /* libicuuc.a */; };
 		A375FC1785D84E78987C04C6 /* securemode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D442A5CF99B3B2EC996E0FBC /* securemode.cpp */; };
-		A46EBB2B26E0E8F8D950A1A1 /* libcustomcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 53AC29158669A81328E9D820 /* libcustomcrypto.a */; };
 		A4EA53404D032AB8E04B80DE /* exec-calendar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 411F1A6244A651CC465984AB /* exec-calendar.cpp */; };
 		A4F6E28BEC0526FDE31D6444 /* imageloader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2F83356DD05D85193F8333E /* imageloader.cpp */; };
 		A50D71F57330667940E27B38 /* mac-clipboard.mm in Sources */ = {isa = PBXBuildFile; fileRef = B94E5D8C17346896424C4E0A /* mac-clipboard.mm */; };
@@ -475,6 +474,7 @@
 		B657BC6D6AD50057153F89E9 /* debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEA1237F8F1A0ABA0B503DD9 /* debug.cpp */; };
 		B7E7B9EFD9065F4B8BB9067B /* libFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A846D7627DD1E7CDBE3283D /* libFoundation.a */; };
 		B7FA14B0B5B68084C783C99B /* dllst.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB57F5AC468D3B7DD399127B /* dllst.cpp */; };
+		BA59CA92D16D00A25FD4AD13 /* libcustomcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0F3B7775C4907A8C14C3C00 /* libcustomcrypto.a */; };
 		BA885418B307D32978981974 /* exec-pasteboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F16B57641ED29AC3BB6657E2 /* exec-pasteboard.cpp */; };
 		BB049AD726EC49B923F9EC92 /* exec-addressbook.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DB03117619218DD23185EB46 /* exec-addressbook.cpp */; };
 		BC44AB61E775BF2CEA3D2EAD /* dskmac.mm in Sources */ = {isa = PBXBuildFile; fileRef = 44DB7BE304B1B9EF677CEA2F /* dskmac.mm */; };
@@ -1484,6 +1484,7 @@
 		047992B325BD88A5F949D6E6 /* cdata.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cdata.h; sourceTree = "<group>"; };
 		04BF6E922325140DD27183C5 /* mbliphoneappview.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = mbliphoneappview.mm; sourceTree = "<group>"; };
 		04EDD6A3D701B96EE4F892F1 /* player.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = player.h; sourceTree = "<group>"; };
+		05258B830C125EA963A3577C /* libcustomssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcustomssl.a; path = ../prebuilt/lib/mac/libcustomssl.a; sourceTree = "<group>"; };
 		0587B0365D0C01780A0416FA /* libscript.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libscript.xcodeproj; path = "../build-mac/livecode/libscript/libscript.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		05C0C1E00771B84BF2F9EF7B /* native-layer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "native-layer.h"; sourceTree = "<group>"; };
 		05C323F3229D308F00F1C961 /* exec-strings.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "exec-strings.cpp"; sourceTree = "<group>"; };
@@ -1706,7 +1707,6 @@
 		5283057BBFB1DC804CC5EDE4 /* exec-interface-widget.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "exec-interface-widget.cpp"; sourceTree = "<group>"; };
 		52B563168A9A35E4084840B2 /* exec-busyindicator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "exec-busyindicator.cpp"; sourceTree = "<group>"; };
 		532E3A5ACE084E3BA04A99E7 /* libffi.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libffi.xcodeproj; path = "../build-mac/livecode/thirdparty/libffi/libffi.xcodeproj"; sourceTree = SOURCE_ROOT; };
-		53AC29158669A81328E9D820 /* libcustomcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcustomcrypto.a; path = ../prebuilt/lib/mac/libcustomcrypto.a; sourceTree = "<group>"; };
 		53BEBBCF7422417B6A046FF0 /* mbliphonecamera.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = mbliphonecamera.mm; sourceTree = "<group>"; };
 		53E2D2A6E8CD4D145303E4B5 /* filepath.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = filepath.cpp; sourceTree = "<group>"; };
 		540B055FF8BC2E100A343D1D /* mbliphonepick.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = mbliphonepick.mm; sourceTree = "<group>"; };
@@ -1893,7 +1893,6 @@
 		A15983FCF5E2C11F42DD8775 /* socket_resolve.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = socket_resolve.cpp; sourceTree = "<group>"; };
 		A1A0CBFAAEAB223D61456329 /* mblandroidnotification.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = mblandroidnotification.cpp; sourceTree = "<group>"; };
 		A3AEDFCF286EE7E57362E249 /* bitmapeffectblur.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = bitmapeffectblur.cpp; sourceTree = "<group>"; };
-		A3C8126B52365B87876D283C /* libcustomssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcustomssl.a; path = ../prebuilt/lib/mac/libcustomssl.a; sourceTree = "<group>"; };
 		A654699BCBB7DD7F1EFE0A0C /* sha512.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sha512.cpp; sourceTree = "<group>"; };
 		A6A62D14BBA5A1E68B15D6B8 /* mbliphonedialog.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = mbliphonedialog.mm; sourceTree = "<group>"; };
 		A77EFFC07D106695809868B5 /* shacommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = shacommon.h; sourceTree = "<group>"; };
@@ -1919,6 +1918,7 @@
 		AFDAD087330BD37709B57FC9 /* props.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = props.cpp; sourceTree = "<group>"; };
 		AFFB632062C075BACC400666 /* mblandroidfs.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = mblandroidfs.cpp; sourceTree = "<group>"; };
 		B045242D9F27F6807E33E672 /* sha3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sha3.h; sourceTree = "<group>"; };
+		B0F3B7775C4907A8C14C3C00 /* libcustomcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcustomcrypto.a; path = ../prebuilt/lib/mac/libcustomcrypto.a; sourceTree = "<group>"; };
 		B123B366BCECA027774A5326 /* stackfileformat.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = stackfileformat.cpp; sourceTree = "<group>"; };
 		B138D1C706FC7BE40BC0ECCB /* globals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = globals.h; sourceTree = "<group>"; };
 		B1D642B44AFB351DF0CEB4DE /* mblandroidstore.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = mblandroidstore.cpp; sourceTree = "<group>"; };
@@ -2184,8 +2184,8 @@
 				585D2ABAEC64C04AB066EB4E /* libicudata.a in Frameworks */,
 				0C7E80DC7F02742DC32B5985 /* libffi.a in Frameworks */,
 				810CA1083924BDD66B0587FC /* libcurl.dylib in Frameworks */,
-				A46EBB2B26E0E8F8D950A1A1 /* libcustomcrypto.a in Frameworks */,
-				26D4255BF4FFF5D90EF49320 /* libcustomssl.a in Frameworks */,
+				BA59CA92D16D00A25FD4AD13 /* libcustomcrypto.a in Frameworks */,
+				2498A9E2A7D0138DCE4E085E /* libcustomssl.a in Frameworks */,
 				E4AA9946DF0B5AF4AD728F17 /* WebKit.framework in Frameworks */,
 				EC96C697D57746DB802FEE4B /* JavaScriptCore.framework in Frameworks */,
 			);
@@ -2318,8 +2318,8 @@
 				C4A824CABC23BE168740AB67 /* WebKit.framework */,
 				22B82F94437682FC728C4C83 /* libcups.dylib */,
 				49283402DF806CE41E4BF6D3 /* libcurl.dylib */,
-				53AC29158669A81328E9D820 /* libcustomcrypto.a */,
-				A3C8126B52365B87876D283C /* libcustomssl.a */,
+				B0F3B7775C4907A8C14C3C00 /* libcustomcrypto.a */,
+				05258B830C125EA963A3577C /* libcustomssl.a */,
 				31E8482F1DC2BB132469097B /* libffi.a */,
 				510BA98ABC9E1B248730CA62 /* libicudata.a */,
 				43E7DAD0341ED31DE5F92F8B /* libicui18n.a */,
@@ -4800,7 +4800,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(SDKROOT)/System/Library/Frameworks",
 					../prebuilt/lib/mac,
-					../prebuilt/lib/mac,
 				);
 				OTHER_LDFLAGS = (
 					"-Wl,-platform_version",
@@ -4902,7 +4901,6 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(SDKROOT)/System/Library/Frameworks",
-					../prebuilt/lib/mac,
 					../prebuilt/lib/mac,
 				);
 				OTHER_LDFLAGS = (
@@ -5433,7 +5431,6 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(SDKROOT)/System/Library/Frameworks",
-					../prebuilt/lib/mac,
 					../prebuilt/lib/mac,
 				);
 				OTHER_LDFLAGS = (

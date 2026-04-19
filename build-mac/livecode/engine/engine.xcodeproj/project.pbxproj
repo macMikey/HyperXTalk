@@ -116,7 +116,6 @@
 		0E0011AAE8400BCFF86FEB06 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 579691938457283837E7DFEE /* AudioToolbox.framework */; };
 		0E29D7789DAEE5721E072545 /* libskia_opt_sse42 (host).a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8EFB08807A5659D3DAB1EE /* libskia_opt_sse42 (host).a */; };
 		0F18348D6BB9F6D6C87E37FC /* Localisation.strings in Resources */ = {isa = PBXBuildFile; fileRef = FF1ECF3BF79519BA821A3EF9 /* Localisation.strings */; };
-		102252BD358915942F4EDD7A /* libcustomcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6370467D810B0A4681C9F81D /* libcustomcrypto.a */; };
 		102A5AC55C5C08F4239FE29A /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 445CF12E072C34F29DBFD95B /* IOKit.framework */; };
 		114FF95221FE4B567682EC17 /* libffi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 51785C2E9DF34B3C5FC7902B /* libffi.a */; };
 		129A59BDE8371B0584DBA75F /* libskia_opt_sse41 (host).a in Frameworks */ = {isa = PBXBuildFile; fileRef = CDAD92C927D13F96CC3C0B18 /* libskia_opt_sse41 (host).a */; };
@@ -176,7 +175,9 @@
 		3FE0584D723DFAC96BD88447 /* dummy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE95FB8405383C1DE5775625 /* dummy.cpp */; };
 		43E5435D2B9AE63A1CD16353 /* libicui18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DF2031CA40F78D1D995F4D2 /* libicui18n.a */; };
 		440403A679861BB1B856397D /* libskia_opt_avx (host).a in Frameworks */ = {isa = PBXBuildFile; fileRef = A10FCB65BBF8EFD204F7BA17 /* libskia_opt_avx (host).a */; };
+		457165580529D7ABFB7EE8CF /* libcustomcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D54FAD2D1C6CE1BA74D58F1 /* libcustomcrypto.a */; };
 		4575B0ADED12D6A081D912B0 /* libcups.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 40CBA8A477415E76D92D18EA /* libcups.dylib */; };
+		457928E1D50F9894EA058B57 /* libcustomcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D54FAD2D1C6CE1BA74D58F1 /* libcustomcrypto.a */; };
 		4672B269C0C8BD4727C2E0C5 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3A6C181A1AB2B6376AEA190 /* WebKit.framework */; };
 		49713254DBDC67BE1026DFA2 /* libicutu.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F491936D472AE302E7924D /* libicutu.a */; };
 		49DACD8673A5B41276E9D2F8 /* HyperXTalk.rsrc in Resources */ = {isa = PBXBuildFile; fileRef = A2FA5F34C349F1903257F9D6 /* HyperXTalk.rsrc */; };
@@ -197,7 +198,6 @@
 		58BE66D44BDDE1B361603CDE /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8416525A62C91BC008B2DAB1 /* CoreText.framework */; };
 		58FA9DCE2E7BA73126FD38D3 /* libgif.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 930E5D5E7404A2103EAF56CB /* libgif.a */; };
 		592036CEAB3F1EAE4E14446D /* libicudata.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7862EBA8C3F6165E618A27A4 /* libicudata.a */; };
-		59C2D7837B0F49C05AAD6F8A /* libcustomssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 772998AAEC794B83275EE75F /* libcustomssl.a */; };
 		5A1D5997B7DB87F7556DF422 /* libskia_opt_arm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 72C05C8B63AA37C8ED22E2AA /* libskia_opt_arm.a */; };
 		5B1AEE423738FC90F8F34B2D /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC9B7AF8F28BE680EC5ACF1F /* Quartz.framework */; };
 		5B4E0C16D16AF2FF5F1FDEBA /* libz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9F99AE5FE42CEBB601B6194 /* libz.a */; };
@@ -237,6 +237,7 @@
 		857F6E00406ED442504D1170 /* libicutu.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F491936D472AE302E7924D /* libicutu.a */; };
 		869F989B482859462B036DA5 /* libbrowser.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 042B0B4AEE827523B371BD9C /* libbrowser.a */; };
 		87D19999162086D52CEF1D93 /* libffi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9395DE81FF5B7C6F006FEF9 /* libffi.a */; };
+		87DF69B5BBA4B8BE21941F06 /* libcustomssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CF6FF9266510D41A0BE78063 /* libcustomssl.a */; };
 		87F4115622F0740CD307182D /* libjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA248C0E9843DD2958D03B8A /* libjpeg.a */; };
 		8821BE8C8C71D13DDE9FE85D /* libsecurity-community.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43AF16C8E0B365F6DE5C1CD7 /* libsecurity-community.a */; };
 		89860DCCD0D4F988BD5A6403 /* libskia_opt_sse2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A98174D110547D33F1DACA92 /* libskia_opt_sse2.a */; };
@@ -275,6 +276,7 @@
 		A6D8E2F6531441FC98812B72 /* HyperXTalk.rsrc in Resources */ = {isa = PBXBuildFile; fileRef = A2FA5F34C349F1903257F9D6 /* HyperXTalk.rsrc */; };
 		A7EA4E4F1651A8685ED9400B /* libbrowser.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 042B0B4AEE827523B371BD9C /* libbrowser.a */; };
 		A80DFC64616438D1D37EB5FE /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 445CF12E072C34F29DBFD95B /* IOKit.framework */; };
+		A8F3E340EA0A0CDA298C1A16 /* libcustomssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CF6FF9266510D41A0BE78063 /* libcustomssl.a */; };
 		AB79D22BE9212867A636B8A5 /* libskia_opt_hsw.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AFCBC97A1D1B794E5872D6ED /* libskia_opt_hsw.a */; };
 		AE14FE0B74D8D055DE0372DC /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C017A5488895848B14CA4F1 /* AppKit.framework */; };
 		AF2433D5BC588DC2B9EAF094 /* HyperXTalkDoc.icns in Resources */ = {isa = PBXBuildFile; fileRef = E03DF4A54F17DE97AB0EE7DD /* HyperXTalkDoc.icns */; };
@@ -291,7 +293,6 @@
 		BEB103C577DB050B1E254402 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FF5F84EC673493AF752ED34 /* CoreGraphics.framework */; };
 		BF0A8492B7F33BBEC818E13B /* libz-host.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 40EE1BED099A401197723F6B /* libz-host.a */; };
 		BF1AFF1A364F48C68786D1A5 /* libskia_opt_sse41.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 280346BD7E86EE38C0D2C9B3 /* libskia_opt_sse41.a */; };
-		C05AD208D3694D43F647387C /* libcustomssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 772998AAEC794B83275EE75F /* libcustomssl.a */; };
 		C174FA428BBB29140B9DC26D /* libicuuc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FFCA982B503572DCA9650E6 /* libicuuc.a */; };
 		C208B992E63E410EF28714EA /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1D042857F01B945E7A531FC /* Carbon.framework */; };
 		C2A093298C95B145CAB40B9D /* libskia_opt_sse2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A98174D110547D33F1DACA92 /* libskia_opt_sse2.a */; };
@@ -335,7 +336,6 @@
 		E762E2574E0D0332754032C8 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8416525A62C91BC008B2DAB1 /* CoreText.framework */; };
 		E87B321C47800CB5940DE89F /* libskia_opt_none.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 369F0CAA6DB00AB55E8BD758 /* libskia_opt_none.a */; };
 		E8D545E56B1F63A2B0F2DBF1 /* libbrowser (host).a in Frameworks */ = {isa = PBXBuildFile; fileRef = C6D886B29AED0BEC070D5508 /* libbrowser (host).a */; };
-		E9326EF98A07829924B3F2BB /* libcustomcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6370467D810B0A4681C9F81D /* libcustomcrypto.a */; };
 		EB077A651D9D4EED77D4384B /* libicudata.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7862EBA8C3F6165E618A27A4 /* libicudata.a */; };
 		EB35CDB4E9C684C93BAD8C93 /* libskia_opt_hsw.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AFCBC97A1D1B794E5872D6ED /* libskia_opt_hsw.a */; };
 		EBB7CBA37F3E5FC13EA3E3C9 /* libicuuc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FFCA982B503572DCA9650E6 /* libicuuc.a */; };
@@ -2345,6 +2345,7 @@
 		1AA29B54954E4ADABECDF19F /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/Localisation.strings; sourceTree = "<group>"; };
 		1B067B6C66917E46D27F0DE8 /* environment.livecode */ = {isa = PBXFileReference; lastKnownFileType = text; path = environment.livecode; sourceTree = "<group>"; };
 		1B7FC9E4013C1046793089EA /* libgraphics.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libgraphics.xcodeproj; path = "../build-mac/livecode/libgraphics/libgraphics.xcodeproj"; sourceTree = SOURCE_ROOT; };
+		1D54FAD2D1C6CE1BA74D58F1 /* libcustomcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcustomcrypto.a; path = ../prebuilt/lib/mac/libcustomcrypto.a; sourceTree = "<group>"; };
 		1E7BC92CE69E9C5341748152 /* libjpeg.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libjpeg.xcodeproj; path = "../build-mac/livecode/thirdparty/libjpeg/libjpeg.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		23F80ABCADF3351FC5CC838B /* libscript.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libscript.xcodeproj; path = "../build-mac/livecode/libscript/libscript.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		27FD540B4CE986BA3AA40CA2 /* MediaToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaToolbox.framework; path = System/Library/Frameworks/MediaToolbox.framework; sourceTree = SDKROOT; };
@@ -2379,7 +2380,6 @@
 		593DF33441AD18CA8C69A67B /* app-bundle-template.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; path = "app-bundle-template.gypi"; sourceTree = "<group>"; };
 		5A6AF4A0D2B8BBB33F87A49C /* yacc.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = yacc.gypi; path = ../config/yacc.gypi; sourceTree = "<group>"; };
 		5ADADA5638ECDF332D860ECE /* Installer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Installer.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		6370467D810B0A4681C9F81D /* libcustomcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcustomcrypto.a; path = ../prebuilt/lib/mac/libcustomcrypto.a; sourceTree = "<group>"; };
 		63837DE04702BC9C0F27C7EB /* emscripten-settings.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = "emscripten-settings.gypi"; path = "../config/emscripten-settings.gypi"; sourceTree = "<group>"; };
 		63943116AFF2CEEF1F507F51 /* unlicensedbkgndbehavior.livecodescript */ = {isa = PBXFileReference; lastKnownFileType = text; path = unlicensedbkgndbehavior.livecodescript; sourceTree = "<group>"; };
 		661DC5FE02163EB0C6DE4292 /* standalone.rc */ = {isa = PBXFileReference; lastKnownFileType = text; path = standalone.rc; sourceTree = "<group>"; };
@@ -2391,7 +2391,6 @@
 		6FF5F84EC673493AF752ED34 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		730FE298B705F2E418D73504 /* revliburl.livecodescript */ = {isa = PBXFileReference; lastKnownFileType = text; path = revliburl.livecodescript; sourceTree = "<group>"; };
 		767DFB8435A651483D953EDE /* server-community-host */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "server-community-host"; sourceTree = BUILT_PRODUCTS_DIR; };
-		772998AAEC794B83275EE75F /* libcustomssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcustomssl.a; path = ../prebuilt/lib/mac/libcustomssl.a; sourceTree = "<group>"; };
 		77CE41DF00E735EB6A5FC21D /* revpdfprinter.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = revpdfprinter.xcodeproj; path = "../build-mac/livecode/revpdfprinter/revpdfprinter.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		7832BFE0045DADF1B7CDB3ED /* server-community */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "server-community"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7862EBA8C3F6165E618A27A4 /* libicudata.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicudata.a; path = ../prebuilt/lib/mac/libicudata.a; sourceTree = "<group>"; };
@@ -2451,6 +2450,7 @@
 		CE499BA6C935A9A96A06C6F9 /* zh_TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_TW; path = zh_TW.lproj/Localisation.strings; sourceTree = "<group>"; };
 		CECBD01ED4A616C388364D26 /* engine_lcb_modules.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = engine_lcb_modules.cpp; sourceTree = "<group>"; };
 		CF3B30F0E674EBEF181E3DC5 /* unlicensedbuynowbuttonbehavior.livecodescript */ = {isa = PBXFileReference; lastKnownFileType = text; path = unlicensedbuynowbuttonbehavior.livecodescript; sourceTree = "<group>"; };
+		CF6FF9266510D41A0BE78063 /* libcustomssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcustomssl.a; path = ../prebuilt/lib/mac/libcustomssl.a; sourceTree = "<group>"; };
 		D2B52D24440498CE69EA1A85 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		D2EF524EEAACD9994850B8A5 /* installer.rc */ = {isa = PBXFileReference; lastKnownFileType = text; path = installer.rc; sourceTree = "<group>"; };
 		D4846353400FB8515E23F56E /* Italian */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Italian; path = Italian.lproj/Localisation.strings; sourceTree = "<group>"; };
@@ -2573,8 +2573,8 @@
 				592036CEAB3F1EAE4E14446D /* libicudata.a in Frameworks */,
 				2FE2560FCA3638AF803F6C7E /* libffi.a in Frameworks */,
 				8B30437705028A3258CE8711 /* libcurl.dylib in Frameworks */,
-				E9326EF98A07829924B3F2BB /* libcustomcrypto.a in Frameworks */,
-				59C2D7837B0F49C05AAD6F8A /* libcustomssl.a in Frameworks */,
+				457928E1D50F9894EA058B57 /* libcustomcrypto.a in Frameworks */,
+				87DF69B5BBA4B8BE21941F06 /* libcustomssl.a in Frameworks */,
 				7ABA369BDD87CBD400CA3C76 /* WebKit.framework in Frameworks */,
 				F573EFD7A70AD3B2714A0840 /* JavaScriptCore.framework in Frameworks */,
 			);
@@ -2622,8 +2622,8 @@
 				3EB043035AFFFCAF1F372565 /* libicudata.a in Frameworks */,
 				FD2DF18D10CFD577643AB24B /* libffi.a in Frameworks */,
 				8441D7EF85F57E7F3B9A501A /* libcurl.dylib in Frameworks */,
-				102252BD358915942F4EDD7A /* libcustomcrypto.a in Frameworks */,
-				C05AD208D3694D43F647387C /* libcustomssl.a in Frameworks */,
+				457165580529D7ABFB7EE8CF /* libcustomcrypto.a in Frameworks */,
+				A8F3E340EA0A0CDA298C1A16 /* libcustomssl.a in Frameworks */,
 				3930CF29D4610185E96B5492 /* WebKit.framework in Frameworks */,
 				847ECF78FE15FB1715ED24D5 /* JavaScriptCore.framework in Frameworks */,
 			);
@@ -2884,8 +2884,8 @@
 				C3A6C181A1AB2B6376AEA190 /* WebKit.framework */,
 				40CBA8A477415E76D92D18EA /* libcups.dylib */,
 				E87CA7845C223C38DF1A7D30 /* libcurl.dylib */,
-				6370467D810B0A4681C9F81D /* libcustomcrypto.a */,
-				772998AAEC794B83275EE75F /* libcustomssl.a */,
+				1D54FAD2D1C6CE1BA74D58F1 /* libcustomcrypto.a */,
+				CF6FF9266510D41A0BE78063 /* libcustomssl.a */,
 				C9395DE81FF5B7C6F006FEF9 /* libffi.a */,
 				7862EBA8C3F6165E618A27A4 /* libicudata.a */,
 				8DF2031CA40F78D1D995F4D2 /* libicui18n.a */,
@@ -5877,7 +5877,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(SDKROOT)/System/Library/Frameworks",
 					../prebuilt/lib/mac,
-					../prebuilt/lib/mac,
 				);
 				OTHER_LDFLAGS = (
 					"-Wl,-platform_version",
@@ -6252,7 +6251,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(SDKROOT)/System/Library/Frameworks",
 					../prebuilt/lib/mac,
-					../prebuilt/lib/mac,
 				);
 				OTHER_LDFLAGS = (
 					"-Wl,-platform_version",
@@ -6348,7 +6346,6 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(SDKROOT)/System/Library/Frameworks",
-					../prebuilt/lib/mac,
 					../prebuilt/lib/mac,
 				);
 				OTHER_LDFLAGS = (
@@ -6660,7 +6657,6 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(SDKROOT)/System/Library/Frameworks",
-					../prebuilt/lib/mac,
 					../prebuilt/lib/mac,
 				);
 				OTHER_LDFLAGS = (
@@ -7522,7 +7518,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(SDKROOT)/System/Library/Frameworks",
 					../prebuilt/lib/mac,
-					../prebuilt/lib/mac,
 				);
 				OTHER_LDFLAGS = (
 					"-Wl,-platform_version",
@@ -8212,7 +8207,6 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(SDKROOT)/System/Library/Frameworks",
-					../prebuilt/lib/mac,
 					../prebuilt/lib/mac,
 				);
 				OTHER_LDFLAGS = (

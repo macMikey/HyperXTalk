@@ -352,7 +352,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "exec perl ../util/encode_version.pl -252d8c5572bbeb41dd9b866a819afa5b3fca5972 . \"${SHARED_INTERMEDIATE_DIR}\"\nexit 1\n";
+			shellScript = "exec perl ../util/encode_version.pl -dd2d4f33a53160258fba5ba6023ea5422e74c7b2 . \"${SHARED_INTERMEDIATE_DIR}\"\nexit 1\n";
 			showEnvVarsInLog = 0;
 		};
 		5979130A0D81773A45CFF55F /* Action "encode_version" */ = {
@@ -371,7 +371,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "exec perl ../util/encode_version.pl -252d8c5572bbeb41dd9b866a819afa5b3fca5972 . \"${SHARED_INTERMEDIATE_DIR}\"\nexit 1\n";
+			shellScript = "exec perl ../util/encode_version.pl -dd2d4f33a53160258fba5ba6023ea5422e74c7b2 . \"${SHARED_INTERMEDIATE_DIR}\"\nexit 1\n";
 			showEnvVarsInLog = 0;
 		};
 		FB45D465600427BE1263DCF1 /* Action "quicktime_stubs" */ = {
@@ -489,7 +489,6 @@
 					"$(SHARED_INTERMEDIATE_DIR)/src",
 					"$(SHARED_INTERMEDIATE_DIR)/include",
 					../prebuilt/include,
-					../prebuilt/include/openssl,
 					../libfoundation/include,
 					../libgraphics/include,
 				);
@@ -668,7 +667,6 @@
 					"$(SHARED_INTERMEDIATE_DIR)/src",
 					"$(SHARED_INTERMEDIATE_DIR)/include",
 					../prebuilt/include,
-					../prebuilt/include/openssl,
 					../libfoundation/include,
 					../libgraphics/include,
 				);
@@ -1341,7 +1339,6 @@
 					"$(SHARED_INTERMEDIATE_DIR)/src",
 					"$(SHARED_INTERMEDIATE_DIR)/include",
 					../prebuilt/include,
-					../prebuilt/include/openssl,
 					../libfoundation/include,
 					../libgraphics/include,
 				);

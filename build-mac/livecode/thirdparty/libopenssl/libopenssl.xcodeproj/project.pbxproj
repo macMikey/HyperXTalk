@@ -58,11 +58,11 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		0CF0448A88523E5494105938 /* dummy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6A743D720E9F49790C29E7E /* dummy.cpp */; };
-		789D4C0671DDA9BDE1C8C3EA /* libcustomcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CB0D4FF2D6C54BA8237AA8B0 /* libcustomcrypto.a */; };
-		7BB7200DBE2D2E69FCA68B2B /* libcustomssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AED8480AF4F1CCEDD3EF1E3C /* libcustomssl.a */; };
+		4E718BF0345D6181A93E8290 /* libcustomssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EC41BE319B6EE5C76A31E50C /* libcustomssl.a */; };
+		69D7D940A1AA5663FA890636 /* revsecurity_compat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34E5F401EF9E7E1A2337B0F8 /* revsecurity_compat.cpp */; };
 		806D2C7F4176FEED98DDEB68 /* ssl.mac.stubs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 556F3F3BAEA55CFFA5E08CAC /* ssl.mac.stubs.cpp */; };
-		113BE5A79807879DA3C1BE90 /* revsecurity_compat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3CD549584A502D689ED264A4 /* revsecurity_compat.cpp */; };
+		AFBC4292E3613B3483A989B2 /* dummy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6A743D720E9F49790C29E7E /* dummy.cpp */; };
+		B5B671D17D212B7C8664D5A4 /* libcustomcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6350B659646A07A5285D9DA3 /* libcustomcrypto.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -159,10 +159,12 @@
 		21FDA35DBA0A16FAC921D640 /* libopenssl.gyp */ = {isa = PBXFileReference; explicitFileType = sourcecode; path = libopenssl.gyp; sourceTree = "<group>"; };
 		278B95A2C10BD2E551A32A41 /* ios.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = ios.gypi; path = ../../config/ios.gypi; sourceTree = "<group>"; };
 		2AD94FD6999638A820BDF5E8 /* list_stub_symbols.pl */ = {isa = PBXFileReference; lastKnownFileType = text.script.perl; path = list_stub_symbols.pl; sourceTree = "<group>"; };
+		34E5F401EF9E7E1A2337B0F8 /* revsecurity_compat.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = revsecurity_compat.cpp; sourceTree = "<group>"; };
 		36CEB386F4000B644FD3D5A3 /* ssl.stubs */ = {isa = PBXFileReference; lastKnownFileType = text; path = ssl.stubs; sourceTree = "<group>"; };
 		395DF3A9256AD0AD1479EF55 /* libopenssl.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libopenssl.xcodeproj; path = "../../build-mac/livecode/prebuilt/libopenssl.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		556F3F3BAEA55CFFA5E08CAC /* ssl.mac.stubs.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ssl.mac.stubs.cpp; sourceTree = "<group>"; };
 		5AF293BF31A21B4C48A6D056 /* arch.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = arch.gypi; path = ../../config/arch.gypi; sourceTree = "<group>"; };
+		6350B659646A07A5285D9DA3 /* libcustomcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcustomcrypto.a; path = ../../prebuilt/lib/mac/libcustomcrypto.a; sourceTree = "<group>"; };
 		6D58932AC90685768794AFB9 /* version.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = version.gypi; path = ../../config/version.gypi; sourceTree = "<group>"; };
 		758959D0B79E5DEF808D8641 /* linux.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = linux.gypi; path = ../../config/linux.gypi; sourceTree = "<group>"; };
 		7D69893309436E8CAE0B1709 /* exclusions.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = exclusions.gypi; path = ../../config/exclusions.gypi; sourceTree = "<group>"; };
@@ -171,12 +173,10 @@
 		8F4287FCD3192A6D77748B37 /* android.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = android.gypi; path = ../../config/android.gypi; sourceTree = "<group>"; };
 		950930566E91102EB3AA1794 /* fetch.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = fetch.xcodeproj; path = "../../build-mac/livecode/prebuilt/fetch.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		9D13ABE0B37AF3CCDA607A76 /* yacc.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = yacc.gypi; path = ../../config/yacc.gypi; sourceTree = "<group>"; };
-		AED8480AF4F1CCEDD3EF1E3C /* libcustomssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcustomssl.a; path = ../../prebuilt/lib/mac/libcustomssl.a; sourceTree = "<group>"; };
 		B51E5A3DCA5E5575AF788973 /* emscripten.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = emscripten.gypi; path = ../../config/emscripten.gypi; sourceTree = "<group>"; };
 		B885A56A79A97B8157ABC2B4 /* win32.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = win32.gypi; path = ../../config/win32.gypi; sourceTree = "<group>"; };
 		BAEB1D8CC86F3CBA10597E59 /* mac.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = mac.gypi; path = ../../config/mac.gypi; sourceTree = "<group>"; };
 		C689638BE7918D3A1C56C74C /* linux-settings.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = "linux-settings.gypi"; path = "../../config/linux-settings.gypi"; sourceTree = "<group>"; };
-		CB0D4FF2D6C54BA8237AA8B0 /* libcustomcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcustomcrypto.a; path = ../../prebuilt/lib/mac/libcustomcrypto.a; sourceTree = "<group>"; };
 		CB5FB38BD7E2D5B6AE05984E /* weak_stub_maker.pl */ = {isa = PBXFileReference; lastKnownFileType = text.script.perl; path = weak_stub_maker.pl; sourceTree = "<group>"; };
 		CD80B0844B26CE8FE35911DD /* version */ = {isa = PBXFileReference; lastKnownFileType = text; path = version; sourceTree = "<group>"; };
 		D18CB4F3B93BBD0C12AED922 /* crosscompile.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = crosscompile.gypi; path = ../../config/crosscompile.gypi; sourceTree = "<group>"; };
@@ -184,9 +184,9 @@
 		DFAA9D78B62EA33ECB172F86 /* target_os.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = target_os.gypi; path = ../../config/target_os.gypi; sourceTree = "<group>"; };
 		E2E1858653DDE7785DDC6C6F /* sslstubs.mac.symlist */ = {isa = PBXFileReference; lastKnownFileType = text; path = sslstubs.mac.symlist; sourceTree = "<group>"; };
 		E6A743D720E9F49790C29E7E /* dummy.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = dummy.cpp; sourceTree = "<group>"; };
+		EC41BE319B6EE5C76A31E50C /* libcustomssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcustomssl.a; path = ../../prebuilt/lib/mac/libcustomssl.a; sourceTree = "<group>"; };
 		F8F0713DA82F62451A873674 /* emscripten-settings.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = "emscripten-settings.gypi"; path = "../../config/emscripten-settings.gypi"; sourceTree = "<group>"; };
 		FA5B881FBB286A87AB07A994 /* android-settings.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = "android-settings.gypi"; path = "../../config/android-settings.gypi"; sourceTree = "<group>"; };
-		3CD549584A502D689ED264A4 /* revsecurity_compat.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = revsecurity_compat.cpp; path = src/revsecurity_compat.cpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -194,8 +194,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				789D4C0671DDA9BDE1C8C3EA /* libcustomcrypto.a in Frameworks */,
-				7BB7200DBE2D2E69FCA68B2B /* libcustomssl.a in Frameworks */,
+				B5B671D17D212B7C8664D5A4 /* libcustomcrypto.a in Frameworks */,
+				4E718BF0345D6181A93E8290 /* libcustomssl.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -237,10 +237,28 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		4F1A5087803365ACBE6E02E9 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				3F7646ECCAC1422C6BB74DA8 /* ../.. */,
+				50360D6402342D9C6964D2DC /* src */,
+				36CEB386F4000B644FD3D5A3 /* ssl.stubs */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		50360D6402342D9C6964D2DC /* src */ = {
+			isa = PBXGroup;
+			children = (
+				34E5F401EF9E7E1A2337B0F8 /* revsecurity_compat.cpp */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		563F1C5E4DBA0AC21031E040 = {
 			isa = PBXGroup;
 			children = (
-				6D3635AB733A8A8A10B3EDE8 /* Source */,
+				4F1A5087803365ACBE6E02E9 /* Source */,
 				E0D1D55A5EC22D6FEFDA56CC /* Intermediates */,
 				B30009F40AE41F31DC3F09F8 /* Projects */,
 				71C6CA4B964BC5501484FE9C /* Frameworks */,
@@ -249,20 +267,11 @@
 			);
 			sourceTree = "<group>";
 		};
-		6D3635AB733A8A8A10B3EDE8 /* Source */ = {
-			isa = PBXGroup;
-			children = (
-				3F7646ECCAC1422C6BB74DA8 /* ../.. */,
-				36CEB386F4000B644FD3D5A3 /* ssl.stubs */,
-			);
-			name = Source;
-			sourceTree = "<group>";
-		};
 		71C6CA4B964BC5501484FE9C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CB0D4FF2D6C54BA8237AA8B0 /* libcustomcrypto.a */,
-				AED8480AF4F1CCEDD3EF1E3C /* libcustomssl.a */,
+				6350B659646A07A5285D9DA3 /* libcustomcrypto.a */,
+				EC41BE319B6EE5C76A31E50C /* libcustomssl.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -481,8 +490,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0CF0448A88523E5494105938 /* dummy.cpp in Sources */,
-				113BE5A79807879DA3C1BE90 /* revsecurity_compat.cpp in Sources */,
+				AFBC4292E3613B3483A989B2 /* dummy.cpp in Sources */,
+				69D7D940A1AA5663FA890636 /* revsecurity_compat.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

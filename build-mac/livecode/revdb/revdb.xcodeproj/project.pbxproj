@@ -30,7 +30,6 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		015E5CD778E5D3BD015F8335 /* libopenssl_stubs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3172BE857C2E185A24A967AE /* libopenssl_stubs.a */; };
 		016EDCD4645792BF9DD8F348 /* mysql_cursor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0781FCC74B38FA8C1AD1A7E9 /* mysql_cursor.cpp */; };
 		019F83F6573B248251E42C32 /* osxsupport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B905F4E02D5293807AABD424 /* osxsupport.cpp */; };
 		01A735067BF7E6F23D673F29 /* revdb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 469F9A9A2C2BA90C4C7AE0A9 /* revdb.cpp */; };
@@ -42,22 +41,20 @@
 		0D75B425E1A1B41324C0E72E /* libExternal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F6FC7331FB00C09EEFBD3DC /* libExternal.a */; };
 		10E29CEDB762494983993424 /* libCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD3687015EB14B22412E1350 /* libCore.a */; };
 		133C8860A97BD18C9645FDD5 /* libpq.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 682BAD156F9D93108BB2C115 /* libpq.a */; };
-		1396351ED74FD8091A634088 /* libmysql.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E1B60353D32EC627890B3126 /* libmysql.a */; };
 		14FE7687EE73DD39D9D0C825 /* database.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD820279193049597D70DE74 /* database.cpp */; };
 		163FB5297FB6C12734695A6C /* dbdrivercommon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95E268D369EA77825705EBD2 /* dbdrivercommon.cpp */; };
 		1CE2E736A4213D44BCAC4170 /* sqlite_connection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8BF78E438E441F315C3E41E0 /* sqlite_connection.cpp */; };
 		1F9B614036D209F97B7207CA /* mysql_connection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01583E5953504088E758E841 /* mysql_connection.cpp */; };
+		20743893866C3B077BDDF886 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E9BC8C071D93E7C4AB26CB8 /* CoreServices.framework */; };
 		2127ECA4092476A9415716A4 /* dbdrivercommon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95E268D369EA77825705EBD2 /* dbdrivercommon.cpp */; };
 		21968339297B5A0260C854E1 /* dbodbcapi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2ECA931EF824A8DF3728C0A /* dbodbcapi.cpp */; };
 		227D9ECDC8CDFFD37D03E9BA /* libExternal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F6FC7331FB00C09EEFBD3DC /* libExternal.a */; };
-		22A37BF5EF916C7D3DEB35EA /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E9BC8C071D93E7C4AB26CB8 /* CoreServices.framework */; };
 		240434C315982DE5B13372C8 /* ssl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 271A396BADB7C3550CC373BA /* ssl.cpp */; };
 		25D9B368B03C98D83DF561E5 /* database.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD820279193049597D70DE74 /* database.cpp */; };
+		277B23F65179FB5B62A066B4 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E9BC8C071D93E7C4AB26CB8 /* CoreServices.framework */; };
 		29DDB49BBBD9BA48DF3A8336 /* postgresql_cursor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CF28D487474046E305401233 /* postgresql_cursor.cpp */; };
 		2D00464B12D3B8B8C3BC5B7D /* libsqlite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E1C357ABB49BBE7CCD244A0C /* libsqlite.a */; };
 		2E240620DF71128C079776BA /* libCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD3687015EB14B22412E1350 /* libCore.a */; };
-		30FDD1DB8A2C1CF11F59238D /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E9BC8C071D93E7C4AB26CB8 /* CoreServices.framework */; };
-		3196C32EB8FDA6E2C9C22728 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E9BC8C071D93E7C4AB26CB8 /* CoreServices.framework */; };
 		32CB3B7DBB0CEB48105013C9 /* dbdrivercommon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95E268D369EA77825705EBD2 /* dbdrivercommon.cpp */; };
 		3363D67F8B2CAB6F7D8A06B8 /* libiodbc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 80C18B6D7B34BB7D09ED54D7 /* libiodbc.a */; };
 		33700A85AE385BD23AFF6625 /* mysql_cursor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0781FCC74B38FA8C1AD1A7E9 /* mysql_cursor.cpp */; };
@@ -65,65 +62,62 @@
 		377F28CE41B9487A1C5323D7 /* libExternal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F6FC7331FB00C09EEFBD3DC /* libExternal.a */; };
 		38238D129CF6ADFD4B465422 /* osxsupport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B905F4E02D5293807AABD424 /* osxsupport.cpp */; };
 		3C4013582785BDA51414A9A3 /* database.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD820279193049597D70DE74 /* database.cpp */; };
+		3EC4734DFF4BFA384E1D7056 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E9BC8C071D93E7C4AB26CB8 /* CoreServices.framework */; };
 		4620C68085CE321AC1468318 /* database.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD820279193049597D70DE74 /* database.cpp */; };
 		46A815A5D29413BC0572F347 /* odbc_cursor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5600B3B5154DBEBFCF0A8ACE /* odbc_cursor.cpp */; };
 		46F54783E4FA2825200D4646 /* dbmysqlapi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B95569C8181AD4D3B9C16F5 /* dbmysqlapi.cpp */; };
-		4769CDBD9850C1D8477A6C6B /* libz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FEAD41CAE02C7D75126BEEE /* libz.a */; };
 		488EE1F69C3F4CDC0356BD1B /* mysql_connection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01583E5953504088E758E841 /* mysql_connection.cpp */; };
 		5154155FF764AA45C3F146A3 /* dbodbcapi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2ECA931EF824A8DF3728C0A /* dbodbcapi.cpp */; };
-		551FE30DEA45A9A8FA3A229B /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E9BC8C071D93E7C4AB26CB8 /* CoreServices.framework */; };
 		5973EF56BCB8B757048EE987 /* postgresql_cursor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CF28D487474046E305401233 /* postgresql_cursor.cpp */; };
 		5A87E0E3730699FE13F3D080 /* ssl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 271A396BADB7C3550CC373BA /* ssl.cpp */; };
 		5FC9B92F5F28899CD2E91083 /* database.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD820279193049597D70DE74 /* database.cpp */; };
+		6478DCC6E310EF1E4B8DA6DE /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E9BC8C071D93E7C4AB26CB8 /* CoreServices.framework */; };
 		66A41CFBE379D96B31FCE3D5 /* libCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD3687015EB14B22412E1350 /* libCore.a */; };
 		6DE6F47A5AC74B774EC470C8 /* libExternal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F6FC7331FB00C09EEFBD3DC /* libExternal.a */; };
 		6E2AFB1C10883F799169901A /* revdb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 469F9A9A2C2BA90C4C7AE0A9 /* revdb.cpp */; };
+		767F8CB8556283503908A758 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E9BC8C071D93E7C4AB26CB8 /* CoreServices.framework */; };
 		77E675270D54D4DD285C8732 /* dbpostgresqlapi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2AD7D72DCCA4AFFA6AA47B90 /* dbpostgresqlapi.cpp */; };
-		7862D39CBAC5AFB6DCB22F12 /* libopenssl_stubs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3172BE857C2E185A24A967AE /* libopenssl_stubs.a */; };
 		7ACF1EF42F93907F3429091B /* ssl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 271A396BADB7C3550CC373BA /* ssl.cpp */; };
 		7CDD817E0069ED0DA1F21EAD /* database.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD820279193049597D70DE74 /* database.cpp */; };
 		7F380A285499B187CA97AD5C /* libiodbc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 80C18B6D7B34BB7D09ED54D7 /* libiodbc.a */; };
 		807FCE407AD35711EBE572E8 /* libExternal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F6FC7331FB00C09EEFBD3DC /* libExternal.a */; };
-		81280299F9236740C1668101 /* libmysql.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E1B60353D32EC627890B3126 /* libmysql.a */; };
-		85AE32C5112A49C17834F2D0 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E9BC8C071D93E7C4AB26CB8 /* CoreServices.framework */; };
 		87043C2DBD1F3AA88F7E53BB /* odbc_cursor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5600B3B5154DBEBFCF0A8ACE /* odbc_cursor.cpp */; };
 		88A36D3DCD9AC13191DA16D3 /* database.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD820279193049597D70DE74 /* database.cpp */; };
 		8CF897F7C510EF107F6F8DAE /* libExternal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F6FC7331FB00C09EEFBD3DC /* libExternal.a */; };
 		8F29F3C40C36E903E3A3101E /* dbdrivercommon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95E268D369EA77825705EBD2 /* dbdrivercommon.cpp */; };
 		8F932484A524D4763B1D71DE /* libExternal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F6FC7331FB00C09EEFBD3DC /* libExternal.a */; };
-		8FBA8E13A5E7227BD604B536 /* libopenssl_stubs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3172BE857C2E185A24A967AE /* libopenssl_stubs.a */; };
 		915F61BFE11EB7EBCF785F0D /* database.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD820279193049597D70DE74 /* database.cpp */; };
+		92356D1320E77D7F9CEB523E /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E9BC8C071D93E7C4AB26CB8 /* CoreServices.framework */; };
 		94059B79483F1E271EF5C3F9 /* dbdrivercommon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95E268D369EA77825705EBD2 /* dbdrivercommon.cpp */; };
-		9618855A02AC2F0E62F32460 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E9BC8C071D93E7C4AB26CB8 /* CoreServices.framework */; };
 		986BFE743B29D79C07C5853A /* dbdrivercommon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95E268D369EA77825705EBD2 /* dbdrivercommon.cpp */; };
+		98F995AD7D55D0B3B580BF93 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E9BC8C071D93E7C4AB26CB8 /* CoreServices.framework */; };
 		9A36455725F6FFCACACED1E9 /* libCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD3687015EB14B22412E1350 /* libCore.a */; };
-		9D478A8FD84688EA541A76C5 /* libz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FEAD41CAE02C7D75126BEEE /* libz.a */; };
-		9DE02448316D747F1B292D2A /* libopenssl_stubs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3172BE857C2E185A24A967AE /* libopenssl_stubs.a */; };
-		A1225CAFCF3D09503F67E5BA /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E9BC8C071D93E7C4AB26CB8 /* CoreServices.framework */; };
 		A33D0442222D613878133DCC /* postgresql_connection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0B7E2706A85B2A29E80FCF37 /* postgresql_connection.cpp */; };
+		A765D4D93C75DEE7482B70FD /* libmysql.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 914275C1FF579940E3585033 /* libmysql.a */; };
 		AD932A1303ECE6723176C226 /* libsqlite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E1C357ABB49BBE7CCD244A0C /* libsqlite.a */; };
 		B647AB1CED38C59F30D3D19D /* database.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD820279193049597D70DE74 /* database.cpp */; };
 		B94E326A0B33AD171CBD5A13 /* sqlite_connection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8BF78E438E441F315C3E41E0 /* sqlite_connection.cpp */; };
 		BB90C06E848ADC283C1ACB14 /* libiodbc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 80C18B6D7B34BB7D09ED54D7 /* libiodbc.a */; };
+		C11F06D4C976A2C484DB9ED1 /* libmysql.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 914275C1FF579940E3585033 /* libmysql.a */; };
 		C451B12BFAAEE8B29882F6EF /* libCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD3687015EB14B22412E1350 /* libCore.a */; };
 		C721B96C29C12D7D14C7815C /* sqlite_cursor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6D4F7E7B6D135FE5243EE5E1 /* sqlite_cursor.cpp */; };
 		C79ACF57E552FBB53309ED14 /* ssl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 271A396BADB7C3550CC373BA /* ssl.cpp */; };
 		C7C32703B3F965B28743536A /* libExternal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F6FC7331FB00C09EEFBD3DC /* libExternal.a */; };
 		C86E977D698B41EE4041FB29 /* database.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD820279193049597D70DE74 /* database.cpp */; };
+		CE3A21CD59B24AF9FEE8448A /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E9BC8C071D93E7C4AB26CB8 /* CoreServices.framework */; };
 		D154F6D199FCCD9AB3D05777 /* libCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD3687015EB14B22412E1350 /* libCore.a */; };
-		D410CBD4F54AB438AD99FCBB /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E9BC8C071D93E7C4AB26CB8 /* CoreServices.framework */; };
 		D56CDF368DC0E748208A9BEF /* libCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD3687015EB14B22412E1350 /* libCore.a */; };
 		D8C52FC9AAD4B4C0F6908D36 /* dbdrivercommon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95E268D369EA77825705EBD2 /* dbdrivercommon.cpp */; };
 		D8F1334AB268D0066FDD5E58 /* libCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD3687015EB14B22412E1350 /* libCore.a */; };
 		DDCBED301DC895A03A5D8CE4 /* dbsqliteapi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C75520B82D9A5F2BB47E563 /* dbsqliteapi.cpp */; };
-		E3A841172FC19121A381DF6A /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E9BC8C071D93E7C4AB26CB8 /* CoreServices.framework */; };
 		E41067D1B65E58BD95B763B9 /* sqlite_cursor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6D4F7E7B6D135FE5243EE5E1 /* sqlite_cursor.cpp */; };
-		E77A1F1D59577DB89B703D59 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E9BC8C071D93E7C4AB26CB8 /* CoreServices.framework */; };
 		EE17BD06BC812A7E8A1F0480 /* odbc_connection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0E812AC123F983DDC1369EC4 /* odbc_connection.cpp */; };
 		EFBF089C567282FC708EA6D2 /* libExternal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F6FC7331FB00C09EEFBD3DC /* libExternal.a */; };
 		F4949F0CFE2855D1AF8B9A31 /* dbmysqlapi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B95569C8181AD4D3B9C16F5 /* dbmysqlapi.cpp */; };
 		F898891F05749D3737012AFA /* dbdrivercommon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95E268D369EA77825705EBD2 /* dbdrivercommon.cpp */; };
+		F8B1556C0DE6046385ACF65F /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E9BC8C071D93E7C4AB26CB8 /* CoreServices.framework */; };
 		FB7399BD99FEAC63D46B4D65 /* postgresql_connection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0B7E2706A85B2A29E80FCF37 /* postgresql_connection.cpp */; };
+		FC136D858EEDEF5194E5A8B8 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E9BC8C071D93E7C4AB26CB8 /* CoreServices.framework */; };
 		FDAAE8D05DF796D49D55E998 /* dbdrivercommon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95E268D369EA77825705EBD2 /* dbdrivercommon.cpp */; };
 		FDC50FDC397E834C8250E838 /* libExternal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F6FC7331FB00C09EEFBD3DC /* libExternal.a */; };
 		FF7FB3C7972CA94AAE1F7633 /* libCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD3687015EB14B22412E1350 /* libCore.a */; };
@@ -150,6 +144,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 42EE8AC31FB81410648FBCD8;
 			remoteInfo = libsqlite;
+		};
+		0F013859D510FF78BE809D41 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3F6642450DCC10C034C39515 /* libmysql.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 4EFE6861E29A88997F5EEB70;
+			remoteInfo = libmysql;
 		};
 		115511A05FAB721F695467A4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -221,13 +222,6 @@
 			remoteGlobalIDString = 7F31033BA37DB57E32A81D01;
 			remoteInfo = libopenssl_stubs;
 		};
-		34E596B8B1E999F5B10B7FC3 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 3F6642450DCC10C034C39515 /* libmysql.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = FCD11362B49AF900ABF567DA;
-			remoteInfo = libmysql;
-		};
 		34F2043F5A2FC34DAE074F57 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 05D7A11D81A226E5ED2D05ED /* libopenssl.xcodeproj */;
@@ -297,13 +291,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 4B43414E2B095285C1144194;
 			remoteInfo = fetch;
-		};
-		4A6ADA1BCC1A85982752DC18 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 726A34C3DDB88E9DA6C78FA6 /* libz.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = C286D0B77F8ADAC353DEA4FD;
-			remoteInfo = libz;
 		};
 		4B858DCF242AB214FFE0DB0B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -417,20 +404,6 @@
 			remoteGlobalIDString = 7DAF95721375FEF9FB6262D6;
 			remoteInfo = "libExternal (host)";
 		};
-		987228F27BD4201518CAD0E0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 3F6642450DCC10C034C39515 /* libmysql.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = E07EAA009E70E63E792A53FE;
-			remoteInfo = libmysql;
-		};
-		9EE38221FD125191B3BA04FB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 726A34C3DDB88E9DA6C78FA6 /* libz.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = EB9EC9FE7F51565BA92F25AD;
-			remoteInfo = libz;
-		};
 		A51B9C2A06DDEA9A38761952 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 86525349BC4B469CBE1A73B5 /* Project object */;
@@ -465,6 +438,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 7F31033BA37DB57E32A81D01;
 			remoteInfo = libopenssl_stubs;
+		};
+		B083E64655BCE122327C6DCF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3F6642450DCC10C034C39515 /* libmysql.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 4EFE6861E29A88997F5EEB70;
+			remoteInfo = libmysql;
 		};
 		B1EC790369393723819E4B45 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -514,13 +494,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 83830BED1DD36CDB156D2335;
 			remoteInfo = dbmysql;
-		};
-		C751080BD128EF0AFC93559C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 726A34C3DDB88E9DA6C78FA6 /* libz.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = C286D0B77F8ADAC353DEA4FD;
-			remoteInfo = libz;
 		};
 		CC15BFA12C61BD5CAA03A833 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -584,20 +557,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = A92C2194441C45BA132EABD8;
 			remoteInfo = libpq;
-		};
-		F6CFEFB719FE69D1616AF2EA /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 3F6642450DCC10C034C39515 /* libmysql.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = FCD11362B49AF900ABF567DA;
-			remoteInfo = libmysql;
-		};
-		F78EE0CA1013EC5E91BC9422 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 726A34C3DDB88E9DA6C78FA6 /* libz.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = B3DF2C8C593BB090A6CD15F7;
-			remoteInfo = "libz (host)";
 		};
 		FA0591F8110B3AAF62E47746 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -664,7 +623,6 @@
 		6886AC2C362E0CC0CE80257D /* iossupport.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = iossupport.cpp; sourceTree = "<group>"; };
 		6D4F7E7B6D135FE5243EE5E1 /* sqlite_cursor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sqlite_cursor.cpp; sourceTree = "<group>"; };
 		6DE10596596515570B2C2C06 /* revdbapi.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = revdbapi.h; sourceTree = "<group>"; };
-		726A34C3DDB88E9DA6C78FA6 /* libz.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libz.xcodeproj; path = "../build-mac/livecode/thirdparty/libz/libz.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		778B8A164DEDA2B4498D3A5E /* libpq.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libpq.xcodeproj; path = "../build-mac/livecode/thirdparty/libpq/libpq.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		78A8BDB2E8421A33C03783AA /* dbdriver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = dbdriver.h; sourceTree = "<group>"; };
 		79032949DFA7E81060121A64 /* emscripten.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = emscripten.gypi; path = ../config/emscripten.gypi; sourceTree = "<group>"; };
@@ -675,6 +633,7 @@
 		8452E3D7079A1803BDA84EA6 /* revdb.gyp */ = {isa = PBXFileReference; explicitFileType = sourcecode; path = revdb.gyp; sourceTree = "<group>"; };
 		8A4CAF31E5D0813B760C3830 /* revdb.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = revdb.h; sourceTree = "<group>"; };
 		8BF78E438E441F315C3E41E0 /* sqlite_connection.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sqlite_connection.cpp; sourceTree = "<group>"; };
+		914275C1FF579940E3585033 /* libmysql.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmysql.a; path = ../prebuilt/lib/mac/libmysql.a; sourceTree = "<group>"; };
 		95E268D369EA77825705EBD2 /* dbdrivercommon.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = dbdrivercommon.cpp; sourceTree = "<group>"; };
 		9737A360992F8B7F812FBC05 /* w32support.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = w32support.cpp; sourceTree = "<group>"; };
 		9EAD2DD53D21B114A643BBCB /* server-dbodbc.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = "server-dbodbc.dylib"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -705,12 +664,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				C7C32703B3F965B28743536A /* libExternal.a in Frameworks */,
-				1396351ED74FD8091A634088 /* libmysql.a in Frameworks */,
-				9DE02448316D747F1B292D2A /* libopenssl_stubs.a in Frameworks */,
 				3363D67F8B2CAB6F7D8A06B8 /* libiodbc.a in Frameworks */,
 				66A41CFBE379D96B31FCE3D5 /* libCore.a in Frameworks */,
-				4769CDBD9850C1D8477A6C6B /* libz.a in Frameworks */,
-				3196C32EB8FDA6E2C9C22728 /* CoreServices.framework in Frameworks */,
+				FC136D858EEDEF5194E5A8B8 /* CoreServices.framework in Frameworks */,
+				C11F06D4C976A2C484DB9ED1 /* libmysql.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -720,9 +677,8 @@
 			files = (
 				FDC50FDC397E834C8250E838 /* libExternal.a in Frameworks */,
 				133C8860A97BD18C9645FDD5 /* libpq.a in Frameworks */,
-				8FBA8E13A5E7227BD604B536 /* libopenssl_stubs.a in Frameworks */,
 				10E29CEDB762494983993424 /* libCore.a in Frameworks */,
-				E77A1F1D59577DB89B703D59 /* CoreServices.framework in Frameworks */,
+				92356D1320E77D7F9CEB523E /* CoreServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -733,7 +689,7 @@
 				8CF897F7C510EF107F6F8DAE /* libExternal.a in Frameworks */,
 				AD932A1303ECE6723176C226 /* libsqlite.a in Frameworks */,
 				0261F4C04C75F59F8F8BB831 /* libCore.a in Frameworks */,
-				551FE30DEA45A9A8FA3A229B /* CoreServices.framework in Frameworks */,
+				98F995AD7D55D0B3B580BF93 /* CoreServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -742,11 +698,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				807FCE407AD35711EBE572E8 /* libExternal.a in Frameworks */,
-				81280299F9236740C1668101 /* libmysql.a in Frameworks */,
-				015E5CD778E5D3BD015F8335 /* libopenssl_stubs.a in Frameworks */,
 				FF7FB3C7972CA94AAE1F7633 /* libCore.a in Frameworks */,
-				9D478A8FD84688EA541A76C5 /* libz.a in Frameworks */,
-				9618855A02AC2F0E62F32460 /* CoreServices.framework in Frameworks */,
+				3EC4734DFF4BFA384E1D7056 /* CoreServices.framework in Frameworks */,
+				A765D4D93C75DEE7482B70FD /* libmysql.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -756,7 +710,7 @@
 			files = (
 				C451B12BFAAEE8B29882F6EF /* libCore.a in Frameworks */,
 				377F28CE41B9487A1C5323D7 /* libExternal.a in Frameworks */,
-				E3A841172FC19121A381DF6A /* CoreServices.framework in Frameworks */,
+				F8B1556C0DE6046385ACF65F /* CoreServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -767,7 +721,7 @@
 				227D9ECDC8CDFFD37D03E9BA /* libExternal.a in Frameworks */,
 				7F380A285499B187CA97AD5C /* libiodbc.a in Frameworks */,
 				D154F6D199FCCD9AB3D05777 /* libCore.a in Frameworks */,
-				30FDD1DB8A2C1CF11F59238D /* CoreServices.framework in Frameworks */,
+				767F8CB8556283503908A758 /* CoreServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -778,7 +732,7 @@
 				0D75B425E1A1B41324C0E72E /* libExternal.a in Frameworks */,
 				BB90C06E848ADC283C1ACB14 /* libiodbc.a in Frameworks */,
 				9A36455725F6FFCACACED1E9 /* libCore.a in Frameworks */,
-				A1225CAFCF3D09503F67E5BA /* CoreServices.framework in Frameworks */,
+				277B23F65179FB5B62A066B4 /* CoreServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -787,10 +741,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				EFBF089C567282FC708EA6D2 /* libExternal.a in Frameworks */,
-				7862D39CBAC5AFB6DCB22F12 /* libopenssl_stubs.a in Frameworks */,
 				09034DB13A3F6C8ED7386F4E /* libpq.a in Frameworks */,
 				D8F1334AB268D0066FDD5E58 /* libCore.a in Frameworks */,
-				D410CBD4F54AB438AD99FCBB /* CoreServices.framework in Frameworks */,
+				6478DCC6E310EF1E4B8DA6DE /* CoreServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -801,7 +754,7 @@
 				6DE6F47A5AC74B774EC470C8 /* libExternal.a in Frameworks */,
 				2D00464B12D3B8B8C3BC5B7D /* libsqlite.a in Frameworks */,
 				D56CDF368DC0E748208A9BEF /* libCore.a in Frameworks */,
-				22A37BF5EF916C7D3DEB35EA /* CoreServices.framework in Frameworks */,
+				20743893866C3B077BDDF886 /* CoreServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -811,7 +764,7 @@
 			files = (
 				2E240620DF71128C079776BA /* libCore.a in Frameworks */,
 				8F932484A524D4763B1D71DE /* libExternal.a in Frameworks */,
-				85AE32C5112A49C17834F2D0 /* CoreServices.framework in Frameworks */,
+				CE3A21CD59B24AF9FEE8448A /* CoreServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -861,6 +814,13 @@
 			name = Build;
 			sourceTree = "<group>";
 		};
+		3AB4F127232BA58D4BD71C98 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		44C1D22ED784F69F74D21351 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -870,49 +830,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		4CCA752CA44E451A8624B46C /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				6FEAD41CAE02C7D75126BEEE /* libz.a */,
-				FBE69A2887E02CA405F2F2CB /* libz-host.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		4F81DBCE61CC88E68B4376B9 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				E1B60353D32EC627890B3126 /* libmysql.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		545C383FFFED64580F88AEF8 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				4E9BC8C071D93E7C4AB26CB8 /* CoreServices.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		579080432A02D65B62938310 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				80C18B6D7B34BB7D09ED54D7 /* libiodbc.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		6223BC4720B5EC0DF0ADACED /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				3172BE857C2E185A24A967AE /* libopenssl_stubs.a */,
-				BA66577536C3654E963C0148 /* revsecurity.dylib */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		77FE76204D8003F9150ABB43 /* Projects */ = {
+		46A5BF8A5B6BF0DE9B4D21AF /* Projects */ = {
 			isa = PBXGroup;
 			children = (
 				56C1EAAFAB690075509AFA8E /* fetch.xcodeproj */,
@@ -924,9 +842,35 @@
 				05D7A11D81A226E5ED2D05ED /* libopenssl.xcodeproj */,
 				778B8A164DEDA2B4498D3A5E /* libpq.xcodeproj */,
 				4776F5103A6D9397567E916A /* libsqlite.xcodeproj */,
-				726A34C3DDB88E9DA6C78FA6 /* libz.xcodeproj */,
 			);
 			name = Projects;
+			sourceTree = "<group>";
+		};
+		579080432A02D65B62938310 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				80C18B6D7B34BB7D09ED54D7 /* libiodbc.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		607494730E1C8A0E23550CDC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4E9BC8C071D93E7C4AB26CB8 /* CoreServices.framework */,
+				914275C1FF579940E3585033 /* libmysql.a */,
+				682BAD156F9D93108BB2C115 /* libpq.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6223BC4720B5EC0DF0ADACED /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3172BE857C2E185A24A967AE /* libopenssl_stubs.a */,
+				BA66577536C3654E963C0148 /* revsecurity.dylib */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		8007023BF7A44DFA7E49F4DD /* Products */ = {
@@ -950,8 +894,8 @@
 			isa = PBXGroup;
 			children = (
 				FF226B9436A6026B7CA56A84 /* Source */,
-				77FE76204D8003F9150ABB43 /* Projects */,
-				545C383FFFED64580F88AEF8 /* Frameworks */,
+				46A5BF8A5B6BF0DE9B4D21AF /* Projects */,
+				607494730E1C8A0E23550CDC /* Frameworks */,
 				8007023BF7A44DFA7E49F4DD /* Products */,
 				2F29584F49CAB0FF21DCAFA4 /* Build */,
 			);
@@ -967,7 +911,6 @@
 		96A5BD6D9668E0E6BBBADFB2 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				682BAD156F9D93108BB2C115 /* libpq.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1050,13 +993,12 @@
 			);
 			dependencies = (
 				007A375175F8E475C7FC4A95 /* PBXTargetDependency */,
-				76E4A459A7B8C84DBB306268 /* PBXTargetDependency */,
+				3979829D290B58C45FAEA17D /* PBXTargetDependency */,
 				E77B2248BA2FB6EDC295CA93 /* PBXTargetDependency */,
 				1E33D610123B5BA6720FB7F4 /* PBXTargetDependency */,
 				F0F01CE994C43143ADF7DEB2 /* PBXTargetDependency */,
 				F70D978364BCDED4234B4DCA /* PBXTargetDependency */,
 				9BE5077EFCCE1AC1BBE0B841 /* PBXTargetDependency */,
-				FF22462A56E38F9592A4B988 /* PBXTargetDependency */,
 			);
 			name = "dbmysql-server";
 			productName = "server-dbmysql";
@@ -1097,14 +1039,13 @@
 			);
 			dependencies = (
 				20E14103ECADC1A9D0260F2F /* PBXTargetDependency */,
-				68F8F0B995B51CEDD1CE4A8F /* PBXTargetDependency */,
+				7809DBB2335B2A5AFD68D6C4 /* PBXTargetDependency */,
 				2D3A43DFF77A36965EE6C4ED /* PBXTargetDependency */,
 				FBC3A07218FF23BCE4B03885 /* PBXTargetDependency */,
 				9DCB5BCAD423A7A2B7224CAF /* PBXTargetDependency */,
 				0F9B0E37F714DE55BA44EF6F /* PBXTargetDependency */,
 				B89B3C000AA665B0A081A1C8 /* PBXTargetDependency */,
 				1F96DEEF510BD23F9EC082F8 /* PBXTargetDependency */,
-				D5AE2AFAA8C3BA45E72A7DFA /* PBXTargetDependency */,
 			);
 			name = dbmysql;
 			productName = dbmysql;
@@ -1279,7 +1220,7 @@
 					ProjectRef = 3814DFEB5DC74687AD8142C9 /* libiodbc.xcodeproj */;
 				},
 				{
-					ProductGroup = 4F81DBCE61CC88E68B4376B9 /* Products */;
+					ProductGroup = 3AB4F127232BA58D4BD71C98 /* Products */;
 					ProjectRef = 3F6642450DCC10C034C39515 /* libmysql.xcodeproj */;
 				},
 				{
@@ -1297,10 +1238,6 @@
 				{
 					ProductGroup = 01D0246DD5FDEA93FBA380E7 /* Products */;
 					ProjectRef = 4776F5103A6D9397567E916A /* libsqlite.xcodeproj */;
-				},
-				{
-					ProductGroup = 4CCA752CA44E451A8624B46C /* Products */;
-					ProjectRef = 726A34C3DDB88E9DA6C78FA6 /* libz.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -1343,18 +1280,11 @@
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		682BAD156F9D93108BB2C115 /* libpq.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libpq.a;
-			remoteRef = 0B912CAC40B3C0B365600F5F /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		6FEAD41CAE02C7D75126BEEE /* libz.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libz.a;
-			remoteRef = 9EE38221FD125191B3BA04FB /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
+			isa = PBXFileReference;
+			lastKnownFileType = archive.ar;
+			name = libpq.a;
+			path = ../prebuilt/lib/mac/libpq.a;
+			sourceTree = "<group>";
 		};
 		80C18B6D7B34BB7D09ED54D7 /* libiodbc.a */ = {
 			isa = PBXReferenceProxy;
@@ -1384,25 +1314,11 @@
 			remoteRef = 86078DE26B1427E3EBDA0DC6 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		E1B60353D32EC627890B3126 /* libmysql.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libmysql.a;
-			remoteRef = 987228F27BD4201518CAD0E0 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		E1C357ABB49BBE7CCD244A0C /* libsqlite.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libsqlite.a;
 			remoteRef = 39A575D9C059649168D331D2 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FBE69A2887E02CA405F2F2CB /* libz-host.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libz-host.a";
-			remoteRef = F78EE0CA1013EC5E91BC9422 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1583,6 +1499,11 @@
 			name = libopenssl_stubs;
 			targetProxy = 402560F0C777623F15B1422C /* PBXContainerItemProxy */;
 		};
+		3979829D290B58C45FAEA17D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libmysql;
+			targetProxy = 0F013859D510FF78BE809D41 /* PBXContainerItemProxy */;
+		};
 		40C7AB5BA61D4D7E82F73468 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = F1A44E096FAED6FA68831B54 /* dbsqlite */;
@@ -1618,11 +1539,6 @@
 			name = libExternal;
 			targetProxy = 64A33DC9440942D01A597DE2 /* PBXContainerItemProxy */;
 		};
-		68F8F0B995B51CEDD1CE4A8F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = libmysql;
-			targetProxy = F6CFEFB719FE69D1616AF2EA /* PBXContainerItemProxy */;
-		};
 		6DAD098E9AAD62FD7A06A7E8 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = libCore;
@@ -1638,10 +1554,10 @@
 			name = libsqlite;
 			targetProxy = 0E163F8D68E1958751B76DC7 /* PBXContainerItemProxy */;
 		};
-		76E4A459A7B8C84DBB306268 /* PBXTargetDependency */ = {
+		7809DBB2335B2A5AFD68D6C4 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = libmysql;
-			targetProxy = 34E596B8B1E999F5B10B7FC3 /* PBXContainerItemProxy */;
+			targetProxy = B083E64655BCE122327C6DCF /* PBXContainerItemProxy */;
 		};
 		7E1ADC80D53CEB24C323F723 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1768,11 +1684,6 @@
 			name = libExternal;
 			targetProxy = 29B85C7C1A0C366CA0CD23EA /* PBXContainerItemProxy */;
 		};
-		D5AE2AFAA8C3BA45E72A7DFA /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = libz;
-			targetProxy = 4A6ADA1BCC1A85982752DC18 /* PBXContainerItemProxy */;
-		};
 		D63B054D1C283E7B2C44F504 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = libCore;
@@ -1817,11 +1728,6 @@
 			isa = PBXTargetDependency;
 			name = libiodbc;
 			targetProxy = 62BBABD4E3B647A376CA71EE /* PBXContainerItemProxy */;
-		};
-		FF22462A56E38F9592A4B988 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = libz;
-			targetProxy = C751080BD128EF0AFC93559C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1868,10 +1774,13 @@
 					../thirdparty/libiodbc/include,
 					../libexternal/include,
 					../thirdparty/libmysql/include,
-					../prebuilt/include/openssl,
+					../prebuilt/include,
 				);
 				INFOPLIST_FILE = "rsrc/dbmysql-Info.plist";
-				LIBRARY_SEARCH_PATHS = "$(SDKROOT)/System/Library/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(SDKROOT)/System/Library/Frameworks",
+					../prebuilt/lib/mac,
+				);
 				OTHER_LDFLAGS = (
 					"-undefined dynamic_lookup",
 					"-lcustomcrypto",
@@ -2341,10 +2250,13 @@
 					../thirdparty/libiodbc/include,
 					../libexternal/include,
 					../thirdparty/libmysql/include,
-					../prebuilt/include/openssl,
+					../prebuilt/include,
 				);
 				INFOPLIST_FILE = "rsrc/dbmysql-Info.plist";
-				LIBRARY_SEARCH_PATHS = "$(SDKROOT)/System/Library/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(SDKROOT)/System/Library/Frameworks",
+					../prebuilt/lib/mac,
+				);
 				OTHER_LDFLAGS = (
 					"-undefined dynamic_lookup",
 					"-lcustomcrypto",
@@ -2847,10 +2759,13 @@
 					src,
 					../libexternal/include,
 					../thirdparty/libmysql/include,
-					../prebuilt/include/openssl,
+					../prebuilt/include,
 				);
 				INFOPLIST_FILE = "rsrc/dbmysql-Info.plist";
-				LIBRARY_SEARCH_PATHS = "$(SDKROOT)/System/Library/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(SDKROOT)/System/Library/Frameworks",
+					../prebuilt/lib/mac,
+				);
 				MACH_O_TYPE = mh_dylib;
 				OTHER_LDFLAGS = (
 					"-undefined dynamic_lookup",
@@ -2930,7 +2845,7 @@
 					src,
 					../thirdparty/libiodbc/include,
 					../libexternal/include,
-					../prebuilt/include/openssl,
+					../prebuilt/include,
 					../thirdparty/libpq/include,
 				);
 				INFOPLIST_FILE = "rsrc/dbpostgresql-Info.plist";
@@ -3016,7 +2931,7 @@
 					src,
 					../libexternal/include,
 					../thirdparty/libpq/include,
-					../prebuilt/include/openssl,
+					../prebuilt/include,
 				);
 				INFOPLIST_FILE = "rsrc/dbpostgresql-Info.plist";
 				LIBRARY_SEARCH_PATHS = "$(SDKROOT)/System/Library/Frameworks";
@@ -3097,10 +3012,13 @@
 					../thirdparty/libiodbc/include,
 					../libexternal/include,
 					../thirdparty/libmysql/include,
-					../prebuilt/include/openssl,
+					../prebuilt/include,
 				);
 				INFOPLIST_FILE = "rsrc/dbmysql-Info.plist";
-				LIBRARY_SEARCH_PATHS = "$(SDKROOT)/System/Library/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(SDKROOT)/System/Library/Frameworks",
+					../prebuilt/lib/mac,
+				);
 				OTHER_LDFLAGS = (
 					"-undefined dynamic_lookup",
 					"-lcustomcrypto",
@@ -3216,10 +3134,13 @@
 					src,
 					../libexternal/include,
 					../thirdparty/libmysql/include,
-					../prebuilt/include/openssl,
+					../prebuilt/include,
 				);
 				INFOPLIST_FILE = "rsrc/dbmysql-Info.plist";
-				LIBRARY_SEARCH_PATHS = "$(SDKROOT)/System/Library/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(SDKROOT)/System/Library/Frameworks",
+					../prebuilt/lib/mac,
+				);
 				MACH_O_TYPE = mh_dylib;
 				OTHER_LDFLAGS = (
 					"-undefined dynamic_lookup",
@@ -3381,10 +3302,13 @@
 					src,
 					../libexternal/include,
 					../thirdparty/libmysql/include,
-					../prebuilt/include/openssl,
+					../prebuilt/include,
 				);
 				INFOPLIST_FILE = "rsrc/dbmysql-Info.plist";
-				LIBRARY_SEARCH_PATHS = "$(SDKROOT)/System/Library/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(SDKROOT)/System/Library/Frameworks",
+					../prebuilt/lib/mac,
+				);
 				MACH_O_TYPE = mh_dylib;
 				OTHER_LDFLAGS = (
 					"-undefined dynamic_lookup",
@@ -4050,7 +3974,7 @@
 					src,
 					../thirdparty/libiodbc/include,
 					../libexternal/include,
-					../prebuilt/include/openssl,
+					../prebuilt/include,
 					../thirdparty/libpq/include,
 				);
 				INFOPLIST_FILE = "rsrc/dbpostgresql-Info.plist";
@@ -4137,7 +4061,7 @@
 					src,
 					../libexternal/include,
 					../thirdparty/libpq/include,
-					../prebuilt/include/openssl,
+					../prebuilt/include,
 				);
 				INFOPLIST_FILE = "rsrc/dbpostgresql-Info.plist";
 				LIBRARY_SEARCH_PATHS = "$(SDKROOT)/System/Library/Frameworks";
@@ -4223,7 +4147,7 @@
 					src,
 					../libexternal/include,
 					../thirdparty/libpq/include,
-					../prebuilt/include/openssl,
+					../prebuilt/include,
 				);
 				INFOPLIST_FILE = "rsrc/dbpostgresql-Info.plist";
 				LIBRARY_SEARCH_PATHS = "$(SDKROOT)/System/Library/Frameworks";
@@ -4385,7 +4309,7 @@
 					src,
 					../thirdparty/libiodbc/include,
 					../libexternal/include,
-					../prebuilt/include/openssl,
+					../prebuilt/include,
 					../thirdparty/libpq/include,
 				);
 				INFOPLIST_FILE = "rsrc/dbpostgresql-Info.plist";

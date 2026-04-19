@@ -146,7 +146,7 @@
 				6FF16BAB2FA5B0FBA0793D5A /* PBXTargetDependency */,
 				6B72F2A106EE9E5294169080 /* PBXTargetDependency */,
 				0D4EEAC018FB8F60F7CD33D7 /* PBXTargetDependency */,
-				D0E7E43A77094894D019C9C5 /* PBXTargetDependency */,
+				B59EB7269BFC1898C980DE07 /* PBXTargetDependency */,
 				E1BFD0E6C05AA1BB499AA1BE /* PBXTargetDependency */,
 				D710417A66AAE9D4EA4B5E78 /* PBXTargetDependency */,
 				48625BE2B37A3B33F502FADA /* PBXTargetDependency */,
@@ -761,6 +761,13 @@
 			remoteGlobalIDString = 8ED0B59102009FCEAE20EFB5;
 			remoteInfo = libskia_opt_sse41;
 		};
+		8107658C38D257633FD2BE89 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 421D2D5E2BC1D7C002E548E8 /* libmysql.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 4EFE6861E29A88997F5EEB70;
+			remoteInfo = libmysql;
+		};
 		8215F2DB019D4A4153D62903 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 588E6147C4AA946CE07C5ABA /* libskia.xcodeproj */;
@@ -1069,13 +1076,6 @@
 			remoteGlobalIDString = 9BD8A4F5D80F6E3CD2155271;
 			remoteInfo = "external-revdb";
 		};
-		C3342E47DD9CE68B2D25F2FE /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 421D2D5E2BC1D7C002E548E8 /* libmysql.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = E07EAA009E70E63E792A53FE;
-			remoteInfo = libmysql;
-		};
 		C6714254C6E93A19F4E2DEFB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 66170A2A7CB3B007E3294F40 /* libcairo.xcodeproj */;
@@ -1180,13 +1180,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = CC4D44FD6E8C8AA28E1C161F;
 			remoteInfo = "external-revdb-server";
-		};
-		E75093D6209E88D31895CA1B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 421D2D5E2BC1D7C002E548E8 /* libmysql.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = FCD11362B49AF900ABF567DA;
-			remoteInfo = libmysql;
 		};
 		EF075F96C7BD10AC3DBE2364 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1637,14 +1630,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		620A99948C29A33A95F24D57 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				90AAE5DBCC8099CEF5A081D3 /* libmysql.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		65F84061F8EEE98B8A455D53 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1771,6 +1756,13 @@
 			sourceTree = "<group>";
 		};
 		A3F9FEE55F3A2C31F8510C5B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A63E121EE3CEB812D8BC8474 /* Products */ = {
 			isa = PBXGroup;
 			children = (
 			);
@@ -2008,7 +2000,7 @@
 					ProjectRef = 76A71BE33766C1181E039E48 /* libjpeg.xcodeproj */;
 				},
 				{
-					ProductGroup = 620A99948C29A33A95F24D57 /* Products */;
+					ProductGroup = A63E121EE3CEB812D8BC8474 /* Products */;
 					ProjectRef = 421D2D5E2BC1D7C002E548E8 /* libmysql.xcodeproj */;
 				},
 				{
@@ -2430,13 +2422,6 @@
 			fileType = wrapper.cfbundle;
 			path = dbpostgresql.bundle;
 			remoteRef = DF46C4E843CFF23157524DC7 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		90AAE5DBCC8099CEF5A081D3 /* libmysql.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libmysql.a;
-			remoteRef = C3342E47DD9CE68B2D25F2FE /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		97DDEDB134896659191D95A2 /* libz.a */ = {
@@ -2971,6 +2956,11 @@
 			name = "dbpostgresql-server";
 			targetProxy = 73894C3618A0AF052B5CC5B5 /* PBXContainerItemProxy */;
 		};
+		B59EB7269BFC1898C980DE07 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libmysql;
+			targetProxy = 8107658C38D257633FD2BE89 /* PBXContainerItemProxy */;
+		};
 		B707F295FA6085A659E7FAE8 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "run-test-libFoundation";
@@ -3010,11 +3000,6 @@
 			isa = PBXTargetDependency;
 			name = libskia_opt_sse2;
 			targetProxy = 05D7D6E93AD94CAB6723226B /* PBXContainerItemProxy */;
-		};
-		D0E7E43A77094894D019C9C5 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = libmysql;
-			targetProxy = E75093D6209E88D31895CA1B /* PBXContainerItemProxy */;
 		};
 		D710417A66AAE9D4EA4B5E78 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
