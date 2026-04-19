@@ -21,6 +21,6 @@ if [ -e "./configure" ]; then
 	./configure
 	make
 	cp zlib.h zconf.h "${BUILDDIR}/../include/" 2>/dev/null || true
-	cp libz.a "${BUILDDIR}/../lib/linux/" 2>/dev/null || true
+	cp libz.a "${BUILDDIR}/../lib/${PLATFORM}/" 2>/dev/null || true
 fi
 
