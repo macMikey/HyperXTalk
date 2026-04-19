@@ -571,6 +571,7 @@ on generateMenuGroup
    put  "on mouseDown; revMenubarBuildMenus; end mouseDown" into tGroupScript
    create invisible group "revMenuBar"
    set the script of it to tGroupScript
+   set the opaque of it to FALSE
    
    set the topleft of group "revMenuBar" of me to 0,0
    set the lockloc of group "revMenuBar" of me to true
