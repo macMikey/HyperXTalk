@@ -96,7 +96,7 @@ if [ ! -d "$ICU_SRC" ] ; then
 				exit
 			fi
 		else
-			echo "Warning: downloading shasum file failed, skipping checksum verification"
+			echo "Error: downloading shasum file failed, cannot verify integrity" && exit 1
 		fi
 
 	fi
@@ -106,8 +106,8 @@ if [ ! -d "$ICU_SRC" ] ; then
 	mv icu "${ICU_SRC}"
 
 	# Fix for modern glibc (2.26+) where xlocale.h was removed
-	find "${ICU_SRC}" -name "*.cpp" -o -name "*.c" | xargs grep -l "xlocale.h" 2>/dev/null | while read f; do
-		sed -i 's/#include <xlocale.h>/#include <locale.h>/g' "$f"
+	find "${ICU_SRC}" \( -name "*.cpp" -o -name "*.c" \) | xargs grep -l "xlocale.h" 2>/dev/null | while read f; do
+		sed -i.bak 's/#include <xlocale.h>/#include <locale.h>/g' "$f" && rm -f "$f.bak"
 	done
 fi
 
@@ -220,13 +220,13 @@ echo "PLATFORM = ${PLATFORM}, ARCH = ${ARCH} HOST_ARCH = ${HOST_ARCH}"
 #			android|linux)
 		case "${PLATFORM}" in
 			android)
-				sed -i -e "s/\(^CXXFLAGS.*\)--std=c++0x/\1/" icudefs.mk
+				sed -i.bak -e "s/\(^CXXFLAGS.*\)--std=c++0x/\1/" icudefs.mk && rm -f icudefs.mk.bak
 				;;
 		esac
 
 		# Make sure U_HAVE_STRTOD_L is 0 on android
  		if [ "android" == "${PLATFORM}" ] ; then
- 			sed -i -e "s/U_HAVE_STRTOD_L=1/U_HAVE_STRTOD_L=0/" icudefs.mk
+ 			sed -i.bak -e "s/U_HAVE_STRTOD_L=1/U_HAVE_STRTOD_L=0/" icudefs.mk && rm -f icudefs.mk.bak
  		fi
 
 		echo "Building ICU for ${NAME}"
