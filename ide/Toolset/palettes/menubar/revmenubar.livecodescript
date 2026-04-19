@@ -2048,6 +2048,17 @@ private function hxtMenubarPluginsMenu pContext
    return modifyMenu("Plugins", tPlugins)
 end hxtMenubarPluginsMenu
 
+on hxtMenubarPluginsMenuPick pWhich
+   switch pWhich
+      case "Plugin Settings"
+         revIDEOpenPalette "plugin preferences"
+         break
+      default  # A plugin has been selected
+         revIDEOpenPlugin pWhich
+         break
+   end switch
+end hxtMenubarPluginsMenuPick
+
 
 private function revMenubarDevelopmentMenu pContext
    global gREVSuppressErrors, gREVSuppressMessages
@@ -2593,6 +2604,9 @@ on revMenubarMenuPick pWhich
          break
       case "Development"
          revMenubarDevelopmentMenuPick pWhich
+         break
+      case "Plugins"
+         hxtMenubarPluginsMenuPick pWhich
          break
       case "View"
          revMenubarViewMenuPick pWhich
@@ -3157,20 +3171,20 @@ on revMenubarDevelopmentMenuPick pWhich
          set the menuHistory of btn "tabs" of stack "RevImageLibrary" to 2
          unlock messages
          break
-      case "Plugins"
-         local tPicked
-         set the itemDel to "|"
-         put item 2 of pWhich into tPicked
-         switch tPicked
-            case "Plugin Settings"
-               revIDEOpenPalette "plugin preferences"
-               break
-               # A plugin has been selected
-            default
-               revIDEOpenPlugin tPicked
-               break
-         end switch
-         break
+         --      case "Plugins"
+         --         local tPicked
+         --         set the itemDel to "|"
+         --         put item 2 of pWhich into tPicked
+         --         switch tPicked
+         --            case "Plugin Settings"
+         --               revIDEOpenPalette "plugin preferences"
+         --               break
+         --               # A plugin has been selected
+         --            default
+         --               revIDEOpenPlugin tPicked
+         --               break
+         --         end switch
+         --         break
       case "Start Profiling Scripts" 
          scriptprofilerStartProfiler the short name of the topStack
          break
