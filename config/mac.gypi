@@ -3,8 +3,13 @@
 	{
 		'target_sdk%': 'macosx',
 		'host_sdk%': 'macosx',
-		
+
 		'output_dir': '../mac-bin',
+
+		# On macOS, use the prebuilt libmysqlclient.a from Homebrew (placed
+		# in prebuilt/lib/mac/ by prebuilt/scripts/build-libmysql-mac-arm64.sh)
+		# instead of attempting to compile the MySQL 5.x source against 9.x headers.
+		'use_system_libmysql': 1,
 	},
 
 	'xcode_config_file': '../version',

@@ -489,6 +489,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F61B64518949CB6DC549FD06 /* Build configuration list for PBXNativeTarget "libmysql" */;
 			buildPhases = (
+				A1B2C3D4E5F6A7B8C9D0E1F2 /* CopyPrebuiltMySQL */,
 				429BD207978E085667E6CF0D /* Sources */,
 				7BCE70A89ED969D9034AAEDB /* Frameworks */,
 			);
@@ -522,104 +523,31 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		A1B2C3D4E5F6A7B8C9D0E1F2 /* CopyPrebuiltMySQL */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Prebuilt libmysql.a";
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/libmysql.a",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\nSRC=\"${SRCROOT}/../../../../../prebuilt/lib/mac/libmysql.a\"\nDST=\"${BUILT_PRODUCTS_DIR}/libmysql.a\"\necho \"Copying prebuilt libmysql.a to ${DST}\"\ncp \"${SRC}\" \"${DST}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		429BD207978E085667E6CF0D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6C7C82DBBBD5C0E148C8664E /* array.c in Sources */,
-				4568AE5F272BE186A0F597D3 /* bchange.c in Sources */,
-				55411EA6D6CD24418A1287C9 /* bmove_upp.c in Sources */,
-				74807B89AEF739E79272939D /* charset.c in Sources */,
-				96ADDB9765B6A77D9DF25051 /* charset-def.c in Sources */,
-				F4E67806DAB9D56C340B22B9 /* client.c in Sources */,
-				C583247080B9A6BAD37A0AE7 /* ctype.c in Sources */,
-				442C20C7C840227E2A422D79 /* ctype-big5.c in Sources */,
-				876DB1190009353EFB013AC9 /* ctype-bin.c in Sources */,
-				2F90D5EDAED581A356403B5F /* ctype-cp932.c in Sources */,
-				5CD4CF80EF543BCAB783C028 /* ctype-czech.c in Sources */,
-				6788BE0EA8033038D9078ABB /* ctype-euc_kr.c in Sources */,
-				977DE35D0647572EC46EFDCA /* ctype-eucjpms.c in Sources */,
-				C5B16086A410FE40CB6A315F /* ctype-extra.c in Sources */,
-				CA98E42534B3CE8D8929DA90 /* ctype-gb2312.c in Sources */,
-				7331F34F5F5C44E665842BE4 /* ctype-gbk.c in Sources */,
-				8E7BBE7AAFC47B4D8E074054 /* ctype-latin1.c in Sources */,
-				FC01E46B1581D86939762A0F /* ctype-mb.c in Sources */,
-				7E2603A8DD29EDE3EE7FBFC7 /* ctype-simple.c in Sources */,
-				68F077A2904581438EEC58FD /* ctype-sjis.c in Sources */,
-				59656330A0A063B80C45FE45 /* ctype-tis620.c in Sources */,
-				522159DBA298EF3CC8D2E84F /* ctype-uca.c in Sources */,
-				62B72F15ACA934F4FEDA5AF4 /* ctype-ucs2.c in Sources */,
-				953D15CF2E7D5EF87078AC48 /* ctype-ujis.c in Sources */,
-				0685D428FA9DBCDE9B64C8F5 /* ctype-utf8.c in Sources */,
-				4E8093D8434AD5CFDD199104 /* ctype-win1250ch.c in Sources */,
-				BC4735671494E2C20A22B7B4 /* dbug.c in Sources */,
-				37B9BB35669886FC66568009 /* default.c in Sources */,
-				0130D8E7B9157373049BDDC3 /* dtoa.c in Sources */,
-				D7986DE7FD658A26C8585AFF /* errmsg.c in Sources */,
-				5FE256FDC787C6AA6FCF416A /* errors.c in Sources */,
-				42B85021B0717B73B664F192 /* int2str.c in Sources */,
-				78DB1BFE191E087D29C78399 /* is_prefix.c in Sources */,
-				DF0BF10B1231B29F9ECDD200 /* libmysql.c in Sources */,
-				C20DE38B5B9043724BD57D34 /* list.c in Sources */,
-				24A7F87326E38A5E0E798B37 /* longlong2str.c in Sources */,
-				54278702C94B715B27FDD696 /* mf_arr_appstr.c in Sources */,
-				3BD6B09F382E2F813D3D412A /* mf_dirname.c in Sources */,
-				C00D6907624514F431B12909 /* mf_fn_ext.c in Sources */,
-				36B41514D005EB213B73D41C /* mf_format.c in Sources */,
-				9EA5129AA2C7CD6C81F5FF1A /* mf_loadpath.c in Sources */,
-				1BC2435FC7EB27A44A47003E /* mf_pack.c in Sources */,
-				18D15F4343445E0BB401EA64 /* mf_qsort.c in Sources */,
-				DB62C84B42FF98636F7152FE /* mulalloc.c in Sources */,
-				8281F73BA19641FE5D89F944 /* my_access.c in Sources */,
-				56D6ECE9167EC9DBD85A93FF /* my_alloc.c in Sources */,
-				60BD5C4E8D14C86620897226 /* my_compress.c in Sources */,
-				46DFBA23E6A7B03EFA1DA418 /* my_div.c in Sources */,
-				E1B15BDEF2F4F20D9A89B148 /* my_error.c in Sources */,
-				D6282E9A07ECB0089A80E851 /* my_fopen.c in Sources */,
-				CBE745024A6284B2A9AD783C /* my_fstream.c in Sources */,
-				52574FD3976607786649CAD0 /* my_getsystime.c in Sources */,
-				1200EEC4002766357AFCE2DF /* my_getwd.c in Sources */,
-				F5F40A4AD2A2F75B0807E14D /* my_init.c in Sources */,
-				3DF8885F7A34625F0817460B /* my_lib.c in Sources */,
-				DFB971E4A99DC314A15D9120 /* my_malloc.c in Sources */,
-				C6DD46B9AC1DDE2CDBB3FA0C /* my_messnc.c in Sources */,
-				C3B6D6FEA9717BDABB2A927C /* my_once.c in Sources */,
-				EF0B2E318E887A7598902896 /* my_open.c in Sources */,
-				2A2D5D6919F988F7DB7B15CD /* my_pthread.c in Sources */,
-				F9E0E75647DB67BC2939211C /* my_read.c in Sources */,
-				1F6D1313AA4BAFF2B0B475C1 /* my_realloc.c in Sources */,
-				DD60C026832BAB3D5926744A /* my_rnd.c in Sources */,
-				D2B196D0CE7BC2C5BAFE07C5 /* my_static.c in Sources */,
-				E7022817A1B3755D68734A82 /* my_strtoll10.c in Sources */,
-				3370CC2A130E85DE3549D244 /* my_symlink.c in Sources */,
-				A829142255053E98AEB47D10 /* my_sync.c in Sources */,
-				7EC723688DA385158AF93F55 /* my_thr_init.c in Sources */,
-				0B998DF03588BA12293A9341 /* my_time.c in Sources */,
-				7A6CCAA3273AFFD2C64CF075 /* my_vsnprintf.c in Sources */,
-				60E90C4612F14AF672FD6B87 /* my_wincond.c in Sources */,
-				A962CE3E29DDF65C2C950EA7 /* my_winerr.c in Sources */,
-				F759B4F16C165D6AFB93E6D2 /* my_winfile.c in Sources */,
-				0329A31A95BCA92AC9FA4BC8 /* net_serv.c in Sources */,
-				F054A096358FA651099D68FF /* pack.c in Sources */,
-				02FBE5205CFE09CBCEE1E2D5 /* password.c in Sources */,
-				CBD1F971312DA734B0EB7621 /* sha1.c in Sources */,
-				FBCDC07FD70556DCCE9E3189 /* str_alloc.c in Sources */,
-				ECE4F82684C131764F0F4DD2 /* str2int.c in Sources */,
-				CEE1CCCEF85BC5411FFBFEA5 /* strcend.c in Sources */,
-				8C7FA76B9166CFD06814D70A /* strend.c in Sources */,
-				DBF12B2EE02F81DF2700F031 /* strmake.c in Sources */,
-				CB8C0BAC6825259C78AC3347 /* strmov.c in Sources */,
-				F2F92BF76E0EAE2AB21F4766 /* strnlen.c in Sources */,
-				54C34192227ACA6BB5E5BBAA /* strnmov.c in Sources */,
-				BDAB40309FEF74EAB63DE2B7 /* strxmov.c in Sources */,
-				1E49E048D61158BEA0217AEA /* strxnmov.c in Sources */,
-				9FB07591E3FCC48F673BCB38 /* typelib.c in Sources */,
-				E7FEDB25CB7EDB969FE29595 /* vio.c in Sources */,
-				47B158361C5586125472EEAE /* viosocket.c in Sources */,
-				7174AFAA51E0288353D8909C /* viossl.c in Sources */,
-				6ABACF3BD3593BFAD72A88E0 /* viosslfactories.c in Sources */,
-				AF3C534EE1DB23F15D98D2DB /* xml.c in Sources */,
+				/* No sources: linking prebuilt libmysql.a instead */
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
