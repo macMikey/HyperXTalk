@@ -279,6 +279,7 @@
     <build_script_extension Include="..\..\..\extensions\script-libraries\mime\mime.livecodescript"/>
     <build_script_extension Include="..\..\..\extensions\script-libraries\drawing\drawing.livecodescript"/>
     <build_script_extension Include="..\..\..\extensions\script-libraries\dropbox\dropbox.livecodescript"/>
+    <build_script_extension Include="..\..\..\extensions\script-libraries\animationengine\animationengine.livecodescript"/>
     <build_script_extension Include="..\..\..\extensions\script-libraries\diff\diff.livecodescript"/>
     <build_script_extension Include="..\..\..\extensions\script-libraries\messageauthentication\messageauthentication.livecodescript"/>
     <build_script_extension Include="..\..\..\extensions\script-libraries\httpd\httpd.livecodescript"/>

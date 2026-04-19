@@ -50,6 +50,7 @@ set VCXPROJ_LIBGRAPHICS=build-win-x86_64\livecode\libgraphics\libGraphics.vcxpro
 set VCXPROJ_STDSCRIPT=build-win-x86_64\livecode\libscript\stdscript.vcxproj
 set VCXPROJ_LIBEXTERNAL_EXPORTS=build-win-x86_64\livecode\libexternal\libExternal-symbol-exports.vcxproj
 set VCXPROJ_LIBCORE=build-win-x86_64\livecode\libcore\libCore.vcxproj
+set VCXPROJ_LCS_EXTENSIONS=build-win-x86_64\livecode\extensions\lcs-extensions.vcxproj
 
 :: ----------------------------------------------------------
 :: Release output directory.
@@ -449,6 +450,25 @@ if not exist "%OUTDIR%\libmysql.dll" (
     echo          Run setup-mysql-win.bat to copy libmysql.dll from your Scoop MySQL install.
 )
 echo lc-compile.exe bootstrap OK.
+:: server-community.exe is used by lcs-extensions custom build rules to package
+:: script libraries.  It is built by server.vcxproj (Debug only in this script),
+:: so bootstrap it from Debug to Release the same way lc-compile.exe is bootstrapped.
+copy /Y "%DBG_DIR%\server-community.exe" "%OUTDIR%\server-community.exe" > nul 2>nul
+if not exist "%OUTDIR%\server-community.exe" (
+    echo ERROR: server-community.exe not found in Debug output.
+    echo        Run the Debug build ^(build-engine-x64.bat^) first to produce it.
+    exit /b 1
+)
+echo server-community.exe bootstrap OK.
+:: extension-utils.livecodescript calls __EnsureExternal "revzip" and "revxml",
+:: which resolve to server-revzip.dll / server-revxml.dll in specialFolderPath("engine")
+:: (i.e. the directory containing server-community.exe = Release\).
+:: Bootstrap them from Debug alongside server-community.exe.
+copy /Y "%DBG_DIR%\server-revzip.dll" "%OUTDIR%\server-revzip.dll" > nul 2>nul
+copy /Y "%DBG_DIR%\server-revxml.dll" "%OUTDIR%\server-revxml.dll" > nul 2>nul
+if not exist "%OUTDIR%\server-revzip.dll" echo WARNING: server-revzip.dll not found in Debug output. Extension packaging may fail.
+if not exist "%OUTDIR%\server-revxml.dll" echo WARNING: server-revxml.dll not found in Debug output. Extension packaging may fail.
+echo server-revzip.dll + server-revxml.dll bootstrap OK.
 
 :: ----------------------------------------------------------
 :: Bootstrap startupstack.cpp into the Release shared_intermediate.
@@ -769,4 +789,23 @@ set "LCOMPILE_LOG=%~dp0build-browser-widget-release.log"
 "%LC_COMPILE%" --modulepath "%BROWSER_PKG%" --modulepath "%LCI_DIR%" --manifest "%BROWSER_PKG%\manifest.xml" --output "%BROWSER_PKG%\module.lcm" "%BROWSER_LCB%" > "%LCOMPILE_LOG%" 2>&1
 set LC_ERR=%ERRORLEVEL%
 type "%LCOMPILE_LOG%"
-type "%LCOMPILE_LOG%" >> "%LOGFILE
+type "%LCOMPILE_LOG%" >> "%LOGFILE%"
+if %LC_ERR% NEQ 0 ( echo BROWSER WIDGET BUILD FAILED. See %LCOMPILE_LOG% & exit /b 1 )
+echo Browser widget OK.
+
+echo.
+echo Building lcs-extensions (script libraries) (Release) ...
+echo Building lcs-extensions ... >> "%LOGFILE%"
+set "LCS_LOG=%~dp0build-lcs-extensions-release.log"
+"%MSBUILD%" %VCXPROJ_LCS_EXTENSIONS% /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false "/p:SolutionDir=%~dp0build-win-x86_64\livecode\\" /v:minimal /nologo > "%LCS_LOG%" 2>&1
+set LCS_ERR=%ERRORLEVEL%
+type "%LCS_LOG%"
+type "%LCS_LOG%" >> "%LOGFILE%"
+if %LCS_ERR% NEQ 0 ( echo LCS-EXTENSIONS BUILD FAILED. See %LCS_LOG% & exit /b 1 )
+echo lcs-extensions OK.
+
+echo.
+echo ============================================================
+echo Release build complete.
+echo Output: %OUTDIR%
+echo ============================================================
