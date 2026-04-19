@@ -7,7 +7,7 @@
 #
 #  The iODBC driver manager.
 #
-#  Copyright (C) 1996-2021 OpenLink Software <iodbc@openlinksw.com>
+#  Copyright (C) 1996-2023 OpenLink Software <iodbc@openlinksw.com>
 #  All Rights Reserved.
 #
 #  This software is released under the terms of either of the following
@@ -92,7 +92,7 @@
 # BASE PACKAGE
 # ----------------------------------------------------------------------
 Name: libiodbc
-Version: 3.52.15
+Version: 3.52.16
 Release: 1
 Summary: iODBC Driver Manager
 Group: Libraries

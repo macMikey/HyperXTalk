@@ -1,13 +1,13 @@
 /*
  *  trace.h
  *
- *  $Id: trace.h,v 1.3 2006/01/20 15:58:35 source Exp $
+ *  $Id$
  *
  *  Trace functions
  *
  *  The iODBC driver manager.
  *
- *  Copyright (C) 1996-2006 by OpenLink Software <iodbc@openlinksw.com>
+ *  Copyright (C) 1996-2023 OpenLink Software <iodbc@openlinksw.com>
  *  All Rights Reserved.
  *
  *  This software is released under the terms of either of the following
@@ -89,10 +89,10 @@
 #include <sqlext.h>
 #include <sqlucode.h>
 
+#include "unicode.h"
 #include "herr.h"
 #include "henv.h"
 #include "ithread.h"
-#include "unicode.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -101,8 +101,8 @@ extern "C" {
 /*
  *  Useful constants and macros
  */
-#define MAX_EMIT_STRING		4000		/* = 100 lines in output */
-#define MAX_EMIT_BINARY		1000		/* = 100 lines in output */
+#define MAX_EMIT_STRING		40000L		/* = 1000 lines in output */
+#define MAX_EMIT_BINARY		10000L		/* = 1000 lines in output */
 
 #define TRACE_ENTER	0
 #define TRACE_LEAVE	1

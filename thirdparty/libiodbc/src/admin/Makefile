@@ -19,7 +19,7 @@
 #
 #  The iODBC driver manager.
 #
-#  Copyright (C) 1996-2021 OpenLink Software <iodbc@openlinksw.com>
+#  Copyright (C) 1996-2023 OpenLink Software <iodbc@openlinksw.com>
 #  All Rights Reserved.
 #
 #  This software is released under the terms of either of the following
@@ -229,20 +229,20 @@ am__installdirs = "$(DESTDIR)$(pkgconfigdir)"
 DATA = $(pkgconfig_DATA)
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
 am__DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/libiodbc.pc.in \
-	$(srcdir)/libiodbc.spec.in ar-lib compile config.guess \
-	config.sub install-sh ltmain.sh missing mkinstalldirs
+	$(srcdir)/libiodbc.spec.in compile config.guess config.sub \
+	install-sh ltmain.sh missing mkinstalldirs
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-ACLOCAL = ${SHELL} /home/docmeth02/developer/HyperXTalk/prebuilt/build/libiodbc-3.52.15/admin/missing aclocal-1.15
+ACLOCAL = ${SHELL} /home/docmeth02/developer/HyperXTalk/prebuilt/build/libiodbc-3.52.16/admin/missing aclocal-1.15
 AMTAR = $${TAR-tar}
 AM_DEFAULT_VERBOSITY = 1
 AR = ar
-AUTOCONF = ${SHELL} /home/docmeth02/developer/HyperXTalk/prebuilt/build/libiodbc-3.52.15/admin/missing autoconf
-AUTOHEADER = ${SHELL} /home/docmeth02/developer/HyperXTalk/prebuilt/build/libiodbc-3.52.15/admin/missing autoheader
-AUTOMAKE = ${SHELL} /home/docmeth02/developer/HyperXTalk/prebuilt/build/libiodbc-3.52.15/admin/missing automake-1.15
+AUTOCONF = ${SHELL} /home/docmeth02/developer/HyperXTalk/prebuilt/build/libiodbc-3.52.16/admin/missing autoconf
+AUTOHEADER = ${SHELL} /home/docmeth02/developer/HyperXTalk/prebuilt/build/libiodbc-3.52.16/admin/missing autoheader
+AUTOMAKE = ${SHELL} /home/docmeth02/developer/HyperXTalk/prebuilt/build/libiodbc-3.52.16/admin/missing automake-1.15
 AWK = gawk
 CC = gcc
 CCDEPMODE = depmode=gcc3
-CFLAGS = -g -O2 -DODBCVER=0x0350 -DIODBC_BUILD=15210607
+CFLAGS = -g -O2 -DODBCVER=0x0350 -DIODBC_BUILD=16230502
 CPP = gcc -E
 CPPFLAGS =  -DWITH_PTHREADS -D_REENTRANT
 CYGPATH_W = echo
@@ -278,7 +278,7 @@ LN_S = ln -s
 LTLIBOBJS = 
 LT_SYS_LIBRARY_PATH = 
 MAINT = #
-MAKEINFO = ${SHELL} /home/docmeth02/developer/HyperXTalk/prebuilt/build/libiodbc-3.52.15/admin/missing makeinfo
+MAKEINFO = ${SHELL} /home/docmeth02/developer/HyperXTalk/prebuilt/build/libiodbc-3.52.16/admin/missing makeinfo
 MANIFEST_TOOL = :
 MKDIR_P = /usr/bin/mkdir -p
 NM = /usr/bin/nm -B
@@ -290,10 +290,10 @@ OTOOL64 =
 PACKAGE = libiodbc
 PACKAGE_BUGREPORT = iodbc@openlinksw.com
 PACKAGE_NAME = iODBC Driver Manager
-PACKAGE_STRING = iODBC Driver Manager 3.52.15
+PACKAGE_STRING = iODBC Driver Manager 3.52.16
 PACKAGE_TARNAME = libiodbc
 PACKAGE_URL = 
-PACKAGE_VERSION = 3.52.15
+PACKAGE_VERSION = 3.52.16
 PATH_SEPARATOR = :
 PKG_CONFIG = /usr/bin/pkg-config
 RANLIB = ranlib
@@ -301,11 +301,11 @@ SED = /usr/bin/sed
 SET_MAKE = 
 SHELL = /bin/bash
 STRIP = strip
-VERSION = 3.52.15
-abs_builddir = /home/docmeth02/developer/HyperXTalk/prebuilt/build/libiodbc-3.52.15/admin
-abs_srcdir = /home/docmeth02/developer/HyperXTalk/prebuilt/build/libiodbc-3.52.15/admin
-abs_top_builddir = /home/docmeth02/developer/HyperXTalk/prebuilt/build/libiodbc-3.52.15
-abs_top_srcdir = /home/docmeth02/developer/HyperXTalk/prebuilt/build/libiodbc-3.52.15
+VERSION = 3.52.16
+abs_builddir = /home/docmeth02/developer/HyperXTalk/prebuilt/build/libiodbc-3.52.16/admin
+abs_srcdir = /home/docmeth02/developer/HyperXTalk/prebuilt/build/libiodbc-3.52.16/admin
+abs_top_builddir = /home/docmeth02/developer/HyperXTalk/prebuilt/build/libiodbc-3.52.16
+abs_top_srcdir = /home/docmeth02/developer/HyperXTalk/prebuilt/build/libiodbc-3.52.16
 ac_ct_AR = ar
 ac_ct_CC = gcc
 ac_ct_DUMPBIN = 
@@ -336,8 +336,8 @@ htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
 inidir = /etc
-install_sh = ${SHELL} /home/docmeth02/developer/HyperXTalk/prebuilt/build/libiodbc-3.52.15/admin/install-sh
-lib_version = 3:30:1
+install_sh = ${SHELL} /home/docmeth02/developer/HyperXTalk/prebuilt/build/libiodbc-3.52.16/admin/install-sh
+lib_version = 3:31:1
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
