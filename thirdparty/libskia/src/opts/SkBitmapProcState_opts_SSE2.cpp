@@ -1,3 +1,4 @@
+#if defined(__x86_64__) || defined(__i386__)
 /*
  * Copyright 2009 The Android Open Source Project
  *
@@ -619,3 +620,4 @@ void ClampX_ClampY_nofilter_affine_SSE2(const SkBitmapProcState& s,
         fy += dy;
     }
 }
+#endif /* __x86_64__ || __i386__ */

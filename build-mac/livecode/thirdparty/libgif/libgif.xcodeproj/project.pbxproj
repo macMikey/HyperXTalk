@@ -22,22 +22,22 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		4C04FE3D066E8E7481B08F11 /* gif_font.c in Sources */ = {isa = PBXBuildFile; fileRef = B287C1923F73F19E9301A823 /* gif_font.c */; };
-		4E564DA289B2714754D34121 /* gif_err.c in Sources */ = {isa = PBXBuildFile; fileRef = 78F1720782C842EA508EB100 /* gif_err.c */; };
-		5A7645CCA1ABAC0991234A99 /* gifalloc.c in Sources */ = {isa = PBXBuildFile; fileRef = 30370319C17144721E752E16 /* gifalloc.c */; };
-		618CFD50FA1796F67D811329 /* dgif_lib.c in Sources */ = {isa = PBXBuildFile; fileRef = 3300781184024F657776D39D /* dgif_lib.c */; };
-		6FE48814A583FF82C27819E0 /* quantize.c in Sources */ = {isa = PBXBuildFile; fileRef = 9A98EAE358189CACE9478CE9 /* quantize.c */; };
-		93167CB75A21D1A52E62DAD4 /* quantize.c in Sources */ = {isa = PBXBuildFile; fileRef = 9A98EAE358189CACE9478CE9 /* quantize.c */; };
-		9C607E955024E39B313B4C64 /* egif_lib.c in Sources */ = {isa = PBXBuildFile; fileRef = 38A12361E1ABA381B34D8580 /* egif_lib.c */; };
-		9CEC28CA93FBFCDAED8BB07A /* gif_font.c in Sources */ = {isa = PBXBuildFile; fileRef = B287C1923F73F19E9301A823 /* gif_font.c */; };
-		9E2A85404508AEEF2C2E1850 /* openbsd-reallocarray.c in Sources */ = {isa = PBXBuildFile; fileRef = 7E1B3C960CA278374A565246 /* openbsd-reallocarray.c */; };
-		A3B43ADF9073CB6E7B5755CB /* gifalloc.c in Sources */ = {isa = PBXBuildFile; fileRef = 30370319C17144721E752E16 /* gifalloc.c */; };
-		A5FCE51452DD9FBE8E4FA249 /* gif_err.c in Sources */ = {isa = PBXBuildFile; fileRef = 78F1720782C842EA508EB100 /* gif_err.c */; };
-		A6A99400D4B87746EDBF1598 /* dgif_lib.c in Sources */ = {isa = PBXBuildFile; fileRef = 3300781184024F657776D39D /* dgif_lib.c */; };
-		BE37FC96838F91EA33EB9D41 /* openbsd-reallocarray.c in Sources */ = {isa = PBXBuildFile; fileRef = 7E1B3C960CA278374A565246 /* openbsd-reallocarray.c */; };
-		BFA7282F0027701EAFE62D99 /* gif_hash.c in Sources */ = {isa = PBXBuildFile; fileRef = 870ED70FAF770C218AF21778 /* gif_hash.c */; };
-		D9F6CED87C7D2EAC6DC4B93B /* gif_hash.c in Sources */ = {isa = PBXBuildFile; fileRef = 870ED70FAF770C218AF21778 /* gif_hash.c */; };
-		E00B6174F765D295A503C818 /* egif_lib.c in Sources */ = {isa = PBXBuildFile; fileRef = 38A12361E1ABA381B34D8580 /* egif_lib.c */; };
+		0775F987308EB8ECCC938E8B /* openbsd-reallocarray.c in Sources */ = {isa = PBXBuildFile; fileRef = 7E1B3C960CA278374A565246 /* openbsd-reallocarray.c */; };
+		0965EFCEC42B9E0AF31851EE /* gif_hash.c in Sources */ = {isa = PBXBuildFile; fileRef = 870ED70FAF770C218AF21778 /* gif_hash.c */; };
+		17059DB76ED4CD5D80B6FDAB /* gif_hash.c in Sources */ = {isa = PBXBuildFile; fileRef = 870ED70FAF770C218AF21778 /* gif_hash.c */; };
+		1BEB375CA6F3C49B2F9F1C17 /* gif_err.c in Sources */ = {isa = PBXBuildFile; fileRef = 78F1720782C842EA508EB100 /* gif_err.c */; };
+		2226B1E539CF9CE9CA8CCD77 /* quantize.c in Sources */ = {isa = PBXBuildFile; fileRef = 9A98EAE358189CACE9478CE9 /* quantize.c */; };
+		3A17D1C3D4612DEDFA5A87A6 /* dgif_lib.c in Sources */ = {isa = PBXBuildFile; fileRef = 3300781184024F657776D39D /* dgif_lib.c */; };
+		6AB33F85625450A19C5DC0AD /* dgif_lib.c in Sources */ = {isa = PBXBuildFile; fileRef = 3300781184024F657776D39D /* dgif_lib.c */; };
+		6CB2BFC292A2F75C4276EA10 /* gifalloc.c in Sources */ = {isa = PBXBuildFile; fileRef = 30370319C17144721E752E16 /* gifalloc.c */; };
+		7BA4EA4EF42222229A5F2EC1 /* egif_lib.c in Sources */ = {isa = PBXBuildFile; fileRef = 38A12361E1ABA381B34D8580 /* egif_lib.c */; };
+		7FBFE9B443A25E8594405E19 /* egif_lib.c in Sources */ = {isa = PBXBuildFile; fileRef = 38A12361E1ABA381B34D8580 /* egif_lib.c */; };
+		882244ACED80DBAA13B54759 /* gif_font.c in Sources */ = {isa = PBXBuildFile; fileRef = B287C1923F73F19E9301A823 /* gif_font.c */; };
+		904E8C6208DDA607C537C07C /* gif_err.c in Sources */ = {isa = PBXBuildFile; fileRef = 78F1720782C842EA508EB100 /* gif_err.c */; };
+		A0549C7EA49EFB69E3AAFFC9 /* quantize.c in Sources */ = {isa = PBXBuildFile; fileRef = 9A98EAE358189CACE9478CE9 /* quantize.c */; };
+		A370B7AC60E6B50856B84D5C /* openbsd-reallocarray.c in Sources */ = {isa = PBXBuildFile; fileRef = 7E1B3C960CA278374A565246 /* openbsd-reallocarray.c */; };
+		CF2BC6A2DD0891D81092A1E8 /* gif_font.c in Sources */ = {isa = PBXBuildFile; fileRef = B287C1923F73F19E9301A823 /* gif_font.c */; };
+		F09133AFDC017C386A26BF27 /* gifalloc.c in Sources */ = {isa = PBXBuildFile; fileRef = 30370319C17144721E752E16 /* gifalloc.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,13 +58,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0A3C3FB4C31D47C3B24400D1 /* ios.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = ios.gypi; path = ../../config/ios.gypi; sourceTree = "<group>"; };
 		1E662C1914F0DC153EECEC76 /* mac.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = mac.gypi; path = ../../config/mac.gypi; sourceTree = "<group>"; };
+		22CF284C9E9E3BC764D614F6 /* android-settings.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = "android-settings.gypi"; path = "../../config/android-settings.gypi"; sourceTree = "<group>"; };
 		256BFE1B8B9CB25BDB63C88B /* thirdparty.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = thirdparty.gypi; path = ../../config/thirdparty.gypi; sourceTree = "<group>"; };
 		30370319C17144721E752E16 /* gifalloc.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = gifalloc.c; sourceTree = "<group>"; };
 		3300781184024F657776D39D /* dgif_lib.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = dgif_lib.c; sourceTree = "<group>"; };
 		38A12361E1ABA381B34D8580 /* egif_lib.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = egif_lib.c; sourceTree = "<group>"; };
-		3EDDAC3E78E81CDD7EC63156 /* gif_lib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gif_lib.h; sourceTree = "<group>"; };
 		581CF03F75A4AE6904AFA6FD /* linux.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = linux.gypi; path = ../../config/linux.gypi; sourceTree = "<group>"; };
+		6CCC2010D5F79437B515B8AC /* emscripten-settings.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = "emscripten-settings.gypi"; path = "../../config/emscripten-settings.gypi"; sourceTree = "<group>"; };
 		6D5B05395019DB5F743E6B81 /* exclusions.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = exclusions.gypi; path = ../../config/exclusions.gypi; sourceTree = "<group>"; };
 		7661DF7A47220C1AA7580252 /* perl.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = perl.gypi; path = ../../config/perl.gypi; sourceTree = "<group>"; };
 		78F1720782C842EA508EB100 /* gif_err.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = gif_err.c; sourceTree = "<group>"; };
@@ -74,13 +76,16 @@
 		9A98EAE358189CACE9478CE9 /* quantize.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = quantize.c; sourceTree = "<group>"; };
 		9ABB2BEE45F4CFCC9080A007 /* libgif.gyp */ = {isa = PBXFileReference; explicitFileType = sourcecode; path = libgif.gyp; sourceTree = "<group>"; };
 		A21C5C0F28C3428C2F4A684F /* win32.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = win32.gypi; path = ../../config/win32.gypi; sourceTree = "<group>"; };
+		A2ED4C6A454991EF202DF3BE /* gif_lib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gif_lib.h; sourceTree = "<group>"; };
 		B287C1923F73F19E9301A823 /* gif_font.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = gif_font.c; sourceTree = "<group>"; };
 		BB6E564687B7F3716A1AB2D6 /* version */ = {isa = PBXFileReference; lastKnownFileType = text; path = version; sourceTree = "<group>"; };
+		C40F71C6D79143B69D67B9C3 /* android.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = android.gypi; path = ../../config/android.gypi; sourceTree = "<group>"; };
 		CB3B29C5EEBFFA66D40AC520 /* target_os.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = target_os.gypi; path = ../../config/target_os.gypi; sourceTree = "<group>"; };
 		D443A5458EE17C424CA5C00A /* gif_lib_private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gif_lib_private.h; sourceTree = "<group>"; };
 		DA032B23B823E3AB3D078B6A /* common.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = common.gypi; path = ../../common.gypi; sourceTree = "<group>"; };
 		DBC572B268827D443DDC9E11 /* libgif.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libgif.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD188366AA5D970ACC55246F /* configurations.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = configurations.gypi; path = ../../config/configurations.gypi; sourceTree = "<group>"; };
+		E417CC1560C71D1C35C24372 /* emscripten.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = emscripten.gypi; path = ../../config/emscripten.gypi; sourceTree = "<group>"; };
 		E459B9CF500BAB63C405BB9C /* crosscompile.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = crosscompile.gypi; path = ../../config/crosscompile.gypi; sourceTree = "<group>"; };
 		EEBA464E59A4F3DDCBAD681E /* arch.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = arch.gypi; path = ../../config/arch.gypi; sourceTree = "<group>"; };
 		F357A2BD360BBF7D3B0E51D6 /* yacc.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = yacc.gypi; path = ../../config/yacc.gypi; sourceTree = "<group>"; };
@@ -107,6 +112,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0B913D873C838EC2346B60D1 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				3300781184024F657776D39D /* dgif_lib.c */,
+				38A12361E1ABA381B34D8580 /* egif_lib.c */,
+				78F1720782C842EA508EB100 /* gif_err.c */,
+				B287C1923F73F19E9301A823 /* gif_font.c */,
+				870ED70FAF770C218AF21778 /* gif_hash.c */,
+				FB6AFA7244EF5ACDE542D6F1 /* gif_hash.h */,
+				A2ED4C6A454991EF202DF3BE /* gif_lib.h */,
+				D443A5458EE17C424CA5C00A /* gif_lib_private.h */,
+				30370319C17144721E752E16 /* gifalloc.c */,
+				7E1B3C960CA278374A565246 /* openbsd-reallocarray.c */,
+				9A98EAE358189CACE9478CE9 /* quantize.c */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		1FF5409D9125B33D2343152C /* ../.. */ = {
 			isa = PBXGroup;
 			children = (
@@ -115,22 +138,19 @@
 			path = ../..;
 			sourceTree = "<group>";
 		};
-		3B7A93E681853AA82DA11CE9 /* include */ = {
+		20D13064F75833DA6A62A2EA /* Build */ = {
 			isa = PBXGroup;
 			children = (
-				3EDDAC3E78E81CDD7EC63156 /* gif_lib.h */,
-			);
-			path = include;
-			sourceTree = "<group>";
-		};
-		41AA01BFFC6E356BFE3D6A16 /* Build */ = {
-			isa = PBXGroup;
-			children = (
+				22CF284C9E9E3BC764D614F6 /* android-settings.gypi */,
+				C40F71C6D79143B69D67B9C3 /* android.gypi */,
 				EEBA464E59A4F3DDCBAD681E /* arch.gypi */,
 				DA032B23B823E3AB3D078B6A /* common.gypi */,
 				DD188366AA5D970ACC55246F /* configurations.gypi */,
 				E459B9CF500BAB63C405BB9C /* crosscompile.gypi */,
+				6CCC2010D5F79437B515B8AC /* emscripten-settings.gypi */,
+				E417CC1560C71D1C35C24372 /* emscripten.gypi */,
 				6D5B05395019DB5F743E6B81 /* exclusions.gypi */,
+				0A3C3FB4C31D47C3B24400D1 /* ios.gypi */,
 				9ABB2BEE45F4CFCC9080A007 /* libgif.gyp */,
 				FF1B475D82226FAD6676D14A /* linux-settings.gypi */,
 				581CF03F75A4AE6904AFA6FD /* linux.gypi */,
@@ -145,6 +165,15 @@
 			name = Build;
 			sourceTree = "<group>";
 		};
+		437872CD856E0917E8A81FF7 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				1FF5409D9125B33D2343152C /* ../.. */,
+				0B913D873C838EC2346B60D1 /* src */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
 		70CAC8B88170B8EC5999EE4B /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -154,40 +183,13 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		73FE2F16107F468179576FF1 /* src */ = {
-			isa = PBXGroup;
-			children = (
-				3300781184024F657776D39D /* dgif_lib.c */,
-				38A12361E1ABA381B34D8580 /* egif_lib.c */,
-				78F1720782C842EA508EB100 /* gif_err.c */,
-				B287C1923F73F19E9301A823 /* gif_font.c */,
-				870ED70FAF770C218AF21778 /* gif_hash.c */,
-				FB6AFA7244EF5ACDE542D6F1 /* gif_hash.h */,
-				D443A5458EE17C424CA5C00A /* gif_lib_private.h */,
-				30370319C17144721E752E16 /* gifalloc.c */,
-				7E1B3C960CA278374A565246 /* openbsd-reallocarray.c */,
-				9A98EAE358189CACE9478CE9 /* quantize.c */,
-			);
-			path = src;
-			sourceTree = "<group>";
-		};
 		AB7C7E4134E1BD8969FF6BC0 = {
 			isa = PBXGroup;
 			children = (
-				CD1B50F1B1290AEA11A039BC /* Source */,
+				437872CD856E0917E8A81FF7 /* Source */,
 				70CAC8B88170B8EC5999EE4B /* Products */,
-				41AA01BFFC6E356BFE3D6A16 /* Build */,
+				20D13064F75833DA6A62A2EA /* Build */,
 			);
-			sourceTree = "<group>";
-		};
-		CD1B50F1B1290AEA11A039BC /* Source */ = {
-			isa = PBXGroup;
-			children = (
-				1FF5409D9125B33D2343152C /* ../.. */,
-				3B7A93E681853AA82DA11CE9 /* include */,
-				73FE2F16107F468179576FF1 /* src */,
-			);
-			name = Source;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -253,14 +255,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A6A99400D4B87746EDBF1598 /* dgif_lib.c in Sources */,
-				E00B6174F765D295A503C818 /* egif_lib.c in Sources */,
-				A5FCE51452DD9FBE8E4FA249 /* gif_err.c in Sources */,
-				9CEC28CA93FBFCDAED8BB07A /* gif_font.c in Sources */,
-				BFA7282F0027701EAFE62D99 /* gif_hash.c in Sources */,
-				5A7645CCA1ABAC0991234A99 /* gifalloc.c in Sources */,
-				9E2A85404508AEEF2C2E1850 /* openbsd-reallocarray.c in Sources */,
-				93167CB75A21D1A52E62DAD4 /* quantize.c in Sources */,
+				6AB33F85625450A19C5DC0AD /* dgif_lib.c in Sources */,
+				7BA4EA4EF42222229A5F2EC1 /* egif_lib.c in Sources */,
+				904E8C6208DDA607C537C07C /* gif_err.c in Sources */,
+				CF2BC6A2DD0891D81092A1E8 /* gif_font.c in Sources */,
+				0965EFCEC42B9E0AF31851EE /* gif_hash.c in Sources */,
+				6CB2BFC292A2F75C4276EA10 /* gifalloc.c in Sources */,
+				A370B7AC60E6B50856B84D5C /* openbsd-reallocarray.c in Sources */,
+				2226B1E539CF9CE9CA8CCD77 /* quantize.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -268,14 +270,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				618CFD50FA1796F67D811329 /* dgif_lib.c in Sources */,
-				9C607E955024E39B313B4C64 /* egif_lib.c in Sources */,
-				4E564DA289B2714754D34121 /* gif_err.c in Sources */,
-				4C04FE3D066E8E7481B08F11 /* gif_font.c in Sources */,
-				D9F6CED87C7D2EAC6DC4B93B /* gif_hash.c in Sources */,
-				A3B43ADF9073CB6E7B5755CB /* gifalloc.c in Sources */,
-				BE37FC96838F91EA33EB9D41 /* openbsd-reallocarray.c in Sources */,
-				6FE48814A583FF82C27819E0 /* quantize.c in Sources */,
+				3A17D1C3D4612DEDFA5A87A6 /* dgif_lib.c in Sources */,
+				7FBFE9B443A25E8594405E19 /* egif_lib.c in Sources */,
+				1BEB375CA6F3C49B2F9F1C17 /* gif_err.c in Sources */,
+				882244ACED80DBAA13B54759 /* gif_font.c in Sources */,
+				17059DB76ED4CD5D80B6FDAB /* gif_hash.c in Sources */,
+				F09133AFDC017C386A26BF27 /* gifalloc.c in Sources */,
+				0775F987308EB8ECCC938E8B /* openbsd-reallocarray.c in Sources */,
+				A0549C7EA49EFB69E3AAFFC9 /* quantize.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -314,10 +316,7 @@
 					_RELEASE,
 					NDEBUG,
 				);
-				HEADER_SEARCH_PATHS = (
-					include,
-					src,
-				);
+				HEADER_SEARCH_PATHS = src;
 				OTHER_LDFLAGS = (
 					"-Wl,-platform_version",
 					"-Wl,macos",
@@ -341,10 +340,7 @@
 					_RELEASE,
 					NDEBUG,
 				);
-				HEADER_SEARCH_PATHS = (
-					include,
-					src,
-				);
+				HEADER_SEARCH_PATHS = src;
 				OTHER_LDFLAGS = (
 					"-Wl,-platform_version",
 					"-Wl,macos",
@@ -368,10 +364,7 @@
 					_RELEASE,
 					NDEBUG,
 				);
-				HEADER_SEARCH_PATHS = (
-					include,
-					src,
-				);
+				HEADER_SEARCH_PATHS = src;
 				OTHER_LDFLAGS = (
 					"-Wl,-platform_version",
 					"-Wl,macos",
@@ -432,10 +425,7 @@
 					_MACOSX,
 					_DEBUG,
 				);
-				HEADER_SEARCH_PATHS = (
-					include,
-					src,
-				);
+				HEADER_SEARCH_PATHS = src;
 				OTHER_LDFLAGS = (
 					"-Wl,-platform_version",
 					"-Wl,macos",
@@ -489,10 +479,7 @@
 					_MACOSX,
 					_DEBUG,
 				);
-				HEADER_SEARCH_PATHS = (
-					include,
-					src,
-				);
+				HEADER_SEARCH_PATHS = src;
 				OTHER_LDFLAGS = (
 					"-Wl,-platform_version",
 					"-Wl,macos",
@@ -523,10 +510,7 @@
 					_RELEASE,
 					NDEBUG,
 				);
-				HEADER_SEARCH_PATHS = (
-					include,
-					src,
-				);
+				HEADER_SEARCH_PATHS = src;
 				OTHER_LDFLAGS = (
 					"-Wl,-platform_version",
 					"-Wl,macos",

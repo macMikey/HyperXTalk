@@ -73,3 +73,4 @@ build-win-x86_64/livecode/Debug/Externals/CEF/libcef.dll
 build/engine/Debug/Externals/CEF 
 build/engine/Release/Externals/CEF 
 /thirdparty/libcef
+/Installer/output

@@ -266,7 +266,10 @@
     </Lib>
     <Link>
       <AdditionalDependencies>oleaut32.lib;libsqlite.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\..\prebuilt\unpacked\Thirdparty\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <!-- $(SolutionDir)$(Configuration)\lib is listed first so the Release-mode
+           libsqlite.lib built by this script takes precedence over the Debug-mode
+           copy that the prebuilt mirror step writes into the Thirdparty Release dir. -->
+      <AdditionalLibraryDirectories>$(SolutionDir)$(Configuration)\lib;..\..\..\prebuilt\unpacked\Thirdparty\x86_64-win32-$(PlatformToolset)_static_$(Configuration)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>/MACHINE:x64 %(AdditionalOptions)</AdditionalOptions>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <GenerateDebugInformation>true</GenerateDebugInformation>

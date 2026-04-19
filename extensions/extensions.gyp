@@ -79,6 +79,7 @@
 				'script-libraries/mime/mime.livecodescript',
 				'script-libraries/drawing/drawing.livecodescript',
 				'script-libraries/dropbox/dropbox.livecodescript',
+				'script-libraries/animationengine/animationengine.livecodescript',
 				'script-libraries/diff/diff.livecodescript',
 				'script-libraries/messageauthentication/messageauthentication.livecodescript',
 				'script-libraries/httpd/httpd.livecodescript',
@@ -139,12 +140,12 @@
 			'sources':
 			[
 				'modules/widget-utils/widget-utils.lcb',
-				'modules/android-utils/android-utils.lcb',				
+				#'modules/android-utils/android-utils.lcb',				
 				'modules/scriptitems/scriptitems.lcb',
 
-				'libraries/androidbgaudio/androidbgaudio.lcb',
-				'libraries/androidaudiorecorder/androidaudiorecorder.lcb',
-				'libraries/toast/toast.lcb',
+				#'libraries/androidbgaudio/androidbgaudio.lcb',
+				#'libraries/androidaudiorecorder/androidaudiorecorder.lcb',
+				#'libraries/toast/toast.lcb',
 				'libraries/canvas/canvas.lcb',
 				'libraries/iconsvg/iconsvg.lcb',
 				'libraries/json/json.lcb',

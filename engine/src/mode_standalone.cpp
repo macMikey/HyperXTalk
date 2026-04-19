@@ -1401,8 +1401,11 @@ bool MCModeGetPixelScalingEnabled()
 
 	t_success = MCWin32QueryActCtxSettings(L"dpiAware", t_value);
 
+	// HXT: The manifest value is "true/PM" (Per-Monitor) not bare "true", so
+	// use a prefix check rather than exact match. Both "true" and "true/PM"
+	// mean DPI-aware; either should enable engine pixel scaling.
 	if (t_success)
-		t_success = 0 == wcscmp(t_value, L"true");
+		t_success = 0 == wcsncmp(t_value, L"true", 4);
 
 	if (t_value != nil)
 		MCMemoryDeallocate(t_value);

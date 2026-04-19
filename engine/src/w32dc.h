@@ -361,6 +361,8 @@ public:
 
 	uint32_t getscreenxdpi(void) const { return m_metrics_x_dpi; }
 	uint32_t getscreenydpi(void) const { return m_metrics_y_dpi; }
+	// HXT: Update screen DPI at runtime (called from WM_DPICHANGED handler).
+	void updatescreendpi(uint32_t p_x, uint32_t p_y) { m_metrics_x_dpi = p_x; m_metrics_y_dpi = p_y; }
 	const NONCLIENTMETRICSW& getnonclientmetrics(void) const { return m_metrics_non_client; }
 
 	// These rountines convert a UTF-8 string into with a 'WIDE' or 'ANSI'

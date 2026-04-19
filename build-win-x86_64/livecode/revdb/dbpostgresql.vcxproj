@@ -270,6 +270,7 @@
       <AdditionalOptions>/MACHINE:x64 %(AdditionalOptions)</AdditionalOptions>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>LIBCMTD.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
       <OptimizeReferences>true</OptimizeReferences>
       <OutputFile>$(OutDir)dbpostgresql$(TargetExt)</OutputFile>
@@ -294,6 +295,10 @@
     <ClCompile Include="..\..\..\revdb\src\postgresql_connection.cpp"/>
     <ClCompile Include="..\..\..\revdb\src\postgresql_cursor.cpp"/>
     <ClCompile Include="..\..\..\revdb\src\ssl.cpp"/>
+    <!-- Stubs for Debug-CRT symbols in prebuilt libpq.lib; Release|x64 only -->
+    <ClCompile Include="..\..\..\revdb\src\pg_win_release_stubs.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'!='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\libexternal\libExternal.vcxproj">

@@ -1,3 +1,4 @@
+#if defined(__x86_64__) || defined(__i386__)
 /*
  * Copyright 2016 Google Inc.
  *
@@ -15,4 +16,4 @@ namespace SkOpts {
         hash_fn = sse42::hash_fn;
     }
 }
-
+#endif /* __x86_64__ || __i386__ */

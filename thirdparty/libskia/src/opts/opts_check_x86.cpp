@@ -1,3 +1,4 @@
+#if defined(__x86_64__) || defined(__i386__)
 /*
  * Copyright 2009 The Android Open Source Project
  *
@@ -148,3 +149,4 @@ SkBlitMask::BlitLCD16RowProc SkBlitMask::PlatformBlitRowProcs16(bool isOpaque) {
 SkBlitMask::RowProc SkBlitMask::PlatformRowProcs(SkColorType, SkMask::Format, RowFlags) {
     return nullptr;
 }
+#endif /* __x86_64__ || __i386__ */

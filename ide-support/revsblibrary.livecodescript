@@ -841,7 +841,12 @@ constant kAnswerDialog               = "true"
 constant kCursors                    = "false"
 
 // SN-2015-01-21: [[ Bug 14371 ]] 'MacOSX' has been replaced by 'MacOSX x86-32'
-constant kInitialTargets = "Windows,MacOSX arm64,MacOSX x86-64,Linux"
+-- HXT: HyperXTalk ships only a 64-bit Windows standalone engine, so default
+-- to "Windows x86-64" rather than the upstream "Windows" (x86-32) entry.
+-- revEngineCheck("Windows") looks for Runtime/Windows/x86-32/Standalone which
+-- does not exist in the HyperXTalk release, leaving the Windows settings group
+-- permanently disabled.  Switching to the x86-64 entry matches what we install.
+constant kInitialTargets = "Windows x86-64,MacOSX arm64,MacOSX x86-64,Linux"
 
 on revSBDefaultStandaloneSettings pStack, @xSettingsA
    local tPlatform,tName
@@ -857,7 +862,13 @@ on revSBDefaultStandaloneSettings pStack, @xSettingsA
       -- assume no properties set
       if xSettingsA["scriptLibraries"] = "" then put replaceText(kDefaultScriptLibraries,",",cr) into xSettingsA["scriptLibraries"]
       
-      put revEnvironmentRuntimePath() & "/Windows/x86-32/Support/Sample Icons" into tName
+      -- In installed mode the generic icons are in Resources/Sample Icons.
+      -- In dev mode they live under Runtime/Windows/x86-32/Support/Sample Icons.
+      if revEnvironmentIsInstalled() then
+         put revEnvironmentResourcesPath() & "/Sample Icons" into tName
+      else
+         put revEnvironmentRuntimePath() & "/Windows/x86-32/Support/Sample Icons" into tName
+      end if
       if xSettingsA["Windows,iconFile"] = "" then put tName & "/genericapp.ico" into xSettingsA["Windows,iconFile"]
       if xSettingsA["Windows,documenticonFile"] = "" then put tName & "/genericdoc.ico" into xSettingsA["Windows,documenticonFile"]
    end if

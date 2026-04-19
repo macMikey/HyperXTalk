@@ -1,3 +1,4 @@
+#if defined(__x86_64__) || defined(__i386__)
 /*
  * Copyright 2012 The Android Open Source Project
  *
@@ -988,3 +989,4 @@ void S32A_D565_Opaque_Dither_SSE2(uint16_t* SK_RESTRICT dst,
         } while (--count != 0);
     }
 }
+#endif /* __x86_64__ || __i386__ */

@@ -1,0 +1,5 @@
+Speech,revspeech.dll
+XML,revxml.dll
+Browser,revbrowser.dll
+Database,revdb.dll
+Zip,revzip.dll

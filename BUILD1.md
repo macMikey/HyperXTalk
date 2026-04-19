@@ -22,7 +22,15 @@
    brew install openssl@3 libpq mysql-client
    ```
 
-4. **Python 3** — verify it is available:
+4. **Java JDK (arm64)** — required to compile the JNI bindings in libfoundation.
+   Install Temurin (the recommended OpenJDK distribution for Apple Silicon):
+   ```bash
+   brew install --cask temurin
+   ```
+   > `config.sh` locates the JDK automatically by scanning
+   > `/Library/Java/JavaVirtualMachines/`. No `JAVA_HOME` export is needed.
+
+5. **Python 3** — verify it is available:
    ```bash
    python3 --version   # should return Python 3.x
    ```

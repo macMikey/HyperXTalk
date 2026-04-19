@@ -1,0 +1,8 @@
+<package version="0.0">
+  <name>com.hyperxtalk.library.animationengine</name>
+  <title>Animation Engine Library</title>
+  <author>derbrill Multimedia</author>
+  <version>2.9</version>
+  <type>library</type>
+  <license>community</license>
+</package>

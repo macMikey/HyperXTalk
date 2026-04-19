@@ -36,10 +36,12 @@ along with LiveCode.  If not see <http://www.gnu.org/licenses/>.  */
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 #include <commctrl.h>   // SetWindowSubclass / RemoveWindowSubclass
+#include <shlobj.h>     // SHGetFolderPathW / CSIDL_LOCAL_APPDATA
+#pragma comment(lib, "shell32.lib")  // SHGetFolderPathW
 #include <wrl/client.h>
 #include <wrl/event.h>
 #include <WebView2.h>
-#include <stdio.h>   // sprintf_s
+#include <stdio.h>   // sprintf_s / _snwprintf_s
 #include <stdlib.h>  // _wtoi, _wtof
 #include <string.h>  // memcpy, strlen, wcscpy_s
 
@@ -400,13 +402,34 @@ bool MCWebView2Browser::Initialize()
     // ------------------------------------------------------------------
     // Step 1 — Create the WebView2 environment (async → pump message loop)
     // ------------------------------------------------------------------
+    // IMPORTANT: Do NOT pass nullptr for the user data folder.
+    // When the app is installed in C:\Program Files\..., the WebView2
+    // default (exe_dir\HyperXTalk.exe.WebView2) is inside Program Files
+    // and is not writable by a standard (non-admin) user, causing
+    // CreateCoreWebView2EnvironmentWithOptions to fail immediately.
+    // Use %LOCALAPPDATA%\HyperXTalk\EBWebView instead — always writable.
     bool t_env_done = false;
     bool t_env_ok   = false;
 
+    // Build the user data folder path: %LOCALAPPDATA%\HyperXTalk\EBWebView
+    wchar_t t_local_appdata[MAX_PATH] = {};
+    wchar_t t_user_data_folder[MAX_PATH] = {};
+    if (SUCCEEDED(SHGetFolderPathW(nullptr, CSIDL_LOCAL_APPDATA, nullptr, 0,
+                                   t_local_appdata)))
+    {
+        _snwprintf_s(t_user_data_folder, MAX_PATH, _TRUNCATE,
+                     L"%s\\HyperXTalk\\EBWebView", t_local_appdata);
+    }
+    // If SHGetFolderPathW fails, t_user_data_folder is empty → WebView2
+    // falls back to its own default (which may fail on first-run but is
+    // at least no worse than passing nullptr explicitly).
+    const wchar_t *t_udf_ptr =
+        (t_user_data_folder[0] != L'\0') ? t_user_data_folder : nullptr;
+
     HRESULT t_hr = CreateCoreWebView2EnvironmentWithOptions(
-        nullptr,  // browser executable folder (nullptr = use system Edge)
-        nullptr,  // user data folder (nullptr = default per-app folder)
-        nullptr,  // ICoreWebView2EnvironmentOptions
+        nullptr,    // browser executable folder (nullptr = use system Edge)
+        t_udf_ptr,  // user data folder — writable per-user location
+        nullptr,    // ICoreWebView2EnvironmentOptions
         Callback<ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandler>(
             [&](HRESULT p_result,
                 ICoreWebView2Environment *p_env) -> HRESULT

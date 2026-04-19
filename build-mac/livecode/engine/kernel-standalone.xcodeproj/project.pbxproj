@@ -49,59 +49,59 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		0841EEB95EEF9803933AA119 /* libskia_opt_sse42.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1905D05D1DA5D2DC2B63ED6B /* libskia_opt_sse42.a */; };
+		07DA49776B6721A6A2107EF0 /* libskia_opt_sse41.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FAB5A251466A49D6609D7E86 /* libskia_opt_sse41.a */; };
 		09EC8C714EF0228E38EE40E7 /* libFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D8096C8E9AD32CE0642C8D85 /* libFoundation.a */; };
-		114880BC92528FF16C39AED8 /* MediaToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 302DB52BAB0487657EC1A275 /* MediaToolbox.framework */; };
-		1228C070A676D9AD4E5C4499 /* libcups.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C402D477E1024F77786012E1 /* libcups.dylib */; };
-		21CB07F2C786F8F6B4A7B8EC /* libicutu.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03709285465EA0572F5754A6 /* libicutu.a */; };
+		0EB01DB7B06380E3DE8F50D4 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 209827C1210946974917D3CD /* Carbon.framework */; };
+		1265C22E0F3421115D6A1F52 /* libpng.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCD78139F1B843A8FA6FE80C /* libpng.a */; };
 		257A71C4814EE0C814AF7D61 /* libbrowser.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CF9EC44112831F961B4EB32 /* libbrowser.a */; };
-		2ADB4CF99EEECDA5ACA91943 /* libskia_opt_sse2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 370E8863794E6805DE0D5DE0 /* libskia_opt_sse2.a */; };
-		3333B36BF3770E6BC54937B0 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E77D0ED79A4589F2579F9C3 /* Cocoa.framework */; };
+		30E683D3BA1438B5B4EED7E7 /* libjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EA52839556522B17EC9D4E4A /* libjpeg.a */; };
 		3C774FC7788D2BC5769E5B07 /* libffi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 128192175BE600A810BEE001 /* libffi.a */; };
-		43AC41AEB86D457F7EE8B873 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D3575B4BC78F3B46DF09A3C /* CoreFoundation.framework */; };
+		44DF335C380A600144836C0C /* libskia_opt_hsw.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C74C5B68355118F1028B90F8 /* libskia_opt_hsw.a */; };
 		47C8C2803DE8C485C2D9FA43 /* lextable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D7E72410ECA2E8CBC3A0D958 /* lextable.cpp */; };
-		4C47DAE36DD3772EDB240400 /* libskia_opt_avx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E6BD55FBB5358378D5299AE /* libskia_opt_avx.a */; };
+		489EC7D0153AEF3329E30BAB /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4070C3C97D9A6152A8C898 /* CoreMedia.framework */; };
+		4AFC6151A7CC2555EF1542EF /* libskia_opt_avx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7D04FCDD28537ABCE581BD /* libskia_opt_avx.a */; };
 		4CBEED13398DE914CEEE0107 /* test_new.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CAF0B649CCC2D0222BBFA494 /* test_new.cpp */; };
-		4E7ECCAF6B3D66F2BC137E27 /* libjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 15DA69978358B98780C9DC86 /* libjpeg.a */; };
-		5736DEBA6631A67DE6C817CC /* libskia_opt_arm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 568425678460CE47515709B5 /* libskia_opt_arm.a */; };
+		4D0D6DC1455C426590899380 /* libcups.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C402D477E1024F77786012E1 /* libcups.dylib */; };
+		4DAE63A783C6E437C087624B /* libicui18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 86D45525C75C66EFC95CB550 /* libicui18n.a */; };
+		538F6765E29720F8ECB0EDB6 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F8C8386F7C04A3F2E842EB8 /* CoreText.framework */; };
+		55A0B46A82FA8B99F2CADF53 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D3575B4BC78F3B46DF09A3C /* CoreFoundation.framework */; };
 		6333F4043AF5CCB4621AF40E /* libkernel-standalone.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 996BD78DB7FCB3080FDBA182 /* libkernel-standalone.a */; };
-		644B7E30EA354E4042CC3F9A /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78A44BC170ACB0411427F20A /* SystemConfiguration.framework */; };
-		68E0634B539A39B56C962D40 /* libskia_opt_hsw.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ECABF9952BF169848F9B18DE /* libskia_opt_hsw.a */; };
-		6D316975B10B0878D5553019 /* libicudata.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EA1BA7679551BF290E85DB82 /* libicudata.a */; };
-		71E53D06E76B95EA78C29D36 /* libffi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 01700F8520EF40570FA926EC /* libffi.a */; };
+		68B22639CA612A0D4153FECF /* libpcre.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E099C04A68394CF4C605E0A7 /* libpcre.a */; };
+		69BB007D6BD20FF74FD1A354 /* libskia_opt_sse2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BE7DC4100DCA58F9714DABA7 /* libskia_opt_sse2.a */; };
+		6B5065FC9416A8BA6ADEE9FE /* libicutu.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 75406197E5C0348122D9E9E4 /* libicutu.a */; };
+		6CD705DAACA08932FC4A5AE1 /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F61FEAAA761367AE9E3DE8E /* Quartz.framework */; };
+		6DBBD09280741E7C6BA28BD0 /* libffi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 01700F8520EF40570FA926EC /* libffi.a */; };
 		73678E52E6EF91F9FEEC949C /* stdscript.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 757FDC42758BDB660DA7596A /* stdscript.a */; };
-		78658C2EE85C2EC0662A6460 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A2AB89F331866D7D3E84972 /* AudioToolbox.framework */; };
-		7D67D0F04E36001A2EB9AED0 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4070C3C97D9A6152A8C898 /* CoreMedia.framework */; };
-		8A27A43BF953768AED8E102C /* libz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93388E8DE4E67BEA1DBB1276 /* libz.a */; };
-		948F1592530CCFB75CF46357 /* libicuuc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A0DCD9BD4752268BDE4E107C /* libicuuc.a */; };
-		9C565651B9482508CCC3C523 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70F2AD3E6676D494DC0DE6C3 /* Accelerate.framework */; };
-		A0E7A8F0ABC5B28C1D214689 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FF8FFEB773D8721E1FB72E9 /* JavaScriptCore.framework */; };
-		A23B59322666D2CB21D7CFEB /* libskia_opt_sse41.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 290D10B1342136794DF25A91 /* libskia_opt_sse41.a */; };
-		A30D33D7C7A5A9257CC80C29 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BE8FA3FEC19B651568EB6D8 /* Security.framework */; };
-		A87F7924C89C79578409B5F5 /* libskia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19649EFF54A9C9666566E042 /* libskia.a */; };
+		76A9CE3ED1548B5CFE71B4AA /* MediaToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 302DB52BAB0487657EC1A275 /* MediaToolbox.framework */; };
+		797F672FE1C02A9D291732A3 /* libskia_opt_arm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCD513C64DF37C2BE725A61B /* libskia_opt_arm.a */; };
+		7D9C48F2BA68B4D1CD7FE7E4 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8E6CA08C349D5E86FC71AAA /* ApplicationServices.framework */; };
+		81FCA72470C4464793A6A4D6 /* libskia_opt_sse3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 582EBCB330138EF9A3A10DC3 /* libskia_opt_sse3.a */; };
+		922791C33CFB8D2E020D1B70 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 544C72B63DB4933EEA5E9DA3 /* IOKit.framework */; };
+		9D0B6DA27FD545401F676C36 /* libskia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CDB6212EE98F0157B6DFA76E /* libskia.a */; };
+		9E5D73F3910CAABFFF2C04D7 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FF8FFEB773D8721E1FB72E9 /* JavaScriptCore.framework */; };
+		9FC0DA017FC54A09534BA01C /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70F2AD3E6676D494DC0DE6C3 /* Accelerate.framework */; };
 		ABE9987CC29A96592865FD73 /* test_rgb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C44E2ED3F47E8DE10FD4C437 /* test_rgb.cpp */; };
-		ACF5AEDC3D47A43B2EE24AA4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C99B6B7B7A4445427F85400 /* Foundation.framework */; };
+		AE5804E122615775B44D8C13 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A2AB89F331866D7D3E84972 /* AudioToolbox.framework */; };
+		AFD7DAB69ADE2182B9920B39 /* libicuuc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C67298880FBE328C00AA75D /* libicuuc.a */; };
 		B10387C9D3A442BF7AC48F29 /* mode_standalone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BAE53646425C028726C1849A /* mode_standalone.cpp */; };
-		B5C59A3673D55E6FAA9AE77C /* libgif.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 049AE91EC9EBE83868CF8A59 /* libgif.a */; };
-		B60458676F06128BC405F8F9 /* libicuio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B507F558B95B95B83C77FD2D /* libicuio.a */; };
+		B394CBF2411E087A9CC64BF6 /* libicuio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C0C0B905438DD931439321E9 /* libicuio.a */; };
 		B710CBE03B8B0CCC0A211BFD /* libcpptest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 279030A75BF6DB35E771E2E0 /* libcpptest.a */; };
-		B9558D29666B70DAB6C488FD /* libskia_opt_sse3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 76382ED793CA1CB4B31485D4 /* libskia_opt_sse3.a */; };
-		C0060B03CCB619A0FBFA4E92 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F2BCA7EC947C44CB8E9277D /* WebKit.framework */; };
-		C1D71152DC6060C4699DCF7E /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 544C72B63DB4933EEA5E9DA3 /* IOKit.framework */; };
+		BCB07FE1F6E2F6DB22A0DAAF /* libicudata.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D8C9582D45012DF196DFA5B /* libicudata.a */; };
+		BD8448E6E3E01B419AE522DC /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BE8FA3FEC19B651568EB6D8 /* Security.framework */; };
+		C62C5C541BB3909C109EDBA5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD644380E643E478F5564D33 /* CoreGraphics.framework */; };
 		C7C4A03004AD27B42F8CC99B /* libScript.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 02706535D1A8C87D1AFCE82A /* libScript.a */; };
-		C9CE0CC21D73A2EE06B38131 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD644380E643E478F5564D33 /* CoreGraphics.framework */; };
-		CA649000CB707E60C43ED60F /* libpng.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 90014FD32859DC3B20BB3E35 /* libpng.a */; };
+		CAC34BB677F56A983B6A9250 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78A44BC170ACB0411427F20A /* SystemConfiguration.framework */; };
+		CAC8EBDB7127DE5D04BDDF9D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C99B6B7B7A4445427F85400 /* Foundation.framework */; };
 		CAD34D1F54594A58BA75C708 /* libkernel.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2496832123D451766C64F53D /* libkernel.a */; };
-		D29FABC0EE7B85DA78DB8B89 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 209827C1210946974917D3CD /* Carbon.framework */; };
-		D82F181DE4E78293CF19B0D1 /* libpcre.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63AAF6D77665558D8B341831 /* libpcre.a */; };
-		E2C21001D70052DDF6746079 /* libskia_opt_none.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 97998484EEF970B1E5FEBC18 /* libskia_opt_none.a */; };
-		E3F1D501FA5028204CE8D45B /* libicui18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A1FF70EEA89388AC54D00039 /* libicui18n.a */; };
+		DB360E8C7AE66B301D534861 /* libskia_opt_sse42.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 632CBF1076F077CD176A2229 /* libskia_opt_sse42.a */; };
+		E1B72131802AA1A569DFEFB6 /* libz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D22D15FC175D6397ABD7D35 /* libz.a */; };
 		E675E094F77F150094267465 /* libopenssl_stubs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 54CCEB212D857A13597ED5DE /* libopenssl_stubs.a */; };
 		E7D5AB30BCA4887860A6B713 /* libsecurity-community.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F2E9719AC67229463E3FC02 /* libsecurity-community.a */; };
-		F03B36AE796E90CCD2717E47 /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F61FEAAA761367AE9E3DE8E /* Quartz.framework */; };
+		E901CA6C7F4AEFFD096D090D /* libskia_opt_none.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 21C719F9747FB3D71D57E03C /* libskia_opt_none.a */; };
+		F4A0C66A0681E7F3633F3711 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E77D0ED79A4589F2579F9C3 /* Cocoa.framework */; };
+		F4DF491E4BC964F6DE9C7A70 /* libgif.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A0B72FAA06B8A0C2429EB8B3 /* libgif.a */; };
 		F5CBCB36EE48C5EB7B68D02F /* test_lextable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BCBEF0539B53E969666EEFBD /* test_lextable.cpp */; };
-		F711D6B7BA550D04321D5672 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F8C8386F7C04A3F2E842EB8 /* CoreText.framework */; };
-		F80FEDA79BD6139BEB1A18FF /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8E6CA08C349D5E86FC71AAA /* ApplicationServices.framework */; };
+		F81683E94A7A9B69874FB2EF /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F2BCA7EC947C44CB8E9277D /* WebKit.framework */; };
 		F9F8DC60076A3B1D2CB44D49 /* libGraphics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 679F46A086313F68A8CB4024 /* libGraphics.a */; };
 		FC93937008A5484C99DDA77F /* test_path.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B4999CA9E7C5B19EACEF8CF /* test_path.cpp */; };
 /* End PBXBuildFile section */
@@ -128,6 +128,13 @@
 			remoteGlobalIDString = AA3E22E4C76CB554B6B93898;
 			remoteInfo = "kernel-standalone";
 		};
+		043F478336CED2CE594452A5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F558DC8FD6CBC5A237700CAB /* libz.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EB9EC9FE7F51565BA92F25AD;
+			remoteInfo = libz;
+		};
 		0459FF23475703EFD14C2EAC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B97D99745EF46691E894B9BB /* perfect.xcodeproj */;
@@ -141,6 +148,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = 9E061AC5F76A9BD3B01EBD7F;
 			remoteInfo = libffi;
+		};
+		04CAEA64904622AAC69253D6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CF6437327CBCD383FCC992AC /* libpcre.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = AE8C9EBD1129A4B5BCD9088F;
+			remoteInfo = libpcre;
 		};
 		07047564D7A542D4E4C9B40C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -156,12 +170,54 @@
 			remoteGlobalIDString = 9F835CABCE0AEC2044D4829D;
 			remoteInfo = "fetch-mac";
 		};
+		090D0EA6EFAADE3EB6D53C47 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3ADA27286AC645F6DCBE960F /* libskia.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C2A46082FB9C0BD96B1E3F89;
+			remoteInfo = "libskia_opt_sse41 (host)";
+		};
+		0D4F6B09AB700C268F186929 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3ADA27286AC645F6DCBE960F /* libskia.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 375C743AE29213240E194FB1;
+			remoteInfo = libskia;
+		};
+		12EF5283AE26C1F90ADC30E1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D64FCE00B1470973A997AAD6 /* libexpat.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 13F64473FD3124BFE33846BC;
+			remoteInfo = libexpat;
+		};
 		132D8E0B497FD807C8BF968F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FC423A9186ADB5C7D97BDCBF /* libopenssl.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = D7872EDD503BA3C35CF3AB25;
 			remoteInfo = revsecurity;
+		};
+		15291AA90E8DEF4CC96F5F81 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F558DC8FD6CBC5A237700CAB /* libz.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = B3DF2C8C593BB090A6CD15F7;
+			remoteInfo = "libz (host)";
+		};
+		174F130F322EAF3615FFFF37 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3ADA27286AC645F6DCBE960F /* libskia.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 96D846355A0DECB36966BC88;
+			remoteInfo = libskia_opt_sse2;
+		};
+		181082D04A0B6A4C0091EF06 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C84C607D4BF94B7ED615F4A3 /* libpng.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = B3E0D1A7A8C277299BA21BE1;
+			remoteInfo = "libpng (host)";
 		};
 		1B46F39D94C65672D23BE7CE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -184,12 +240,26 @@
 			remoteGlobalIDString = FE5E0C9BFC9D0C2003A9F4F8;
 			remoteInfo = libcpptest;
 		};
+		21F07B2505C8536827444C23 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3ADA27286AC645F6DCBE960F /* libskia.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8CC2F8E1ECA7BB8105D213E7;
+			remoteInfo = libskia_opt_sse3;
+		};
 		22A5821850A5615B366C0EE0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 4794143C42C28717A15578C5 /* engine-common.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = BE13AE89CAF8762C216B4582;
 			remoteInfo = encode_version;
+		};
+		28E5F1D23D62AD49BCB7AEA8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3ADA27286AC645F6DCBE960F /* libskia.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 446831DED9ABF70E23497086;
+			remoteInfo = "libskia_opt_none (host)";
 		};
 		2CDEFA5E132982A3AFDA5F75 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -198,12 +268,33 @@
 			remoteGlobalIDString = 5425627DB78FB713EE1607BC;
 			remoteInfo = thirdparty_prebuilt_dep;
 		};
+		2DC19542F7648CCCA9F471B6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3ADA27286AC645F6DCBE960F /* libskia.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 08780A2CDD4764B61647B734;
+			remoteInfo = "libskia_opt_sse42 (host)";
+		};
 		304FEF21CA62F83086147542 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D149BA5BAEC7B76EBF553C43 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 4BC701AEF3C6979EC45573EC;
 			remoteInfo = "test-kernel-standalone";
+		};
+		3B694C2E97CD137F040CF5EC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C84C607D4BF94B7ED615F4A3 /* libpng.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = EF4F26BB6F9499FB68918A1E;
+			remoteInfo = libpng;
+		};
+		3D58AFE6162ED1D6BEB56FFE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3ADA27286AC645F6DCBE960F /* libskia.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8ED0B59102009FCEAE20EFB5;
+			remoteInfo = libskia_opt_sse41;
 		};
 		3ED154956E3850E63A3A411C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -212,19 +303,19 @@
 			remoteGlobalIDString = 610525873BB3C7AD7CA01D8D;
 			remoteInfo = perfect;
 		};
+		40DCA8FBFEAB88D01C41BAD9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3ADA27286AC645F6DCBE960F /* libskia.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A9DD2E7314AD73EB6F83CF3B;
+			remoteInfo = libskia_opt_none;
+		};
 		40E9FAC78FA143CBF1E6B755 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D149BA5BAEC7B76EBF553C43 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = AA3E22E4C76CB554B6B93898;
 			remoteInfo = "kernel-standalone";
-		};
-		427FB28000DD29F2F154458E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 56E03391B1B966D244DC345B /* thirdparty.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 3C492E80E0875069204AAA76;
-			remoteInfo = thirdparty_prebuilt_freetype;
 		};
 		44853AF87BDDC3E46FCC18D7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -233,12 +324,33 @@
 			remoteGlobalIDString = 9B342E57E0BE1BAD8B7F65C3;
 			remoteInfo = "fetch (host)";
 		};
+		48999EDE8F94307C5F70A2D4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3ADA27286AC645F6DCBE960F /* libskia.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D84DD9F954972DB2C03A1A4C;
+			remoteInfo = "libskia_opt_hsw (host)";
+		};
+		4AC429A15CBEB92AB7E9B45C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3ADA27286AC645F6DCBE960F /* libskia.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 972173F3CE23CB5E8DD105ED;
+			remoteInfo = "libskia_opt_sse2 (host)";
+		};
 		4B027D248A5410E0E2C38ADD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6919B028CCA62A9502DD57FE /* libgraphics.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 96D8296C98B5487E890CE1BC;
 			remoteInfo = libGraphics;
+		};
+		50B965331113098C1EE56DB7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3ADA27286AC645F6DCBE960F /* libskia.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D5EEB54651EF3D4E2511E389;
+			remoteInfo = "libskia (host)";
 		};
 		52E088599B2F2DEDE86315AB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -254,6 +366,13 @@
 			remoteGlobalIDString = 7F31033BA37DB57E32A81D01;
 			remoteInfo = libopenssl_stubs;
 		};
+		5567E976F60DDD9E04039CBB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3ADA27286AC645F6DCBE960F /* libskia.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = EE21222CD2197956E33AFA28;
+			remoteInfo = libskia_opt_arm;
+		};
 		5950B434795B22E1F1618A47 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 10E4FD6FAB6F868A7DD929A8 /* libfoundation.xcodeproj */;
@@ -268,6 +387,20 @@
 			remoteGlobalIDString = 50D0C7D1AAB96C1ACAF184C1;
 			remoteInfo = libbrowser;
 		};
+		5BDBB1D4E09848F98DE19058 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3ADA27286AC645F6DCBE960F /* libskia.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1B5FDA8A683E0C46C5D28A43;
+			remoteInfo = libskia_opt_avx;
+		};
+		5CD30A40DC34261C7F55A74A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CF6437327CBCD383FCC992AC /* libpcre.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 70A4029923C3824411139E9B;
+			remoteInfo = libpcre;
+		};
 		63AE387BDFE4D5A9D59BEABF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BDB4AD045E8DFAAF6242387E /* libbrowser.xcodeproj */;
@@ -275,12 +408,12 @@
 			remoteGlobalIDString = 596F4135912A879BDA1B4A42;
 			remoteInfo = "libbrowser (host)";
 		};
-		69A5423A7B5AD80646D8DCFE /* PBXContainerItemProxy */ = {
+		71A07CDF8034CB1625FDD017 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 56E03391B1B966D244DC345B /* thirdparty.xcodeproj */;
+			containerPortal = 3ADA27286AC645F6DCBE960F /* libskia.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = AF8D85F2CCB49441D1F76655;
-			remoteInfo = thirdparty_prebuilt_expat;
+			remoteGlobalIDString = EFAA1ED4E46ED0922A47CCEA;
+			remoteInfo = libskia_opt_sse41;
 		};
 		71C839CF45AB7FF478F4C019 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -296,6 +429,13 @@
 			remoteGlobalIDString = D8420BB1C1B30080D31966EA;
 			remoteInfo = thirdparty_prebuilt_ffi;
 		};
+		799C5F23F69E602B05A48453 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3ADA27286AC645F6DCBE960F /* libskia.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 275B61EC2718CFBD0D11C8A0;
+			remoteInfo = libskia_opt_sse42;
+		};
 		7A75C4A575154A254D4BA7C0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B41152F1F434843EC1EA85B6 /* libcpptest.xcodeproj */;
@@ -310,12 +450,26 @@
 			remoteGlobalIDString = AA218954B1B661FF661B206F;
 			remoteInfo = libopenssl_headers;
 		};
+		7F72C91A107A09628C2480DF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3ADA27286AC645F6DCBE960F /* libskia.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = F3F021FF42781428C431228F;
+			remoteInfo = libskia_opt_none;
+		};
 		814FE9760F7C5D19DB012143 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 4794143C42C28717A15578C5 /* engine-common.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = AE0E83B8DECD5B9AC0C6312F;
 			remoteInfo = "security-community";
+		};
+		83E2C7581964814037DE673A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3ADA27286AC645F6DCBE960F /* libskia.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BF704A0EDA6085DCB9778B60;
+			remoteInfo = "libskia_opt_avx (host)";
 		};
 		869265264DE9067091850E5F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -324,12 +478,40 @@
 			remoteGlobalIDString = 42BDC134E9C6A8879D69F2AA;
 			remoteInfo = "run-test-kernel-standalone";
 		};
+		88F3B644614C7516FEA84830 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F558DC8FD6CBC5A237700CAB /* libz.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C286D0B77F8ADAC353DEA4FD;
+			remoteInfo = libz;
+		};
+		8919A40DDB710BEA8CA0533A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3ADA27286AC645F6DCBE960F /* libskia.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8A7B765451B23D395D25A7CA;
+			remoteInfo = libskia_opt_hsw;
+		};
+		8992EFBF18C720772275E6A6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 79B2CB8F27B24653D91044FD /* libjpeg.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 14D689EB437E0382D6037361;
+			remoteInfo = "libjpeg (host)";
+		};
 		8E4D47C0E70BB2975D085CEB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0DD422537A286237F98B9420 /* libicu.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = AE30D7F604FF773614D6DA39;
 			remoteInfo = encode_minimal_icu_data;
+		};
+		92F150A48789B527ECEEAC91 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3ADA27286AC645F6DCBE960F /* libskia.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 385FE9BE14662AC32B474D9C;
+			remoteInfo = libskia_opt_sse2;
 		};
 		9908DD0F6136297B7C39FC22 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -338,12 +520,12 @@
 			remoteGlobalIDString = A1E63BC20F81094D4C079447;
 			remoteInfo = libGraphics;
 		};
-		9B437D106520C31AF03FD83D /* PBXContainerItemProxy */ = {
+		9E3748CF0F8183D352A6E0CB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 56E03391B1B966D244DC345B /* thirdparty.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = AAE2AB8989C145D38F48E9BF;
-			remoteInfo = thirdparty_prebuilt_gif;
+			containerPortal = 79B2CB8F27B24653D91044FD /* libjpeg.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 042DE10DF35F02FDDF3218D2;
+			remoteInfo = libjpeg;
 		};
 		9FFCF58A9E19A005B7C21DC1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -351,6 +533,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 4B43414E2B095285C1144194;
 			remoteInfo = fetch;
+		};
+		A1F09424BC0E5788376D3106 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CF6437327CBCD383FCC992AC /* libpcre.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = B184E9F8F009BA90CA860F83;
+			remoteInfo = "libpcre (host)";
 		};
 		A3F4B69141739CFE0EC67706 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -366,19 +555,19 @@
 			remoteGlobalIDString = CC9A1459EAEFC5B4742B6E4D;
 			remoteInfo = "kernel-standalone Support";
 		};
-		A91558D72BFDEB818EF8D93B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 56E03391B1B966D244DC345B /* thirdparty.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 91EE14E1F4CFD70BD9056EA6;
-			remoteInfo = thirdparty_prebuilt_skia;
-		};
 		AA2BCCEB866E76F3ADF75A99 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B41152F1F434843EC1EA85B6 /* libcpptest.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = C190FADC8C78B2EBA254F63E;
 			remoteInfo = "test-libcpptest";
+		};
+		B0123B39AF8ECB6D531DB090 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F0983E50B3EFF7019F3E5F31 /* libgif.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 7C337A9763975A7E903559B4;
+			remoteInfo = "libgif (host)";
 		};
 		B0E4621D767B2DEC4686AFEC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -387,12 +576,12 @@
 			remoteGlobalIDString = 4F373940DC0AC9ABD831CA44;
 			remoteInfo = "perfect (host)";
 		};
-		B1F189194FDEF5ED69442912 /* PBXContainerItemProxy */ = {
+		B0E47BEB10EDEA6D14693D5D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 56E03391B1B966D244DC345B /* thirdparty.xcodeproj */;
+			containerPortal = F0983E50B3EFF7019F3E5F31 /* libgif.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = C84D38F3A832880C05EDB698;
-			remoteInfo = thirdparty_prebuilt_pcre;
+			remoteGlobalIDString = FA5ECE9095E05166E22E019B;
+			remoteInfo = libgif;
 		};
 		B54BC6FDBCFEFE642DD6985B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -401,6 +590,13 @@
 			remoteGlobalIDString = F059045284B79513ADAC6264;
 			remoteInfo = kernel;
 		};
+		B7F6B0739BA297931A887BCF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3ADA27286AC645F6DCBE960F /* libskia.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = F4057E2BDD126A2B0D7F9F1C;
+			remoteInfo = libskia_opt_hsw;
+		};
 		C2A0DCCB0092D285BFFAD27E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D149BA5BAEC7B76EBF553C43 /* Project object */;
@@ -408,12 +604,33 @@
 			remoteGlobalIDString = 4BC701AEF3C6979EC45573EC;
 			remoteInfo = "test-kernel-standalone";
 		};
+		C4FDDE4E8F64A6958B27ED0D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3ADA27286AC645F6DCBE960F /* libskia.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 673898D948186948179C8300;
+			remoteInfo = libskia_opt_sse3;
+		};
 		C730C239F53F39022F0DE7BD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 3AF23677B506EDE7652A8396 /* libscript.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 92424EE6ACCEB73C4A6C8727;
 			remoteInfo = stdscript;
+		};
+		C773EF78438DC7AB40BD7196 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3ADA27286AC645F6DCBE960F /* libskia.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1B5AAEC1C6BF84468C3CCD41;
+			remoteInfo = libskia_opt_sse42;
+		};
+		C8BD2A9BE40341BBAC6B605E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3ADA27286AC645F6DCBE960F /* libskia.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = B39CBE2B00CB2A0BB29E0B32;
+			remoteInfo = "libskia_opt_sse3 (host)";
 		};
 		CA1DAE4C9A7F112F04D4A279 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -436,6 +653,20 @@
 			remoteGlobalIDString = 463AF9F679A6EE2BB8915F8B;
 			remoteInfo = "libFoundation (host)";
 		};
+		CB7F991C6717884E32C615BD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3ADA27286AC645F6DCBE960F /* libskia.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 7197F14F67919F619E4505A9;
+			remoteInfo = libskia_opt_arm;
+		};
+		CD17B5214122B36171EF6163 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3ADA27286AC645F6DCBE960F /* libskia.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 1E4834DE3AB62314D8300B16;
+			remoteInfo = libskia_opt_avx;
+		};
 		CE062A2E4EBEFE505CD4D721 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6919B028CCA62A9502DD57FE /* libgraphics.xcodeproj */;
@@ -457,12 +688,26 @@
 			remoteGlobalIDString = BE13AE89CAF8762C216B4582;
 			remoteInfo = encode_version;
 		};
+		D1A3706934F44764DBB4D005 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F0983E50B3EFF7019F3E5F31 /* libgif.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DBC572B268827D443DDC9E11;
+			remoteInfo = libgif;
+		};
 		D360E00F46670DF4155A934F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B97D99745EF46691E894B9BB /* perfect.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = FD8B0BBC64746F3B4E8F6E44;
 			remoteInfo = perfect;
+		};
+		D7D56C2B79A045877A904942 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 79B2CB8F27B24653D91044FD /* libjpeg.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 601B21A7E1158587BDCD494D;
+			remoteInfo = libjpeg;
 		};
 		D865D5ADE17F5A20A0B78177 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -477,6 +722,20 @@
 			proxyType = 2;
 			remoteGlobalIDString = FA854F588506523B9FC8C673;
 			remoteInfo = "stdscript (host)";
+		};
+		E03DDC0C9E3410CE323E531F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C84C607D4BF94B7ED615F4A3 /* libpng.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 41BD8A5AFE196BFC91B6F041;
+			remoteInfo = libpng;
+		};
+		E23EA9846E7D96F7682DCE8F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3ADA27286AC645F6DCBE960F /* libskia.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = CCB613352A797BFCCDB63F6D;
+			remoteInfo = "libskia_opt_arm (host)";
 		};
 		E5DBC2844F0B84B24D5B77B1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -499,33 +758,12 @@
 			remoteGlobalIDString = 2E8361279E95F3859BB6589A;
 			remoteInfo = quicktime_stubs;
 		};
-		EBD16FC7CE3176F4B561D8E8 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 56E03391B1B966D244DC345B /* thirdparty.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 5C4FD5054B6EBEF371FDE140;
-			remoteInfo = thirdparty_prebuilt_png;
-		};
-		ECA9B00566FDD87B6A569E9E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 56E03391B1B966D244DC345B /* thirdparty.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 4484FA8BE6669B7DCC74F6CA;
-			remoteInfo = thirdparty_prebuilt_fontconfig;
-		};
 		EDEBB40A6EE2725E9F208033 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 4794143C42C28717A15578C5 /* engine-common.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = EC39D51EC15CF2E21598E095;
 			remoteInfo = "security-community";
-		};
-		EEAB461C85D62DD53550B60A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 56E03391B1B966D244DC345B /* thirdparty.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 6C7802FB7730E93DC9677214;
-			remoteInfo = thirdparty_prebuilt_jpeg;
 		};
 		F348F8393A1E8B3D05D137A0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -534,6 +772,13 @@
 			remoteGlobalIDString = 631DDE2C2E64CC822EFE8445;
 			remoteInfo = libicu_link;
 		};
+		F5173DC00D027CDDE0944723 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3ADA27286AC645F6DCBE960F /* libskia.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = CF275681F740B5C990C22162;
+			remoteInfo = libskia;
+		};
 		FBDAD0D89FD9480D1C3F6F7B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0DD422537A286237F98B9420 /* libicu.xcodeproj */;
@@ -541,38 +786,30 @@
 			remoteGlobalIDString = 0C2C24C7BC439367DEFF06DB;
 			remoteInfo = libicu;
 		};
-		FC3B84812A2BE5DB935108EA /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 56E03391B1B966D244DC345B /* thirdparty.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = F4FCA251AA01455DCCCF79CF;
-			remoteInfo = thirdparty_prebuilt_z;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		01700F8520EF40570FA926EC /* libffi.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libffi.a; path = ../prebuilt/lib/mac/libffi.a; sourceTree = "<group>"; };
 		02FCDC52EFE1B8657627C82E /* configurations.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = configurations.gypi; path = ../config/configurations.gypi; sourceTree = "<group>"; };
-		03709285465EA0572F5754A6 /* libicutu.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicutu.a; path = ../prebuilt/lib/mac/libicutu.a; sourceTree = "<group>"; };
 		04703887CFF46F6E103C597C /* kernel-standalone.gyp */ = {isa = PBXFileReference; explicitFileType = sourcecode; path = "kernel-standalone.gyp"; sourceTree = "<group>"; };
-		049AE91EC9EBE83868CF8A59 /* libgif.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgif.a; path = ../prebuilt/lib/mac/libgif.a; sourceTree = "<group>"; };
 		067DCD139C42F2183548E1BB /* linux.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = linux.gypi; path = ../config/linux.gypi; sourceTree = "<group>"; };
 		07612B0899165B408016BCF9 /* cpptest.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = cpptest.gypi; path = ../config/cpptest.gypi; sourceTree = "<group>"; };
+		0B18DAA315F2FB86E33DAC16 /* android-settings.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = "android-settings.gypi"; path = "../config/android-settings.gypi"; sourceTree = "<group>"; };
+		0D8C9582D45012DF196DFA5B /* libicudata.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicudata.a; path = ../prebuilt/lib/mac/x86_64/libicudata.a; sourceTree = "<group>"; };
 		0DD422537A286237F98B9420 /* libicu.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libicu.xcodeproj; path = "../build-mac/livecode/prebuilt/libicu.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		10E4FD6FAB6F868A7DD929A8 /* libfoundation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libfoundation.xcodeproj; path = "../build-mac/livecode/libfoundation/libfoundation.xcodeproj"; sourceTree = SOURCE_ROOT; };
-		15DA69978358B98780C9DC86 /* libjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjpeg.a; path = ../prebuilt/lib/mac/libjpeg.a; sourceTree = "<group>"; };
-		1905D05D1DA5D2DC2B63ED6B /* libskia_opt_sse42.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libskia_opt_sse42.a; path = ../prebuilt/lib/mac/libskia_opt_sse42.a; sourceTree = "<group>"; };
-		19649EFF54A9C9666566E042 /* libskia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libskia.a; path = ../prebuilt/lib/mac/libskia.a; sourceTree = "<group>"; };
+		13AD957A96EAB9FBBBB6D560 /* android.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = android.gypi; path = ../config/android.gypi; sourceTree = "<group>"; };
 		1C99B6B7B7A4445427F85400 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1F8C8386F7C04A3F2E842EB8 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		209827C1210946974917D3CD /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
-		290D10B1342136794DF25A91 /* libskia_opt_sse41.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libskia_opt_sse41.a; path = ../prebuilt/lib/mac/libskia_opt_sse41.a; sourceTree = "<group>"; };
 		2ACF3B0454634609E24D51E3 /* encodederrors.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = encodederrors.cpp; sourceTree = "<group>"; };
 		2B5D7B8BD7E08C8E01989EED /* version */ = {isa = PBXFileReference; lastKnownFileType = text; path = version; sourceTree = "<group>"; };
+		2C67298880FBE328C00AA75D /* libicuuc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicuuc.a; path = ../prebuilt/lib/mac/x86_64/libicuuc.a; sourceTree = "<group>"; };
 		2F2BCA7EC947C44CB8E9277D /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		302DB52BAB0487657EC1A275 /* MediaToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaToolbox.framework; path = System/Library/Frameworks/MediaToolbox.framework; sourceTree = SDKROOT; };
-		370E8863794E6805DE0D5DE0 /* libskia_opt_sse2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libskia_opt_sse2.a; path = ../prebuilt/lib/mac/libskia_opt_sse2.a; sourceTree = "<group>"; };
+		31B219FA5C8DD05FB153FB98 /* emscripten-settings.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = "emscripten-settings.gypi"; path = "../config/emscripten-settings.gypi"; sourceTree = "<group>"; };
 		371744EB5E176AAC4010884F /* perl.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = perl.gypi; path = ../config/perl.gypi; sourceTree = "<group>"; };
+		3ADA27286AC645F6DCBE960F /* libskia.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libskia.xcodeproj; path = "../build-mac/livecode/thirdparty/libskia/libskia.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		3AF23677B506EDE7652A8396 /* libscript.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libscript.xcodeproj; path = "../build-mac/livecode/libscript/libscript.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		3B4999CA9E7C5B19EACEF8CF /* test_path.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = test_path.cpp; sourceTree = "<group>"; };
 		4022A150196C5D4EE6C6D1B1 /* test-kernel-standalone */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "test-kernel-standalone"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -581,9 +818,9 @@
 		4D3575B4BC78F3B46DF09A3C /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		4D4070C3C97D9A6152A8C898 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		544C72B63DB4933EEA5E9DA3 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
-		568425678460CE47515709B5 /* libskia_opt_arm.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libskia_opt_arm.a; path = ../prebuilt/lib/mac/libskia_opt_arm.a; sourceTree = "<group>"; };
+		565C875B4B48C302F31D58BC /* emscripten.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = emscripten.gypi; path = ../config/emscripten.gypi; sourceTree = "<group>"; };
 		56E03391B1B966D244DC345B /* thirdparty.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = thirdparty.xcodeproj; path = "../build-mac/livecode/prebuilt/thirdparty.xcodeproj"; sourceTree = SOURCE_ROOT; };
-		63AAF6D77665558D8B341831 /* libpcre.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpcre.a; path = ../prebuilt/lib/mac/libpcre.a; sourceTree = "<group>"; };
+		631D74C19916BC39081C23D4 /* ios.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = ios.gypi; path = ../config/ios.gypi; sourceTree = "<group>"; };
 		6445DE32F846044650B96207 /* libffi.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libffi.xcodeproj; path = "../build-mac/livecode/thirdparty/libffi/libffi.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		6919B028CCA62A9502DD57FE /* libgraphics.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libgraphics.xcodeproj; path = "../build-mac/livecode/libgraphics/libgraphics.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		693737B95BC85DF5F9C67448 /* hash_strings.pl */ = {isa = PBXFileReference; lastKnownFileType = text.script.perl; path = hash_strings.pl; sourceTree = "<group>"; };
@@ -593,24 +830,19 @@
 		710170A330DBD1CA538A0241 /* version.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = version.gypi; path = ../config/version.gypi; sourceTree = "<group>"; };
 		71EF2EAAA661308AAEEA9434 /* parseerrors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = parseerrors.h; sourceTree = "<group>"; };
 		7517AE3D641F52A7384B17B8 /* linux-settings.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = "linux-settings.gypi"; path = "../config/linux-settings.gypi"; sourceTree = "<group>"; };
-		76382ED793CA1CB4B31485D4 /* libskia_opt_sse3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libskia_opt_sse3.a; path = ../prebuilt/lib/mac/libskia_opt_sse3.a; sourceTree = "<group>"; };
+		75406197E5C0348122D9E9E4 /* libicutu.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicutu.a; path = ../prebuilt/lib/mac/x86_64/libicutu.a; sourceTree = "<group>"; };
 		78A44BC170ACB0411427F20A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		79B2CB8F27B24653D91044FD /* libjpeg.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libjpeg.xcodeproj; path = "../build-mac/livecode/thirdparty/libjpeg/libjpeg.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		7FF8FFEB773D8721E1FB72E9 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		8419A8279FE1563A39EDFBA1 /* mac.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = mac.gypi; path = ../config/mac.gypi; sourceTree = "<group>"; };
+		86D45525C75C66EFC95CB550 /* libicui18n.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicui18n.a; path = ../prebuilt/lib/mac/x86_64/libicui18n.a; sourceTree = "<group>"; };
 		8A2AB89F331866D7D3E84972 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		8C72CB6A8299D3BC2107F6B9 /* engine-sources.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; path = "engine-sources.gypi"; sourceTree = "<group>"; };
-		8E6BD55FBB5358378D5299AE /* libskia_opt_avx.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libskia_opt_avx.a; path = ../prebuilt/lib/mac/libskia_opt_avx.a; sourceTree = "<group>"; };
-		90014FD32859DC3B20BB3E35 /* libpng.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpng.a; path = ../prebuilt/lib/mac/libpng.a; sourceTree = "<group>"; };
 		907FBA42E4DB54B7106024BE /* common.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = common.gypi; path = ../common.gypi; sourceTree = "<group>"; };
 		92A25B659FF17B80BFC9726B /* fetch.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = fetch.xcodeproj; path = "../build-mac/livecode/prebuilt/fetch.xcodeproj"; sourceTree = SOURCE_ROOT; };
-		93388E8DE4E67BEA1DBB1276 /* libz.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libz.a; path = ../prebuilt/lib/mac/libz.a; sourceTree = "<group>"; };
-		97998484EEF970B1E5FEBC18 /* libskia_opt_none.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libskia_opt_none.a; path = ../prebuilt/lib/mac/libskia_opt_none.a; sourceTree = "<group>"; };
 		996BD78DB7FCB3080FDBA182 /* libkernel-standalone.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libkernel-standalone.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		A0DCD9BD4752268BDE4E107C /* libicuuc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicuuc.a; path = ../prebuilt/lib/mac/libicuuc.a; sourceTree = "<group>"; };
-		A1FF70EEA89388AC54D00039 /* libicui18n.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicui18n.a; path = ../prebuilt/lib/mac/libicui18n.a; sourceTree = "<group>"; };
 		A927F4E2E5CFD3DFA4C447FF /* thirdparty.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = thirdparty.gypi; path = ../config/thirdparty.gypi; sourceTree = "<group>"; };
 		B41152F1F434843EC1EA85B6 /* libcpptest.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libcpptest.xcodeproj; path = "../build-mac/livecode/libcpptest/libcpptest.xcodeproj"; sourceTree = SOURCE_ROOT; };
-		B507F558B95B95B83C77FD2D /* libicuio.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicuio.a; path = ../prebuilt/lib/mac/libicuio.a; sourceTree = "<group>"; };
 		B8E6CA08C349D5E86FC71AAA /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
 		B97D99745EF46691E894B9BB /* perfect.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = perfect.xcodeproj; path = "../build-mac/livecode/util/perfect/perfect.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		BAE53646425C028726C1849A /* mode_standalone.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = mode_standalone.cpp; sourceTree = "<group>"; };
@@ -618,9 +850,13 @@
 		BD085A73690F065E2294F1E1 /* hashedstrings.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = hashedstrings.cpp; sourceTree = "<group>"; };
 		BD644380E643E478F5564D33 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		BDB4AD045E8DFAAF6242387E /* libbrowser.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libbrowser.xcodeproj; path = "../build-mac/livecode/libbrowser/libbrowser.xcodeproj"; sourceTree = SOURCE_ROOT; };
+		C0C0B905438DD931439321E9 /* libicuio.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicuio.a; path = ../prebuilt/lib/mac/x86_64/libicuio.a; sourceTree = "<group>"; };
 		C402D477E1024F77786012E1 /* libcups.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcups.dylib; path = usr/lib/libcups.dylib; sourceTree = SDKROOT; };
 		C44E2ED3F47E8DE10FD4C437 /* test_rgb.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = test_rgb.cpp; sourceTree = "<group>"; };
+		C84C607D4BF94B7ED615F4A3 /* libpng.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libpng.xcodeproj; path = "../build-mac/livecode/thirdparty/libpng/libpng.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		CAF0B649CCC2D0222BBFA494 /* test_new.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = test_new.cpp; sourceTree = "<group>"; };
+		CF6437327CBCD383FCC992AC /* libpcre.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libpcre.xcodeproj; path = "../build-mac/livecode/thirdparty/libpcre/libpcre.xcodeproj"; sourceTree = SOURCE_ROOT; };
+		D64FCE00B1470973A997AAD6 /* libexpat.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libexpat.xcodeproj; path = "../build-mac/livecode/thirdparty/libexpat/libexpat.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		D723DB2AB705460AD571A95F /* crosscompile.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = crosscompile.gypi; path = ../config/crosscompile.gypi; sourceTree = "<group>"; };
 		D7E72410ECA2E8CBC3A0D958 /* lextable.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = lextable.cpp; sourceTree = "<group>"; };
 		D9D06093B6595FE21E9718CF /* target_os.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = target_os.gypi; path = ../config/target_os.gypi; sourceTree = "<group>"; };
@@ -630,9 +866,9 @@
 		E655830958E4F41A930292B8 /* exclusions.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = exclusions.gypi; path = ../config/exclusions.gypi; sourceTree = "<group>"; };
 		E90F4C44EB8EC9910DA07AD0 /* kernel.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = kernel.xcodeproj; path = "../build-mac/livecode/engine/kernel.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		E9CA3863426F5B4A4B98BFB5 /* libopenssl.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libopenssl.xcodeproj; path = "../build-mac/livecode/prebuilt/libopenssl.xcodeproj"; sourceTree = SOURCE_ROOT; };
-		EA1BA7679551BF290E85DB82 /* libicudata.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicudata.a; path = ../prebuilt/lib/mac/libicudata.a; sourceTree = "<group>"; };
-		ECABF9952BF169848F9B18DE /* libskia_opt_hsw.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libskia_opt_hsw.a; path = ../prebuilt/lib/mac/libskia_opt_hsw.a; sourceTree = "<group>"; };
 		F00A524EC9A4FCF331B8A27C /* encode_errors.pl */ = {isa = PBXFileReference; lastKnownFileType = text.script.perl; path = encode_errors.pl; sourceTree = "<group>"; };
+		F0983E50B3EFF7019F3E5F31 /* libgif.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libgif.xcodeproj; path = "../build-mac/livecode/thirdparty/libgif/libgif.xcodeproj"; sourceTree = SOURCE_ROOT; };
+		F558DC8FD6CBC5A237700CAB /* libz.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libz.xcodeproj; path = "../build-mac/livecode/thirdparty/libz/libz.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		F7F3486E38A2A094B6620D74 /* win32.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = win32.gypi; path = ../config/win32.gypi; sourceTree = "<group>"; };
 		FBB943E28DBC2343F3523FB5 /* kernel-mode-template.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; path = "kernel-mode-template.gypi"; sourceTree = "<group>"; };
 		FC423A9186ADB5C7D97BDCBF /* libopenssl.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libopenssl.xcodeproj; path = "../build-mac/livecode/thirdparty/libopenssl/libopenssl.xcodeproj"; sourceTree = SOURCE_ROOT; };
@@ -656,49 +892,49 @@
 				09EC8C714EF0228E38EE40E7 /* libFoundation.a in Frameworks */,
 				F9F8DC60076A3B1D2CB44D49 /* libGraphics.a in Frameworks */,
 				CAD34D1F54594A58BA75C708 /* libkernel.a in Frameworks */,
+				E1B72131802AA1A569DFEFB6 /* libz.a in Frameworks */,
 				3C774FC7788D2BC5769E5B07 /* libffi.a in Frameworks */,
+				F4DF491E4BC964F6DE9C7A70 /* libgif.a in Frameworks */,
+				1265C22E0F3421115D6A1F52 /* libpng.a in Frameworks */,
+				30E683D3BA1438B5B4EED7E7 /* libjpeg.a in Frameworks */,
+				9D0B6DA27FD545401F676C36 /* libskia.a in Frameworks */,
+				E901CA6C7F4AEFFD096D090D /* libskia_opt_none.a in Frameworks */,
+				797F672FE1C02A9D291732A3 /* libskia_opt_arm.a in Frameworks */,
+				69BB007D6BD20FF74FD1A354 /* libskia_opt_sse2.a in Frameworks */,
+				81FCA72470C4464793A6A4D6 /* libskia_opt_sse3.a in Frameworks */,
+				07DA49776B6721A6A2107EF0 /* libskia_opt_sse41.a in Frameworks */,
+				DB360E8C7AE66B301D534861 /* libskia_opt_sse42.a in Frameworks */,
+				4AFC6151A7CC2555EF1542EF /* libskia_opt_avx.a in Frameworks */,
+				44DF335C380A600144836C0C /* libskia_opt_hsw.a in Frameworks */,
 				C7C4A03004AD27B42F8CC99B /* libScript.a in Frameworks */,
 				73678E52E6EF91F9FEEC949C /* stdscript.a in Frameworks */,
 				257A71C4814EE0C814AF7D61 /* libbrowser.a in Frameworks */,
 				E675E094F77F150094267465 /* libopenssl_stubs.a in Frameworks */,
-				78658C2EE85C2EC0662A6460 /* AudioToolbox.framework in Frameworks */,
-				43AC41AEB86D457F7EE8B873 /* CoreFoundation.framework in Frameworks */,
-				7D67D0F04E36001A2EB9AED0 /* CoreMedia.framework in Frameworks */,
-				C1D71152DC6060C4699DCF7E /* IOKit.framework in Frameworks */,
-				A30D33D7C7A5A9257CC80C29 /* Security.framework in Frameworks */,
-				644B7E30EA354E4042CC3F9A /* SystemConfiguration.framework in Frameworks */,
-				1228C070A676D9AD4E5C4499 /* libcups.dylib in Frameworks */,
-				9C565651B9482508CCC3C523 /* Accelerate.framework in Frameworks */,
-				F80FEDA79BD6139BEB1A18FF /* ApplicationServices.framework in Frameworks */,
-				D29FABC0EE7B85DA78DB8B89 /* Carbon.framework in Frameworks */,
-				3333B36BF3770E6BC54937B0 /* Cocoa.framework in Frameworks */,
-				114880BC92528FF16C39AED8 /* MediaToolbox.framework in Frameworks */,
-				F03B36AE796E90CCD2717E47 /* Quartz.framework in Frameworks */,
-				C9CE0CC21D73A2EE06B38131 /* CoreGraphics.framework in Frameworks */,
-				F711D6B7BA550D04321D5672 /* CoreText.framework in Frameworks */,
-				ACF5AEDC3D47A43B2EE24AA4 /* Foundation.framework in Frameworks */,
-				E3F1D501FA5028204CE8D45B /* libicui18n.a in Frameworks */,
-				B60458676F06128BC405F8F9 /* libicuio.a in Frameworks */,
-				21CB07F2C786F8F6B4A7B8EC /* libicutu.a in Frameworks */,
-				948F1592530CCFB75CF46357 /* libicuuc.a in Frameworks */,
-				6D316975B10B0878D5553019 /* libicudata.a in Frameworks */,
-				8A27A43BF953768AED8E102C /* libz.a in Frameworks */,
-				B5C59A3673D55E6FAA9AE77C /* libgif.a in Frameworks */,
-				CA649000CB707E60C43ED60F /* libpng.a in Frameworks */,
-				4E7ECCAF6B3D66F2BC137E27 /* libjpeg.a in Frameworks */,
-				A87F7924C89C79578409B5F5 /* libskia.a in Frameworks */,
-				E2C21001D70052DDF6746079 /* libskia_opt_none.a in Frameworks */,
-				5736DEBA6631A67DE6C817CC /* libskia_opt_arm.a in Frameworks */,
-				2ADB4CF99EEECDA5ACA91943 /* libskia_opt_sse2.a in Frameworks */,
-				B9558D29666B70DAB6C488FD /* libskia_opt_sse3.a in Frameworks */,
-				A23B59322666D2CB21D7CFEB /* libskia_opt_sse41.a in Frameworks */,
-				0841EEB95EEF9803933AA119 /* libskia_opt_sse42.a in Frameworks */,
-				4C47DAE36DD3772EDB240400 /* libskia_opt_avx.a in Frameworks */,
-				68E0634B539A39B56C962D40 /* libskia_opt_hsw.a in Frameworks */,
-				71E53D06E76B95EA78C29D36 /* libffi.a in Frameworks */,
-				C0060B03CCB619A0FBFA4E92 /* WebKit.framework in Frameworks */,
-				A0E7A8F0ABC5B28C1D214689 /* JavaScriptCore.framework in Frameworks */,
-				D82F181DE4E78293CF19B0D1 /* libpcre.a in Frameworks */,
+				68B22639CA612A0D4153FECF /* libpcre.a in Frameworks */,
+				AE5804E122615775B44D8C13 /* AudioToolbox.framework in Frameworks */,
+				55A0B46A82FA8B99F2CADF53 /* CoreFoundation.framework in Frameworks */,
+				489EC7D0153AEF3329E30BAB /* CoreMedia.framework in Frameworks */,
+				922791C33CFB8D2E020D1B70 /* IOKit.framework in Frameworks */,
+				BD8448E6E3E01B419AE522DC /* Security.framework in Frameworks */,
+				CAC34BB677F56A983B6A9250 /* SystemConfiguration.framework in Frameworks */,
+				4D0D6DC1455C426590899380 /* libcups.dylib in Frameworks */,
+				9FC0DA017FC54A09534BA01C /* Accelerate.framework in Frameworks */,
+				7D9C48F2BA68B4D1CD7FE7E4 /* ApplicationServices.framework in Frameworks */,
+				0EB01DB7B06380E3DE8F50D4 /* Carbon.framework in Frameworks */,
+				F4A0C66A0681E7F3633F3711 /* Cocoa.framework in Frameworks */,
+				76A9CE3ED1548B5CFE71B4AA /* MediaToolbox.framework in Frameworks */,
+				6CD705DAACA08932FC4A5AE1 /* Quartz.framework in Frameworks */,
+				C62C5C541BB3909C109EDBA5 /* CoreGraphics.framework in Frameworks */,
+				538F6765E29720F8ECB0EDB6 /* CoreText.framework in Frameworks */,
+				CAC8EBDB7127DE5D04BDDF9D /* Foundation.framework in Frameworks */,
+				4DAE63A783C6E437C087624B /* libicui18n.a in Frameworks */,
+				B394CBF2411E087A9CC64BF6 /* libicuio.a in Frameworks */,
+				6B5065FC9416A8BA6ADEE9FE /* libicutu.a in Frameworks */,
+				AFD7DAB69ADE2182B9920B39 /* libicuuc.a in Frameworks */,
+				BCB07FE1F6E2F6DB22A0DAAF /* libicudata.a in Frameworks */,
+				6DBBD09280741E7C6BA28BD0 /* libffi.a in Frameworks */,
+				F81683E94A7A9B69874FB2EF /* WebKit.framework in Frameworks */,
+				9E5D73F3910CAABFFF2C04D7 /* JavaScriptCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -721,10 +957,10 @@
 			children = (
 				D43DFBA462553E14E46376D4 /* Source */,
 				EE7C2340B557BE3F2B6CDBCE /* Intermediates */,
-				6A39E368C5A6E497C1007495 /* Projects */,
-				D55795408715DB192176AE2F /* Frameworks */,
+				F63C0BD4E3B96FBD1DE173F6 /* Projects */,
+				8C1415B3056BB6E0BB4B5F4F /* Frameworks */,
 				C6F6D28F70B041260AC574E2 /* Products */,
-				62EB0D6D2CC6DEA305813240 /* Build */,
+				4ACA7D96065856E627153E08 /* Build */,
 			);
 			sourceTree = "<group>";
 		};
@@ -744,6 +980,13 @@
 			sourceTree = "<group>";
 		};
 		15B2CD2801D5781143617B74 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		257DB790900B5BFAFB2B0478 /* Products */ = {
 			isa = PBXGroup;
 			children = (
 			);
@@ -779,34 +1022,21 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		58FC3BBCF158BC8FA1372233 /* Products */ = {
+		4ACA7D96065856E627153E08 /* Build */ = {
 			isa = PBXGroup;
 			children = (
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		5D2A08F666CAA9C69BC4ACFB /* test */ = {
-			isa = PBXGroup;
-			children = (
-				BCBEF0539B53E969666EEFBD /* test_lextable.cpp */,
-				CAF0B649CCC2D0222BBFA494 /* test_new.cpp */,
-				3B4999CA9E7C5B19EACEF8CF /* test_path.cpp */,
-				C44E2ED3F47E8DE10FD4C437 /* test_rgb.cpp */,
-			);
-			path = test;
-			sourceTree = "<group>";
-		};
-		62EB0D6D2CC6DEA305813240 /* Build */ = {
-			isa = PBXGroup;
-			children = (
+				0B18DAA315F2FB86E33DAC16 /* android-settings.gypi */,
+				13AD957A96EAB9FBBBB6D560 /* android.gypi */,
 				E29B020E1C84C26C2E5FEBB1 /* arch.gypi */,
 				907FBA42E4DB54B7106024BE /* common.gypi */,
 				02FCDC52EFE1B8657627C82E /* configurations.gypi */,
 				07612B0899165B408016BCF9 /* cpptest.gypi */,
 				D723DB2AB705460AD571A95F /* crosscompile.gypi */,
+				31B219FA5C8DD05FB153FB98 /* emscripten-settings.gypi */,
+				565C875B4B48C302F31D58BC /* emscripten.gypi */,
 				8C72CB6A8299D3BC2107F6B9 /* engine-sources.gypi */,
 				E655830958E4F41A930292B8 /* exclusions.gypi */,
+				631D74C19916BC39081C23D4 /* ios.gypi */,
 				FBB943E28DBC2343F3523FB5 /* kernel-mode-template.gypi */,
 				04703887CFF46F6E103C597C /* kernel-standalone.gyp */,
 				7517AE3D641F52A7384B17B8 /* linux-settings.gypi */,
@@ -822,6 +1052,51 @@
 			name = Build;
 			sourceTree = "<group>";
 		};
+		50A9B01A89C12078D517C973 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CCD78139F1B843A8FA6FE80C /* libpng.a */,
+				19FAEA9E5CDA9C19C2D85839 /* libpng (host).a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		55B86376250500EC0B67CE29 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A0B72FAA06B8A0C2429EB8B3 /* libgif.a */,
+				611494CA83D702C6520D2E8E /* libgif (host).a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		58FC3BBCF158BC8FA1372233 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5BA5F9CC0BEB3979F467642A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1D22D15FC175D6397ABD7D35 /* libz.a */,
+				E7D91876C52A144614E1AA4F /* libz-host.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5D2A08F666CAA9C69BC4ACFB /* test */ = {
+			isa = PBXGroup;
+			children = (
+				BCBEF0539B53E969666EEFBD /* test_lextable.cpp */,
+				CAF0B649CCC2D0222BBFA494 /* test_new.cpp */,
+				3B4999CA9E7C5B19EACEF8CF /* test_path.cpp */,
+				C44E2ED3F47E8DE10FD4C437 /* test_rgb.cpp */,
+			);
+			path = test;
+			sourceTree = "<group>";
+		};
 		66BA711064BBB81D92976B89 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -831,27 +1106,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		6A39E368C5A6E497C1007495 /* Projects */ = {
-			isa = PBXGroup;
-			children = (
-				4794143C42C28717A15578C5 /* engine-common.xcodeproj */,
-				92A25B659FF17B80BFC9726B /* fetch.xcodeproj */,
-				E90F4C44EB8EC9910DA07AD0 /* kernel.xcodeproj */,
-				BDB4AD045E8DFAAF6242387E /* libbrowser.xcodeproj */,
-				B41152F1F434843EC1EA85B6 /* libcpptest.xcodeproj */,
-				6445DE32F846044650B96207 /* libffi.xcodeproj */,
-				10E4FD6FAB6F868A7DD929A8 /* libfoundation.xcodeproj */,
-				6919B028CCA62A9502DD57FE /* libgraphics.xcodeproj */,
-				0DD422537A286237F98B9420 /* libicu.xcodeproj */,
-				FC423A9186ADB5C7D97BDCBF /* libopenssl.xcodeproj */,
-				E9CA3863426F5B4A4B98BFB5 /* libopenssl.xcodeproj */,
-				3AF23677B506EDE7652A8396 /* libscript.xcodeproj */,
-				B97D99745EF46691E894B9BB /* perfect.xcodeproj */,
-				56E03391B1B966D244DC345B /* thirdparty.xcodeproj */,
-			);
-			name = Projects;
-			sourceTree = "<group>";
-		};
 		7709901253F0CD3EA8619000 /* .. */ = {
 			isa = PBXGroup;
 			children = (
@@ -859,6 +1113,37 @@
 				2B5D7B8BD7E08C8E01989EED /* version */,
 			);
 			path = ..;
+			sourceTree = "<group>";
+		};
+		8C1415B3056BB6E0BB4B5F4F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				70F2AD3E6676D494DC0DE6C3 /* Accelerate.framework */,
+				B8E6CA08C349D5E86FC71AAA /* ApplicationServices.framework */,
+				8A2AB89F331866D7D3E84972 /* AudioToolbox.framework */,
+				209827C1210946974917D3CD /* Carbon.framework */,
+				6E77D0ED79A4589F2579F9C3 /* Cocoa.framework */,
+				4D3575B4BC78F3B46DF09A3C /* CoreFoundation.framework */,
+				BD644380E643E478F5564D33 /* CoreGraphics.framework */,
+				4D4070C3C97D9A6152A8C898 /* CoreMedia.framework */,
+				1F8C8386F7C04A3F2E842EB8 /* CoreText.framework */,
+				1C99B6B7B7A4445427F85400 /* Foundation.framework */,
+				544C72B63DB4933EEA5E9DA3 /* IOKit.framework */,
+				7FF8FFEB773D8721E1FB72E9 /* JavaScriptCore.framework */,
+				302DB52BAB0487657EC1A275 /* MediaToolbox.framework */,
+				6F61FEAAA761367AE9E3DE8E /* Quartz.framework */,
+				4BE8FA3FEC19B651568EB6D8 /* Security.framework */,
+				78A44BC170ACB0411427F20A /* SystemConfiguration.framework */,
+				2F2BCA7EC947C44CB8E9277D /* WebKit.framework */,
+				C402D477E1024F77786012E1 /* libcups.dylib */,
+				01700F8520EF40570FA926EC /* libffi.a */,
+				0D8C9582D45012DF196DFA5B /* libicudata.a */,
+				86D45525C75C66EFC95CB550 /* libicui18n.a */,
+				C0C0B905438DD931439321E9 /* libicuio.a */,
+				75406197E5C0348122D9E9E4 /* libicutu.a */,
+				2C67298880FBE328C00AA75D /* libicuuc.a */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		8C1DECB05B9AA1EBAF88DF60 /* util */ = {
@@ -885,11 +1170,45 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		9D21FD9B1DE6204B052AE116 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EA52839556522B17EC9D4E4A /* libjpeg.a */,
+				3015021BCC4AC56F08995434 /* libjpeg (host).a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		ADD2BE30EBCADEC03235DE21 /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				279030A75BF6DB35E771E2E0 /* libcpptest.a */,
 				0BD7A5828BCC570A3C9E56D5 /* test-libcpptest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BE060ABBB2EDC1B50436DEC8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				21C719F9747FB3D71D57E03C /* libskia_opt_none.a */,
+				D96799CFEBA6F2D55EE790DC /* libskia_opt_none (host).a */,
+				CCD513C64DF37C2BE725A61B /* libskia_opt_arm.a */,
+				30F536BE3EB43360916CEA56 /* libskia_opt_arm (host).a */,
+				BE7DC4100DCA58F9714DABA7 /* libskia_opt_sse2.a */,
+				CE4455E8AEBE197B991D7C5D /* libskia_opt_sse2 (host).a */,
+				582EBCB330138EF9A3A10DC3 /* libskia_opt_sse3.a */,
+				43E676E8BFE62E4FDAB5724F /* libskia_opt_sse3 (host).a */,
+				FAB5A251466A49D6609D7E86 /* libskia_opt_sse41.a */,
+				7FDFED1EBEDCFC568898A603 /* libskia_opt_sse41 (host).a */,
+				632CBF1076F077CD176A2229 /* libskia_opt_sse42.a */,
+				C03AA9F0BEB0DC0FAC3570E7 /* libskia_opt_sse42 (host).a */,
+				DD7D04FCDD28537ABCE581BD /* libskia_opt_avx.a */,
+				83DD630DFEDCF8E9148FF95E /* libskia_opt_avx (host).a */,
+				C74C5B68355118F1028B90F8 /* libskia_opt_hsw.a */,
+				934A62AC05987C658EA0F7D5 /* libskia_opt_hsw (host).a */,
+				CDB6212EE98F0157B6DFA76E /* libskia.a */,
+				7A508AC21401DBAFBF79292F /* libskia (host).a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -923,56 +1242,20 @@
 			name = Source;
 			sourceTree = "<group>";
 		};
-		D55795408715DB192176AE2F /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				70F2AD3E6676D494DC0DE6C3 /* Accelerate.framework */,
-				B8E6CA08C349D5E86FC71AAA /* ApplicationServices.framework */,
-				8A2AB89F331866D7D3E84972 /* AudioToolbox.framework */,
-				209827C1210946974917D3CD /* Carbon.framework */,
-				6E77D0ED79A4589F2579F9C3 /* Cocoa.framework */,
-				4D3575B4BC78F3B46DF09A3C /* CoreFoundation.framework */,
-				BD644380E643E478F5564D33 /* CoreGraphics.framework */,
-				4D4070C3C97D9A6152A8C898 /* CoreMedia.framework */,
-				1F8C8386F7C04A3F2E842EB8 /* CoreText.framework */,
-				1C99B6B7B7A4445427F85400 /* Foundation.framework */,
-				544C72B63DB4933EEA5E9DA3 /* IOKit.framework */,
-				7FF8FFEB773D8721E1FB72E9 /* JavaScriptCore.framework */,
-				302DB52BAB0487657EC1A275 /* MediaToolbox.framework */,
-				6F61FEAAA761367AE9E3DE8E /* Quartz.framework */,
-				4BE8FA3FEC19B651568EB6D8 /* Security.framework */,
-				78A44BC170ACB0411427F20A /* SystemConfiguration.framework */,
-				2F2BCA7EC947C44CB8E9277D /* WebKit.framework */,
-				C402D477E1024F77786012E1 /* libcups.dylib */,
-				01700F8520EF40570FA926EC /* libffi.a */,
-				049AE91EC9EBE83868CF8A59 /* libgif.a */,
-				EA1BA7679551BF290E85DB82 /* libicudata.a */,
-				A1FF70EEA89388AC54D00039 /* libicui18n.a */,
-				B507F558B95B95B83C77FD2D /* libicuio.a */,
-				03709285465EA0572F5754A6 /* libicutu.a */,
-				A0DCD9BD4752268BDE4E107C /* libicuuc.a */,
-				15DA69978358B98780C9DC86 /* libjpeg.a */,
-				63AAF6D77665558D8B341831 /* libpcre.a */,
-				90014FD32859DC3B20BB3E35 /* libpng.a */,
-				19649EFF54A9C9666566E042 /* libskia.a */,
-				568425678460CE47515709B5 /* libskia_opt_arm.a */,
-				8E6BD55FBB5358378D5299AE /* libskia_opt_avx.a */,
-				ECABF9952BF169848F9B18DE /* libskia_opt_hsw.a */,
-				97998484EEF970B1E5FEBC18 /* libskia_opt_none.a */,
-				370E8863794E6805DE0D5DE0 /* libskia_opt_sse2.a */,
-				76382ED793CA1CB4B31485D4 /* libskia_opt_sse3.a */,
-				290D10B1342136794DF25A91 /* libskia_opt_sse41.a */,
-				1905D05D1DA5D2DC2B63ED6B /* libskia_opt_sse42.a */,
-				93388E8DE4E67BEA1DBB1276 /* libz.a */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		EADE83B76152605A1641AFE9 /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				128192175BE600A810BEE001 /* libffi.a */,
 				A52953BF591748E8ED3ED43D /* libffi-host.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EB2AB1E8AA7304CF3A1DF52C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E099C04A68394CF4C605E0A7 /* libpcre.a */,
+				77E562BE7D8007F8013943B4 /* libpcre (host).a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -995,6 +1278,34 @@
 			name = Intermediates;
 			path = src;
 			sourceTree = INTERMEDIATE_DIR;
+		};
+		F63C0BD4E3B96FBD1DE173F6 /* Projects */ = {
+			isa = PBXGroup;
+			children = (
+				4794143C42C28717A15578C5 /* engine-common.xcodeproj */,
+				92A25B659FF17B80BFC9726B /* fetch.xcodeproj */,
+				E90F4C44EB8EC9910DA07AD0 /* kernel.xcodeproj */,
+				BDB4AD045E8DFAAF6242387E /* libbrowser.xcodeproj */,
+				B41152F1F434843EC1EA85B6 /* libcpptest.xcodeproj */,
+				D64FCE00B1470973A997AAD6 /* libexpat.xcodeproj */,
+				6445DE32F846044650B96207 /* libffi.xcodeproj */,
+				10E4FD6FAB6F868A7DD929A8 /* libfoundation.xcodeproj */,
+				F0983E50B3EFF7019F3E5F31 /* libgif.xcodeproj */,
+				6919B028CCA62A9502DD57FE /* libgraphics.xcodeproj */,
+				0DD422537A286237F98B9420 /* libicu.xcodeproj */,
+				79B2CB8F27B24653D91044FD /* libjpeg.xcodeproj */,
+				FC423A9186ADB5C7D97BDCBF /* libopenssl.xcodeproj */,
+				E9CA3863426F5B4A4B98BFB5 /* libopenssl.xcodeproj */,
+				CF6437327CBCD383FCC992AC /* libpcre.xcodeproj */,
+				C84C607D4BF94B7ED615F4A3 /* libpng.xcodeproj */,
+				3AF23677B506EDE7652A8396 /* libscript.xcodeproj */,
+				3ADA27286AC645F6DCBE960F /* libskia.xcodeproj */,
+				F558DC8FD6CBC5A237700CAB /* libz.xcodeproj */,
+				B97D99745EF46691E894B9BB /* perfect.xcodeproj */,
+				56E03391B1B966D244DC345B /* thirdparty.xcodeproj */,
+			);
+			name = Projects;
+			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
@@ -1023,23 +1334,29 @@
 				2C604BC5537B59B4838E25DF /* PBXTargetDependency */,
 				BB1294D2769765A6494DE1FF /* PBXTargetDependency */,
 				D8434AD83780703BBC4AB865 /* PBXTargetDependency */,
-				C2A2E09757292551BD0324DE /* PBXTargetDependency */,
-				304CFD19ED5F5E15BD586EE8 /* PBXTargetDependency */,
+				A80889C596693AF96B957DBD /* PBXTargetDependency */,
 				C830478D3B01198D570E32E6 /* PBXTargetDependency */,
-				8ECB521E3865CDC257386395 /* PBXTargetDependency */,
-				895686A502770E80408725B1 /* PBXTargetDependency */,
-				C44A94DD75678A8D09198FCB /* PBXTargetDependency */,
-				0EA84429F5C69D90959D2263 /* PBXTargetDependency */,
-				80B66E4FD6E55652F5F049C3 /* PBXTargetDependency */,
-				BDDF3655163F984571EBA4E4 /* PBXTargetDependency */,
-				1FE2D797B2B4F01FE8BA703E /* PBXTargetDependency */,
+				0E824D18B7A07BBC7733498E /* PBXTargetDependency */,
+				FC00AF939B495EABB39665C1 /* PBXTargetDependency */,
+				FA2D6876BC668C717A5C519E /* PBXTargetDependency */,
+				B18160EC3A13161DBDF38A67 /* PBXTargetDependency */,
+				FC76948559844DF4CD331F85 /* PBXTargetDependency */,
+				B4EDBAF6162F429FFE076BCC /* PBXTargetDependency */,
+				4C7C53516CF6D0D65B28F97A /* PBXTargetDependency */,
+				A84BCF43B7345766DD1516EC /* PBXTargetDependency */,
+				52F4C11BAA72894C66222FDC /* PBXTargetDependency */,
+				D9BC4DFF17DA95F2FD3549F4 /* PBXTargetDependency */,
+				469522577BE68AC014A3A047 /* PBXTargetDependency */,
+				59F91869A094186A80BB6273 /* PBXTargetDependency */,
+				379BDD65BE74A213869A1814 /* PBXTargetDependency */,
 				C117A835E20775D1F28EA175 /* PBXTargetDependency */,
 				CC56757AB6995806F907BD9D /* PBXTargetDependency */,
+				304CFD19ED5F5E15BD586EE8 /* PBXTargetDependency */,
 				D305501E8919D52592825E8E /* PBXTargetDependency */,
 				61B946C6B2FBEBD03429C248 /* PBXTargetDependency */,
 				81F1A246872482D966876125 /* PBXTargetDependency */,
 				527DBC84C0E2F648E8594A73 /* PBXTargetDependency */,
-				6A59CB2B7D11378D4270C128 /* PBXTargetDependency */,
+				B01DE467220FAAE1BBD679F7 /* PBXTargetDependency */,
 				E42750EF4DCDB999E03C87F3 /* PBXTargetDependency */,
 				0583F526B60A00EBF9DB7AD5 /* PBXTargetDependency */,
 			);
@@ -1103,12 +1420,20 @@
 					ProjectRef = B41152F1F434843EC1EA85B6 /* libcpptest.xcodeproj */;
 				},
 				{
+					ProductGroup = 257DB790900B5BFAFB2B0478 /* Products */;
+					ProjectRef = D64FCE00B1470973A997AAD6 /* libexpat.xcodeproj */;
+				},
+				{
 					ProductGroup = EADE83B76152605A1641AFE9 /* Products */;
 					ProjectRef = 6445DE32F846044650B96207 /* libffi.xcodeproj */;
 				},
 				{
 					ProductGroup = C4436C52E4DD95C5DEE071BA /* Products */;
 					ProjectRef = 10E4FD6FAB6F868A7DD929A8 /* libfoundation.xcodeproj */;
+				},
+				{
+					ProductGroup = 55B86376250500EC0B67CE29 /* Products */;
+					ProjectRef = F0983E50B3EFF7019F3E5F31 /* libgif.xcodeproj */;
 				},
 				{
 					ProductGroup = EC23103323E1ACCD62749FDD /* Products */;
@@ -1119,6 +1444,10 @@
 					ProjectRef = 0DD422537A286237F98B9420 /* libicu.xcodeproj */;
 				},
 				{
+					ProductGroup = 9D21FD9B1DE6204B052AE116 /* Products */;
+					ProjectRef = 79B2CB8F27B24653D91044FD /* libjpeg.xcodeproj */;
+				},
+				{
 					ProductGroup = 48DA6D95E0C39304176526E9 /* Products */;
 					ProjectRef = FC423A9186ADB5C7D97BDCBF /* libopenssl.xcodeproj */;
 				},
@@ -1127,8 +1456,24 @@
 					ProjectRef = E9CA3863426F5B4A4B98BFB5 /* libopenssl.xcodeproj */;
 				},
 				{
+					ProductGroup = EB2AB1E8AA7304CF3A1DF52C /* Products */;
+					ProjectRef = CF6437327CBCD383FCC992AC /* libpcre.xcodeproj */;
+				},
+				{
+					ProductGroup = 50A9B01A89C12078D517C973 /* Products */;
+					ProjectRef = C84C607D4BF94B7ED615F4A3 /* libpng.xcodeproj */;
+				},
+				{
 					ProductGroup = 34AA1E23FE52823C302B6274 /* Products */;
 					ProjectRef = 3AF23677B506EDE7652A8396 /* libscript.xcodeproj */;
+				},
+				{
+					ProductGroup = BE060ABBB2EDC1B50436DEC8 /* Products */;
+					ProjectRef = 3ADA27286AC645F6DCBE960F /* libskia.xcodeproj */;
+				},
+				{
+					ProductGroup = 5BA5F9CC0BEB3979F467642A /* Products */;
+					ProjectRef = F558DC8FD6CBC5A237700CAB /* libz.xcodeproj */;
 				},
 				{
 					ProductGroup = 39839D8FD568F25AC1F7FEF3 /* Products */;
@@ -1186,6 +1531,27 @@
 			remoteRef = 04B526FCFDD3A228629D08AE /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		19FAEA9E5CDA9C19C2D85839 /* libpng (host).a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libpng (host).a";
+			remoteRef = 181082D04A0B6A4C0091EF06 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1D22D15FC175D6397ABD7D35 /* libz.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libz.a;
+			remoteRef = 043F478336CED2CE594452A5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		21C719F9747FB3D71D57E03C /* libskia_opt_none.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libskia_opt_none.a;
+			remoteRef = 40DCA8FBFEAB88D01C41BAD9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		2496832123D451766C64F53D /* libkernel.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1207,11 +1573,32 @@
 			remoteRef = D360E00F46670DF4155A934F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		3015021BCC4AC56F08995434 /* libjpeg (host).a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libjpeg (host).a";
+			remoteRef = 8992EFBF18C720772275E6A6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		30F536BE3EB43360916CEA56 /* libskia_opt_arm (host).a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libskia_opt_arm (host).a";
+			remoteRef = E23EA9846E7D96F7682DCE8F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		3E86A81B580E290FD0751362 /* libbrowser (host).a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = "libbrowser (host).a";
 			remoteRef = 63AE387BDFE4D5A9D59BEABF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		43E676E8BFE62E4FDAB5724F /* libskia_opt_sse3 (host).a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libskia_opt_sse3 (host).a";
+			remoteRef = C8BD2A9BE40341BBAC6B605E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		4F1810982F15FB98B57195BD /* libFoundation-host.a */ = {
@@ -1228,6 +1615,27 @@
 			remoteRef = D102410B0A6A5315BE728EB6 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		582EBCB330138EF9A3A10DC3 /* libskia_opt_sse3.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libskia_opt_sse3.a;
+			remoteRef = C4FDDE4E8F64A6958B27ED0D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		611494CA83D702C6520D2E8E /* libgif (host).a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libgif (host).a";
+			remoteRef = B0123B39AF8ECB6D531DB090 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		632CBF1076F077CD176A2229 /* libskia_opt_sse42.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libskia_opt_sse42.a;
+			remoteRef = C773EF78438DC7AB40BD7196 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		679F46A086313F68A8CB4024 /* libGraphics.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1242,6 +1650,34 @@
 			remoteRef = C730C239F53F39022F0DE7BD /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		77E562BE7D8007F8013943B4 /* libpcre (host).a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libpcre (host).a";
+			remoteRef = A1F09424BC0E5788376D3106 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		7A508AC21401DBAFBF79292F /* libskia (host).a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libskia (host).a";
+			remoteRef = 50B965331113098C1EE56DB7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		7FDFED1EBEDCFC568898A603 /* libskia_opt_sse41 (host).a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libskia_opt_sse41 (host).a";
+			remoteRef = 090D0EA6EFAADE3EB6D53C47 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		83DD630DFEDCF8E9148FF95E /* libskia_opt_avx (host).a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libskia_opt_avx (host).a";
+			remoteRef = 83E2C7581964814037DE673A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		8CF9EC44112831F961B4EB32 /* libbrowser.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1254,6 +1690,20 @@
 			fileType = archive.ar;
 			path = "libScript-host.a";
 			remoteRef = CA1DAE4C9A7F112F04D4A279 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		934A62AC05987C658EA0F7D5 /* libskia_opt_hsw (host).a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libskia_opt_hsw (host).a";
+			remoteRef = 48999EDE8F94307C5F70A2D4 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A0B72FAA06B8A0C2429EB8B3 /* libgif.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libgif.a;
+			remoteRef = D1A3706934F44764DBB4D005 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		A445755606FFD6FF3FEE0132 /* libGraphics (host).a */ = {
@@ -1277,11 +1727,95 @@
 			remoteRef = 132D8E0B497FD807C8BF968F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		BE7DC4100DCA58F9714DABA7 /* libskia_opt_sse2.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libskia_opt_sse2.a;
+			remoteRef = 92F150A48789B527ECEEAC91 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C03AA9F0BEB0DC0FAC3570E7 /* libskia_opt_sse42 (host).a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libskia_opt_sse42 (host).a";
+			remoteRef = 2DC19542F7648CCCA9F471B6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C74C5B68355118F1028B90F8 /* libskia_opt_hsw.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libskia_opt_hsw.a;
+			remoteRef = 8919A40DDB710BEA8CA0533A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		CCD513C64DF37C2BE725A61B /* libskia_opt_arm.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libskia_opt_arm.a;
+			remoteRef = CB7F991C6717884E32C615BD /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		CCD78139F1B843A8FA6FE80C /* libpng.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libpng.a;
+			remoteRef = E03DDC0C9E3410CE323E531F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		CDB6212EE98F0157B6DFA76E /* libskia.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libskia.a;
+			remoteRef = 0D4F6B09AB700C268F186929 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		CE4455E8AEBE197B991D7C5D /* libskia_opt_sse2 (host).a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libskia_opt_sse2 (host).a";
+			remoteRef = 4AC429A15CBEB92AB7E9B45C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		D8096C8E9AD32CE0642C8D85 /* libFoundation.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libFoundation.a;
 			remoteRef = A3F4B69141739CFE0EC67706 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D96799CFEBA6F2D55EE790DC /* libskia_opt_none (host).a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libskia_opt_none (host).a";
+			remoteRef = 28E5F1D23D62AD49BCB7AEA8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		DD7D04FCDD28537ABCE581BD /* libskia_opt_avx.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libskia_opt_avx.a;
+			remoteRef = 5BDBB1D4E09848F98DE19058 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E099C04A68394CF4C605E0A7 /* libpcre.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libpcre.a;
+			remoteRef = 5CD30A40DC34261C7F55A74A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E7D91876C52A144614E1AA4F /* libz-host.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libz-host.a";
+			remoteRef = 15291AA90E8DEF4CC96F5F81 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		EA52839556522B17EC9D4E4A /* libjpeg.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libjpeg.a;
+			remoteRef = 9E3748CF0F8183D352A6E0CB /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		F01E9CDACB1236715462E8DC /* perfect-host */ = {
@@ -1296,6 +1830,13 @@
 			fileType = "compiled.mach-o.executable";
 			path = "test-libFoundation";
 			remoteRef = E607300BAD86AC21E0FE2F42 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FAB5A251466A49D6609D7E86 /* libskia_opt_sse41.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libskia_opt_sse41.a;
+			remoteRef = 3D58AFE6162ED1D6BEB56FFE /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1390,20 +1931,15 @@
 			name = quicktime_stubs;
 			targetProxy = E832FC52686F91E2A8A08D13 /* PBXContainerItemProxy */;
 		};
-		0EA84429F5C69D90959D2263 /* PBXTargetDependency */ = {
+		0E824D18B7A07BBC7733498E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = thirdparty_prebuilt_skia;
-			targetProxy = A91558D72BFDEB818EF8D93B /* PBXContainerItemProxy */;
+			name = libgif;
+			targetProxy = B0E47BEB10EDEA6D14693D5D /* PBXContainerItemProxy */;
 		};
 		1EA49E248478069ABE4073A6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "fetch-mac";
 			targetProxy = 08CACFF27CF565BC0AE8A82B /* PBXContainerItemProxy */;
-		};
-		1FE2D797B2B4F01FE8BA703E /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = thirdparty_prebuilt_fontconfig;
-			targetProxy = ECA9B00566FDD87B6A569E9E /* PBXContainerItemProxy */;
 		};
 		2788AC77E63D917570512AA0 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1430,10 +1966,25 @@
 			target = 4BC701AEF3C6979EC45573EC /* test-kernel-standalone */;
 			targetProxy = 304FEF21CA62F83086147542 /* PBXContainerItemProxy */;
 		};
+		379BDD65BE74A213869A1814 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libskia_opt_hsw;
+			targetProxy = B7F6B0739BA297931A887BCF /* PBXContainerItemProxy */;
+		};
 		3DFBAAE623627CF9A0E4E16A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 42BDC134E9C6A8879D69F2AA /* run-test-kernel-standalone */;
 			targetProxy = 869265264DE9067091850E5F /* PBXContainerItemProxy */;
+		};
+		469522577BE68AC014A3A047 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libskia_opt_sse42;
+			targetProxy = 799C5F23F69E602B05A48453 /* PBXContainerItemProxy */;
+		};
+		4C7C53516CF6D0D65B28F97A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libskia_opt_arm;
+			targetProxy = 5567E976F60DDD9E04039CBB /* PBXContainerItemProxy */;
 		};
 		527DBC84C0E2F648E8594A73 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1445,10 +1996,20 @@
 			name = libicu;
 			targetProxy = FBDAD0D89FD9480D1C3F6F7B /* PBXContainerItemProxy */;
 		};
+		52F4C11BAA72894C66222FDC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libskia_opt_sse3;
+			targetProxy = 21F07B2505C8536827444C23 /* PBXContainerItemProxy */;
+		};
 		56A629FD8781991734FC875C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = perfect;
 			targetProxy = 3ED154956E3850E63A3A411C /* PBXContainerItemProxy */;
+		};
+		59F91869A094186A80BB6273 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libskia_opt_avx;
+			targetProxy = CD17B5214122B36171EF6163 /* PBXContainerItemProxy */;
 		};
 		5D4038904C875B6F9CC55DC7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1465,30 +2026,10 @@
 			name = libbrowser;
 			targetProxy = 71C839CF45AB7FF478F4C019 /* PBXContainerItemProxy */;
 		};
-		6A59CB2B7D11378D4270C128 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = thirdparty_prebuilt_pcre;
-			targetProxy = B1F189194FDEF5ED69442912 /* PBXContainerItemProxy */;
-		};
-		80B66E4FD6E55652F5F049C3 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = thirdparty_prebuilt_expat;
-			targetProxy = 69A5423A7B5AD80646D8DCFE /* PBXContainerItemProxy */;
-		};
 		81F1A246872482D966876125 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = libopenssl_stubs;
 			targetProxy = 53178DF195AB123BBF353D9E /* PBXContainerItemProxy */;
-		};
-		895686A502770E80408725B1 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = thirdparty_prebuilt_png;
-			targetProxy = EBD16FC7CE3176F4B561D8E8 /* PBXContainerItemProxy */;
-		};
-		8ECB521E3865CDC257386395 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = thirdparty_prebuilt_gif;
-			targetProxy = 9B437D106520C31AF03FD83D /* PBXContainerItemProxy */;
 		};
 		96C4E973B71DD39850C2663E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1500,35 +2041,45 @@
 			target = 4BC701AEF3C6979EC45573EC /* test-kernel-standalone */;
 			targetProxy = C2A0DCCB0092D285BFFAD27E /* PBXContainerItemProxy */;
 		};
+		A80889C596693AF96B957DBD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libz;
+			targetProxy = 88F3B644614C7516FEA84830 /* PBXContainerItemProxy */;
+		};
+		A84BCF43B7345766DD1516EC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libskia_opt_sse2;
+			targetProxy = 174F130F322EAF3615FFFF37 /* PBXContainerItemProxy */;
+		};
+		B01DE467220FAAE1BBD679F7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libpcre;
+			targetProxy = 04CAEA64904622AAC69253D6 /* PBXContainerItemProxy */;
+		};
+		B18160EC3A13161DBDF38A67 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libskia;
+			targetProxy = F5173DC00D027CDDE0944723 /* PBXContainerItemProxy */;
+		};
 		B2740528ECC68ED235DF327A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = libicu_include;
 			targetProxy = 007474ACDB30299CDA7D98F2 /* PBXContainerItemProxy */;
+		};
+		B4EDBAF6162F429FFE076BCC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libskia_opt_none;
+			targetProxy = 7F72C91A107A09628C2480DF /* PBXContainerItemProxy */;
 		};
 		BB1294D2769765A6494DE1FF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = minimal_icu_data;
 			targetProxy = 52E088599B2F2DEDE86315AB /* PBXContainerItemProxy */;
 		};
-		BDDF3655163F984571EBA4E4 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = thirdparty_prebuilt_freetype;
-			targetProxy = 427FB28000DD29F2F154458E /* PBXContainerItemProxy */;
-		};
 		C117A835E20775D1F28EA175 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = libScript;
 			targetProxy = D865D5ADE17F5A20A0B78177 /* PBXContainerItemProxy */;
-		};
-		C2A2E09757292551BD0324DE /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = thirdparty_prebuilt_z;
-			targetProxy = FC3B84812A2BE5DB935108EA /* PBXContainerItemProxy */;
-		};
-		C44A94DD75678A8D09198FCB /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = thirdparty_prebuilt_jpeg;
-			targetProxy = EEAB461C85D62DD53550B60A /* PBXContainerItemProxy */;
 		};
 		C4C01939A318D5504567493E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1565,6 +2116,11 @@
 			name = libFoundation;
 			targetProxy = 5950B434795B22E1F1618A47 /* PBXContainerItemProxy */;
 		};
+		D9BC4DFF17DA95F2FD3549F4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libskia_opt_sse41;
+			targetProxy = 71A07CDF8034CB1625FDD017 /* PBXContainerItemProxy */;
+		};
 		E272A62248A71CF749AD078A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = AA3E22E4C76CB554B6B93898 /* kernel-standalone */;
@@ -1585,10 +2141,25 @@
 			name = "security-community";
 			targetProxy = EDEBB40A6EE2725E9F208033 /* PBXContainerItemProxy */;
 		};
+		FA2D6876BC668C717A5C519E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libjpeg;
+			targetProxy = D7D56C2B79A045877A904942 /* PBXContainerItemProxy */;
+		};
 		FA6DB94C3FD052BE9DE6CA46 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = encode_version;
 			targetProxy = 1B46F39D94C65672D23BE7CE /* PBXContainerItemProxy */;
+		};
+		FC00AF939B495EABB39665C1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libpng;
+			targetProxy = 3B694C2E97CD137F040CF5EC /* PBXContainerItemProxy */;
+		};
+		FC76948559844DF4CD331F85 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libexpat;
+			targetProxy = 12EF5283AE26C1F90ADC30E1 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1611,8 +2182,18 @@
 				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
+					"HAVE_CONFIG_H=1",
+					"PCRE_STATIC=1",
+					"PCRE2_CODE_UNIT_WIDTH=16",
 					MODE_STANDALONE,
 					"U_STATIC_IMPLEMENTATION=1",
+					SK_RELEASE,
+					SK_SUPPORT_LEGACY_CANVAS_IS_REFCNT,
+					SK_SUPPORT_LEGACY_GETTOPDEVICE,
+					SK_SUPPORT_LEGACY_ACCESSBITMAP,
+					SK_SUPPORT_LEGACY_CLIP_REGIONOPS,
+					SK_SUPPORT_LEGACY_GETDEVICE,
+					"SK_SUPPORT_GPU=0",
 					CROSS_COMPILE_TARGET,
 					TARGET_PLATFORM_MACOS_X,
 					_MACOSX,
@@ -1663,6 +2244,7 @@
 					"-Wextra",
 					"-Wno-conversion",
 					"-Wno-shorten-64-to-32",
+					"-Wno-enum-constexpr-conversion",
 					"-Werror=declaration-after-statement",
 					"-Werror=delete-non-virtual-dtor",
 					"-Werror=overloaded-virtual",
@@ -1695,8 +2277,18 @@
 				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
+					"HAVE_CONFIG_H=1",
+					"PCRE_STATIC=1",
+					"PCRE2_CODE_UNIT_WIDTH=16",
 					MODE_STANDALONE,
 					"U_STATIC_IMPLEMENTATION=1",
+					SK_RELEASE,
+					SK_SUPPORT_LEGACY_CANVAS_IS_REFCNT,
+					SK_SUPPORT_LEGACY_GETTOPDEVICE,
+					SK_SUPPORT_LEGACY_ACCESSBITMAP,
+					SK_SUPPORT_LEGACY_CLIP_REGIONOPS,
+					SK_SUPPORT_LEGACY_GETDEVICE,
+					"SK_SUPPORT_GPU=0",
 					CROSS_COMPILE_TARGET,
 					TARGET_PLATFORM_MACOS_X,
 					_MACOSX,
@@ -1747,6 +2339,7 @@
 					"-Wextra",
 					"-Wno-conversion",
 					"-Wno-shorten-64-to-32",
+					"-Wno-enum-constexpr-conversion",
 					"-Werror=declaration-after-statement",
 					"-Werror=delete-non-virtual-dtor",
 					"-Werror=overloaded-virtual",
@@ -1779,11 +2372,21 @@
 				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
+					"HAVE_CONFIG_H=1",
+					"PCRE_STATIC=1",
+					"PCRE2_CODE_UNIT_WIDTH=16",
 					"GTEST_HAS_POSIX_RE=0",
 					"GTEST_HAS_PTHREAD=0",
 					"GTEST_HAS_RTTI=0",
 					"GTEST_HAS_EXCEPTIONS=0",
 					"U_STATIC_IMPLEMENTATION=1",
+					SK_RELEASE,
+					SK_SUPPORT_LEGACY_CANVAS_IS_REFCNT,
+					SK_SUPPORT_LEGACY_GETTOPDEVICE,
+					SK_SUPPORT_LEGACY_ACCESSBITMAP,
+					SK_SUPPORT_LEGACY_CLIP_REGIONOPS,
+					SK_SUPPORT_LEGACY_GETDEVICE,
+					"SK_SUPPORT_GPU=0",
 					CROSS_COMPILE_TARGET,
 					TARGET_PLATFORM_MACOS_X,
 					_MACOSX,
@@ -1829,6 +2432,7 @@
 					"-Wextra",
 					"-Wno-conversion",
 					"-Wno-shorten-64-to-32",
+					"-Wno-enum-constexpr-conversion",
 					"-Werror=declaration-after-statement",
 					"-Werror=delete-non-virtual-dtor",
 					"-Werror=overloaded-virtual",
@@ -1868,11 +2472,21 @@
 				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
+					"HAVE_CONFIG_H=1",
+					"PCRE_STATIC=1",
+					"PCRE2_CODE_UNIT_WIDTH=16",
 					"GTEST_HAS_POSIX_RE=0",
 					"GTEST_HAS_PTHREAD=0",
 					"GTEST_HAS_RTTI=0",
 					"GTEST_HAS_EXCEPTIONS=0",
 					"U_STATIC_IMPLEMENTATION=1",
+					SK_RELEASE,
+					SK_SUPPORT_LEGACY_CANVAS_IS_REFCNT,
+					SK_SUPPORT_LEGACY_GETTOPDEVICE,
+					SK_SUPPORT_LEGACY_ACCESSBITMAP,
+					SK_SUPPORT_LEGACY_CLIP_REGIONOPS,
+					SK_SUPPORT_LEGACY_GETDEVICE,
+					"SK_SUPPORT_GPU=0",
 					CROSS_COMPILE_TARGET,
 					TARGET_PLATFORM_MACOS_X,
 					_MACOSX,
@@ -1918,6 +2532,7 @@
 					"-Wextra",
 					"-Wno-conversion",
 					"-Wno-shorten-64-to-32",
+					"-Wno-enum-constexpr-conversion",
 					"-Werror=declaration-after-statement",
 					"-Werror=delete-non-virtual-dtor",
 					"-Werror=overloaded-virtual",
@@ -1951,8 +2566,18 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				EXECUTABLE_PREFIX = lib;
 				GCC_PREPROCESSOR_DEFINITIONS = (
+					"HAVE_CONFIG_H=1",
+					"PCRE_STATIC=1",
+					"PCRE2_CODE_UNIT_WIDTH=16",
 					MODE_STANDALONE,
 					"U_STATIC_IMPLEMENTATION=1",
+					SK_RELEASE,
+					SK_SUPPORT_LEGACY_CANVAS_IS_REFCNT,
+					SK_SUPPORT_LEGACY_GETTOPDEVICE,
+					SK_SUPPORT_LEGACY_ACCESSBITMAP,
+					SK_SUPPORT_LEGACY_CLIP_REGIONOPS,
+					SK_SUPPORT_LEGACY_GETDEVICE,
+					"SK_SUPPORT_GPU=0",
 					CROSS_COMPILE_TARGET,
 					TARGET_PLATFORM_MACOS_X,
 					_MACOSX,
@@ -2003,6 +2628,7 @@
 					"-Wextra",
 					"-Wno-conversion",
 					"-Wno-shorten-64-to-32",
+					"-Wno-enum-constexpr-conversion",
 					"-Werror=declaration-after-statement",
 					"-Werror=delete-non-virtual-dtor",
 					"-Werror=overloaded-virtual",
@@ -2067,12 +2693,22 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				EXECUTABLE_PREFIX = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
+					"HAVE_CONFIG_H=1",
+					"PCRE_STATIC=1",
+					"PCRE2_CODE_UNIT_WIDTH=16",
 					MODE_STANDALONE,
 					"GTEST_HAS_POSIX_RE=0",
 					"GTEST_HAS_PTHREAD=0",
 					"GTEST_HAS_RTTI=0",
 					"GTEST_HAS_EXCEPTIONS=0",
 					"U_STATIC_IMPLEMENTATION=1",
+					SK_RELEASE,
+					SK_SUPPORT_LEGACY_CANVAS_IS_REFCNT,
+					SK_SUPPORT_LEGACY_GETTOPDEVICE,
+					SK_SUPPORT_LEGACY_ACCESSBITMAP,
+					SK_SUPPORT_LEGACY_CLIP_REGIONOPS,
+					SK_SUPPORT_LEGACY_GETDEVICE,
+					"SK_SUPPORT_GPU=0",
 					CROSS_COMPILE_TARGET,
 					TARGET_PLATFORM_MACOS_X,
 					_MACOSX,
@@ -2111,6 +2747,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(SDKROOT)/System/Library/Frameworks",
+					../prebuilt/lib/mac/x86_64,
 					../prebuilt/lib/mac,
 				);
 				OTHER_LDFLAGS = (
@@ -2126,6 +2763,7 @@
 					"-Wextra",
 					"-Wno-conversion",
 					"-Wno-shorten-64-to-32",
+					"-Wno-enum-constexpr-conversion",
 					"-Werror=declaration-after-statement",
 					"-Werror=delete-non-virtual-dtor",
 					"-Werror=overloaded-virtual",
@@ -2159,12 +2797,22 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				EXECUTABLE_PREFIX = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
+					"HAVE_CONFIG_H=1",
+					"PCRE_STATIC=1",
+					"PCRE2_CODE_UNIT_WIDTH=16",
 					MODE_STANDALONE,
 					"GTEST_HAS_POSIX_RE=0",
 					"GTEST_HAS_PTHREAD=0",
 					"GTEST_HAS_RTTI=0",
 					"GTEST_HAS_EXCEPTIONS=0",
 					"U_STATIC_IMPLEMENTATION=1",
+					SK_RELEASE,
+					SK_SUPPORT_LEGACY_CANVAS_IS_REFCNT,
+					SK_SUPPORT_LEGACY_GETTOPDEVICE,
+					SK_SUPPORT_LEGACY_ACCESSBITMAP,
+					SK_SUPPORT_LEGACY_CLIP_REGIONOPS,
+					SK_SUPPORT_LEGACY_GETDEVICE,
+					"SK_SUPPORT_GPU=0",
 					CROSS_COMPILE_TARGET,
 					TARGET_PLATFORM_MACOS_X,
 					_MACOSX,
@@ -2204,6 +2852,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(SDKROOT)/System/Library/Frameworks",
+					../prebuilt/lib/mac/x86_64,
 					../prebuilt/lib/mac,
 				);
 				OTHER_LDFLAGS = (
@@ -2219,6 +2868,7 @@
 					"-Wextra",
 					"-Wno-conversion",
 					"-Wno-shorten-64-to-32",
+					"-Wno-enum-constexpr-conversion",
 					"-Werror=declaration-after-statement",
 					"-Werror=delete-non-virtual-dtor",
 					"-Werror=overloaded-virtual",
@@ -2252,8 +2902,18 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				EXECUTABLE_PREFIX = lib;
 				GCC_PREPROCESSOR_DEFINITIONS = (
+					"HAVE_CONFIG_H=1",
+					"PCRE_STATIC=1",
+					"PCRE2_CODE_UNIT_WIDTH=16",
 					MODE_STANDALONE,
 					"U_STATIC_IMPLEMENTATION=1",
+					SK_RELEASE,
+					SK_SUPPORT_LEGACY_CANVAS_IS_REFCNT,
+					SK_SUPPORT_LEGACY_GETTOPDEVICE,
+					SK_SUPPORT_LEGACY_ACCESSBITMAP,
+					SK_SUPPORT_LEGACY_CLIP_REGIONOPS,
+					SK_SUPPORT_LEGACY_GETDEVICE,
+					"SK_SUPPORT_GPU=0",
 					CROSS_COMPILE_TARGET,
 					TARGET_PLATFORM_MACOS_X,
 					_MACOSX,
@@ -2304,6 +2964,7 @@
 					"-Wextra",
 					"-Wno-conversion",
 					"-Wno-shorten-64-to-32",
+					"-Wno-enum-constexpr-conversion",
 					"-Werror=declaration-after-statement",
 					"-Werror=delete-non-virtual-dtor",
 					"-Werror=overloaded-virtual",
@@ -2337,8 +2998,18 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				EXECUTABLE_PREFIX = lib;
 				GCC_PREPROCESSOR_DEFINITIONS = (
+					"HAVE_CONFIG_H=1",
+					"PCRE_STATIC=1",
+					"PCRE2_CODE_UNIT_WIDTH=16",
 					MODE_STANDALONE,
 					"U_STATIC_IMPLEMENTATION=1",
+					SK_RELEASE,
+					SK_SUPPORT_LEGACY_CANVAS_IS_REFCNT,
+					SK_SUPPORT_LEGACY_GETTOPDEVICE,
+					SK_SUPPORT_LEGACY_ACCESSBITMAP,
+					SK_SUPPORT_LEGACY_CLIP_REGIONOPS,
+					SK_SUPPORT_LEGACY_GETDEVICE,
+					"SK_SUPPORT_GPU=0",
 					CROSS_COMPILE_TARGET,
 					TARGET_PLATFORM_MACOS_X,
 					_MACOSX,
@@ -2388,6 +3059,7 @@
 					"-Wextra",
 					"-Wno-conversion",
 					"-Wno-shorten-64-to-32",
+					"-Wno-enum-constexpr-conversion",
 					"-Werror=declaration-after-statement",
 					"-Werror=delete-non-virtual-dtor",
 					"-Werror=overloaded-virtual",
@@ -2420,8 +3092,18 @@
 				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
+					"HAVE_CONFIG_H=1",
+					"PCRE_STATIC=1",
+					"PCRE2_CODE_UNIT_WIDTH=16",
 					MODE_STANDALONE,
 					"U_STATIC_IMPLEMENTATION=1",
+					SK_RELEASE,
+					SK_SUPPORT_LEGACY_CANVAS_IS_REFCNT,
+					SK_SUPPORT_LEGACY_GETTOPDEVICE,
+					SK_SUPPORT_LEGACY_ACCESSBITMAP,
+					SK_SUPPORT_LEGACY_CLIP_REGIONOPS,
+					SK_SUPPORT_LEGACY_GETDEVICE,
+					"SK_SUPPORT_GPU=0",
 					CROSS_COMPILE_TARGET,
 					TARGET_PLATFORM_MACOS_X,
 					_MACOSX,
@@ -2471,6 +3153,7 @@
 					"-Wextra",
 					"-Wno-conversion",
 					"-Wno-shorten-64-to-32",
+					"-Wno-enum-constexpr-conversion",
 					"-Werror=declaration-after-statement",
 					"-Werror=delete-non-virtual-dtor",
 					"-Werror=overloaded-virtual",
@@ -2504,12 +3187,22 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				EXECUTABLE_PREFIX = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
+					"HAVE_CONFIG_H=1",
+					"PCRE_STATIC=1",
+					"PCRE2_CODE_UNIT_WIDTH=16",
 					MODE_STANDALONE,
 					"GTEST_HAS_POSIX_RE=0",
 					"GTEST_HAS_PTHREAD=0",
 					"GTEST_HAS_RTTI=0",
 					"GTEST_HAS_EXCEPTIONS=0",
 					"U_STATIC_IMPLEMENTATION=1",
+					SK_RELEASE,
+					SK_SUPPORT_LEGACY_CANVAS_IS_REFCNT,
+					SK_SUPPORT_LEGACY_GETTOPDEVICE,
+					SK_SUPPORT_LEGACY_ACCESSBITMAP,
+					SK_SUPPORT_LEGACY_CLIP_REGIONOPS,
+					SK_SUPPORT_LEGACY_GETDEVICE,
+					"SK_SUPPORT_GPU=0",
 					CROSS_COMPILE_TARGET,
 					TARGET_PLATFORM_MACOS_X,
 					_MACOSX,
@@ -2549,6 +3242,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(SDKROOT)/System/Library/Frameworks",
+					../prebuilt/lib/mac/x86_64,
 					../prebuilt/lib/mac,
 				);
 				OTHER_LDFLAGS = (
@@ -2564,6 +3258,7 @@
 					"-Wextra",
 					"-Wno-conversion",
 					"-Wno-shorten-64-to-32",
+					"-Wno-enum-constexpr-conversion",
 					"-Werror=declaration-after-statement",
 					"-Werror=delete-non-virtual-dtor",
 					"-Werror=overloaded-virtual",
@@ -2658,11 +3353,21 @@
 				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
+					"HAVE_CONFIG_H=1",
+					"PCRE_STATIC=1",
+					"PCRE2_CODE_UNIT_WIDTH=16",
 					"GTEST_HAS_POSIX_RE=0",
 					"GTEST_HAS_PTHREAD=0",
 					"GTEST_HAS_RTTI=0",
 					"GTEST_HAS_EXCEPTIONS=0",
 					"U_STATIC_IMPLEMENTATION=1",
+					SK_RELEASE,
+					SK_SUPPORT_LEGACY_CANVAS_IS_REFCNT,
+					SK_SUPPORT_LEGACY_GETTOPDEVICE,
+					SK_SUPPORT_LEGACY_ACCESSBITMAP,
+					SK_SUPPORT_LEGACY_CLIP_REGIONOPS,
+					SK_SUPPORT_LEGACY_GETDEVICE,
+					"SK_SUPPORT_GPU=0",
 					CROSS_COMPILE_TARGET,
 					TARGET_PLATFORM_MACOS_X,
 					_MACOSX,
@@ -2707,6 +3412,7 @@
 					"-Wextra",
 					"-Wno-conversion",
 					"-Wno-shorten-64-to-32",
+					"-Wno-enum-constexpr-conversion",
 					"-Werror=declaration-after-statement",
 					"-Werror=delete-non-virtual-dtor",
 					"-Werror=overloaded-virtual",

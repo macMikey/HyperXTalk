@@ -1,3 +1,4 @@
+#if defined(__x86_64__) || defined(__i386__)
 /*
  * Copyright 2015 Google Inc.
  *
@@ -30,3 +31,4 @@ namespace SkOpts {
         inverted_CMYK_to_BGR1 = ssse3::inverted_CMYK_to_BGR1;
     }
 }
+#endif /* __x86_64__ || __i386__ */

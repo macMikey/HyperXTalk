@@ -35,6 +35,18 @@ export CUSTOM_EMCONFIGURE="${EMCONFIGURE}"
 
 echo "PLATFORM=" ${PLATFORM}
 
+# If the prebuilt output directory for this platform already contains libraries,
+# skip the fetch/build entirely. All required prebuilt .a files are already
+# committed to the repo; the fetch step only needs to run once when setting up
+# a fresh clone without the prebuilt binaries.
+PREBUILT_LIB_DIR="${OUTPUT_DIR}/lib/${PLATFORM}"
+if [ "${PLATFORM}" == "mac" ] || [ "${PLATFORM}" == "ios" ]; then
+    if [ -f "${PREBUILT_LIB_DIR}/libz.a" ] && [ -f "${PREBUILT_LIB_DIR}/libiodbc.a" ] && [ -f "${PREBUILT_LIB_DIR}/libpng.a" ]; then
+        echo "Prebuilt libraries already present in ${PREBUILT_LIB_DIR} — skipping fetch."
+        exit 0
+    fi
+fi
+
 # Set which libs to build for the target platform
 case "${PLATFORM}" in
 	android)

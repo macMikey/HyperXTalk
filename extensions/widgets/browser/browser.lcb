@@ -539,6 +539,11 @@ private unsafe handler InitBrowserView()
 	// put my native window into tParent
 	MCWidgetGetMyStackNativeView(tParent)
 
+	if tParent is nothing then
+		put kOpenStateFailed into mOpenState
+		throw "error creating browser: parent native view is null"
+	end if
+
 	if not MCBrowserFactoryGet(the empty string, tFactory) then
 		put kOpenStateFailed into mOpenState
 		throw "error getting browser factory"
@@ -596,7 +601,6 @@ end handler
 --
 
 public handler OnOpen()
-	log "HTX: browser OnOpen called"
 	// Keep a reference to this widget's script object so we can post to it from
 	//   the callbacks (which don't have a target widget when called).
 	put my script object into mScriptObject
@@ -606,7 +610,6 @@ public handler OnOpen()
 	unsafe
 		InitBrowserView()
 	end unsafe
-	log "HTX: browser OnOpen done"
 end handler
 
 public handler OnClose()

@@ -296,56 +296,169 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\..\thirdparty\libzip\include\zip.h"/>
     <ClInclude Include="..\..\..\..\thirdparty\libzip\src\zipint.h"/>
-    <ClInclude Include="..\..\..\..\thirdparty\libzip\src\zipintw32.h"/>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\w32support.cpp"/>
-    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\mkstemp.c"/>
+    <!-- Files excluded because they do not exist in the current source tree -->
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\w32support.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <!-- Non-Windows platform crypto backends — excluded -->
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_crypto_commoncrypto.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_crypto_gnutls.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_crypto_mbedtls.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_crypto_openssl.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <!-- Non-Windows RNG implementations — excluded -->
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_random_unix.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_random_uwp.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <!-- Optional compression algorithms requiring external libraries — excluded -->
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_algorithm_bzip2.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_algorithm_xz.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_algorithm_zstd.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <!-- Core sources -->
     <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_add.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_add_dir.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_add_entry.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_algorithm_deflate.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_buffer.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_close.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_crypto_win.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_delete.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_dir_add.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_dirent.c"/>
-    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_entry_free.c"/>
-    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_entry_new.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_discard.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_entry.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_err_str.c"/>
-    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_error_get_sys_type.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_error.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_error_clear.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_error_get.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_error_get_sys_type.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_error_strerror.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_error_to_str.c"/>
-    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_error.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_extra_field.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_extra_field_api.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_fclose.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_fdopen.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_file_add.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_file_error_clear.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_file_error_get.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_file_get_comment.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_file_get_external_attributes.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_file_get_offset.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_file_rename.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_file_replace.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_file_set_comment.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_file_set_encryption.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_file_set_external_attributes.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_file_set_mtime.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_file_strerror.c"/>
-    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_fopen_index.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_fopen.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_fopen_encrypted.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_fopen_index.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_fopen_index_encrypted.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_fread.c"/>
-    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_free.c"/>
-    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_get_attributes.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_fseek.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_ftell.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_get_archive_comment.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_get_archive_flag.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_get_encryption_implementation.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_get_file_comment.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_get_name.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_get_num_entries.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_get_num_files.c"/>
-    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_get_path.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_hash.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_io_util.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_libzip_version.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_memdup.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_name_locate.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_new.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_open.c"/>
-    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_recompress.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_pkware.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_progress.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_random_win32.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_realloc.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_rename.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_replace.c"/>
-    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_set_attributes.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_set_archive_comment.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_set_archive_flag.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_set_default_password.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_set_file_comment.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_set_file_compression.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_set_name.c"/>
-    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_set_progress_callback.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_accept_empty.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_begin_write.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_begin_write_cloning.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_buffer.c"/>
-    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_file.c"/>
-    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_filename.c"/>
-    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_filep.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_call.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_close.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_commit_write.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_compress.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_crc.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_error.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_file_common.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_file_stdio.c"/>
+    <!-- POSIX-only (mode_t, open, fchmod); zip_source_file_win32_named.c handles this on Windows -->
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_file_stdio_named.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_file_win32.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_file_win32_ansi.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_file_win32_named.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_file_win32_utf16.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_file_win32_utf8.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_free.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_function.c"/>
-    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_stat_index.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_get_dostime.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_get_file_attributes.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_is_deleted.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_layered.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_open.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_pass_to_lower_layer.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_pkware_decode.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_pkware_encode.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_read.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_remove.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_rollback_write.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_seek.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_seek_write.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_stat.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_supports.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_tell.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_tell_write.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_window.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_winzip_aes_decode.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_winzip_aes_encode.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_write.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_zip.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_source_zip_new.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_stat.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_stat_index.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_stat_init.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_strerror.c"/>
-    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_unchange_all.c"/>
-    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_unchange_data.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_string.c"/>
     <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_unchange.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_unchange_all.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_unchange_archive.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_unchange_data.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_utf-8.c"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libzip\src\zip_winzip_aes.c"/>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets"/>
   <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.targets"/>

@@ -3,10 +3,16 @@ local sExtensions, sExtensionProperties, sModuleVersion
 
 constant kExtensionUtils = "com.livecode.library.extension-utils"
 private function __PathToExtensionUtils
+   -- revIDESpecialFolderPath("extensions") is patched in revidelibrary to
+   -- return packaged_extensions in installed mode and the dev Extensions
+   -- folder otherwise, so we can rely on it directly.
+   -- Note: revIDESpecialFolderPath sets itemdelimiter to "/"; reset to "."
+   -- afterwards so that item -1 of kExtensionUtils splits on ".".
+   local tExtDir
+   put revIDESpecialFolderPath("extensions") into tExtDir
    set the itemdelimiter to "."
-   return revIDESpecialFolderPath("extensions") & slash & \
-      kExtensionUtils & slash & item -1 of kExtensionUtils & "." & \
-      "livecodescript"
+   return tExtDir & slash & kExtensionUtils & slash & \
+      item -1 of kExtensionUtils & "." & "livecodescript"
 end __PathToExtensionUtils
 
 on extensionInitialize

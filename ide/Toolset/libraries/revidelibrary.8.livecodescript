@@ -4094,7 +4094,23 @@ function revIDESpecialFolderPath pKey, pParam
          return item 1 to -3 of the filename of stack "home" & "/Toolset/resources/supporting_files/images"
          break
       case "extensions"
-         put  revEnvironmentExtensionsPath() into tPath
+         -- HXT: On macOS, packaged_extensions lives outside the .app
+         -- bundle (mac-bin/packaged_extensions/) and is absent when the
+         -- app is copied to /Applications. Use Contents/Tools/Extensions
+         -- instead, which is inside the bundle. On Windows/Linux the flat
+         -- install layout keeps packaged_extensions alongside the exe, so
+         -- fall back to that when Extensions is not present.
+         if revEnvironmentIsInstalled() then
+            local tBase
+            put item 1 to -3 of (the filename of stack "home") into tBase
+            if there is a folder (tBase & "/Extensions") then
+               put tBase & "/Extensions" into tPath
+            else
+               put tBase & "/packaged_extensions" into tPath
+            end if
+         else
+            put revEnvironmentExtensionsPath() into tPath
+         end if
          revIDEEnsurePath tPath
          return tPath
          break
@@ -5429,9 +5445,17 @@ end revIDELastModifiedTimeOfFilesInFolder
 function revIDEExtensionFolders
    local tFoldersA
    put revIDESpecialFolderPath("user extensions") into tFoldersA["user"]
-   
+
    local tCount = 0
    repeat for each line tFolder in revEnvironmentExtensionsPaths()
+      -- In an installed build revEnvironmentExtensionsPaths() returns
+      -- sToolsPath & "/Extensions" (the dev layout path), whereas the
+      -- bundled extensions actually live in packaged_extensions.
+      -- revIDESpecialFolderPath("extensions") already handles this
+      -- redirect, so delegate to it in installed mode.
+      if revEnvironmentIsInstalled() then
+         put revIDESpecialFolderPath("extensions") into tFolder
+      end if
       add 1 to tCount
       put tFolder into tFoldersA["ide" && tCount]
    end repeat
@@ -8061,6 +8085,8 @@ on revIDESaveAsStandalone pTarget
    //ideMessagesSupressSet "true" - This was in the old message library. In 8.0 messages can't be supressed. Might want to add this in ideMessageSend
    try
       revSaveAsStandalone tStack
+   catch tError
+      answer error "Standalone build error:" & return & tError
    finally
       # Bug 5111: Standalone has been built, process should now be interruptable.
       set the allowInterrupts to true

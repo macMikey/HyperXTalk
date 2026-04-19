@@ -1,3 +1,4 @@
+#if defined(__x86_64__) || defined(__i386__)
 /*
  * Copyright 2012 The Android Open Source Project
  *
@@ -743,3 +744,4 @@ void S32_alpha_D32_filter_DXDY_SSSE3(const SkBitmapProcState& s,
                                      int count, uint32_t* colors) {
     S32_generic_D32_filter_DXDY_SSSE3<true>(s, xy, count, colors);
 }
+#endif /* __x86_64__ || __i386__ */

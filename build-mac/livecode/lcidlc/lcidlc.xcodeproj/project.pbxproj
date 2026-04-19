@@ -35,37 +35,37 @@
 
 /* Begin PBXBuildFile section */
 		02A9578013E7809015CEBEEA /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAF1D75DC47A89A36E1F8DBE /* Main.cpp */; };
-		03C5E0747F5C8276BC09F7E4 /* libicuio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CB2C1EB8A0D8347E8AEBD2C /* libicuio.a */; };
 		0985F0E66412F4404252B94C /* EncodedJavaSupport.c in Sources */ = {isa = PBXBuildFile; fileRef = 46CCC31A29391978A269BD0C /* EncodedJavaSupport.c */; };
-		0EE3398E548B9F8DC3698933 /* libicuuc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41772AC43C2CA8AA194462A9 /* libicuuc.a */; };
+		2BDB06C38C6EFC8B68DE7AC2 /* libicuuc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A1F912B816E899F468095DED /* libicuuc.a */; };
 		2C583FDD219F9EFFFEBBD243 /* Scanner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8D1A2F1CF510A224CE11E0A /* Scanner.cpp */; };
 		31B261564AE8C9A0421C651B /* Error.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D5C32A67BCA6A9C17676E63 /* Error.cpp */; };
 		3244B2787C2AE58C68137C1C /* EncodedSupport.c in Sources */ = {isa = PBXBuildFile; fileRef = 8F2AB0C020E568B2B5E0093D /* EncodedSupport.c */; };
+		5086C0C52D62EF359B4108E8 /* libicui18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E3226A695AF50B2CD1924EA /* libicui18n.a */; };
+		52C82A5539C655818A54D4C4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D9AE0C56938059EEAEA8E9F /* Foundation.framework */; };
 		63675BFA17AFADBD982F4F83 /* libffi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B01773B5D0CC7CA3B40961AB /* libffi.a */; };
-		69ED4205E35608A00412C409 /* libicudata.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 979DFCC76E3BCF5E66E7E32F /* libicudata.a */; };
-		79B1DC9F9AAD45808E4C445C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D9AE0C56938059EEAEA8E9F /* Foundation.framework */; };
 		893D7327055BD7B9DD1132C0 /* Coder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D2C5B5D8EC9D120F16FA68B /* Coder.cpp */; };
 		9CA8978F308E4C0630344641 /* InterfaceGenerate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9D1214B5A567A2CF334B2BDE /* InterfaceGenerate.cpp */; };
+		9DD9EFE31187454F270C8D7C /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E9C0367B52B5F322AB2C2CE /* CoreFoundation.framework */; };
 		AD274B439005EB2E417DA635 /* libFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C8DF6DD2950CD526D805CCC /* libFoundation.a */; };
 		B05AE794407E1EFAF47624E8 /* Parser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEA8D44E7091017305B209A8 /* Parser.cpp */; };
-		B7B8122340F1F6EE10E90BFA /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E9C0367B52B5F322AB2C2CE /* CoreFoundation.framework */; };
+		B5F0A9AD9503D46D2EE481E7 /* libicutu.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9249C7E6617E2D97B14A7C3D /* libicutu.a */; };
 		BD4249DD1ABA2A1D9292FC42 /* CString.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B64F0BA5BDAC455FE5047B3D /* CString.cpp */; };
-		C1396C6CCE952E53B6E94AC7 /* libicutu.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D579709FDD6F6D3837A12239 /* libicutu.a */; };
-		C424951530BE7B0AA2684E51 /* libicui18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4D84B43C69DFC3D1A617CDF /* libicui18n.a */; };
+		C292C75E3581BF17AA5A0481 /* libicuio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F2D975D633DAD0C2284E85BB /* libicuio.a */; };
 		CBAE05CFE991A7B5015AB225 /* Position.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CD2D2E9B4D4BE09CEEB46C19 /* Position.cpp */; };
-		CEA92FB65394E0B1A52DF0B8 /* libz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 756962754975F34001F7F3C3 /* libz.a */; };
+		E9A6F5BA5B5F0E0BF84199F1 /* libicudata.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E65BABE217649D96F177A83 /* libicudata.a */; };
 		EA6B51E0FDFF39BB2FB1397F /* Value.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BA49C1EAF769FEC2802B8155 /* Value.cpp */; };
+		F03FFC0324B8C52522EB521F /* libz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 792665F68BA892697FB15862 /* libz.a */; };
 		F8EF0918BB5E13D3F02C5C15 /* Interface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6077E6B928B22D9CD70FD566 /* Interface.cpp */; };
 		F9C681449F2B873C5614A518 /* NativeType.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 40CD8EB0B33C4A91556CF13F /* NativeType.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		040C71DEA8705C5FCF14DF54 /* PBXContainerItemProxy */ = {
+		09F7509EC66948F71D1D11E9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = A11CB2000B085715087A6B67 /* thirdparty.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = F4FCA251AA01455DCCCF79CF;
-			remoteInfo = thirdparty_prebuilt_z;
+			containerPortal = D9472161F6077BCCCD79A683 /* libz.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = B3DF2C8C593BB090A6CD15F7;
+			remoteInfo = "libz (host)";
 		};
 		12A64D16571C27BBF414D65A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -123,6 +123,13 @@
 			remoteGlobalIDString = 0870FB2E0E04E7036F6F0711;
 			remoteInfo = libffi;
 		};
+		8B0C35C2DE5905727E78DC13 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D9472161F6077BCCCD79A683 /* libz.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EB9EC9FE7F51565BA92F25AD;
+			remoteInfo = libz;
+		};
 		9565AA8C184DD506C7D4AE56 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5B9B85EC9B42485A6FBA809A /* libicu.xcodeproj */;
@@ -151,12 +158,12 @@
 			remoteGlobalIDString = 336BE52CB6E9FAF81FC51642;
 			remoteInfo = libicu_include;
 		};
-		A3C78B949410FA8CCC9878C6 /* PBXContainerItemProxy */ = {
+		A657459860C7BC8FF2F3D5BC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = A11CB2000B085715087A6B67 /* thirdparty.xcodeproj */;
+			containerPortal = D9472161F6077BCCCD79A683 /* libz.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 5425627DB78FB713EE1607BC;
-			remoteInfo = thirdparty_prebuilt_dep;
+			remoteGlobalIDString = C286D0B77F8ADAC353DEA4FD;
+			remoteInfo = libz;
 		};
 		A7DAD000EEC38FBA648AB4E4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -203,6 +210,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0A8F55F984B87354B8042C1E /* android-settings.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = "android-settings.gypi"; path = "../config/android-settings.gypi"; sourceTree = "<group>"; };
 		0E3918F82C6E4CA1C381FF3D /* exclusions.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = exclusions.gypi; path = ../config/exclusions.gypi; sourceTree = "<group>"; };
 		1052DACE2D0D5B8649B39655 /* Support.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Support.mm; sourceTree = "<group>"; };
 		129D66FF0D58AAEB52B19995 /* NativeType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NativeType.h; sourceTree = "<group>"; };
@@ -214,51 +222,54 @@
 		215E94CF1FFC2E7B40D1351F /* common.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = common.gypi; path = ../common.gypi; sourceTree = "<group>"; };
 		2DDC6E97E026279F85B1155D /* target_os.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = target_os.gypi; path = ../config/target_os.gypi; sourceTree = "<group>"; };
 		32592995E5CEDA878F77719A /* HyperXTalk.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HyperXTalk.h; sourceTree = "<group>"; };
+		32BEF72EBDCDD4A1AE6B1A2A /* emscripten.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = emscripten.gypi; path = ../config/emscripten.gypi; sourceTree = "<group>"; };
 		39B88F0B5773005989EEC019 /* linux-settings.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = "linux-settings.gypi"; path = "../config/linux-settings.gypi"; sourceTree = "<group>"; };
 		40CD8EB0B33C4A91556CF13F /* NativeType.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NativeType.cpp; sourceTree = "<group>"; };
-		41772AC43C2CA8AA194462A9 /* libicuuc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicuuc.a; path = ../prebuilt/lib/mac/libicuuc.a; sourceTree = "<group>"; };
 		46CCC31A29391978A269BD0C /* EncodedJavaSupport.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = EncodedJavaSupport.c; sourceTree = "<group>"; };
 		479EBAA96D89098161C6C182 /* arch.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = arch.gypi; path = ../config/arch.gypi; sourceTree = "<group>"; };
 		4D5C32A67BCA6A9C17676E63 /* Error.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Error.cpp; sourceTree = "<group>"; };
+		4E3226A695AF50B2CD1924EA /* libicui18n.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicui18n.a; path = ../prebuilt/lib/mac/x86_64/libicui18n.a; sourceTree = "<group>"; };
 		53210CA254F13DB87D2F4E52 /* fetch.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = fetch.xcodeproj; path = "../build-mac/livecode/prebuilt/fetch.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		5544A06AE4131DF1826711FC /* libfoundation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libfoundation.xcodeproj; path = "../build-mac/livecode/libfoundation/libfoundation.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		55BBDBAC4119E584CBA91CD8 /* encode_source.pl */ = {isa = PBXFileReference; lastKnownFileType = text.script.perl; path = encode_source.pl; sourceTree = "<group>"; };
 		55C82B82F42A812D47E43945 /* Error.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Error.h; sourceTree = "<group>"; };
 		55E0FF2F577C30AAF609E344 /* mac.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = mac.gypi; path = ../config/mac.gypi; sourceTree = "<group>"; };
 		5B9B85EC9B42485A6FBA809A /* libicu.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libicu.xcodeproj; path = "../build-mac/livecode/prebuilt/libicu.xcodeproj"; sourceTree = SOURCE_ROOT; };
+		5D0690A7B2C819F662382878 /* android.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = android.gypi; path = ../config/android.gypi; sourceTree = "<group>"; };
 		5D57DABB26E2B5D58D858CBB /* Scanner.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Scanner.h; sourceTree = "<group>"; };
 		5E2C1C9141B60C494CA9CF30 /* configurations.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = configurations.gypi; path = ../config/configurations.gypi; sourceTree = "<group>"; };
 		6077E6B928B22D9CD70FD566 /* Interface.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Interface.cpp; sourceTree = "<group>"; };
 		607D3488C73A6779B91AAB44 /* libffi.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libffi.xcodeproj; path = "../build-mac/livecode/thirdparty/libffi/libffi.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		642E418FCAFB289FD63E35D7 /* InterfacePrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InterfacePrivate.h; sourceTree = "<group>"; };
+		6EF335C86955D02F3A237F57 /* ios.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = ios.gypi; path = ../config/ios.gypi; sourceTree = "<group>"; };
 		73288837C5AB1B7B6AB3A44A /* Coder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Coder.h; sourceTree = "<group>"; };
-		756962754975F34001F7F3C3 /* libz.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libz.a; path = ../prebuilt/lib/mac/libz.a; sourceTree = "<group>"; };
 		888EE7FCFE93716BD13CEED0 /* crosscompile.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = crosscompile.gypi; path = ../config/crosscompile.gypi; sourceTree = "<group>"; };
-		8CB2C1EB8A0D8347E8AEBD2C /* libicuio.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicuio.a; path = ../prebuilt/lib/mac/libicuio.a; sourceTree = "<group>"; };
 		8D9AE0C56938059EEAEA8E9F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		8E65BABE217649D96F177A83 /* libicudata.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicudata.a; path = ../prebuilt/lib/mac/x86_64/libicudata.a; sourceTree = "<group>"; };
 		8F2AB0C020E568B2B5E0093D /* EncodedSupport.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = EncodedSupport.c; sourceTree = "<group>"; };
-		979DFCC76E3BCF5E66E7E32F /* libicudata.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicudata.a; path = ../prebuilt/lib/mac/libicudata.a; sourceTree = "<group>"; };
+		9249C7E6617E2D97B14A7C3D /* libicutu.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicutu.a; path = ../prebuilt/lib/mac/x86_64/libicutu.a; sourceTree = "<group>"; };
 		9A586E168A3518672D7D8C65 /* version.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = version.gypi; path = ../config/version.gypi; sourceTree = "<group>"; };
 		9D1214B5A567A2CF334B2BDE /* InterfaceGenerate.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = InterfaceGenerate.cpp; sourceTree = "<group>"; };
 		9F824536F12D45FD3A16ADB1 /* win32.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = win32.gypi; path = ../config/win32.gypi; sourceTree = "<group>"; };
 		A01CD0B9E88307E5965B0CAD /* Value.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Value.h; sourceTree = "<group>"; };
-		A11CB2000B085715087A6B67 /* thirdparty.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = thirdparty.xcodeproj; path = "../build-mac/livecode/prebuilt/thirdparty.xcodeproj"; sourceTree = SOURCE_ROOT; };
+		A1F912B816E899F468095DED /* libicuuc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicuuc.a; path = ../prebuilt/lib/mac/x86_64/libicuuc.a; sourceTree = "<group>"; };
 		A8D1A2F1CF510A224CE11E0A /* Scanner.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Scanner.cpp; sourceTree = "<group>"; };
 		AF09D8ACB1318963D90E3A98 /* yacc.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = yacc.gypi; path = ../config/yacc.gypi; sourceTree = "<group>"; };
 		B4A16B466CA195E8F3ADF457 /* version */ = {isa = PBXFileReference; lastKnownFileType = text; path = version; sourceTree = "<group>"; };
 		B59A6DC03F1F52BA8B64260A /* CString.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CString.h; sourceTree = "<group>"; };
 		B64F0BA5BDAC455FE5047B3D /* CString.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CString.cpp; sourceTree = "<group>"; };
 		BA49C1EAF769FEC2802B8155 /* Value.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Value.cpp; sourceTree = "<group>"; };
+		BCDAAEAB0F04EB518233A386 /* emscripten-settings.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = "emscripten-settings.gypi"; path = "../config/emscripten-settings.gypi"; sourceTree = "<group>"; };
 		C481FEAD0B9BBF249747ECD2 /* Parser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Parser.h; sourceTree = "<group>"; };
 		CD2D2E9B4D4BE09CEEB46C19 /* Position.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Position.cpp; sourceTree = "<group>"; };
-		D4D84B43C69DFC3D1A617CDF /* libicui18n.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicui18n.a; path = ../prebuilt/lib/mac/libicui18n.a; sourceTree = "<group>"; };
-		D579709FDD6F6D3837A12239 /* libicutu.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicutu.a; path = ../prebuilt/lib/mac/libicutu.a; sourceTree = "<group>"; };
 		D84D19F9A4E69F46B24F8956 /* Position.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Position.h; sourceTree = "<group>"; };
+		D9472161F6077BCCCD79A683 /* libz.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libz.xcodeproj; path = "../build-mac/livecode/thirdparty/libz/libz.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		E4F77A1C85FB98F02652B31A /* lcidlc.gyp */ = {isa = PBXFileReference; explicitFileType = sourcecode; path = lcidlc.gyp; sourceTree = "<group>"; };
 		E88517496361C2DF2459D8F8 /* perl.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = perl.gypi; path = ../config/perl.gypi; sourceTree = "<group>"; };
 		EA77B8B14ED46683265B24C5 /* thirdparty.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = thirdparty.gypi; path = ../config/thirdparty.gypi; sourceTree = "<group>"; };
 		EAF1D75DC47A89A36E1F8DBE /* Main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Main.cpp; sourceTree = "<group>"; };
 		F054449739136F9033CAA5A2 /* linux.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = linux.gypi; path = ../config/linux.gypi; sourceTree = "<group>"; };
+		F2D975D633DAD0C2284E85BB /* libicuio.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicuio.a; path = ../prebuilt/lib/mac/x86_64/libicuio.a; sourceTree = "<group>"; };
 		FEA8D44E7091017305B209A8 /* Parser.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Parser.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -268,21 +279,48 @@
 			buildActionMask = 2147483647;
 			files = (
 				AD274B439005EB2E417DA635 /* libFoundation.a in Frameworks */,
+				F03FFC0324B8C52522EB521F /* libz.a in Frameworks */,
 				63675BFA17AFADBD982F4F83 /* libffi.a in Frameworks */,
-				B7B8122340F1F6EE10E90BFA /* CoreFoundation.framework in Frameworks */,
-				79B1DC9F9AAD45808E4C445C /* Foundation.framework in Frameworks */,
-				C424951530BE7B0AA2684E51 /* libicui18n.a in Frameworks */,
-				03C5E0747F5C8276BC09F7E4 /* libicuio.a in Frameworks */,
-				C1396C6CCE952E53B6E94AC7 /* libicutu.a in Frameworks */,
-				0EE3398E548B9F8DC3698933 /* libicuuc.a in Frameworks */,
-				69ED4205E35608A00412C409 /* libicudata.a in Frameworks */,
-				CEA92FB65394E0B1A52DF0B8 /* libz.a in Frameworks */,
+				9DD9EFE31187454F270C8D7C /* CoreFoundation.framework in Frameworks */,
+				52C82A5539C655818A54D4C4 /* Foundation.framework in Frameworks */,
+				5086C0C52D62EF359B4108E8 /* libicui18n.a in Frameworks */,
+				C292C75E3581BF17AA5A0481 /* libicuio.a in Frameworks */,
+				B5F0A9AD9503D46D2EE481E7 /* libicutu.a in Frameworks */,
+				2BDB06C38C6EFC8B68DE7AC2 /* libicuuc.a in Frameworks */,
+				E9A6F5BA5B5F0E0BF84199F1 /* libicudata.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0021BDF8255DC6BAF8EF6B24 /* Build */ = {
+			isa = PBXGroup;
+			children = (
+				0A8F55F984B87354B8042C1E /* android-settings.gypi */,
+				5D0690A7B2C819F662382878 /* android.gypi */,
+				479EBAA96D89098161C6C182 /* arch.gypi */,
+				215E94CF1FFC2E7B40D1351F /* common.gypi */,
+				5E2C1C9141B60C494CA9CF30 /* configurations.gypi */,
+				888EE7FCFE93716BD13CEED0 /* crosscompile.gypi */,
+				BCDAAEAB0F04EB518233A386 /* emscripten-settings.gypi */,
+				32BEF72EBDCDD4A1AE6B1A2A /* emscripten.gypi */,
+				0E3918F82C6E4CA1C381FF3D /* exclusions.gypi */,
+				6EF335C86955D02F3A237F57 /* ios.gypi */,
+				E4F77A1C85FB98F02652B31A /* lcidlc.gyp */,
+				39B88F0B5773005989EEC019 /* linux-settings.gypi */,
+				F054449739136F9033CAA5A2 /* linux.gypi */,
+				55E0FF2F577C30AAF609E344 /* mac.gypi */,
+				E88517496361C2DF2459D8F8 /* perl.gypi */,
+				2DDC6E97E026279F85B1155D /* target_os.gypi */,
+				EA77B8B14ED46683265B24C5 /* thirdparty.gypi */,
+				9A586E168A3518672D7D8C65 /* version.gypi */,
+				9F824536F12D45FD3A16ADB1 /* win32.gypi */,
+				AF09D8ACB1318963D90E3A98 /* yacc.gypi */,
+			);
+			name = Build;
+			sourceTree = "<group>";
+		};
 		0BDF12CE206352917C0B1CE7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -302,41 +340,13 @@
 			name = Source;
 			sourceTree = "<group>";
 		};
-		3582D6258ED54BA7994F2214 /* Frameworks */ = {
+		101B1A2DEAF2BB880AFCF794 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1E9C0367B52B5F322AB2C2CE /* CoreFoundation.framework */,
-				8D9AE0C56938059EEAEA8E9F /* Foundation.framework */,
-				979DFCC76E3BCF5E66E7E32F /* libicudata.a */,
-				D4D84B43C69DFC3D1A617CDF /* libicui18n.a */,
-				8CB2C1EB8A0D8347E8AEBD2C /* libicuio.a */,
-				D579709FDD6F6D3837A12239 /* libicutu.a */,
-				41772AC43C2CA8AA194462A9 /* libicuuc.a */,
-				756962754975F34001F7F3C3 /* libz.a */,
+				792665F68BA892697FB15862 /* libz.a */,
+				4A65DC53DF60AA99BF610D4E /* libz-host.a */,
 			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		5B230C1F9EED82F1F834C837 /* Build */ = {
-			isa = PBXGroup;
-			children = (
-				479EBAA96D89098161C6C182 /* arch.gypi */,
-				215E94CF1FFC2E7B40D1351F /* common.gypi */,
-				5E2C1C9141B60C494CA9CF30 /* configurations.gypi */,
-				888EE7FCFE93716BD13CEED0 /* crosscompile.gypi */,
-				0E3918F82C6E4CA1C381FF3D /* exclusions.gypi */,
-				E4F77A1C85FB98F02652B31A /* lcidlc.gyp */,
-				39B88F0B5773005989EEC019 /* linux-settings.gypi */,
-				F054449739136F9033CAA5A2 /* linux.gypi */,
-				55E0FF2F577C30AAF609E344 /* mac.gypi */,
-				E88517496361C2DF2459D8F8 /* perl.gypi */,
-				2DDC6E97E026279F85B1155D /* target_os.gypi */,
-				EA77B8B14ED46683265B24C5 /* thirdparty.gypi */,
-				9A586E168A3518672D7D8C65 /* version.gypi */,
-				9F824536F12D45FD3A16ADB1 /* win32.gypi */,
-				AF09D8ACB1318963D90E3A98 /* yacc.gypi */,
-			);
-			name = Build;
+			name = Products;
 			sourceTree = "<group>";
 		};
 		6833958AB6F0873EBB87A163 /* Products */ = {
@@ -397,6 +407,20 @@
 			path = include;
 			sourceTree = "<group>";
 		};
+		787AE12A508ED5EA7B65213B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1E9C0367B52B5F322AB2C2CE /* CoreFoundation.framework */,
+				8D9AE0C56938059EEAEA8E9F /* Foundation.framework */,
+				8E65BABE217649D96F177A83 /* libicudata.a */,
+				4E3226A695AF50B2CD1924EA /* libicui18n.a */,
+				F2D975D633DAD0C2284E85BB /* libicuio.a */,
+				9249C7E6617E2D97B14A7C3D /* libicutu.a */,
+				A1F912B816E899F468095DED /* libicuuc.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		8539BC972E5C26F1C1A40D0B /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -409,30 +433,23 @@
 			children = (
 				0D7B27C3B8C056D1666186FD /* Source */,
 				68E6FA56EFDACA79770DDECB /* Intermediates */,
-				8FE3EF1479A18FACF734E3B6 /* Projects */,
-				3582D6258ED54BA7994F2214 /* Frameworks */,
+				971A8C18570778FA199E12DC /* Projects */,
+				787AE12A508ED5EA7B65213B /* Frameworks */,
 				EF909D2A007AD32AB97C74E8 /* Products */,
-				5B230C1F9EED82F1F834C837 /* Build */,
+				0021BDF8255DC6BAF8EF6B24 /* Build */,
 			);
 			sourceTree = "<group>";
 		};
-		8FE3EF1479A18FACF734E3B6 /* Projects */ = {
+		971A8C18570778FA199E12DC /* Projects */ = {
 			isa = PBXGroup;
 			children = (
 				53210CA254F13DB87D2F4E52 /* fetch.xcodeproj */,
 				607D3488C73A6779B91AAB44 /* libffi.xcodeproj */,
 				5544A06AE4131DF1826711FC /* libfoundation.xcodeproj */,
 				5B9B85EC9B42485A6FBA809A /* libicu.xcodeproj */,
-				A11CB2000B085715087A6B67 /* thirdparty.xcodeproj */,
+				D9472161F6077BCCCD79A683 /* libz.xcodeproj */,
 			);
 			name = Projects;
-			sourceTree = "<group>";
-		};
-		9C8FBC81692F692A9BD9C1AF /* Products */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		9DEE5EA43A6143880C294CF7 /* Products */ = {
@@ -490,8 +507,7 @@
 				CCD4353EF0AFB95D651C68CC /* PBXTargetDependency */,
 				D6FC33C3B98888DC477A953D /* PBXTargetDependency */,
 				099F6D222714161905387E17 /* PBXTargetDependency */,
-				B7B22F041B7119E86D78AB7A /* PBXTargetDependency */,
-				69597C5F57BFB8E0F5F96A1A /* PBXTargetDependency */,
+				F7255BD916D0D272AC4FEEC0 /* PBXTargetDependency */,
 				A4172110E502E6E78C9D272C /* PBXTargetDependency */,
 			);
 			name = lcidlc;
@@ -531,8 +547,8 @@
 					ProjectRef = 5B9B85EC9B42485A6FBA809A /* libicu.xcodeproj */;
 				},
 				{
-					ProductGroup = 9C8FBC81692F692A9BD9C1AF /* Products */;
-					ProjectRef = A11CB2000B085715087A6B67 /* thirdparty.xcodeproj */;
+					ProductGroup = 101B1A2DEAF2BB880AFCF794 /* Products */;
+					ProjectRef = D9472161F6077BCCCD79A683 /* libz.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -552,11 +568,25 @@
 			remoteRef = 9E231A6DE109DA4D84F75666 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		4A65DC53DF60AA99BF610D4E /* libz-host.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libz-host.a";
+			remoteRef = 09F7509EC66948F71D1D11E9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		5ECA1EE02ED0E591DE16442A /* test-libFoundation */ = {
 			isa = PBXReferenceProxy;
 			fileType = "compiled.mach-o.executable";
 			path = "test-libFoundation";
 			remoteRef = 2449145D4D6612838AD2050B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		792665F68BA892697FB15862 /* libz.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libz.a;
+			remoteRef = 8B0C35C2DE5905727E78DC13 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		8B369623A31C91791B5641B2 /* libffi-host.a */ = {
@@ -670,11 +700,6 @@
 			name = libicu;
 			targetProxy = 5438DE624FC9ECB18D8C385B /* PBXContainerItemProxy */;
 		};
-		69597C5F57BFB8E0F5F96A1A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = thirdparty_prebuilt_dep;
-			targetProxy = A3C78B949410FA8CCC9878C6 /* PBXContainerItemProxy */;
-		};
 		6F1B3BB216F4915811D9DFE7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 8665187BA53F4BA9C0A281AE /* encode_support */;
@@ -695,11 +720,6 @@
 			name = libffi;
 			targetProxy = 890F0603A42F1AA8FBD18B37 /* PBXContainerItemProxy */;
 		};
-		B7B22F041B7119E86D78AB7A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = thirdparty_prebuilt_z;
-			targetProxy = 040C71DEA8705C5FCF14DF54 /* PBXContainerItemProxy */;
-		};
 		CCD4353EF0AFB95D651C68CC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = encode_minimal_icu_data;
@@ -719,6 +739,11 @@
 			isa = PBXTargetDependency;
 			name = fetch;
 			targetProxy = A7DAD000EEC38FBA648AB4E4 /* PBXContainerItemProxy */;
+		};
+		F7255BD916D0D272AC4FEEC0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libz;
+			targetProxy = A657459860C7BC8FF2F3D5BC /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -802,6 +827,7 @@
 					"-Wextra",
 					"-Wno-conversion",
 					"-Wno-shorten-64-to-32",
+					"-Wno-enum-constexpr-conversion",
 					"-Werror=declaration-after-statement",
 					"-Werror=delete-non-virtual-dtor",
 					"-Werror=overloaded-virtual",
@@ -871,6 +897,7 @@
 					"-Wextra",
 					"-Wno-conversion",
 					"-Wno-shorten-64-to-32",
+					"-Wno-enum-constexpr-conversion",
 					"-Werror=declaration-after-statement",
 					"-Werror=delete-non-virtual-dtor",
 					"-Werror=overloaded-virtual",
@@ -938,7 +965,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(SDKROOT)/System/Library/Frameworks",
-					../prebuilt/lib/mac,
+					../prebuilt/lib/mac/x86_64,
 				);
 				OTHER_LDFLAGS = (
 					"-Wl,-platform_version",
@@ -952,6 +979,7 @@
 					"-Wextra",
 					"-Wno-conversion",
 					"-Wno-shorten-64-to-32",
+					"-Wno-enum-constexpr-conversion",
 					"-Werror=declaration-after-statement",
 					"-Werror=delete-non-virtual-dtor",
 					"-Werror=overloaded-virtual",
@@ -1057,7 +1085,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(SDKROOT)/System/Library/Frameworks",
-					../prebuilt/lib/mac,
+					../prebuilt/lib/mac/x86_64,
 				);
 				OTHER_LDFLAGS = (
 					"-Wl,-platform_version",
@@ -1071,6 +1099,7 @@
 					"-Wextra",
 					"-Wno-conversion",
 					"-Wno-shorten-64-to-32",
+					"-Wno-enum-constexpr-conversion",
 					"-Werror=declaration-after-statement",
 					"-Werror=delete-non-virtual-dtor",
 					"-Werror=overloaded-virtual",
@@ -1137,7 +1166,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(SDKROOT)/System/Library/Frameworks",
-					../prebuilt/lib/mac,
+					../prebuilt/lib/mac/x86_64,
 				);
 				OTHER_LDFLAGS = (
 					"-Wl,-platform_version",
@@ -1151,6 +1180,7 @@
 					"-Wextra",
 					"-Wno-conversion",
 					"-Wno-shorten-64-to-32",
+					"-Wno-enum-constexpr-conversion",
 					"-Werror=declaration-after-statement",
 					"-Werror=delete-non-virtual-dtor",
 					"-Werror=overloaded-virtual",
@@ -1219,6 +1249,7 @@
 					"-Wextra",
 					"-Wno-conversion",
 					"-Wno-shorten-64-to-32",
+					"-Wno-enum-constexpr-conversion",
 					"-Werror=declaration-after-statement",
 					"-Werror=delete-non-virtual-dtor",
 					"-Werror=overloaded-virtual",

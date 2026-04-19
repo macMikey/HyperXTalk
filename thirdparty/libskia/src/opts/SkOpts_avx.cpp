@@ -1,3 +1,4 @@
+#if defined(__x86_64__) || defined(__i386__)
 /*
  * Copyright 2016 Google Inc.
  *
@@ -17,3 +18,4 @@
 namespace SkOpts {
     void Init_avx() { }
 }
+#endif /* __x86_64__ || __i386__ */

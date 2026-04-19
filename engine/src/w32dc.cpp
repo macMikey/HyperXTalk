@@ -421,7 +421,11 @@ MCGFloat MCResPlatformGetUIDeviceScale(void)
 	return 1.0;
 }
 
-// IM-2014-01-30: [[ HiDPI ]] No-op as this cannot be modified at runtime on Windows
+// Runtime DPI changes on Windows are handled directly in the WM_DPICHANGED
+// message handler (w32dcw32.cpp) by updating the backing scale and dirtying
+// the affected stack — no window recreation needed.  This function is kept
+// as a no-op because MCResSetPixelScale (which calls it) is not part of the
+// Windows DPI change path; pixel scaling is driven by MCWin32GetLogicalToScreenScale.
 void MCResPlatformHandleScaleChange(void)
 {
 }

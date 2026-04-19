@@ -19,6 +19,12 @@
 #if defined(_WIN32) || defined(_WIN64)
 
 /* ── Windows / MSVC ────────────────────────────────────────────────────── */
+/* HAVE_CRYPTO tells zip_random_win32.c to include zip_crypto.h, which pulls
+   in zip_crypto_win.h and defines HAVE_SECURE_RANDOM, suppressing the
+   duplicate CryptGenRandom fallback that would otherwise collide with the
+   BCryptGenRandom implementation in zip_crypto_win.c (LNK2005). */
+#define HAVE_CRYPTO
+#define HAVE_WINDOWS_CRYPTO
 #define HAVE__CLOSE
 #define HAVE__DUP
 #define HAVE__FDOPEN
@@ -36,9 +42,11 @@
 #define HAVE_SETMODE
 #define HAVE_SNPRINTF
 #define HAVE__SNPRINTF
-#define HAVE_SNPRINTF_S
+/* HAVE_SNPRINTF_S / HAVE_STRERRORLEN_S intentionally omitted:
+   MSVC 14.x CRT does not export these as linkable symbols without
+   __STDC_WANT_LIB_EXT1__ globally defined; zip_error_strerror.c
+   uses snprintf + a fixed 256-byte buffer instead. */
 #define HAVE_STRERROR_S
-#define HAVE_STRERRORLEN_S
 #define HAVE_STRICMP
 #define HAVE_STRNCPY_S
 #define SIZEOF_OFF_T 4

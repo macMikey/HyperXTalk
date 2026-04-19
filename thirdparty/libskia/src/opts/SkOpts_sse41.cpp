@@ -1,3 +1,4 @@
+#if defined(__x86_64__) || defined(__i386__)
 /*
  * Copyright 2015 Google Inc.
  *
@@ -24,3 +25,4 @@ namespace SkOpts {
         compile_pipeline     = sse41::compile_pipeline;
     }
 }
+#endif /* __x86_64__ || __i386__ */

@@ -22,95 +22,39 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		04DF080E4E4DEBEA8405DBB9 /* image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 508DA5D8FA98E24BDE08A0F5 /* image.cpp */; };
-		0AF0FB7CD811B1C121D76761 /* spread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8483E2F6519E04FF3AC6251 /* spread.cpp */; };
-		1669DBA85F2273E85372D961 /* SkStippleMaskFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4067C2DF6A9FE5DA806E9B30 /* SkStippleMaskFilter.cpp */; };
-		2095D1519419D719BF112A3A /* region.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CAAC1D898FAD1CF1876BCC90 /* region.cpp */; };
-		219637CFB6D4FC1720818D00 /* blur.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C39EFAB0F375110260444B /* blur.cpp */; };
-		27B67100C6EB018CAED06DD1 /* drawing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8B0B5677980BCC912D7F7C93 /* drawing.cpp */; };
-		389C358F58C9AEB2129396CC /* utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2A6363DBBDC61A4CDE3919C1 /* utils.cpp */; };
-		3AAF10C47E312B11930CDEE5 /* cachetable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0438BCFB88BB25B6DA5F37FC /* cachetable.cpp */; };
-		488933A8BA774327FB58AC59 /* spread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8483E2F6519E04FF3AC6251 /* spread.cpp */; };
-		6816B8DEA0DF02713BBDCACF /* context.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 21FAE5E7C499FB9EB20F1629 /* context.cpp */; };
-		98F1DFF2F138CD892F0A58C6 /* path.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C11EC94CC7206CA81428B2E /* path.cpp */; };
-		9DC13AA4A35B055E5E8FB6DB /* legacygradients.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 296FE037FA1648428666AFF0 /* legacygradients.cpp */; };
-		A01D0174538A2FFA3742F242 /* legacygradients.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 296FE037FA1648428666AFF0 /* legacygradients.cpp */; };
-		A78B21BF3C05967C0D948136 /* blur.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C39EFAB0F375110260444B /* blur.cpp */; };
-		AAF2F35F79E5BDA442A66525 /* drawing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8B0B5677980BCC912D7F7C93 /* drawing.cpp */; };
-		B29EAC425EE67303C75BEC64 /* image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 508DA5D8FA98E24BDE08A0F5 /* image.cpp */; };
-		C96D465872FF28249EDC930D /* utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2A6363DBBDC61A4CDE3919C1 /* utils.cpp */; };
-		D3E72E70183BE71CFCFDF832 /* region.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CAAC1D898FAD1CF1876BCC90 /* region.cpp */; };
-		D83623EB6FD1A995B78EEF10 /* coretext-skia.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 084101EC44A4F2FDBF01A194 /* coretext-skia.cpp */; };
-		E61D82548289B145D6F267C0 /* context.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 21FAE5E7C499FB9EB20F1629 /* context.cpp */; };
-		E6349977D964C69AEDDA04AF /* path.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C11EC94CC7206CA81428B2E /* path.cpp */; };
-		E73C00AA011B47373763F9C2 /* cachetable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0438BCFB88BB25B6DA5F37FC /* cachetable.cpp */; };
-		F05858BC630480AE80921448 /* SkStippleMaskFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4067C2DF6A9FE5DA806E9B30 /* SkStippleMaskFilter.cpp */; };
-		FE8E0F12495373D95AE634AB /* coretext-skia.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 084101EC44A4F2FDBF01A194 /* coretext-skia.cpp */; };
+		3695145F8489F50F9A92168E /* image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 508DA5D8FA98E24BDE08A0F5 /* image.cpp */; };
+		3E7EE3B8A6FACB9EADDE9F87 /* context.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 21FAE5E7C499FB9EB20F1629 /* context.cpp */; };
+		4811B4D8F70C048351B63040 /* drawing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8B0B5677980BCC912D7F7C93 /* drawing.cpp */; };
+		58031A0151EA1A1930FDF0AD /* legacygradients.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 296FE037FA1648428666AFF0 /* legacygradients.cpp */; };
+		5D62D0A520987A35BD62335B /* blur.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C39EFAB0F375110260444B /* blur.cpp */; };
+		614EAD6F31337780DE51CEEE /* utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2A6363DBBDC61A4CDE3919C1 /* utils.cpp */; };
+		64E696CDBAC9C6DC32070683 /* coretext-skia.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 084101EC44A4F2FDBF01A194 /* coretext-skia.cpp */; };
+		717BA7B375FBB999D9086E8E /* spread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8483E2F6519E04FF3AC6251 /* spread.cpp */; };
+		784F958F03E2272291E6774D /* utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2A6363DBBDC61A4CDE3919C1 /* utils.cpp */; };
+		88B85E2BF1F695A6E0B3C0B8 /* coretext-skia.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 084101EC44A4F2FDBF01A194 /* coretext-skia.cpp */; };
+		91D2728662E0FC5C54FA5F5A /* spread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8483E2F6519E04FF3AC6251 /* spread.cpp */; };
+		997DF39167E2E2696B60A78A /* path.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C11EC94CC7206CA81428B2E /* path.cpp */; };
+		AE63255EDDFD7455048B4192 /* path.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C11EC94CC7206CA81428B2E /* path.cpp */; };
+		B56E243BD21B1A03AFE609C1 /* drawing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8B0B5677980BCC912D7F7C93 /* drawing.cpp */; };
+		C05E48C9282451C6CF4E1419 /* region.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CAAC1D898FAD1CF1876BCC90 /* region.cpp */; };
+		C61973E7EA91D58B13D4FA46 /* SkStippleMaskFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4067C2DF6A9FE5DA806E9B30 /* SkStippleMaskFilter.cpp */; };
+		D1712485D03EC376CE5BFD32 /* SkStippleMaskFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4067C2DF6A9FE5DA806E9B30 /* SkStippleMaskFilter.cpp */; };
+		D6E8496A73AFEB22E7971A08 /* cachetable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0438BCFB88BB25B6DA5F37FC /* cachetable.cpp */; };
+		EAB9788EB8AEFE3C0CAFFA3C /* region.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CAAC1D898FAD1CF1876BCC90 /* region.cpp */; };
+		EC97BF97DDBC874BE242BF20 /* legacygradients.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 296FE037FA1648428666AFF0 /* legacygradients.cpp */; };
+		ED0A513E31EBA27AA9EE4C46 /* context.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 21FAE5E7C499FB9EB20F1629 /* context.cpp */; };
+		ED99E158926F7EB9BB0C9F63 /* cachetable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0438BCFB88BB25B6DA5F37FC /* cachetable.cpp */; };
+		F718100E0ECE3E81C7040AD4 /* blur.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C39EFAB0F375110260444B /* blur.cpp */; };
+		F964C30986FB6FF406C4B6C7 /* image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 508DA5D8FA98E24BDE08A0F5 /* image.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		122501DBD844722B06DA6A2B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 6798D705E22C1061CAF50AD1 /* thirdparty.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = EFFEE45A88F9235F3E6458BB;
-			remoteInfo = "thirdparty_prebuilt_png (host)";
-		};
-		4B4D085AB25E554A8D18E577 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 6798D705E22C1061CAF50AD1 /* thirdparty.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 6107FC25AACC63D74640BD40;
-			remoteInfo = "thirdparty_prebuilt_gif (host)";
-		};
-		4FC1B5A11C34A7247CF8CFAB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 6798D705E22C1061CAF50AD1 /* thirdparty.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = F9D80924F78809318AC2E270;
-			remoteInfo = "thirdparty_prebuilt_skia (host)";
-		};
-		523E146D6E8F88966582FC66 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 6798D705E22C1061CAF50AD1 /* thirdparty.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 91EE14E1F4CFD70BD9056EA6;
-			remoteInfo = thirdparty_prebuilt_skia;
-		};
 		55F61A3D915DEE782F75C948 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = ED1B15F73D11AA9F680A84BA /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = A1E63BC20F81094D4C079447;
 			remoteInfo = libGraphics;
-		};
-		6BA477A2AB9F262FCCA703C0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 6798D705E22C1061CAF50AD1 /* thirdparty.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 57EBCCDBBE3A801E2AD34692;
-			remoteInfo = "thirdparty_prebuilt_jpeg (host)";
-		};
-		6D79A45D288FE7ED4756FF31 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 6798D705E22C1061CAF50AD1 /* thirdparty.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 5C4FD5054B6EBEF371FDE140;
-			remoteInfo = thirdparty_prebuilt_png;
-		};
-		B7C692911AEB0A951C1AB782 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 6798D705E22C1061CAF50AD1 /* thirdparty.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = AAE2AB8989C145D38F48E9BF;
-			remoteInfo = thirdparty_prebuilt_gif;
-		};
-		C78245AE5DADF8FE9CD9797A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 6798D705E22C1061CAF50AD1 /* thirdparty.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 6C7802FB7730E93DC9677214;
-			remoteInfo = thirdparty_prebuilt_jpeg;
 		};
 		D66FA40E30B5A43CF73643B5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -134,14 +78,16 @@
 		2B5648CE5309CC914FDE50AA /* lnxtext.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = lnxtext.cpp; sourceTree = "<group>"; };
 		4067C2DF6A9FE5DA806E9B30 /* SkStippleMaskFilter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SkStippleMaskFilter.cpp; sourceTree = "<group>"; };
 		4175AE28C79CEC7F7D3F322F /* win32.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = win32.gypi; path = ../config/win32.gypi; sourceTree = "<group>"; };
+		44F87CCDBFF7588912E54C9F /* emscripten-settings.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = "emscripten-settings.gypi"; path = "../config/emscripten-settings.gypi"; sourceTree = "<group>"; };
 		491B2C1123327E0531EDDE4D /* version.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = version.gypi; path = ../config/version.gypi; sourceTree = "<group>"; };
 		508DA5D8FA98E24BDE08A0F5 /* image.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = image.cpp; sourceTree = "<group>"; };
 		61A5C24A28B3CFBDC8B0226C /* exclusions.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = exclusions.gypi; path = ../config/exclusions.gypi; sourceTree = "<group>"; };
 		64FE6DA91B606D3DF176D38E /* linux-settings.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = "linux-settings.gypi"; path = "../config/linux-settings.gypi"; sourceTree = "<group>"; };
-		6798D705E22C1061CAF50AD1 /* thirdparty.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = thirdparty.xcodeproj; path = "../build-mac/livecode/prebuilt/thirdparty.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		6F229B1F72F8E13E5952E644 /* graphics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = graphics.h; sourceTree = "<group>"; };
 		757DA8CC245B279D5C659F93 /* libgraphics.gyp */ = {isa = PBXFileReference; explicitFileType = sourcecode; path = libgraphics.gyp; sourceTree = "<group>"; };
 		75A5CFFDE76B3AFAAD6ECD42 /* harfbuzztext.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = harfbuzztext.cpp; sourceTree = "<group>"; };
+		7BA96C90C18E703339B04801 /* android-settings.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = "android-settings.gypi"; path = "../config/android-settings.gypi"; sourceTree = "<group>"; };
+		80F919B457B0F194B3DBC8CA /* ios.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = ios.gypi; path = ../config/ios.gypi; sourceTree = "<group>"; };
 		8B0B5677980BCC912D7F7C93 /* drawing.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = drawing.cpp; sourceTree = "<group>"; };
 		8CB91D98E58BC01A9BD349DA /* mac.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = mac.gypi; path = ../config/mac.gypi; sourceTree = "<group>"; };
 		96D8296C98B5487E890CE1BC /* libGraphics.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGraphics.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -153,11 +99,13 @@
 		B258DBD472C8C358935B4859 /* yacc.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = yacc.gypi; path = ../config/yacc.gypi; sourceTree = "<group>"; };
 		BF5498691A0F85E5F3017DEC /* linux.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = linux.gypi; path = ../config/linux.gypi; sourceTree = "<group>"; };
 		C5324B51AB6E2FF141562B6B /* directwrite-skia.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "directwrite-skia.cpp"; sourceTree = "<group>"; };
+		C897DB7E365C59825260273E /* android.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = android.gypi; path = ../config/android.gypi; sourceTree = "<group>"; };
 		CA571F2D7671172120C76DA4 /* common.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = common.gypi; path = ../common.gypi; sourceTree = "<group>"; };
 		CAAC1D898FAD1CF1876BCC90 /* region.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = region.cpp; sourceTree = "<group>"; };
 		D14964B84BCDD4BA07153A54 /* target_os.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = target_os.gypi; path = ../config/target_os.gypi; sourceTree = "<group>"; };
 		DE4F6DB74F8342CAA32A7D83 /* arch.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = arch.gypi; path = ../config/arch.gypi; sourceTree = "<group>"; };
 		E3C992A14C76612286810BC1 /* perl.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = perl.gypi; path = ../config/perl.gypi; sourceTree = "<group>"; };
+		EEA2408ED805A4E767787599 /* emscripten.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = emscripten.gypi; path = ../config/emscripten.gypi; sourceTree = "<group>"; };
 		F1665E31A0C8CA6D3BA86770 /* configurations.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = configurations.gypi; path = ../config/configurations.gypi; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -179,21 +127,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		4363EDE83E843E67A11625B8 /* Projects */ = {
-			isa = PBXGroup;
-			children = (
-				6798D705E22C1061CAF50AD1 /* thirdparty.xcodeproj */,
-			);
-			name = Projects;
-			sourceTree = "<group>";
-		};
-		837756E0F0519E494F81F54F /* Products */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		84E2976A5FF27B180B631F62 /* .. */ = {
 			isa = PBXGroup;
 			children = (
@@ -210,6 +143,15 @@
 			path = include;
 			sourceTree = "<group>";
 		};
+		9520C975DBCF579900B069EC = {
+			isa = PBXGroup;
+			children = (
+				BDF33042178022E108F88DE6 /* Source */,
+				957E282586F966EA682500D1 /* Products */,
+				F8067272592A161AF22C56FE /* Build */,
+			);
+			sourceTree = "<group>";
+		};
 		957E282586F966EA682500D1 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -217,28 +159,6 @@
 				A5E27F56C23DDCCB99ECEA42 /* libGraphics (host).a */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		9AB3727D02B71D53443F443F /* Build */ = {
-			isa = PBXGroup;
-			children = (
-				DE4F6DB74F8342CAA32A7D83 /* arch.gypi */,
-				CA571F2D7671172120C76DA4 /* common.gypi */,
-				F1665E31A0C8CA6D3BA86770 /* configurations.gypi */,
-				2100CDA80E3B1D34D5EF43A3 /* crosscompile.gypi */,
-				61A5C24A28B3CFBDC8B0226C /* exclusions.gypi */,
-				757DA8CC245B279D5C659F93 /* libgraphics.gyp */,
-				64FE6DA91B606D3DF176D38E /* linux-settings.gypi */,
-				BF5498691A0F85E5F3017DEC /* linux.gypi */,
-				8CB91D98E58BC01A9BD349DA /* mac.gypi */,
-				E3C992A14C76612286810BC1 /* perl.gypi */,
-				D14964B84BCDD4BA07153A54 /* target_os.gypi */,
-				B14FEB0DE48C8E176052F6D4 /* thirdparty.gypi */,
-				491B2C1123327E0531EDDE4D /* version.gypi */,
-				4175AE28C79CEC7F7D3F322F /* win32.gypi */,
-				B258DBD472C8C358935B4859 /* yacc.gypi */,
-			);
-			name = Build;
 			sourceTree = "<group>";
 		};
 		BDF33042178022E108F88DE6 /* Source */ = {
@@ -249,16 +169,6 @@
 				E413E831C2B8C7CFDDD50657 /* src */,
 			);
 			name = Source;
-			sourceTree = "<group>";
-		};
-		D71C2C19D5058C1A84DC5E6D = {
-			isa = PBXGroup;
-			children = (
-				BDF33042178022E108F88DE6 /* Source */,
-				4363EDE83E843E67A11625B8 /* Projects */,
-				957E282586F966EA682500D1 /* Products */,
-				9AB3727D02B71D53443F443F /* Build */,
-			);
 			sourceTree = "<group>";
 		};
 		E413E831C2B8C7CFDDD50657 /* src */ = {
@@ -285,6 +195,33 @@
 			path = src;
 			sourceTree = "<group>";
 		};
+		F8067272592A161AF22C56FE /* Build */ = {
+			isa = PBXGroup;
+			children = (
+				7BA96C90C18E703339B04801 /* android-settings.gypi */,
+				C897DB7E365C59825260273E /* android.gypi */,
+				DE4F6DB74F8342CAA32A7D83 /* arch.gypi */,
+				CA571F2D7671172120C76DA4 /* common.gypi */,
+				F1665E31A0C8CA6D3BA86770 /* configurations.gypi */,
+				2100CDA80E3B1D34D5EF43A3 /* crosscompile.gypi */,
+				44F87CCDBFF7588912E54C9F /* emscripten-settings.gypi */,
+				EEA2408ED805A4E767787599 /* emscripten.gypi */,
+				61A5C24A28B3CFBDC8B0226C /* exclusions.gypi */,
+				80F919B457B0F194B3DBC8CA /* ios.gypi */,
+				757DA8CC245B279D5C659F93 /* libgraphics.gyp */,
+				64FE6DA91B606D3DF176D38E /* linux-settings.gypi */,
+				BF5498691A0F85E5F3017DEC /* linux.gypi */,
+				8CB91D98E58BC01A9BD349DA /* mac.gypi */,
+				E3C992A14C76612286810BC1 /* perl.gypi */,
+				D14964B84BCDD4BA07153A54 /* target_os.gypi */,
+				B14FEB0DE48C8E176052F6D4 /* thirdparty.gypi */,
+				491B2C1123327E0531EDDE4D /* version.gypi */,
+				4175AE28C79CEC7F7D3F322F /* win32.gypi */,
+				B258DBD472C8C358935B4859 /* yacc.gypi */,
+			);
+			name = Build;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -298,10 +235,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				00917ADE5365EEF57AA4E33C /* PBXTargetDependency */,
-				80F674B6C684767DC2B59B8B /* PBXTargetDependency */,
-				11A241AE3A619742E8AF0B34 /* PBXTargetDependency */,
-				6481943C2AB09FEACB569702 /* PBXTargetDependency */,
 			);
 			name = libGraphics;
 			productName = Graphics;
@@ -318,10 +251,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				416DF9D8CCCEFD9DBDA15E1A /* PBXTargetDependency */,
-				077799B3502F63CDC327F30F /* PBXTargetDependency */,
-				304B516E4F515845346F8202 /* PBXTargetDependency */,
-				1DBDB548212E388837640D04 /* PBXTargetDependency */,
 			);
 			name = "libGraphics (host)";
 			productName = "Graphics (host)";
@@ -340,14 +269,8 @@
 			buildConfigurationList = 1416B1B7E22008C964EFF88F /* Build configuration list for PBXProject "libgraphics" */;
 			compatibilityVersion = "Xcode 3.2";
 			hasScannedForEncodings = 1;
-			mainGroup = D71C2C19D5058C1A84DC5E6D;
+			mainGroup = 9520C975DBCF579900B069EC;
 			projectDirPath = ../../../libgraphics;
-			projectReferences = (
-				{
-					ProductGroup = 837756E0F0519E494F81F54F /* Products */;
-					ProjectRef = 6798D705E22C1061CAF50AD1 /* thirdparty.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				C782A8CEB2F08B997CABB9A5 /* All */,
@@ -362,18 +285,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A78B21BF3C05967C0D948136 /* blur.cpp in Sources */,
-				3AAF10C47E312B11930CDEE5 /* cachetable.cpp in Sources */,
-				E61D82548289B145D6F267C0 /* context.cpp in Sources */,
-				D83623EB6FD1A995B78EEF10 /* coretext-skia.cpp in Sources */,
-				B29EAC425EE67303C75BEC64 /* image.cpp in Sources */,
-				98F1DFF2F138CD892F0A58C6 /* path.cpp in Sources */,
-				D3E72E70183BE71CFCFDF832 /* region.cpp in Sources */,
-				0AF0FB7CD811B1C121D76761 /* spread.cpp in Sources */,
-				389C358F58C9AEB2129396CC /* utils.cpp in Sources */,
-				1669DBA85F2273E85372D961 /* SkStippleMaskFilter.cpp in Sources */,
-				9DC13AA4A35B055E5E8FB6DB /* legacygradients.cpp in Sources */,
-				AAF2F35F79E5BDA442A66525 /* drawing.cpp in Sources */,
+				5D62D0A520987A35BD62335B /* blur.cpp in Sources */,
+				D6E8496A73AFEB22E7971A08 /* cachetable.cpp in Sources */,
+				3E7EE3B8A6FACB9EADDE9F87 /* context.cpp in Sources */,
+				88B85E2BF1F695A6E0B3C0B8 /* coretext-skia.cpp in Sources */,
+				3695145F8489F50F9A92168E /* image.cpp in Sources */,
+				997DF39167E2E2696B60A78A /* path.cpp in Sources */,
+				EAB9788EB8AEFE3C0CAFFA3C /* region.cpp in Sources */,
+				717BA7B375FBB999D9086E8E /* spread.cpp in Sources */,
+				784F958F03E2272291E6774D /* utils.cpp in Sources */,
+				D1712485D03EC376CE5BFD32 /* SkStippleMaskFilter.cpp in Sources */,
+				58031A0151EA1A1930FDF0AD /* legacygradients.cpp in Sources */,
+				4811B4D8F70C048351B63040 /* drawing.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -381,54 +304,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				219637CFB6D4FC1720818D00 /* blur.cpp in Sources */,
-				E73C00AA011B47373763F9C2 /* cachetable.cpp in Sources */,
-				6816B8DEA0DF02713BBDCACF /* context.cpp in Sources */,
-				FE8E0F12495373D95AE634AB /* coretext-skia.cpp in Sources */,
-				04DF080E4E4DEBEA8405DBB9 /* image.cpp in Sources */,
-				E6349977D964C69AEDDA04AF /* path.cpp in Sources */,
-				2095D1519419D719BF112A3A /* region.cpp in Sources */,
-				488933A8BA774327FB58AC59 /* spread.cpp in Sources */,
-				C96D465872FF28249EDC930D /* utils.cpp in Sources */,
-				F05858BC630480AE80921448 /* SkStippleMaskFilter.cpp in Sources */,
-				A01D0174538A2FFA3742F242 /* legacygradients.cpp in Sources */,
-				27B67100C6EB018CAED06DD1 /* drawing.cpp in Sources */,
+				F718100E0ECE3E81C7040AD4 /* blur.cpp in Sources */,
+				ED99E158926F7EB9BB0C9F63 /* cachetable.cpp in Sources */,
+				ED0A513E31EBA27AA9EE4C46 /* context.cpp in Sources */,
+				64E696CDBAC9C6DC32070683 /* coretext-skia.cpp in Sources */,
+				F964C30986FB6FF406C4B6C7 /* image.cpp in Sources */,
+				AE63255EDDFD7455048B4192 /* path.cpp in Sources */,
+				C05E48C9282451C6CF4E1419 /* region.cpp in Sources */,
+				91D2728662E0FC5C54FA5F5A /* spread.cpp in Sources */,
+				614EAD6F31337780DE51CEEE /* utils.cpp in Sources */,
+				C61973E7EA91D58B13D4FA46 /* SkStippleMaskFilter.cpp in Sources */,
+				EC97BF97DDBC874BE242BF20 /* legacygradients.cpp in Sources */,
+				B56E243BD21B1A03AFE609C1 /* drawing.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		00917ADE5365EEF57AA4E33C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = thirdparty_prebuilt_gif;
-			targetProxy = B7C692911AEB0A951C1AB782 /* PBXContainerItemProxy */;
-		};
-		077799B3502F63CDC327F30F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "thirdparty_prebuilt_png (host)";
-			targetProxy = 122501DBD844722B06DA6A2B /* PBXContainerItemProxy */;
-		};
-		11A241AE3A619742E8AF0B34 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = thirdparty_prebuilt_jpeg;
-			targetProxy = C78245AE5DADF8FE9CD9797A /* PBXContainerItemProxy */;
-		};
-		1DBDB548212E388837640D04 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "thirdparty_prebuilt_skia (host)";
-			targetProxy = 4FC1B5A11C34A7247CF8CFAB /* PBXContainerItemProxy */;
-		};
-		304B516E4F515845346F8202 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "thirdparty_prebuilt_jpeg (host)";
-			targetProxy = 6BA477A2AB9F262FCCA703C0 /* PBXContainerItemProxy */;
-		};
-		416DF9D8CCCEFD9DBDA15E1A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "thirdparty_prebuilt_gif (host)";
-			targetProxy = 4B4D085AB25E554A8D18E577 /* PBXContainerItemProxy */;
-		};
 		4AAFFE618227385E8D74C324 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = CE996D601A692F758CA69EB0 /* libGraphics (host) */;
@@ -438,16 +331,6 @@
 			isa = PBXTargetDependency;
 			target = A1E63BC20F81094D4C079447 /* libGraphics */;
 			targetProxy = 55F61A3D915DEE782F75C948 /* PBXContainerItemProxy */;
-		};
-		6481943C2AB09FEACB569702 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = thirdparty_prebuilt_skia;
-			targetProxy = 523E146D6E8F88966582FC66 /* PBXContainerItemProxy */;
-		};
-		80F674B6C684767DC2B59B8B /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = thirdparty_prebuilt_png;
-			targetProxy = 6D79A45D288FE7ED4756FF31 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -516,7 +399,6 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				EXECUTABLE_PREFIX = lib;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"U_STATIC_IMPLEMENTATION=1",
 					SK_RELEASE,
 					SK_SUPPORT_LEGACY_CANVAS_IS_REFCNT,
 					SK_SUPPORT_LEGACY_GETTOPDEVICE,
@@ -524,6 +406,7 @@
 					SK_SUPPORT_LEGACY_CLIP_REGIONOPS,
 					SK_SUPPORT_LEGACY_GETDEVICE,
 					"SK_SUPPORT_GPU=0",
+					"U_STATIC_IMPLEMENTATION=1",
 					CROSS_COMPILE_HOST,
 					TARGET_PLATFORM_MACOS_X,
 					_MACOSX,
@@ -553,7 +436,7 @@
 					include,
 					src,
 					../prebuilt/include,
-					../thirdparty/libgif/include,
+					../thirdparty/libgif/src,
 					../thirdparty/libpng/include,
 					../thirdparty/libjpeg/include,
 					../thirdparty/libskia/include/config,
@@ -586,6 +469,7 @@
 					"-Wextra",
 					"-Wno-conversion",
 					"-Wno-shorten-64-to-32",
+					"-Wno-enum-constexpr-conversion",
 					"-Werror=declaration-after-statement",
 					"-Werror=delete-non-virtual-dtor",
 					"-Werror=overloaded-virtual",
@@ -619,7 +503,6 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				EXECUTABLE_PREFIX = lib;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"U_STATIC_IMPLEMENTATION=1",
 					SK_RELEASE,
 					SK_SUPPORT_LEGACY_CANVAS_IS_REFCNT,
 					SK_SUPPORT_LEGACY_GETTOPDEVICE,
@@ -627,6 +510,7 @@
 					SK_SUPPORT_LEGACY_CLIP_REGIONOPS,
 					SK_SUPPORT_LEGACY_GETDEVICE,
 					"SK_SUPPORT_GPU=0",
+					"U_STATIC_IMPLEMENTATION=1",
 					CROSS_COMPILE_HOST,
 					TARGET_PLATFORM_MACOS_X,
 					_MACOSX,
@@ -655,7 +539,7 @@
 					include,
 					src,
 					../prebuilt/include,
-					../thirdparty/libgif/include,
+					../thirdparty/libgif/src,
 					../thirdparty/libpng/include,
 					../thirdparty/libjpeg/include,
 					../thirdparty/libskia/include/config,
@@ -688,6 +572,7 @@
 					"-Wextra",
 					"-Wno-conversion",
 					"-Wno-shorten-64-to-32",
+					"-Wno-enum-constexpr-conversion",
 					"-Werror=declaration-after-statement",
 					"-Werror=delete-non-virtual-dtor",
 					"-Werror=overloaded-virtual",
@@ -721,7 +606,6 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				EXECUTABLE_PREFIX = lib;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"U_STATIC_IMPLEMENTATION=1",
 					SK_RELEASE,
 					SK_SUPPORT_LEGACY_CANVAS_IS_REFCNT,
 					SK_SUPPORT_LEGACY_GETTOPDEVICE,
@@ -729,6 +613,7 @@
 					SK_SUPPORT_LEGACY_CLIP_REGIONOPS,
 					SK_SUPPORT_LEGACY_GETDEVICE,
 					"SK_SUPPORT_GPU=0",
+					"U_STATIC_IMPLEMENTATION=1",
 					CROSS_COMPILE_HOST,
 					TARGET_PLATFORM_MACOS_X,
 					_MACOSX,
@@ -758,7 +643,7 @@
 					include,
 					src,
 					../prebuilt/include,
-					../thirdparty/libgif/include,
+					../thirdparty/libgif/src,
 					../thirdparty/libpng/include,
 					../thirdparty/libjpeg/include,
 					../thirdparty/libskia/include/config,
@@ -791,6 +676,7 @@
 					"-Wextra",
 					"-Wno-conversion",
 					"-Wno-shorten-64-to-32",
+					"-Wno-enum-constexpr-conversion",
 					"-Werror=declaration-after-statement",
 					"-Werror=delete-non-virtual-dtor",
 					"-Werror=overloaded-virtual",
@@ -824,7 +710,6 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				EXECUTABLE_PREFIX = lib;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"U_STATIC_IMPLEMENTATION=1",
 					SK_RELEASE,
 					SK_SUPPORT_LEGACY_CANVAS_IS_REFCNT,
 					SK_SUPPORT_LEGACY_GETTOPDEVICE,
@@ -832,6 +717,7 @@
 					SK_SUPPORT_LEGACY_CLIP_REGIONOPS,
 					SK_SUPPORT_LEGACY_GETDEVICE,
 					"SK_SUPPORT_GPU=0",
+					"U_STATIC_IMPLEMENTATION=1",
 					CROSS_COMPILE_TARGET,
 					TARGET_PLATFORM_MACOS_X,
 					_MACOSX,
@@ -861,7 +747,7 @@
 					include,
 					src,
 					../prebuilt/include,
-					../thirdparty/libgif/include,
+					../thirdparty/libgif/src,
 					../thirdparty/libpng/include,
 					../thirdparty/libjpeg/include,
 					../thirdparty/libskia/include/config,
@@ -894,6 +780,7 @@
 					"-Wextra",
 					"-Wno-conversion",
 					"-Wno-shorten-64-to-32",
+					"-Wno-enum-constexpr-conversion",
 					"-Werror=declaration-after-statement",
 					"-Werror=delete-non-virtual-dtor",
 					"-Werror=overloaded-virtual",
@@ -927,7 +814,6 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				EXECUTABLE_PREFIX = lib;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"U_STATIC_IMPLEMENTATION=1",
 					SK_RELEASE,
 					SK_SUPPORT_LEGACY_CANVAS_IS_REFCNT,
 					SK_SUPPORT_LEGACY_GETTOPDEVICE,
@@ -935,6 +821,7 @@
 					SK_SUPPORT_LEGACY_CLIP_REGIONOPS,
 					SK_SUPPORT_LEGACY_GETDEVICE,
 					"SK_SUPPORT_GPU=0",
+					"U_STATIC_IMPLEMENTATION=1",
 					CROSS_COMPILE_TARGET,
 					TARGET_PLATFORM_MACOS_X,
 					_MACOSX,
@@ -963,7 +850,7 @@
 					include,
 					src,
 					../prebuilt/include,
-					../thirdparty/libgif/include,
+					../thirdparty/libgif/src,
 					../thirdparty/libpng/include,
 					../thirdparty/libjpeg/include,
 					../thirdparty/libskia/include/config,
@@ -996,6 +883,7 @@
 					"-Wextra",
 					"-Wno-conversion",
 					"-Wno-shorten-64-to-32",
+					"-Wno-enum-constexpr-conversion",
 					"-Werror=declaration-after-statement",
 					"-Werror=delete-non-virtual-dtor",
 					"-Werror=overloaded-virtual",
@@ -1029,7 +917,6 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				EXECUTABLE_PREFIX = lib;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"U_STATIC_IMPLEMENTATION=1",
 					SK_RELEASE,
 					SK_SUPPORT_LEGACY_CANVAS_IS_REFCNT,
 					SK_SUPPORT_LEGACY_GETTOPDEVICE,
@@ -1037,6 +924,7 @@
 					SK_SUPPORT_LEGACY_CLIP_REGIONOPS,
 					SK_SUPPORT_LEGACY_GETDEVICE,
 					"SK_SUPPORT_GPU=0",
+					"U_STATIC_IMPLEMENTATION=1",
 					CROSS_COMPILE_TARGET,
 					TARGET_PLATFORM_MACOS_X,
 					_MACOSX,
@@ -1066,7 +954,7 @@
 					include,
 					src,
 					../prebuilt/include,
-					../thirdparty/libgif/include,
+					../thirdparty/libgif/src,
 					../thirdparty/libpng/include,
 					../thirdparty/libjpeg/include,
 					../thirdparty/libskia/include/config,
@@ -1099,6 +987,7 @@
 					"-Wextra",
 					"-Wno-conversion",
 					"-Wno-shorten-64-to-32",
+					"-Wno-enum-constexpr-conversion",
 					"-Werror=declaration-after-statement",
 					"-Werror=delete-non-virtual-dtor",
 					"-Werror=overloaded-virtual",
