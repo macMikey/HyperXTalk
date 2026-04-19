@@ -1,4 +1,4 @@
-﻿script "com.livecode.library.animationengine"
+﻿script "com.hyperxtalk.library.animationengine"
 
 on extensionInitialize
    if the target is me then
