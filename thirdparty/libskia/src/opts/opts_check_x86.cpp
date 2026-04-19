@@ -149,4 +149,23 @@ SkBlitMask::BlitLCD16RowProc SkBlitMask::PlatformBlitRowProcs16(bool isOpaque) {
 SkBlitMask::RowProc SkBlitMask::PlatformRowProcs(SkColorType, SkMask::Format, RowFlags) {
     return nullptr;
 }
+
 #endif /* __x86_64__ || __i386__ */
+
+#if defined(_M_X64) || defined(_M_IX86)
+/* MSVC x86/x64: GCC-only guard above means all platform hook functions were
+ * never defined on MSVC. Provide null/no-op stubs so the linker resolves the
+ * symbols; portable Skia defaults from the SkOpts framework remain in effect. */
+#include "SkBitmapProcState.h"
+#include "SkBlitMask.h"
+#include "SkBlitRow.h"
+
+void SkBitmapProcState::platformProcs() {}
+
+SkBlitRow::Proc32    SkBlitRow::PlatformProcs32(unsigned)         { return nullptr; }
+SkBlitRow::Proc16    SkBlitRow::PlatformFactory565(unsigned)      { return nullptr; }
+SkBlitRow::ColorProc16 SkBlitRow::PlatformColorFactory565(unsigned) { return nullptr; }
+
+SkBlitMask::BlitLCD16RowProc SkBlitMask::PlatformBlitRowProcs16(bool) { return nullptr; }
+SkBlitMask::RowProc SkBlitMask::PlatformRowProcs(SkColorType, SkMask::Format, RowFlags) { return nullptr; }
+#endif

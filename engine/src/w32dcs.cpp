@@ -1176,6 +1176,40 @@ extern "C" void MCplatformGetLabelColor(char *p_buf, size_t p_buflen)
         s_colorref_to_hex(GetSysColor(COLOR_WINDOWTEXT), p_buf, p_buflen);
 }
 
+// ── Windows MCScreenDC::getsystemappearance ───────────────────────────────
+// Overrides MCUIDC::getsystemappearance (which always returns "light").
+// "custom" = Windows High Contrast accessibility theme is active.
+// "dark"   = AppsUseLightTheme registry value is 0.
+// "light"  = default.
+void MCScreenDC::getsystemappearance(MCSystemAppearance &r_appearance)
+{
+    HIGHCONTRAST t_hc = {};
+    t_hc.cbSize = sizeof(t_hc);
+    if (SystemParametersInfo(SPI_GETHIGHCONTRAST, sizeof(t_hc), &t_hc, 0) &&
+        (t_hc.dwFlags & HCF_HIGHCONTRASTON))
+    {
+        r_appearance = kMCSystemAppearanceCustom;
+    }
+    else
+    {
+        r_appearance = MCplatformIsDarkMode() ? kMCSystemAppearanceDark : kMCSystemAppearanceLight;
+    }
+}
+
+void MCScreenDC::getsystemwindowcolor(MCStringRef &r_color)
+{
+    char t_buf[8] = "#ffffff";
+    MCplatformGetWindowBackgroundColor(t_buf, sizeof(t_buf));
+    /* UNCHECKED */ MCStringCreateWithCString(t_buf, r_color);
+}
+
+void MCScreenDC::getsystemtextcolor(MCStringRef &r_color)
+{
+    char t_buf[8] = "#000000";
+    MCplatformGetLabelColor(t_buf, sizeof(t_buf));
+    /* UNCHECKED */ MCStringCreateWithCString(t_buf, r_color);
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 
 void MCScreenDC::processdesktopchanged(bool p_notify, bool p_update_fonts)

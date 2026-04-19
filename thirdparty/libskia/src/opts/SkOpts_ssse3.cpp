@@ -32,3 +32,10 @@ namespace SkOpts {
     }
 }
 #endif /* __x86_64__ || __i386__ */
+
+#if defined(_M_X64) || defined(_M_IX86)
+/* MSVC x86/x64: GCC-only guard above means Init_ssse3() was never defined on MSVC.
+ * Provide a no-op stub so the linker resolves the symbol; portable Skia
+ * defaults (installed by Init_none/SkOpts_none.cpp) remain in effect. */
+namespace SkOpts { void Init_ssse3() {} }
+#endif

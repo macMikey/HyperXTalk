@@ -311,6 +311,10 @@ public:
 	virtual void startplayingsound(IO_handle p_stream, MCObject *p_callback, bool p_next, int p_volume);
 	virtual void stopplayingsound(void);
 
+	virtual void getsystemappearance(MCSystemAppearance &r_appearance);
+	virtual void getsystemwindowcolor(MCStringRef &r_color);
+	virtual void getsystemtextcolor(MCStringRef &r_color);
+
 	//
 
     // TD-2013-07-01: [[ DynamicFonts ]]

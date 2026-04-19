@@ -660,11 +660,15 @@ LRESULT CALLBACK MCWindowProc(HWND hwnd, UINT msg, WPARAM wParam,
 		if (hwnd != ((MCScreenDC *)MCscreen) -> getinvisiblewindow())
 			break;
 
-		// WM_SETTINGCHANGE with lParam = L"ImmersiveColorSet" is the Windows
+		// WM_SETTINGCHANGE with lParam = "ImmersiveColorSet" is the Windows
 		// 10/11 signal that the user has toggled light ↔ dark mode.
 		// Fire systemAppearanceChanged before the generic desktopChanged path.
-		if (uMsg == WM_SETTINGCHANGE && lParam != 0 &&
-		    lstrcmpW(reinterpret_cast<LPCWSTR>(lParam), L"ImmersiveColorSet") == 0)
+		//
+		// The invisible window is registered with RegisterClassA / CreateWindowA,
+		// so Windows delivers WM_SETTINGCHANGE with an ANSI lParam string — not
+		// UTF-16. Use lstrcmpA (not lstrcmpW) to match it correctly.
+		if (msg == WM_SETTINGCHANGE && lParam != 0 &&
+		    lstrcmpA(reinterpret_cast<LPCSTR>(lParam), "ImmersiveColorSet") == 0)
 		{
 			// Forward declaration — defined in desktop.cpp.
 			void MCPlatformHandleSystemAppearanceChanged(void);
