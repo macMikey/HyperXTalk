@@ -1,720 +1,28 @@
-Library: com.livecode.library.animationengine
+Library: com.hyperxtalk.library.animationengine
 
 Type: library
 
-Title: AnimationEngine
+Title: Animation Engine
+
+Author: Malte Pfaff-Brill
 
 Version: 6.0.1
 
-Author: derbrill Multimedia
-
 Description:
-AnimationEngine is a LiveCode library for 2D and 3D animation. It provides
-handlers for moving controls on linear, circular, elliptical and polygonal
-paths, custom properties for constraining drag to rectangles, circles,
-ellipses and lines, easing functions, collision detection, isometric and
-perspective 3D coordinate conversion, and geometry utility functions.
+Animation Engine is a LiveCode script library providing geometry, collision
+detection, easing functions, isometric and 3D projection utilities, and
+general-purpose animation helpers.
 
-Tags: animation, motion, geometry, collision, easing, isometric, 3d
-
-
-Name: aeChangeTextSize
-
-Type: command
-
-Syntax: aeChangeTextSize pValue
-
-Summary: Use this handler to change the textsize in a field, keeping the formatting intact. If you have a field with different styles and textSizes t
-
-Example: send aeChangeTextSize "3" to field "myField"
-
-Example: send aeChangeTextSize "-1" to field "myField"
-
-Description:
-Use this handler to change the textsize in a field, keeping the formatting intact. If you have a field with different styles and textSizes the handler grows or shrinks the textsizes relatively, keeping all styling intact. If the smallest size in the field has been reached, the result contains:
-
-"Smallest size reached"
-
-
-
-Name: pointOnEllipse
+Name: findPreciseAngle
 
 Type: function
 
-Syntax: pointOnEllipse(x,y,angle in degrees,x radius,y radius)
+Syntax: findPreciseAngle()
 
-Summary: This function returns the coordinates of a point on the elliptical arc
+Summary: Returns a precise angle in degrees between two points
 
-Example: get pointOnEllipse(the loc of grc 1,50,120,90)
+Returns: The computed result
 
-Example: set the loc of grc 1 to pointOnEllipse(100,100,20,90,120)
-
-Description:
-This function returns the coordinates of a point on the elliptical arc.
-
-
-
-Name: findAngleY
-
-Type: function
-
-Syntax: findAngleY(x1,y1,x2,y2)
-
-Summary: returns the center angle of a circle in degrees. x1,y1 are the coordinates of the center point of the circle. x2,y2 are the coordinates of a
-
-Example: get findAngleY(100,200,50,300)
-
-Example: get findAngleY(the loc of grc 1,the loc of grc 2)
-
-Description:
-returns the center angle of a circle in degrees. x1,y1 are the coordinates of the center point of the circle. x2,y2 are the coordinates of a point on the circular arc. Possible values are 0-360, where 0 degrees means x2,y2 being on top of x1,y1.
-
-This function can be used as a synony for findAngle()
-
-
-
-Name: movePolygonal
-
-Type: command
-
-Syntax: movePolygonal
-
-Summary: is a handler that moves any object on a polygonal path. Call it repeatedly in a send in time structure to create smooth animation
-
-Example: on mouseUp
-
-Example: if the flag of me is empty then set the flag of me to false
-
-Example: set the flag of me to not the flag of me
-
-Example: hereWeGo
-
-Example: end mouseUp
-
-Example: on hereWeGo
-
-Example: send movePolygonal to grc "myGraphic"
-
-Example: if the flag of me then
-
-Example: send hereWeGo to me in 2 milliseconds
-
-Example: end if
-
-Example: end hereWeGo
-
-Example: set the movepolygonal["step"] of grc "myGraphic" to 4
-
-Example: if the movePolygonal["moveDone"] of grc "myGraphic" is true then
-
-Example: set the loc of grc "myGraphic" to the movePolygonal["endpoint"] of grc "myGraphic"
-
-Example: set the movePolygonal["moveDone"] of grc "myGraphic" to false
-
-Example: else
-
-Example: send hereWeGo to me in 3 milliseconds
-
-Description:
-is a handler that moves any object on a polygonal path. Call it repeatedly in a send in time structure to create smooth animation.
-
-Demo:
-
-Create a graphic called "myGraphic"
-
-Create a button, copy and paste the following script to it:
-
-The handler initialises a custom property set for the target with the following properties in it:
-
-pointList - the points of the polygon (x,y) each one on a seperate line
-
-current - the current endpoint
-
-startPoint - the location of the start point of the current line (x,y)
-
-endPoint - the location of the end point of the current line
-
-step - the direction and speed the object moves on the path
-
-isDistance - how far the object has moved already (on the current line, in Pixel)
-
-moveDone- true if the object has completed the move
-
-You refer to these custom properties using array notation:
-
-Attention! The animation will loop if you don´t react on moveDone being set to true. If you don´t want a loop try the following to test behaviour:
-
-Change the script of the button to:
-
-
-
-Name: aeSetFrameRate
-
-Type: command
-
-Syntax: aeSetFrameRate numberOfFramesPerSecond
-
-Summary: aeSetFrameRate 25
-
-Description:
-aeSetFrameRate 25
-
-aeSetFrameRate 12.5
-
-aeSetFrameRate 50
-
-aeSetFrameRate lets you set the desired frames per seconds for animations done with aeMoveTo. Default value is 25 fps.
-
-
-
-Name: moveEllipticalChangeStepIn
-
-Type: command
-
-Syntax: moveEllipticalChangeStepIn
-
-Summary: Reserved for internal use
-
-Description:
-Reserved for internal use.
-
-
-
-Name: midBottom
-
-Type: function
-
-Syntax: midBottom(object reference)
-
-Summary: returns the middlepoint of the bottom edge of any controls bounding rectangle
-
-Example: get midBottom(the name of img "myImage1")
-
-Example: get midBottom(the long ID of grc "myGraphic")
-
-Description:
-returns the middlepoint of the bottom edge of any controls bounding rectangle.
-
-
-
-Name: movePolygonalReversePath
-
-Type: command
-
-Syntax: movePolygonalReversePath
-
-Summary: This handler reverses the polygonal path of an object
-
-Example: send movePolygonalReversePath to grc "myGraphic"
-
-Description:
-This handler reverses the polygonal path of an object.
-
-
-
-Name: moveEllipticalEaseIn
-
-Type: command
-
-Syntax: moveEllipticalEaseIn newStep,duration[,exponent]
-
-Summary: Use this handler to change the speed of an elliptical moving control with an ease in effect. You pass the following parameters:
-
-Example: send "moveEllipticalEaseIn 2,1000,4" to btn "myCircularMovingButton"
-
-Example: send "moveEllipticalEaseIn 0,1500" to grc "myCircularMovingGraphic"
-
-Description:
-Use this handler to change the speed of an elliptical moving control with an ease in effect. You pass the following parameters:
-
-newStep - the new value for the moveElliptical["step"] of the control
-
-duration  - the duration of the ease effect in milliseconds
-
-exponent - optional parameter to achieve cubic, quadric or other easing
-
-
-
-Name: intersectRect
-
-Type: function
-
-Syntax: intersectRect(left1,top1,right1,bottom1,left2,top2,right2,bottom2)
-
-Summary: This function returns the smallest rectangle of intersection of any 2 rectangles
-
-Example: get intersectrect(10,80,90,150,0,40,70,120)
-
-Example: get intersectrect(the rect of btn "myButton",the rect of grc "myGraphic")
-
-Description:
-This function returns the smallest rectangle of intersection of any 2 rectangles.
-
-
-
-Name: moveCircularChangeStepOut
-
-Type: command
-
-Syntax: moveCircularChangeStepOut
-
-Summary: Reserved for internal use
-
-Description:
-Reserved for internal use.
-
-
-
-Name: constrainLinearInit
-
-Type: command
-
-Syntax: constrainLinearInit
-
-Summary: This message is sent to a control whose constrainLinear is set, when the mouse is pressed. You can use it instead of a mouseDown handler in 
-
-Example: on constrainLinearInit
-
-Example: -- do something useful
-
-Example: end constrainLinearInit
-
-Description:
-This message is sent to a control whose constrainLinear is set, when the mouse is pressed. You can use it instead of a mouseDown handler in that control.
-
-
-
-Name: spiral
-
-Type: property
-
-Syntax: spiral cx,cy,step,windings(,accuracy)
-
-Summary: (graphics only)
-
-Example: set the spiral of grc "yourGrafic" to 200,200,1,2
-
-Example: set the spiral of grc "yourGrafic" to 200,200,-0.07,5,draft
-
-Description:
-(graphics only)
-
-if you set the spiral of a graphic it will become a spiral.
-
-cX is the X location of the centerpoint
-
-cY is the yLocation of the centerpoint
-
-step should be a number between -1 and 1
-
-windings is the number of windings of the spiral
-
-accuracy is a number between 1 and 36 or one of this words: best/high/low/draft
-
-
-
-Name: movePolygonalEaseIn
-
-Type: command
-
-Syntax: movePolygonalEaseIn newStep,duration[,exponent]
-
-Summary: Use this handler to change the speed of a polygonal moving control with an ease in effect. You pass the following parameters:
-
-Example: send "movePolygonalEaseIn 2,1000,4" to btn "myPolygonalMovingButton"
-
-Example: send "movePolygonalEaseIn 0,1500" to grc "myPolygonalMovingGraphic"
-
-Description:
-Use this handler to change the speed of a polygonal moving control with an ease in effect. You pass the following parameters:
-
-newStep - the new value for the movePolygonal["step"] of the control
-
-duration  - the duration of the ease effect in milliseconds
-
-exponent - optional parameter to achieve cubic, quadric or other easing
-
-
-
-Name: circleCollide
-
-Type: function
-
-Syntax: circleCollide(x1,y1,x2,y2,threshold)
-
-Summary: This function returns true if there is a circular collision of the 2 objects. Else it returns false. Threshold is the sum of both circles ra
-
-Example: get circleCollide(100,150,200,140,80)
-
-Example: get circleCollide(the loc of grc "test",the loc of img "myImage",80)
-
-Description:
-This function returns true if there is a circular collision of the 2 objects. Else it returns false. Threshold is the sum of both circles radii.
-Aboutthisdocument
-
-Welcome to the animationEngine documentation.
-
-How to use this stack:
-
-Choose the name of a function, handler or property from the field on the right side. The document is divided into two parts, dictionary and examples. Every entry in the field on the right side that is displayed in blue, has an example. If the text is displayed in gray there is no example for that entry. You can switch between example and dictionary by clicking the appropriate button on top of this stack. The stack is searchable. You can choose if functions, handlers and properties should be displayed.
-
-The documentation stack is self contained. You do not need to put animationEngine in use to watch the examples.
-
-Thanks and Credits:
-
-Moral support:
-
-Runtime Revolution for massive support.
-
-The revSelect vendor group.
-
-Ro Nagey for all his support bringing AE 1.0 to life.
-
-The chatrev gang for motivation and comments.
-
-Code, math and design:
-
-Benedikt Seidl for the nice design and additional code.
-
-Dipl. Phys. Alexander Levin for help on Polycollide.
-
-Daniel Kriener for math input.
-
-Thanks to our investors:
-
-Detlef and Ingrid Brill for massive investment
-
-Katarina Preuninger-Brill and Hans Peter Brill
-
-For Rebekka, Linus and Mattis.
-
-In memoriam Heinz and Edeltraut Winarsky and Hanni Brill.
-
-
-
-Name: supershape
-
-Type: property
-
-Syntax: supershape m,n1,n2,n3,xScale,yScale,iterations
-
-Summary: (graphics only)
-
-Example: set the supershape of grc "myGraphic"  to 7,1,1,1,100,100,36000
-
-Example: set the supershape of grc "myGraphic" to 3,1,1.289,0.879,50,50,360
-
-Description:
-(graphics only)
-
-It allows you to create beautyful graphics by script.
-
-
-
-Name: moveLinearChangeStepIn
-
-Type: command
-
-Syntax: moveLinearChangeStepIn
-
-Summary: Reserved for internal use
-
-Description:
-Reserved for internal use.
-
-
-
-Name: moveLinearEaseIn
-
-Type: command
-
-Syntax: moveLinearEaseIn newStep,duration[,exponent]
-
-Summary: Use this handler to change the speed of a linear moving control with an ease in effect. You pass the following parameters:
-
-Example: send "moveLinearEaseIn 2,1000,4" to btn "myLinearMovingButton"
-
-Example: send "moveLinearEaseIn 0,1500" to grc "myLinearMovingGraphic"
-
-Description:
-Use this handler to change the speed of a linear moving control with an ease in effect. You pass the following parameters:
-
-newStep - the new value for the moveLinear["step"] of the control
-
-duration  - the duration of the ease effect in milliseconds
-
-exponent - optional parameter to achieve cubic, quadric or other easing
-
-
-
-Name: aeWithinEllipse
-
-Type: function
-
-Syntax: aeWithinEllipse(ellipseX,ellipseY,ellipseX radius,ellipseY radius,pointX,pointY)
-
-Summary: Lets you test if a testpoint pointX,pointY lies within the ellipse specified by the first parameters
-
-Description:
-Lets you test if a testpoint pointX,pointY lies within the ellipse specified by the first parameters.
-
-
-
-Name: moveEllipticalEaseOut
-
-Type: command
-
-Syntax: moveEllipticalEaseOut newStep,duration[,exponent]
-
-Summary: Use this handler to change the speed of an elliptical moving control with an ease out effect. You pass the following parameters:
-
-Example: send "moveEllipticalEaseOut 2,1000,4" to btn "myCircularMovingButton"
-
-Example: send "moveEllipticalEaseOut 0,1500" to grc "myCircularMovingGraphic"
-
-Description:
-Use this handler to change the speed of an elliptical moving control with an ease out effect. You pass the following parameters:
-
-newStep - the new value for the moveElliptical["step"] of the control
-
-duration  - the duration of the ease effect in milliseconds
-
-exponent - optional parameter to achieve cubic, quadric or other easing
-
-
-
-Name: moveLinearMoveDone
-
-Type: command
-
-Syntax: moveLinearMoveDone
-
-Summary: is a message sent to the object when the endpoint of a linear move is reached. If you want to react on the completition of a move put a hand
-
-Example: on moveLinearMoveDone
-
-Example: play audioclip "fanfare"
-
-Example: end moveLinearMoveDone
-
-Description:
-is a message sent to the object when the endpoint of a linear move is reached. If you want to react on the completition of a move put a handler into the object you are moving.
-
-In the moving object:
-
-
-
-Name: moveCircularEaseOut
-
-Type: command
-
-Syntax: moveCircularEaseOut newStep,duration[,exponent]
-
-Summary: Use this handler to change the speed of a circular moving control with an ease out effect. You pass the following parameters:
-
-Example: send "moveCircularEaseOut 2,1000,4" to btn "myCircularMovingButton"
-
-Example: send "moveCircularEaseOut 0,1500" to grc "myCircularMovingGraphic"
-
-Description:
-Use this handler to change the speed of a circular moving control with an ease out effect. You pass the following parameters:
-
-newStep - the new value for the moveCircular["step"] of the control
-
-duration  - the duration of the ease effect in milliseconds
-
-exponent - optional parameter to achieve cubic, quadric or other easing
-currentexample
-About this document
-
-
-
-Name: pointInPoly
-
-Type: function
-
-Syntax: pointInPoly(x,y,pointlist)
-
-Summary: This function returns if a point x,y is left,right or on the line specified by point x1,y1 and the point x2,y2
-
-Example: get pointInPoly(100,200,the points of grc "myGraphic")
-
-Example: get pointInPoly(the loc of btn "myButton",the points of grc "myGraphic")
-
-Description:
-This function returns if a point x,y is left,right or on the line specified by point x1,y1 and the point x2,y2.
-
-
-
-Name: findAngle
-
-Type: function
-
-Syntax: findAngle(x1,y1,x2,y2)
-
-Summary: This function returns the center angle of a circle in degrees. x1,y1 are the coordinates of the center point of the circle. x2,y2 are the co
-
-Example: get findAngle(100,200,50,300)
-
-Example: get findAngle(the loc of grc "myGraphic,the loc of btn "myButton")
-
-Description:
-This function returns the center angle of a circle in degrees. x1,y1 are the coordinates of the center point of the circle. x2,y2 are the coordinates of a point on the circular arc. Possible values are 0-360, where 0 degrees means x2,y2 being on top of x1,y1.
-
-
-
-Name: aspectRatio
-
-Type: function
-
-Syntax: aspectRatio(width,height)
-
-Summary: This function returns the width-to-height ratio of the specified width and height
-
-Example: get aspectRatio(the width of grc 1,the height of grc 1)
-
-Description:
-This function returns the width-to-height ratio of the specified width and height.
-
-
-
-Name: constrainEllipticalCallBack
-
-Type: command
-
-Syntax: constrainEllipticalCallBack
-
-Summary: This message is sent to a control whose constrainElliptical is set, when it is being dragged. You can use it instead of a mouseMove handler 
-
-Example: on constrainEllipticalCallBack
-
-Example: -- do something useful
-
-Example: end constrainEllipticalCallBack
-
-Description:
-This message is sent to a control whose constrainElliptical is set, when it is being dragged. You can use it instead of a mouseMove handler in that control.
-
-
-
-Name: numbersOnly
-
-Type: command
-
-Syntax: numbersOnly theKey
-
-Summary: (fields only)
-
-Example: on keyDown theKey
-
-Example: numbersonly theKey
-
-Example: end keyDown
-
-Description:
-(fields only)
-
-is a handler that allows you to create a field that allows only numbers to be typed.
-
-Use it in a keyDown handler of a field:
-
-This handler has been optimized in version 2.0.
-
-
-
-Name: constrainLinearExit
-
-Type: command
-
-Syntax: constrainLinearExit
-
-Summary: This message is sent to a control whose constrainLinear is set, when the mouse is released after a drag. You can use it instead of a mouseUp
-
-Example: on constrainLinearExit
-
-Example: -- do something useful
-
-Example: end constrainLinearExit
-
-Description:
-This message is sent to a control whose constrainLinear is set, when the mouse is released after a drag. You can use it instead of a mouseUp and mouseRelease handler in that control.
-
-
-
-Name: polyCollide
-
-Type: function
-
-Syntax: polyCollide(pointlist1,pointlist2[,method])
-
-Summary: This function returns if 2 given polygons collide. Method is one of SAT (Separating Axes Theorem),PIP (Point in Polygon test) or LIT (Line i
-
-Example: get polyCollide(the points of grc 1,the points of grc 2,"SAT")
-
-Example: get polyCollide(the points of grc 1,the points of grc 2,"PIP")
-
-Example: get polyCollide(the points of grc 1,the points of grc 2)
-
-Description:
-This function returns if 2 given polygons collide. Method is one of SAT (Separating Axes Theorem),PIP (Point in Polygon test) or LIT (Line intersection test)
-
-If you don´t specify a method LIT is used.
-
-SAT is the fastest method, but only works reliable for convex polygons.
-
-PIP is the best choice if you are sure that the polygons are not overlapping before the first test.
-
-LIT is the most precise, but slowest method.
-
-polyCollide is an early out function. This assures a fast computation of the polygon collision test.
-
-
-
-Name: findAngleX
-
-Type: function
-
-Syntax: findAngleX(x1,y1,x2,y2)
-
-Summary: returns the center angle of a circle in degrees. x1,y1 are the coordinates of the center point of the circle. x2,y2 are the coordinates of a
-
-Example: get findAngleX(100,200,50,300)
-
-Example: get findAngleX(the loc of grc 1,the loc of grc 2)
-
-Description:
-returns the center angle of a circle in degrees. x1,y1 are the coordinates of the center point of the circle. x2,y2 are the coordinates of a point on the circular arc. Possible values are 0-360, where 0 degrees means x2,y2 being right to x1,y1.
-
-
-
-Name: constrainElliptical
-
-Type: property
-
-Syntax: constrainElliptical centerX,centerY,radiusX,radiusY
-
-Summary: Allows dragging a control on an ellipse. The control can not be dragged outside of that ellipse
-
-Example: set the constrainElliptical of btn "yourButton" to 100,100,50,100
-
-Description:
-Allows dragging a control on an ellipse. The control can not be dragged outside of that ellipse.
-
-Attention! You need to make sure that the following messages are not trapped in the target control:
-
-mouseDown, mouseUp, mouseRelease, mouseMove. If you need to use these messages make sure that you pass them.
-
-New in 2.0:
-
-You might use the following messages instead to avoid conflicts:
-
-mouseDown    - constrainEllipticalInit
-
-mouseUp         - constrainEllipticalExit
-
-mouseRelease  - constrainEllipticalExit
-
-mouseMove     - constrainEllipticalCallback
 
 
 
@@ -722,181 +30,12 @@ Name: lineSegmentIntersectionPoint
 
 Type: function
 
-Syntax: lineSegmentIntersectionPoint(x1,y1,x2,y2,x3,y3,x4,y4)
+Syntax: lineSegmentIntersectionPoint()
 
-Summary: This function returns the intersectionpoint of 2 line segments or "no intersectionPoint" if the line segments do not intersect
+Summary: Returns the intersection point of two line segments
 
-Example: get lineSegmentIntersectionPoint(100,200,120,210,0,0,140,220)
+Returns: The computed result
 
-Description:
-This function returns the intersectionpoint of 2 line segments or "no intersectionPoint" if the line segments do not intersect.
-
-This function has been optimized in version 2.0.
-
-
-
-Name: moveLinearChangeStepOut
-
-Type: command
-
-Syntax: moveLinearChangeStepOut
-
-Summary: Reserved for internal use
-
-Description:
-Reserved for internal use.
-
-
-
-Name: movePolygonalChangeStepIn
-
-Type: command
-
-Syntax: movePolygonalChangeStepIn
-
-Summary: Reserved for internal use
-
-Description:
-Reserved for internal use.
-
-
-
-Name: superpath
-
-Type: property
-
-Syntax: superpath m,xScale,yScale
-
-Summary: (graphics only)
-
-Example: set the superpath of grc "myGraphic" to 7,100,100
-
-Example: set the superpath of grc "myGraphic" to 3,50,50
-
-Description:
-(graphics only)
-
-is a simplified version of the superShape property. The graphics created can be used as a path for movepolygonal.
-
-
-
-Name: constrainLinear
-
-Type: property
-
-Syntax: constrainLinear x1,y1,x2,y2
-
-Summary: Allows dragging a control on a line. The control can not be dragged outside of that line
-
-Example: set the constrainLinear of btn "yourButton" to 100,100,200,200
-
-Description:
-Allows dragging a control on a line. The control can not be dragged outside of that line.
-
-Attention! You need to make sure that the following messages are not trapped in the target control:
-
-mouseDown, mouseUp, mouseRelease, mouseMove. If you need to use these messages make sure that you pass them.
-
-New in 2.0:
-
-You might use the following messages instead to avoid conflicts:
-
-mouseDown    - constrainLinearInit
-
-mouseUp         - constrainLinearExit
-
-mouseRelease  - constrainLinearExit
-
-mouseMove     - constrainLinearCallback
-
-
-
-Name: whereIsThePoint
-
-Type: function
-
-Syntax: whereIsThePoint(x1,y1,x2,y2,x3,y3)
-
-Summary: This function returns:
-
-Example: get whereIsThePoint(100,200,50,300,80,100)
-
-Example: get whereIsThePoint(line 1 of the points of grc 1,line 2 of the points of grc 1,the loc of btn "myButton")
-
-Description:
-This function returns:
-
-"left" when the point (x3,y3) is left of the line (x1,y1,x2,y2)
-
-"right" when the point (x3,y3) is right of the line (x1,y1,x2,y2)
-
-"on" when the point (x3,y3) is on the line (x1,y1,x2,y2)
-
-Attention! The sorting of the points is important. The first 2 parameters represent the point you look at, the second 2 parameters the point where you stand. If you reorder the paramters you pass for the same constellation of points you get the inverse result.
-
-
-
-Name: aeMoveTo
-
-Type: command
-
-Syntax: aeMoveTo pControl,pX,pY,pDuration[,pEasingEffect]
-
-Summary: aeMoveTo is a handler that moves Controls or Stacks
-
-Example: aeMoveTo the long ID of button "myButton",the loc of this card,2000,"inOut"
-
-Example: aeMoveTo the name of button "myButton",150,200,1000,"bounce"
-
-Description:
-aeMoveTo is a handler that moves Controls or Stacks.
-
-Unlike the other moving methods, there is no need to write a timed script to use aeMoveTo. The command alone is sufficient.
-
-pControl is any valid reference to a control or stack
-
-pX is the x-location of the destination point
-
-pY is the y-location of the destination point
-
-pDuration is the duration of the move in milliseconds
-
-pEasingEffect is one of in,out,inOut,bounce,overshoot (or empty if no easing is wanted.
-
-Callbacks:
-
-aeMoveTo sends callback messages to the moving controls, which might be useful to use in your projects:
-
-aeMoveDone - sent when the object finished moving
-
-aeEnterFrame - sent before the location of the moving object is updated
-
-aeExitFrame - sent after the location of the moving object has been updated
-
-Related command:
-
-aeSetFrameRate - Lets you specify the framerate you want to use with your animation. A framerate of 25 is a good compromise between smoothness and CPU usage.
-
-Attention!
-
-Stacks move relative to screen coordinates, unlike other objects.
-
-aeMoveTo will break when messages are locked. You will not need to write a timer, however, there is a timed message that gets sent by animationEngine to animationEngine. As soon as messages are locked the command will not work. The name of the message being sent is aeGeneral.
-
-
-
-Name: drawIsoLine
-
-Type: command
-
-Syntax: drawIsoLine x1,y1,z1,x2,y2,z2,originX,originY
-
-Summary: Use the drawIsoLine handler to draw lines in isometric view. You specify
-
-Example: drawIsoLine "0,0,0,0,0,200,250,400"
-
-Description:
-Use the drawIsoLine handler to draw lines in isometric view. You specify
 
 
 
@@ -904,1043 +43,38 @@ Name: rotate3DPoint
 
 Type: function
 
-Syntax: rotate3DPoint(x,y,z,XRotation,Yrotation,Zrotation[,pFocalLength])
+Syntax: rotate3DPoint()
 
-Summary: Use this function to rotate a 3D point around the x- y- and/or z-axis. You can rotate over all 3 axis with a single call of the function. Yo
+Summary: Rotates a point in 3D space around the X, Y and Z axes
 
-Example: get rotate3DPoint(100,200,20,0,45,0,400)
+Returns: The computed result
 
-Example: get rotate3DPoint(100,200,20,0,0,90)
-
-Description:
-Use this function to rotate a 3D point around the x- y- and/or z-axis. You can rotate over all 3 axis with a single call of the function. You get a non rounded point triple in return.
-
-
-
-Name: constrainCircularCallBack
-
-Type: command
-
-Syntax: constrainCircularCallBack
-
-Summary: This message is sent to a control whose constrainCircular is set, when it is being dragged. You can use it instead of a mouseMove handler in
-
-Example: on constrainCircularCallBack
-
-Example: -- do something useful
-
-Example: end constrainCircularCallBack
-
-Description:
-This message is sent to a control whose constrainCircular is set, when it is being dragged. You can use it instead of a mouseMove handler in that control.
-
-
-
-Name: aeEnterFrame
-
-Type: command
-
-Syntax: aeEnterFrame
-
-Summary: Callback handler sent to an object moved by aeMoveTo, before the location of the object is being updated
-
-Description:
-Callback handler sent to an object moved by aeMoveTo, before the location of the object is being updated
-
-
-
-Name: moveLinearEaseOut
-
-Type: command
-
-Syntax: moveLinearEaseOut newStep,duration[,exponent]
-
-Summary: Use this handler to change the speed of a linear moving control with an ease out effect. You pass the following parameters:
-
-Example: send "moveLinearEaseOut 2,1000,4" to btn "myLinearMovingButton"
-
-Example: send "moveLinearEaseOut 0,1500" to grc "myLinearMovingGraphic"
-
-Description:
-Use this handler to change the speed of a linear moving control with an ease out effect. You pass the following parameters:
-
-newStep - the new value for the moveLinear["step"] of the control
-
-duration  - the duration of the ease effect in milliseconds
-
-exponent - optional parameter to achieve cubic, quadric or other easing
 
 
 
 Name: animationEngineInfo
 
-Type: command
+Type: function
 
-Syntax: animationEngineInfo
+Syntax: animationEngineInfo()
 
-Summary: This handler shows stack animationEngine as toplevel. (cantmodify is set to true)
+Summary: Returns information about the Animation Engine library
 
-Example: aeMoveTo the long ID of button 1,the loc of this card,2000,"inOut"
-
-Description:
-This handler shows stack animationEngine as toplevel. (cantmodify is set to true)
-
-The behaviour has been changed in 1.0.1 on users request.
-
-Since version 2.0 of ArcadeEngine this handler is obsolete, as the documentation and the library have been seperated.
-
-AboutAnimationEngine
-
-About AnimationEngine
-
-What is new in animationEngine 2.9:
-
-animationEngine 2.9 is the last release in the 2.x series of the product. It introduces 2 new easingFunctions, 1 new geometric function and a new moving Method.
-
-The most important change is the introduction of the new command aeMoveTo.
-
-aeMoveTo lets you move controls from their current position to a specified destination in a given time. While this sounds a bit like the built in move command it still has a lot of advantages over it.
-
-1) It is less resource hungry
-
-2) It lets you move objects using easing effects
-
-3) Movement can be stopped at any time
-
-4) destination can be changed at any time
-
-5) Movement is frame accurate
-
-A simple call to aeMoveTo looks like this:
-
-Please see the documentation entry for aeMoveTo for further details.
-
-New easing methods:
-
-aeBounceEaseIn        - Easing method using a bounce effect
-
-aeOverShootEaseIn   - Easing method using an overshoot effect
-
-New geometric function:
-
-aeWithinEllipse         - Determins if a point is within an ellipse
-
-For new users:
-
-Movement any-which-way you want it:
-
-AnimationEngine offers you functions and handlers to move objects, exactly as you desire. Create linear movement, polygonal movement, circular movement or elliptical movement. Start and stop the action at any time under scripted control. Simultaneously move different controls at different speeds for sophisticated "parallax"-style movements. Increase or decrease object speed. Control any aspect of object movement e.g. the centre point of a circular path. You can move your objects on complex paths, and even move existing motion paths along secondary paths! Add easing methods to your moving objects to create realistic and smooth asynchronus animations.
-
-Intersection Alert!
-
-If you want to get into games programming let AnimationEngine help you detecting circle-circle collisions, circle-line collisions, polygon-polygon collisions or even pixel precise collisions for images. You have access to different collision test routines. Creating games requires a lot of math. let AnimationEngine do the heavy lifting for you.
-
-Make learning fun and meaningful:
-
-AnimationEngine is great for teaching and learning too - let it loose in a classroom and watch students learn by having fun.
-
-As soon as you have played a bit with AnimationEngine and created your first few demo stacks you will see the advantages over the built in move command in Transcript. The library and documentation stacks assume a certain familiarity with Revolution, please read the introductions to these stacks for details. AnimationEngine requires Revolution 2.1 or higher or any version of Media.
+Returns: The computed result
 
 
 
-Name: isoToScreen
+
+Name: closestpointOnLine
 
 Type: function
 
-Syntax: isoToScreen(x,y,z,originX,originY)
+Syntax: closestpointOnLine()
 
-Summary: This function returns the screen coordinates of a 3D point in isometric view. Returned values are rounded in order to set the points of a gr
+Summary: Returns the closest point on a line to a given point
 
-Example: get isoToScreen(100,200,20,200,200)
+Returns: The computed result
 
-Description:
-This function returns the screen coordinates of a 3D point in isometric view. Returned values are rounded in order to set the points of a graphic control to isoToScreen points.
-
-
-
-Name: constrainRectangularInit
-
-Type: command
-
-Syntax: constrainRectangularInit
-
-Summary: This message is sent to a control whose constrainRectangular is set, when the mouse is pressed. You can use it instead of a mouseDown handle
-
-Example: on constrainRectangularInit
-
-Example: -- do something useful
-
-Example: end constrainRectangularInit
-
-Description:
-This message is sent to a control whose constrainRectangular is set, when the mouse is pressed. You can use it instead of a mouseDown handler in that control.
-
-
-
-Name: moveLinear
-
-Type: command
-
-Syntax: moveLinear
-
-Summary: is a handler that moves any object on a linear path. Call it repeatedly in a send in time structure to create smooth animation
-
-Description:
-is a handler that moves any object on a linear path. Call it repeatedly in a send in time structure to create smooth animation.
-
-Demo:
-
-Create a graphic called "myGraphic"
-
-Create a button, copy and paste the following script to it:
-
-on mouseUp
-
-if the flag of me is empty then set the flag of me to false
-
-set the flag of me to not the flag of me
-
-hereWeGo
-
-end mouseUp
-
-on hereWeGo
-
-send moveLinear to grc "myGraphic"
-
-if the flag of me then
-
-send hereWeGo to me in 2 milliseconds
-
-end if
-
-end hereWeGo
-
-The handler initialises a custom property set for the target with the following properties in it:
-
-startPoint - the location of the start point of the line (x,y)
-
-endPoint - the location of the end point of the line
-
-step - the direction and speed the object moves on the path
-
-isDistance - how far the object has moved already (in Pixel)
-
-moveDone- true if the object has completed the move
-
-pingpong - true: object swaps start- and endpoint of the path when move is completed
-
-false: animation starts at original startpoint again
-
-
-
-Name: pointOnCircle
-
-Type: function
-
-Syntax: pointOnCircle(x,y,angle in degrees,radius)
-
-Summary: )
-
-Example: get pointOnCircle(the loc of grc 1,50,120)
-
-Example: set the loc of grc 1 to pointOnCircle(100,100,20,90
-
-Description:
-)
-
-This function returns the coordinates of a point on the circular arc.
-
-
-
-Name: drawIsoBox
-
-Type: command
-
-Syntax: drawIsoBox x,y,z,A,B,C,originX,originY
-
-Summary: This handler creates a box in isometric view at the coordinates x,y,z with a width A, a height B and depth C at the screenCoordinates origin
-
-Description:
-This handler creates a box in isometric view at the coordinates x,y,z with a width A, a height B and depth C at the screenCoordinates originX,originY. A new graphic control is created to represent the box on the card.
-
-
-
-Name: moveEllipticalReversePath
-
-Type: command
-
-Syntax: moveEllipticalReversePath
-
-Summary: reverses the direction the control moves on the elliptical path
-
-Example: send moveEllipticalReversePath to grc "myMovingGraphic"
-
-Description:
-reverses the direction the control moves on the elliptical path.
-
-
-
-Name: pointOnLine
-
-Type: function
-
-Syntax: pointOnLine(x1,y1,x2,y2,distance in pixel)
-
-Summary: This function returns the point on a given line [x1,y1;x2,y2] in a specified distance from the first point
-
-Example: get pointOnLine(100,100,200,200,10)
-
-Example: set the loc of grc 1 to pointOnLine(50,100,30,600,8)
-
-Description:
-This function returns the point on a given line [x1,y1;x2,y2] in a specified distance from the first point.
-
-
-
-Name: aeMoveDone
-
-Type: command
-
-Syntax: aeMoveDone
-
-Summary: Callback handler sent to an object that has completed its move by aeMoveTo
-
-Description:
-Callback handler sent to an object that has completed its move by aeMoveTo
-
-
-
-Name: cell
-
-Type: property
-
-Syntax: cell[row,column]
-
-Summary: (fields only)
-
-Example: get the cell[3,1] of fld "yourField
-
-Example: set the cell[5,3] of fld "yourField" to "yourValue"
-
-Description:
-(fields only)
-
-with this property you can refer to any cell in a TAB delimted field
-
-
-
-Name: ae3dConvertToScreen
-
-Type: function
-
-Syntax: ae3dConvertToScreen(x,y,z,originX,originY[,focalLength])
-
-Summary: This function converts a point in 3D space to screencoordinates. You specify the x,y and z coordinate as well as the origin of the 3d object
-
-Example: get ae3dConvertToScreen(50,50,20,100,100)
-
-Example: get ae3dConvertToScreen(50,50,20,the loc of this card,450)
-
-Description:
-This function converts a point in 3D space to screencoordinates. You specify the x,y and z coordinate as well as the origin of the 3d object on the card. Optional you might specify the focal length of the camera as a fifth parameter. If you do not specify a focal length a default value of 300 is used. 300 is a good value for most situations. If the value is smaller the object gets more depth, but might be distorted.
-
-
-
-Name: midRight
-
-Type: function
-
-Syntax: midRight(object reference)
-
-Summary: This function returns the middlepoint of the right edge of any controls bounding rectangle
-
-Example: get midRight(the name of img "myImage1")
-
-Example: get midRight(the long ID of grc "myGraphic")
-
-Description:
-This function returns the middlepoint of the right edge of any controls bounding rectangle.
-
-
-
-Name: aeBounceEaseIn
-
-Type: function
-
-Syntax: aeEaseBounceIn(startValue,endValue,duration,elapsedTime)
-
-Summary: Use this function to generate easeIn values. Call it in a timed script to get all values inbetween. You specify a start and an end value, th
-
-Example: get aeBounceEaseIn(10,20,1000,50,2)
-
-Example: get aeBounceEaseIn(10,20,1000,500,4)
-
-Description:
-Use this function to generate easeIn values. Call it in a timed script to get all values inbetween. You specify a start and an end value, the ease duration and the elapsed time.
-
-
-
-Name: moveCircularChangeStepInOut
-
-Type: command
-
-Syntax: moveCircularChangeStepInOut
-
-Summary: Reserved for internal use
-
-Description:
-Reserved for internal use.
-
-
-
-Name: aeGeneral
-
-Type: command
-
-Syntax: 
-
-Summary: Reserved for internal use
-
-Description:
-Reserved for internal use.
-
-
-
-Name: constrainEllipticalExit
-
-Type: command
-
-Syntax: constrainEllipticalExit
-
-Summary: This message is sent to a control whose constrainElliptical is set, when the mouse is released after a drag. You can use it instead of a mou
-
-Example: on constrainEllipticalExit
-
-Example: -- do something useful
-
-Example: end constrainEllipticalExit
-
-Description:
-This message is sent to a control whose constrainElliptical is set, when the mouse is released after a drag. You can use it instead of a mouseUp and mouseRelease handler in that control.
-
-
-
-Name: aeOvershooteaseIn
-
-Type: function
-
-Syntax: aeOvershootEaseIn(startValue,endValue,duration,elapsedTime)
-
-Summary: Use this function to generate easeIn values. Call it in a timed script to get all values inbetween. You specify a start and an end value, th
-
-Example: get aeOvershootEaseIn(10,20,1000,50,2)
-
-Example: get aeOvershootEaseIn(10,20,1000,500,4)
-
-Description:
-Use this function to generate easeIn values. Call it in a timed script to get all values inbetween. You specify a start and an end value, the ease duration and the elapsed time. Values will overshoot the Endvalue and finally reach the Endvalue if the elapsed time reaches the duration.
-
-
-
-Name: closestPointOnLine
-
-Type: function
-
-Syntax: closestPointOnLine(x1,y1,x2,y2,x3,y3)
-
-Summary: This function returns the closest point to x3,y3 that lays on the line specified by the points x1,y1 and x2,y2. As a line is endless, this p
-
-Example: get closestPointOnLine(10,10,200,40,20,20)
-
-Example: get closestPointOnLine(line 1 of the points of grc "line",line 2 of the points of grc "line",the loc of button "myButton")
-
-Description:
-This function returns the closest point to x3,y3 that lays on the line specified by the points x1,y1 and x2,y2. As a line is endless, this point doesn't necessarily lie on the linesegment specified by x1,y1/x2,y2, but might lie on the extension of that line.
-
-
-
-Name: moveElliptical
-
-Type: command
-
-Syntax: moveElliptical
-
-Summary: is a handler that moves any object on a elliptical path. Call it repeatedly in a send in time structure to create smooth animation
-
-Description:
-is a handler that moves any object on a elliptical path. Call it repeatedly in a send in time structure to create smooth animation.
-
-Demo:
-
-Create a graphic called "myGraphic"
-
-Create a button , copy and paste the following Script to it:
-
-on mouseUp
-
-if the flag of me is empty then set the flag of me to false
-
-set the flag of me to not the flag of me
-
-hereWeGo
-
-end mouseUp
-
-on hereWeGo
-
-send moveElliptical to grc "myGraphic"
-
-if the flag of me then
-
-send hereWeGo to me in 20 milliseconds
-
-end if
-
-end hereWeGo
-
-The handler initialises a custom property set for the target with the following properties in it:
-
-centerX - x location of the centerpoint
-
-centerY - y location of the center point
-
-isAngle - the center angle of the ellipse (in degrees)
-
-radiusX - the x-radius of the ellipse
-
-radiusY - the y-radius of the ellipse
-
-step - the direction and speed the object moves on the ellipse.
-
-You refer to these custom properties using array notation.
-
-set the moveElliptical["step"] of btn "myButton" to 1.9
-
-
-
-Name: getSlope
-
-Type: function
-
-Syntax: getSlope(x1,y1,x2,y2)
-
-Summary: This function returns the slope of a line defined by its start end endpoints
-
-Example: get getSlope(10,30,40,50)
-
-Example: get getSlope(line 1 of the points of grc 1,line 2 of the points of grc 1)
-
-Description:
-This function returns the slope of a line defined by its start end endpoints.
-
-
-
-Name: distance
-
-Type: function
-
-Syntax: distance(x1,y1,x2,y2)
-
-Summary: This function returns the distance between to given points in pixel
-
-Example: get distance(100,100,200,200)
-
-Example: get distance(the loc of grc "myGraphic",the loc of img "myImage")
-
-Description:
-This function returns the distance between to given points in pixel.
-
-
-
-Name: aeEaseIn
-
-Type: function
-
-Syntax: aeEaseIn(startValue,endValue,duration,elapsedTime,exponent)
-
-Summary: get aeEaseIn(10,20,1000,50,2)
-
-Description:
-get aeEaseIn(10,20,1000,50,2)
-
-get aeEaseIn(10,20,1000,500,4)
-
-Use this function to generate easeIn values. Call it in a timed script to get all values inbetween. You specify a start and an end value, the ease duration, the elapsed time and an exponent (for quadric, cubic or whatever easing you wish)
-
-
-
-Name: moveEllipticalChangeStepOut
-
-Type: command
-
-Syntax: moveEllipticalChangeStepOut
-
-Summary: Reserved for internal use
-
-Description:
-Reserved for internal use.
-
-
-
-Name: aspectScale
-
-Type: property
-
-Syntax: aspectScale left,top,right,bottom[,setLockLoc]
-
-Summary: setting the aspectScale of a control scales it in the correct width-to-height ratio to fit in the specified rectangle with maximum extend. Y
-
-Example: set the aspectScale of img "myImage" 1 to 100,100,400,400,true
-
-Example: set the aspectScale of fld "myField" to the rect of grc "myGraphic"
-
-Description:
-setting the aspectScale of a control scales it in the correct width-to-height ratio to fit in the specified rectangle with maximum extend. You can specify if the lockLoc of the control should be set to avoid unwanted resizing when closing/reopening cards.
-
-
-
-Name: constrainEllipticalInit
-
-Type: command
-
-Syntax: constrainEllipticalInit
-
-Summary: This message is sent to a control whose constrainElliptical is set, when the mouse is pressed. You can use it instead of a mouseDown handler
-
-Example: on constrainEllipticalInit
-
-Example: -- do something useful
-
-Example: end constrainEllipticalInit
-
-Description:
-This message is sent to a control whose constrainElliptical is set, when the mouse is pressed. You can use it instead of a mouseDown handler in that control.
-
-
-
-Name: moveCircularEaseInOut
-
-Type: command
-
-Syntax: moveCircularEaseInOut newStep,duration[,exponent]
-
-Summary: Use this handler to change the speed of a circular moving control with an ease in and out effect. You pass the following parameters:
-
-Example: send "moveCircularEaseInOut 2,1000,4" to btn "myCircularMovingButton"
-
-Example: send "moveCircularEaseInOut 0,1500" to grc "myCircularMovingGraphic"
-
-Description:
-Use this handler to change the speed of a circular moving control with an ease in and out effect. You pass the following parameters:
-
-newStep - the new value for the moveCircular["step"] of the control
-
-duration  - the duration of the ease effect in milliseconds
-
-exponent - optional parameter to achieve cubic, quadric or other easing
-
-
-
-Name: constrainCircular
-
-Type: property
-
-Syntax: constrainCircular centerX,centerY,radius
-
-Summary: Allows dragging a control on a circle. The control can not be dragged outside of that circle
-
-Example: set the constrainCircular of btn "yourButton" to 100,100,50
-
-Description:
-Allows dragging a control on a circle. The control can not be dragged outside of that circle.
-
-Attention! You need to make sure that the following messages are not trapped in the target control:
-
-mouseDown, mouseUp, mouseRelease, mouseMove. If you need to use these messages make sure that you pass them.
-
-New in 2.0:
-
-You might use the following messages instead to avoid conflicts:
-
-mouseDown    - constrainCircularInit
-
-mouseUp         - constrainCircularExit
-
-mouseRelease  - constrainCircularExit
-
-mouseMove     - constrainCircularCallback
-
-
-
-Name: movePolygonalMoveDone
-
-Type: command
-
-Syntax: movePolygonalMoveDone
-
-Summary: is a message sent to the object when the endpoint of a polygonal move is reached. If you want to react on the completition of a move put a h
-
-Example: on movePolygonalMoveDone
-
-Example: play audioclip "fanfare"
-
-Example: end movePolygonalMoveDone
-
-Description:
-is a message sent to the object when the endpoint of a polygonal move is reached. If you want to react on the completition of a move put a handler into the object you are moving.
-
-In the moving object:
-
-
-
-Name: aeExitFrame
-
-Type: command
-
-Syntax: aeExitFrame
-
-Summary: Callback handler sent to an object being moved by aeMoveTo, after the location of the object has been updated
-
-Description:
-Callback handler sent to an object being moved by aeMoveTo, after the location of the object has been updated
-
-
-
-Name: aeEaseOut
-
-Type: function
-
-Syntax: aeEaseOut(startValue,endValue,duration,elapsedTime,exponent)
-
-Summary: get aeEaseOut(10,20,1000,50,2)
-
-Description:
-get aeEaseOut(10,20,1000,50,2)
-
-get aeEaseOut(10,20,1000,500,4)
-
-Use this function to generate easeOut values. Call it in a timed script to get all values inbetween. You specify a start and an end value, the ease duration, the elapsed time and an exponent (for quadric, cubic or whatever easing you wish)
-
-
-
-Name: findAngle2
-
-Type: function
-
-Syntax: findAngle2(x1,y1,x2,y2,startangle)
-
-Summary: returns the center angle of a circle in degrees. x1,y1 are the coordinates of the center point of the circle. x2,y2 are the coordinates of a
-
-Example: get findAngle2(100,200,50,300)
-
-Example: get findAngle2(the loc of grc "myGraphic",the loc of btn "myButton")
-
-Description:
-returns the center angle of a circle in degrees. x1,y1 are the coordinates of the center point of the circle. x2,y2 are the coordinates of a point on the circular arc. Possible values are 0-360, where 0 degrees means x2,y2 being at the startangle.
-
-
-
-Name: moveLinearReversePath
-
-Type: command
-
-Syntax: moveLinearReversePath
-
-Summary: is a handler that that swaps start- and enpoint of a linear path
-
-Example: send moveLinearReversepath to btn "myLinearMovingButton"
-
-Description:
-is a handler that that swaps start- and enpoint of a linear path.
-
-
-
-Name: isoToScreenY
-
-Type: function
-
-Syntax: isoToScreenY(x,y,z,originY)
-
-Summary: This function returns the y component of a 3D point converted to screen coordinates in isometric view. It is needed by the isoToScreen funct
-
-Example: get isoToScreenY(100,200,20,200)
-
-Description:
-This function returns the y component of a 3D point converted to screen coordinates in isometric view. It is needed by the isoToScreen function. Returned values are not rounded.
-
-
-
-Name: aspectResize
-
-Type: function
-
-Syntax: aspectResize(left,top,right,bottom)
-
-Summary: This function returns the new width,the new height of the target to be scaled in the correct aspect ratio and fit into the specified rectang
-
-Example: get aspectResize(the rect of grc 1)
-
-Example: get aspectResize(40,80,140,180)
-
-Description:
-This function returns the new width,the new height of the target to be scaled in the correct aspect ratio and fit into the specified rectangle. This function is required for setting the aspectScale of a control.
-
-
-
-Name: constrainCircularInit
-
-Type: command
-
-Syntax: constrainCircularInit
-
-Summary: This message is sent to a control whose constrainCircular is set, when the mouse is pressed. You can use it instead of a mouseDown handler i
-
-Example: on constrainCircularInit
-
-Example: -- do something useful
-
-Example: end constrainCircularInit
-
-Description:
-This message is sent to a control whose constrainCircular is set, when the mouse is pressed. You can use it instead of a mouseDown handler in that control.
-
-
-
-Name: constrainLinearCallBack
-
-Type: command
-
-Syntax: constrainLinearCallBack
-
-Summary: This message is sent to a control whose constrainLinear is set, when it is being dragged. You can use it instead of a mouseMove handler in t
-
-Example: on constrainLinearCallBack
-
-Example: -- do something useful
-
-Example: end constrainLinearCallBack
-
-Description:
-This message is sent to a control whose constrainLinear is set, when it is being dragged. You can use it instead of a mouseMove handler in that control.
-
-
-
-Name: moveCircularEaseIn
-
-Type: command
-
-Syntax: moveCircularEaseIn newStep,duration[,exponent]
-
-Summary: Use this handler to change the speed of a circular moving control with an ease in effect. You pass the following parameters:
-
-Example: send "moveCircularEaseIn 2,1000,4" to btn "myCircularMovingButton"
-
-Example: send "moveCircularEaseIn 0,1500" to grc "myCircularMovingGraphic"
-
-Description:
-Use this handler to change the speed of a circular moving control with an ease in effect. You pass the following parameters:
-
-newStep - the new value for the moveCircular["step"] of the control
-
-duration  - the duration of the ease effect in milliseconds
-
-exponent - optional parameter to achieve cubic, quadric or other easing
-
-
-
-Name: midTop
-
-Type: function
-
-Syntax: midTop(object reference)
-
-Summary: This function returns the middlepoint of the top edge of any controls bounding rectangle
-
-Example: get midTop(the name of img "myImage1")
-
-Example: get midTop(the long ID of grc "myGraphic")
-
-Description:
-This function returns the middlepoint of the top edge of any controls bounding rectangle.
-
-
-
-Name: movePolygonalChangeStepInOut
-
-Type: command
-
-Syntax: movePolygonalChangeStepInOut
-
-Summary: Reserved for internal use
-
-Description:
-Reserved for internal use.
-
-
-
-Name: aeEaseInOut
-
-Type: function
-
-Syntax: aeEaseInOut(startValue,endValue,duration,elapsedTime,exponent)
-
-Summary: get aeEaseInOut(10,20,1000,50,2)
-
-Description:
-get aeEaseInOut(10,20,1000,50,2)
-
-get aeEaseInOut(10,20,1000,500,4)
-
-Use this function to generate easeIn and out values. Call it in a timed script to get all values inbetween. You specify a start and an end value, the ease duration, the elapsed time and an exponent (for quadric, cubic or whatever easing you wish)
-
-
-
-Name: constrainCircularExit
-
-Type: command
-
-Syntax: constrainCircularExit
-
-Summary: This message is sent to a control whose constrainCircular is set, when the mouse is released after a drag. You can use it instead of a mouse
-
-Example: on constrainCircularExit
-
-Example: -- do something useful
-
-Example: end constrainCircularExit
-
-Description:
-This message is sent to a control whose constrainCircular is set, when the mouse is released after a drag. You can use it instead of a mouseUp and mouseRelease handler in that control.
-
-
-
-Name: movePolygonalEaseInOut
-
-Type: command
-
-Syntax: movePolygonalEaseInOut newStep,duration[,exponent]
-
-Summary: Use this handler to change the speed of a polygonal moving control with an ease in and out effect. You pass the following parameters:
-
-Example: send "movePolygonalEaseInOut 2,1000,4" to btn "myPolygonalMovingButton"
-
-Example: send "movePolygonalEaseInOut 0,1500" to grc "myPolygonalMovingGraphic"
-
-Description:
-Use this handler to change the speed of a polygonal moving control with an ease in and out effect. You pass the following parameters:
-
-newStep - the new value for the movePolygonal["step"] of the control
-
-duration  - the duration of the ease effect in milliseconds
-
-exponent - optional parameter to achieve cubic, quadric or other easing
-
-
-
-Name: moveLinearEaseInOut
-
-Type: command
-
-Syntax: moveLinearEaseInOut newStep,duration[,exponent]
-
-Summary: Use this handler to change the speed of a linear moving control with an ease in and out effect. You pass the following parameters:
-
-Example: send "moveLinearEaseInOut 2,1000,4" to btn "myLinearMovingButton"
-
-Example: send "moveLinearEaseInOut 0,1500" to grc "myLinearMovingGraphic"
-
-Description:
-Use this handler to change the speed of a linear moving control with an ease in and out effect. You pass the following parameters:
-
-newStep - the new value for the moveLinear["step"] of the control
-
-duration  - the duration of the ease effect in milliseconds
-
-exponent - optional parameter to achieve cubic, quadric or other easing
-
-
-
-Name: moveLinearChangeStepInOut
-
-Type: command
-
-Syntax: moveLinearChangeStepInOut
-
-Summary: Reserved for internal use
-
-Description:
-Reserved for internal use.
-
-
-
-Name: moveCircular
-
-Type: command
-
-Syntax: moveCircular
-
-Summary: is a handler that moves any object on a circular path. Call it repeatedly in a send in time structure to create smooth animation
-
-Example: on mouseUp
-
-Example: if the flag of me is empty then set the flag of me to false
-
-Example: set the flag of me to not the flag of me
-
-Example: hereWeGo
-
-Example: end mouseUp
-
-Example: on hereWeGo
-
-Example: send moveCircular to grc "myGraphic"
-
-Example: if the flag of me then
-
-Example: send hereWeGo to me in 20 milliseconds
-
-Example: end if
-
-Example: end hereWeGo
-
-Example: set the moveCircular["step"] of grc "myGraphic" to 1.5
-
-Description:
-is a handler that moves any object on a circular path. Call it repeatedly in a send in time structure to create smooth animation.
-
-Demo:
-
-Create a graphic called "myGraphic"
-
-Create a button with the following Script in it:
-
-The handler initialises a custom property set for the target with the following properties in it:
-
-centerX - x location of the centerpoint
-
-centerY - y location of the center point
-
-isAngle - the center angle of the circle (in degrees)
-
-isRadius - the radius
-
-step - the direction and speed the object moves on the circle.
-
-You refer to these properties using array notation.
-
-
-
-Name: aeMathEaseOut
-
-Type: function
-
-Syntax: aeMathEaseOut
-
-Summary: Reserved for internal use
-
-Description:
-Reserved for internal use.
 
 
 
@@ -1948,35 +82,913 @@ Name: rotateIsoPoint
 
 Type: function
 
-Syntax: rotateIsoPoint(x,y,z,XRotation,Yrotation,Zrotation)
+Syntax: rotateIsoPoint()
 
-Summary: Use this function to rotate an isometric 3D point around the x- y- and/or z-axis. You can rotate over all 3 axis with a single call of the f
+Summary: Rotates a point in isometric space
 
-Example: get rotateIsoPoint(100,200,20,0,45,0,400)
-
-Example: get rotateIsoPoint(100,200,20,0,0,90)
-
-Description:
-Use this function to rotate an isometric 3D point around the x- y- and/or z-axis. You can rotate over all 3 axis with a single call of the function. You get a non rounded point triple in return.
+Returns: The computed result
 
 
 
-Name: constrainRectangularExit
+
+Name: polyCollide
+
+Type: function
+
+Syntax: polyCollide(<pointlist1>,<pointlist2>,<method>)
+
+Summary: Tests whether two polygons intersect
+
+Returns: The computed result
+
+
+Parameters:
+:
+
+
+:
+
+
+:
+
+
+
+
+Name: isoToScreenX
+
+Type: function
+
+Syntax: isoToScreenX()
+
+Summary: Converts an isometric X coordinate to screen X
+
+Returns: The computed result
+
+
+
+
+Name: ae3dScaleRatio
+
+Type: function
+
+Syntax: ae3dScaleRatio(<pZ>,<pFocalLength>)
+
+Summary: Returns the scale ratio for a point at a given Z depth
+
+Returns: The computed result
+
+
+Parameters:
+:
+
+
+:
+
+
+
+
+Name: aeChangingScroll
 
 Type: command
 
-Syntax: constrainRectangularExit
+Syntax: aeChangingScroll 
 
-Summary: This message is sent to a control whose constrainRectangular is set, when the mouse is released after a drag. You can use it instead of a mo
+Summary: Animates the scroll property of the target object
 
-Example: on constrainRectangularExit
 
-Example: -- do something useful
 
-Example: end constrainRectangularExit
 
-Description:
-This message is sent to a control whose constrainRectangular is set, when the mouse is released after a drag. You can use it instead of a mouseUp and mouseRelease handler in that control.
+Name: aeGeneral
+
+Type: command
+
+Syntax: aeGeneral 
+
+Summary: Performs a general animation step on the target object
+
+
+
+
+Name: aeMathEaseOut
+
+Type: function
+
+Syntax: aeMathEaseOut(<pR>,<pExponent>)
+
+Summary: Returns a mathematically computed ease-out value
+
+Returns: The computed result
+
+
+Parameters:
+:
+
+
+:
+
+
+
+
+Name: imageCollide
+
+Type: function
+
+Syntax: imageCollide(<object1>,<object2>,<threshold>)
+
+Summary: Tests whether two image objects overlap using pixel comparison
+
+Returns: The computed result
+
+
+Parameters:
+:
+
+
+:
+
+
+:
+
+
+
+
+Name: aeMorphPointlists
+
+Type: function
+
+Syntax: aeMorphPointlists(<pList1>,<pList2>,<pDuration>,<pCurrentTime>,<pEffect>)
+
+Summary: Interpolates between two point lists over time
+
+Returns: The computed result
+
+
+Parameters:
+:
+
+
+:
+
+
+:
+
+
+:
+
+
+:
+
+
+
+
+Name: findAngleY
+
+Type: function
+
+Syntax: findAngleY()
+
+Summary: Returns the angle along the Y axis between two points
+
+Returns: The computed result
+
+
+
+
+Name: aeCollidingObjects
+
+Type: function
+
+Syntax: aeCollidingObjects()
+
+Summary: Returns a list of objects colliding with the target
+
+Returns: The computed result
+
+
+
+
+Name: animationEngineDate
+
+Type: function
+
+Syntax: animationEngineDate()
+
+Summary: Returns the release date of the Animation Engine library
+
+Returns: The computed result
+
+
+
+
+Name: findAngle2
+
+Type: function
+
+Syntax: findAngle2()
+
+Summary: Returns the angle between three points
+
+Returns: The computed result
+
+
+
+
+Name: aeChangingforeColor
+
+Type: command
+
+Syntax: aeChangingforeColor 
+
+Summary: Animates the foreColor property of the target object
+
+
+
+
+Name: aspectResize
+
+Type: function
+
+Syntax: aspectResize()
+
+Summary: Resizes dimensions while preserving the original aspect ratio
+
+Returns: The computed result
+
+
+
+
+Name: findAngle
+
+Type: function
+
+Syntax: findAngle()
+
+Summary: Returns the angle in degrees between two points
+
+Returns: The computed result
+
+
+
+
+Name: ae3dConvertToScreen
+
+Type: function
+
+Syntax: ae3dConvertToScreen()
+
+Summary: Projects a 3D point onto the 2D screen
+
+Returns: The computed result
+
+
+
+
+Name: aeWithinEllipse
+
+Type: function
+
+Syntax: aeWithinEllipse()
+
+Summary: Tests whether a point lies within an ellipse
+
+Returns: The computed result
+
+
+
+
+Name: aeChangingThumbPosition
+
+Type: command
+
+Syntax: aeChangingThumbPosition 
+
+Summary: Animates the thumbPosition property of the target object
+
+
+
+
+Name: isoToScreen
+
+Type: function
+
+Syntax: isoToScreen()
+
+Summary: Converts isometric coordinates to screen coordinates
+
+Returns: The computed result
+
+
+
+
+Name: superformula
+
+Type: function
+
+Syntax: superformula(<m>,<n1>,<n2>,<n3>,<phi>,<a>,<b>)
+
+Summary: Calculates a point on a Gielis superformula curve
+
+Returns: The computed result
+
+
+Parameters:
+:
+
+
+:
+
+
+:
+
+
+:
+
+
+:
+
+
+:
+
+
+:
+
+
+
+
+Name: findAngleX
+
+Type: function
+
+Syntax: findAngleX()
+
+Summary: Returns the angle along the X axis between two points
+
+Returns: The computed result
+
+
+
+
+Name: circleCollide
+
+Type: function
+
+Syntax: circleCollide()
+
+Summary: Tests whether two circles overlap
+
+Returns: The computed result
+
+
+
+
+Name: aeDebug
+
+Type: command
+
+Syntax: aeDebug <pValue>
+
+Summary: Logs a debug value to the animation engine debug output
+
+
+Parameters:
+:
+
+
+
+
+Name: distance
+
+Type: function
+
+Syntax: distance()
+
+Summary: Returns the distance between two points
+
+Returns: The computed result
+
+
+
+
+Name: ae3dConvertListToScreen
+
+Type: function
+
+Syntax: ae3dConvertListToScreen(<pointList>,<pOriginX>,<pOriginY>,<pFocalLength>)
+
+Summary: Projects a list of 3D points onto the 2D screen
+
+Returns: The computed result
+
+
+Parameters:
+:
+
+
+:
+
+
+:
+
+
+:
+
+
+
+
+Name: intersectRect
+
+Type: function
+
+Syntax: intersectRect()
+
+Summary: Tests whether two rectangles intersect and returns the overlap
+
+Returns: The computed result
+
+
+
+
+Name: whereIsThePoint
+
+Type: function
+
+Syntax: whereIsThePoint()
+
+Summary: Returns the position of a point relative to a line
+
+Returns: The computed result
+
+
+
+
+Name: lineIntersectionPoint
+
+Type: function
+
+Syntax: lineIntersectionPoint()
+
+Summary: Returns the intersection point of two infinite lines
+
+Returns: The computed result
+
+
+
+
+Name: AePrimitive_Box
+
+Type: function
+
+Syntax: AePrimitive_Box(<px>,<py>,<pz>,<pa>,<pb>,<pc>)
+
+Summary: Draws a 3D box primitive
+
+Returns: The computed result
+
+
+Parameters:
+:
+
+
+:
+
+
+:
+
+
+:
+
+
+:
+
+
+:
+
+
+
+
+Name: circleLineSegmentCollide
+
+Type: function
+
+Syntax: circleLineSegmentCollide()
+
+Summary: Tests whether a circle and a line segment intersect
+
+Returns: The computed result
+
+
+
+
+Name: aeGetAverageFrameRate
+
+Type: function
+
+Syntax: aeGetAverageFrameRate()
+
+Summary: Returns the current average animation frame rate
+
+Returns: The computed result
+
+
+
+
+Name: aeChangingBackColor
+
+Type: command
+
+Syntax: aeChangingBackColor 
+
+Summary: Animates the backColor property of the target object
+
+
+
+
+Name: aeMorphLists
+
+Type: function
+
+Syntax: aeMorphLists(<pList1>,<pList2>,<pDuration>,<pCurrentTime>,<pEffect>,<pRound>,<pMin>,<pMax>)
+
+Summary: Interpolates between two numeric lists over time
+
+Returns: The computed result
+
+
+Parameters:
+:
+
+
+:
+
+
+:
+
+
+:
+
+
+:
+
+
+:
+
+
+:
+
+
+:
+
+
+
+
+Name: midTop
+
+Type: function
+
+Syntax: midTop(<theObject>)
+
+Summary: Returns the midpoint of the top edge of an object
+
+Returns: The computed result
+
+
+Parameters:
+:
+
+
+
+
+Name: splitAlpha
+
+Type: function
+
+Syntax: splitAlpha(<theObject>)
+
+Summary: Returns the alpha channel value of an object at a point
+
+Returns: The computed result
+
+
+Parameters:
+:
+
+
+
+
+Name: aeChangingHScroll
+
+Type: command
+
+Syntax: aeChangingHScroll 
+
+Summary: Animates the hscroll property of the target object
+
+
+
+
+Name: aeChangingWidth
+
+Type: command
+
+Syntax: aeChangingWidth 
+
+Summary: Animates the width property of the target object
+
+
+
+
+Name: aeBounceEaseOut
+
+Type: function
+
+Syntax: aeBounceEaseOut(<pStart>,<pEnd>,<pDuration>,<pCurrentTime>)
+
+Summary: Performs the aeBounceEaseOut operation
+
+Returns: The computed result
+
+
+Parameters:
+:
+
+
+:
+
+
+:
+
+
+:
+
+
+
+
+Name: midLeft
+
+Type: function
+
+Syntax: midLeft(<theObject>)
+
+Summary: Returns the midpoint of the left edge of an object
+
+Returns: The computed result
+
+
+Parameters:
+:
+
+
+
+
+Name: aeChangingforecolorOfChunk
+
+Type: command
+
+Syntax: aeChangingforecolorOfChunk 
+
+Summary: Animates the foreColor of a text chunk in the target object
+
+
+
+
+Name: imageCollide2
+
+Type: function
+
+Syntax: imageCollide2(<object1>,<object2>,<threshold>)
+
+Summary: Tests whether two image objects overlap using an alternate pixel method
+
+Returns: The computed result
+
+
+Parameters:
+:
+
+
+:
+
+
+:
+
+
+
+
+Name: aeEaseOut
+
+Type: function
+
+Syntax: aeEaseOut(<pStart>,<pEnd>,<pDuration>,<pElapsedTime>,<pExponent>)
+
+Summary: Returns an ease-out interpolated value
+
+Returns: The computed result
+
+
+Parameters:
+:
+
+
+:
+
+
+:
+
+
+:
+
+
+:
+
+
+
+
+Name: aeChangingBackColorOfChunk
+
+Type: command
+
+Syntax: aeChangingBackColorOfChunk 
+
+Summary: Animates the backColor of a text chunk in the target object
+
+
+
+
+Name: aeChangingVScroll
+
+Type: command
+
+Syntax: aeChangingVScroll 
+
+Summary: Animates the vscroll property of the target object
+
+
+
+
+Name: pointOnEllipse
+
+Type: function
+
+Syntax: pointOnEllipse()
+
+Summary: Returns the coordinates of a point on an ellipse at a given angle
+
+Returns: The computed result
+
+
+
+
+Name: aeMorphGradient
+
+Type: function
+
+Syntax: aeMorphGradient(<pList1>,<pList2>,<pDuration>,<pCurrentTime>,<pEffect>)
+
+Summary: Interpolates between two gradient ramp lists over time
+
+Returns: The computed result
+
+
+Parameters:
+:
+
+
+:
+
+
+:
+
+
+:
+
+
+:
+
+
+
+
+Name: pointOnLine
+
+Type: function
+
+Syntax: pointOnLine()
+
+Summary: Returns the coordinates of a point on a line at a given distance
+
+Returns: The computed result
+
+
+
+
+Name: midBottom
+
+Type: function
+
+Syntax: midBottom(<theObject>)
+
+Summary: Returns the midpoint of the bottom edge of an object
+
+Returns: The computed result
+
+
+Parameters:
+:
+
+
+
+
+Name: pointInPoly
+
+Type: function
+
+Syntax: pointInPoly()
+
+Summary: Tests whether a point lies inside a polygon
+
+Returns: The computed result
+
+
+
+
+Name: aeChangingHeight
+
+Type: command
+
+Syntax: aeChangingHeight 
+
+Summary: Animates the height property of the target object
+
+
+
+
+Name: rotate3DPointList
+
+Type: function
+
+Syntax: rotate3DPointList(<pointList>,<pXRotation>,<pYRotation>,<pZRotation>,<pFocalLength>)
+
+Summary: Rotates a list of 3D points around the X, Y and Z axes
+
+Returns: The computed result
+
+
+Parameters:
+:
+
+
+:
+
+
+:
+
+
+:
+
+
+:
+
+
+
+
+Name: aeEaseIn
+
+Type: function
+
+Syntax: aeEaseIn(<pStart>,<pEnd>,<pDuration>,<pElapsedTime>,<pExponent>)
+
+Summary: Returns an ease-in interpolated value
+
+Returns: The computed result
+
+
+Parameters:
+:
+
+
+:
+
+
+:
+
+
+:
+
+
+:
+
+
+
+
+Name: isoToScreenY
+
+Type: function
+
+Syntax: isoToScreenY()
+
+Summary: Converts an isometric Y coordinate to screen Y
+
+Returns: The computed result
+
 
 
 
@@ -1986,48 +998,108 @@ Type: function
 
 Syntax: animationEngineVersion()
 
-Summary: This function returns the versionnumber of animationEngine
+Summary: Returns the version number of the Animation Engine library
 
-Example: get animationEngineVersion()
-
-Example: if it < 2 then answer "Sorry, AE 2.0 or higher is needed"
-
-Description:
-This function returns the versionnumber of animationEngine.
+Returns: The computed result
 
 
 
-Name: findPreciseAngle
+
+Name: midRight
 
 Type: function
 
-Syntax: findPreciseAngle(x1,y1,x2,y2)
+Syntax: midRight(<theObject>)
 
-Summary: This function returns the center angle of a circle in degrees. x1,y1 are the coordinates of the center point of the circle. x2,y2 are the co
+Summary: Returns the midpoint of the right edge of an object
 
-Example: get findPreciseAngle(100,200,50,300)
-
-Example: get findPreciseAngle(the loc of grc "myGraphic,the loc of btn "myButton")
-
-Description:
-This function returns the center angle of a circle in degrees. x1,y1 are the coordinates of the center point of the circle. x2,y2 are the coordinates of a point on the circular arc. Possible values are 0-360, where 0 degrees means x2,y2 being on top of x1,y1. In difference to the findAngle function values are not rounded.
+Returns: The computed result
 
 
+Parameters:
+:
 
-Name: midLeft
+
+
+
+Name: pointOnCircle
 
 Type: function
 
-Syntax: midLeft(object reference)
+Syntax: pointOnCircle()
 
-Summary: This function returns the middlepoint of the left edge of any controls bounding rectangle
+Summary: Returns the coordinates of a point on a circle at a given angle
 
-Example: get midLeft(the name of img "myImage1")
+Returns: The computed result
 
-Example: get midLeft(the long ID of grc "myGraphic")
 
-Description:
-This function returns the middlepoint of the left edge of any controls bounding rectangle.
+
+
+Name: aeBounceEaseIn
+
+Type: function
+
+Syntax: aeBounceEaseIn(<pStart>,<pEnd>,<pDuration>,<pCurrentTime>)
+
+Summary: Returns a bounce ease-in interpolated value
+
+Returns: The computed result
+
+
+Parameters:
+:
+
+
+:
+
+
+:
+
+
+:
+
+
+
+
+Name: aeOvershootEaseIn
+
+Type: function
+
+Syntax: aeOvershootEaseIn(<pStart>,<pEnd>,<pDuration>,<pCurrentTime>,<pOvershoot>)
+
+Summary: Returns an overshoot ease-in interpolated value
+
+Returns: The computed result
+
+
+Parameters:
+:
+
+
+:
+
+
+:
+
+
+:
+
+
+:
+
+
+
+
+Name: getSlope
+
+Type: function
+
+Syntax: getSlope()
+
+Summary: Returns the slope of a line defined by two points
+
+Returns: The computed result
+
 
 
 
@@ -2035,1684 +1107,114 @@ Name: findPreciseAngleX
 
 Type: function
 
-Syntax: findPreciseAngleX(x1,y1,x2,y2)
+Syntax: findPreciseAngleX()
 
-Summary: returns the center angle of a circle in degrees. x1,y1 are the coordinates of the center point of the circle. x2,y2 are the coordinates of a
+Summary: Returns a precise angle along the X axis between two points
 
-Example: get findAngleX(100,200,50,300)
-
-Example: get findAngleX(the loc of grc 1,the loc of grc 2)
-
-Description:
-returns the center angle of a circle in degrees. x1,y1 are the coordinates of the center point of the circle. x2,y2 are the coordinates of a point on the circular arc. Possible values are 0-360, where 0 degrees means x2,y2 being right to x1,y1. In difference to findAngleX() the returned value is not rounded.
+Returns: The computed result
 
 
 
-Name: movePolygonalChangeStepOut
 
-Type: command
-
-Syntax: movePolygonalChangeStepOut
-
-Summary: Reserved for internal use
-
-Description:
-Reserved for internal use.
-
-
-
-Name: moveCircularChangeStepIn
-
-Type: command
-
-Syntax: moveCircularChangeStepIn
-
-Summary: Reserved for internal use
-
-Description:
-Reserved for internal use.
-
-
-
-Name: lineIntersectionPoint
+Name: aeEaseInOut
 
 Type: function
 
-Syntax: lineIntersectionPoint(x1,y1,x2,y2,x3,y3,x4,y4)
+Syntax: aeEaseInOut(<pStart>,<pEnd>,<pDuration>,<pElapsedTime>,<pExponent>)
 
-Summary: This function returns the intersectionpoint of 2 lines or "parallel" if the lines are parallel
+Summary: Returns an ease-in-out interpolated value
 
-Example: get lineIntersectionPoint(100,100,100,120,0,0,0,50)
-
-Description:
-This function returns the intersectionpoint of 2 lines or "parallel" if the lines are parallel.
-
-This function has been optimized in version 2.0.
+Returns: The computed result
 
 
+Parameters:
+:
 
-Name: imageCollide
+
+:
+
+
+:
+
+
+:
+
+
+:
+
+
+
+
+Name: aeChangingRect
+
+Type: command
+
+Syntax: aeChangingRect 
+
+Summary: Animates the rect property of the target object
+
+
+
+
+Name: aspectRatio
 
 Type: function
 
-Syntax: imageCollide(the name of image 1,the name of image 2[,threshold])
+Syntax: aspectRatio(<isWidth>,<isHeight>)
 
-Summary: This function returns if the opaque pixels of 2 images collide. You can specify a threshold value between 0 and 255 to avoid collisions with
+Summary: Calculates the aspect ratio of a width and height
 
-Example: get imageCollide(the name of img "myImage1",the name of img "myImage2")
-
-Description:
-This function returns if the opaque pixels of 2 images collide. You can specify a threshold value between 0 and 255 to avoid collisions with shadows or dirt in any images mask. If the threshold value is rather high it might be that imageCollide() doesn´t detect collisions as precise as you might need.
-
-imageCollide() is a function that takes many cycles. To make sure your app works good on slower machines you should limit the size of the images you check collisions for to 80 by 80 Pixel.
-
-This function has been rewritten in 2.0 to work more reliable.
+Returns: The computed result
 
 
+Parameters:
+:
 
-Name: constrainRectangularCallBack
 
-Type: command
-
-Syntax: constrainRectangularCallBack
-
-Summary: This message is sent to a control whose constrainRectangular is set, when it is being dragged. You can use it instead of a mouseMove handler
-
-Example: on constrainRectangularCallBack
-
-Example: -- do something useful
-
-Example: end constrainRectangularCallBack
-
-Description:
-This message is sent to a control whose constrainRectangular is set, when it is being dragged. You can use it instead of a mouseMove handler in that control.
+:
 
 
 
-Name: movePolygonalEaseOut
 
-Type: command
-
-Syntax: movePolygonalEaseOut newStep,duration[,exponent]
-
-Summary: Use this handler to change the speed of a polygonal moving control with an ease out effect. You pass the following parameters:
-
-Example: send "movePolygonalEaseOut 2,1000,4" to btn "myPolygonalMovingButton"
-
-Example: send "movePolygonalEaseOut 0,1500" to grc "myPolygonalMovingGraphic"
-
-Description:
-Use this handler to change the speed of a polygonal moving control with an ease out effect. You pass the following parameters:
-
-newStep - the new value for the movePolygonal["step"] of the control
-
-duration  - the duration of the ease effect in milliseconds
-
-exponent - optional parameter to achieve cubic, quadric or other easing
-
-
-
-Name: moveCircularReversePath
-
-Type: command
-
-Syntax: moveCircularReversePath
-
-Summary: This handler reverses the direction the control moves on the circular path
-
-Example: send moveCircularReversePath to btn "myMovingButton"
-
-Description:
-This handler reverses the direction the control moves on the circular path.
-
-
-
-Name: moveEllipticalChangeStepInOut
-
-Type: command
-
-Syntax: moveEllipticalChangeStepInOut
-
-Summary: Reserved for internal use
-
-Description:
-Reserved for internal use.
-
-
-
-Name: circleLineSegmentCollide
+Name: maskComparePoints
 
 Type: function
 
-Syntax: circleLineSegmentCollide(x1,y1,x2,y2,x3,y3,radius)
+Syntax: maskComparePoints()
 
-Summary: This function returns true if there is a collision between a line segment (specified by startpoint x1,y1 and the endpoint x2,y2 and a circle
+Summary: Compares pixel masks between two objects at given points
 
-Example: get circleLineSegmentCollide(100,200,200,250,80,80,40)
-
-Example: get circleLineSegmentCollide(line 1 of the points of grc "line",line 2 of the points of grc "line",the loc of img "circle",40)
-
-Description:
-This function returns true if there is a collision between a line segment (specified by startpoint x1,y1 and the endpoint x2,y2 and a circle (specified by the circles centerpoint x3,y3 and it´s radius). Else it returns false.
+Returns: The computed result
 
 
 
-Name: isoToScreenX
+
+Name: aeOverShootEaseOut
 
 Type: function
 
-Syntax: isoToScreenX(x,y,z,originX)
+Syntax: aeOverShootEaseOut(<pStart>,<pEnd>,<pDuration>,<pCurrentTime>,<pOvershoot>)
 
-Summary: This function returns the x component of a 3D point converted to screen coordinates in isometric view. It is needed by the isoToScreen funct
+Summary: Performs the aeOverShootEaseOut operation
 
-Example: get isoToScreenX(100,200,20,200)
+Returns: The computed result
 
-Description:
-This function returns the x component of a 3D point converted to screen coordinates in isometric view. It is needed by the isoToScreen function. Returned values are not rounded.
 
+Parameters:
+:
 
 
-Name: constrainRectangular
+:
 
-Type: property
 
-Syntax: constrainRectangular left,top,right,bottom
+:
 
-Summary: Allows a drag of a control in a rectangle specified by left,top,right,bottom. The control can not be dragged outside of that rectangle. The 
 
-Example: set the constrainRectangular of btn "myButton" to 100,100,250,300
+:
 
-Example: set the constrainRectangular of btn "myButton" to the rect of grc "test"
 
-Description:
-Allows a drag of a control in a rectangle specified by left,top,right,bottom. The control can not be dragged outside of that rectangle. The first variant of that script has been posted to the use-revolution list by Scott Rossi.
+:
 
-Attention! You need to make sure that the following messages are not trapped in the target control:
 
-mouseDown, mouseUp, mouseRelease, mouseMove. If you need to use these messages make sure that you pass them.
-
-New in 2.0:
-
-You might use the following messages instead to avoid conflicts:
-
-mouseDown    - constrainRectangularInit
-
-mouseUp         - constrainRectangularExit
-
-mouseRelease  - constrainRectangularExit
-
-mouseMove     - constrainRectangularCallback
-
-
-
-Name: moveEllipticalEaseInOut
-
-Type: command
-
-Syntax: moveEllipticalEaseInOut newStep,duration[,exponent]
-
-Summary: Use this handler to change the speed of an elliptical moving control with an ease in and out effect. You pass the following parameters:
-
-Example: send "moveEllipticalEaseInOut 2,1000,4" to btn "myCircularMovingButton"
-
-Example: send "moveEllipticalEaseInOut 0,1500" to grc "myCircularMovingGraphic"
-
-Example: set the constrainRectangular of grc "slopeDrag1" to the rect of this card
-
-Example: set the constrainRectangular of grc "slopeDrag2" to the rect of this card
-
-Example: set the constrainrectangular of grc "oval1" to the rect of this card
-
-Example: set the constrainrectangular of grc "oval2" to the rect of this card
-
-Example: set the constrainrectangular of btn "dragButton" to the rect of this card
-
-Example: set the constrainRectangular of grc "pipPoly" to the rect of this card
-
-Example: set the constrainRectangular of btn "pipBut" to the rect of this card
-
-Example: on constrainRectangularCallback
-
-Example: if pointInPoly(the loc of btn "pipBut", the points of grc "pipPoly") then
-
-Example: set the icon of btn "pipBut" to the ID of img "myImage1"
-
-Example: else
-
-Example: set the icon of btn "pipBut" to the ID of img "myImage2"
-
-Example: end if
-
-Example: end constrainRectangularCallback
-
-Example: on mouseUp
-
-Example: if the flag of me is empty then set the flag of me to false
-
-Example: set the flag of me to not the flag of me
-
-Example: if the flag of me then
-
-Example: set the label of me to "stop"
-
-Example: hereWeGo
-
-Example: set the label of me to "start"
-
-Example: end mouseUp
-
-Example: on hereWeGo
-
-Example: lock screen
-
-Example: send moveCircular to btn "cBall"
-
-Example: wait 0 milliseconds with messages
-
-Example: unlock screen
-
-Example: send hereWeGo to me in 20 milliseconds
-
-Example: end hereWeGo
-
-Example: on scrollBarDrag
-
-Example: set the loc of grc "moveCircularPath" to the thumbPos of me,item 2 of the loc of grc "moveCircularpath"
-
-Example: set the moveCircular["centerX"] of btn "cBall" to item 2 of the loc of grc "moveCircularPath"
-
-Example: end scrollBarDrag
-
-Example: set the loc of grc "moveCircularPath" to item 1 of the loc of grc "moveCircularpath",the thumbPos of me
-
-Example: set the moveCircular["centerY"] of btn "cBall" to item 2 of the loc of grc "moveCircularPath"
-
-Example: put the loc of grc "moveCircularPath" into tOldLoc
-
-Example: set the width of grc "moveCircularPath" to the thumbPos of me
-
-Example: set the height of grc "moveCircularPath" to the thumbPos of me
-
-Example: set the loc of grc "moveCircularPath" to tOldLoc
-
-Example: set the moveCircular["isRadius"] of btn "cBall" to the thumbPos of me/2
-
-Example: set the moveCircular["step"] of btn "cBall" to the thumbPos of me
-
-Example: set the constrainlinear of btn "linearDrag" to (line 1 of the points of grc "myGraphic" & "," & line 2 of the points of grc "myGraphic")
-
-Example: on constrainLinearInit
-
-Example: set the icon of me to the ID of img "myImage1"
-
-Example: end constrainLinearInit
-
-Example: on constrainLinearExit
-
-Example: set the icon of me to the ID of img "myImage2"
-
-Example: end constrainLinearExit
-
-Example: set the constrainRectangular of img "findAngle1" to the rect of this card
-
-Example: set the constrainRectangular of img "findAngle2" to the rect of this card
-
-Example: on constrainRectangularInit
-
-Example: constrainRectangularCallback
-
-Example: set the foreColor of grc "angleDisplay" to red
-
-Example: set the foreColor of grc "angleLine1" to red
-
-Example: set the foreColor of grc "angleLine2" to red
-
-Example: show grc "angleDisplay"
-
-Example: show grc "angleDisplay2"
-
-Example: show grc "angleLine1"
-
-Example: show grc "angleLine2"
-
-Example: end constrainRectangularInit
-
-Example: on constrainRectangularExit
-
-Example: hide grc "angleDisplay"
-
-Example: hide grc "angleLine1"
-
-Example: hide grc "angleLine2"
-
-Example: hide grc "angleDisplay2"
-
-Example: end constrainRectangularExit
-
-Example: put "The circular angle at the red ball's centers is " into fld "angleDisplay"
-
-Example: put findPreciseAngle(the loc of img "findAngle1",the loc of img "findAngle2") into theAngle
-
-Example: put theAngle && "degrees" after fld "angleDisplay"
-
-Example: set the arcAngle of grc "angleDisplay" to theAngle
-
-Example: set the startAngle of grc "angleDisplay" to 90-theangle
-
-Example: put distance(the loc of img "findAngle1",the loc of img "findAngle2") into theDistance
-
-Example: set the width of grc "angledisplay" to theDistance*2
-
-Example: set the height of grc "angleDisplay" to the width of grc "angleDisplay"
-
-Example: set the loc of grc "angleDisplay" to the loc of img "findangle1"
-
-Example: set the rect of grc "angleDisplay2" to the rect of grc "angleDisplay"
-
-Example: set the points of grc "angleLine1" to the loc of img "findAngle1"&cr&the loc of img "findAngle2"
-
-Example: put pointOncircle(the loc of img "findAngle1",270,theDistance) into tSecondPoint
-
-Example: set the points of grc "angleLine2" to the loc of img "findAngle1"&cr&tSecondPoint
-
-Example: set the foreColor of grc "angleDisplay" to blue
-
-Example: set the foreColor of grc "angleLine1" to blue
-
-Example: set the foreColor of grc "angleLine2" to blue
-
-Example: put findPreciseAngle(the loc of img "findAngle2",the loc of img "findAngle1") into theAngle
-
-Example: set the loc of grc "angleDisplay" to the loc of img "findangle2"
-
-Example: put pointOncircle(the loc of img "findAngle2",270,theDistance) into tSecondPoint
-
-Example: set the points of grc "angleLine2" to the loc of btn "findAngle2"&cr&tSecondPoint
-
-Example: set the constrainRectangular of btn "myButton1" to 20,120,558,462
-
-Example: set the constrainRectangular of btn "myButton2" to 20,120,558,462
-
-Example: if circleCollide(the loc of btn "myButton1",the loc of btn "myButton2",41) then
-
-Example: set the icon of btn "myButton1" to the id of img "ball_red.png"
-
-Example: set the icon of btn "myButton2" to the id of img "ball_red_small.png"
-
-Example: set the icon of btn "myButton1" to the id of img "ball_yellow.png"
-
-Example: set the icon of btn "myButton2" to the id of img "ball_blue_small.png"
-
-Example: set the constrainRectangular of grc "polyColly1" to the rect of this card
-
-Example: set the constrainRectangular of grc "polyColly2" to the rect of this card
-
-Example: switch the hilitedButton of grp "polycollyMethod"
-
-Example: case 1
-
-Example: put "lit" into theMethod
-
-Example: break
-
-Example: case 2
-
-Example: put "pip" into theMethod
-
-Example: case 3
-
-Example: put "sat" into theMethod
-
-Example: default
-
-Example: end switch
-
-Example: if polyCollide(the points of grc "polyColly1",the points of grc "polyColly2",theMethod) then
-
-Example: set the backColor of grc "polyColly1" to red
-
-Example: set the backColor of grc "polyColly2" to red
-
-Example: set the backColor of grc "polyColly1" to 103,153,213
-
-Example: set the backColor of grc "polyColly2" to 103,153,213
-
-Example: set the constrainRectangular of grc "lsip1" to the rect of this card
-
-Example: set the constrainRectangular of grc "lsip2" to the rect of this card
-
-Example: set the constrainRectangular of grc "lsip3" to the rect of this card
-
-Example: set the constrainRectangular of grc "lsip4" to the rect of this card
-
-Example: set the points of grc "lsipline1" to the loc of grc "lsip1" & cr &the loc of grc "lsip2"
-
-Example: set the points of grc "lsipline2" to the loc of grc "lsip3" & cr &the loc of grc "lsip4"
-
-Example: put lineSegmentIntersectionPoint(the loc of grc "lsip1",the loc of grc "lsip2",the loc of grc "lsip3",the loc of grc "lsip4") into thePoint
-
-Example: if thePoint<>"no intersectionpoint" then
-
-Example: set the loc of btn "lsipButton" to thePoint
-
-Example: show btn "lsipButton"
-
-Example: put "The linesegment intersectionpoint is at:" && thePoint into fld "lineSegmentIntersectionOutput"
-
-Example: hide btn "lsipButton"
-
-Example: put "The linesegments do not intersect" into fld "lineSegmentIntersectionOutput"
-
-Example: local lMax,lMillisecs
-
-Example: put the formattedHeight of fld "easeInOut" - the height of fld "easeInOut" into lMax
-
-Example: disable me
-
-Example: put the milliseconds into lMillisecs
-
-Example: goEase
-
-Example: on goEase
-
-Example: put the milliseconds-lMillisecs into tCurrentTime
-
-Example: set the vScroll of fld "easeInOut" to round(aeEaseInOut(0,lMax,2000,tCurrentTime,3))
-
-Example: if tCurrentTime <= 2000 then
-
-Example: send goEase to me in 20 milliseconds
-
-Example: enable me
-
-Example: end goEase
-
-Example: put "The circular angle at the red ball's centers is " into fld "angleDisplayX"
-
-Example: put findPreciseAngleX(the loc of btn "findAngle1",the loc of btn "findAngle2") into theAngle
-
-Example: set the startAngle of grc "angleDisplay" to 360-theangle
-
-Example: put distance(the loc of btn "findAngle1",the loc of btn "findAngle2") into theDistance
-
-Example: set the loc of grc "angleDisplay" to the loc of btn "findAngle1"
-
-Example: set the points of grc "angleLine1" to the loc of btn "findAngle1"&cr&the loc of btn "findAngle2"
-
-Example: set the points of grc "angleLine2" to the loc of btn "findAngle1"&cr&pointOncircle(the loc of btn "findAngle1",0,theDistance)
-
-Example: put "The circular angle at the blue ball's centers is " into fld "angleDisplay"
-
-Example: put findPreciseAngleX(the loc of btn "findAngle2",the loc of btn "findAngle1") into theAngle
-
-Example: set the loc of grc "angleDisplay" to the loc of btn "findAngle2"
-
-Example: set the points of grc "angleLine2" to the loc of btn "findAngle2"&cr&pointOncircle(the loc of btn "findAngle2",0,theDistance)
-
-Example: set the constrainRectangular of grc "mlDrag1" to the rect of this card
-
-Example: set the constrainRectangular of grc "mlDrag2" to the rect of this card
-
-Example: send moveLinear to btn "mlBall"
-
-Example: if the flag of me then send hereWeGo to me in 20 milliseconds
-
-Example: set the points of grc "mlLine" to the loc of grc "mldrag1" & cr & the loc of grc "mlDrag2"
-
-Example: if the movelinear["endpoint"] of btn "mlBall"=the loc of grc "mlDrag2" then
-
-Example: set the moveLinear["startpoint"] of btn "mlBall" to the loc of me
-
-Example: set the moveLinear["endPoint"] of btn "mlBall" to the loc of me
-
-Example: if the movelinear["endpoint"] of btn "mlBall"=the loc of grc "mlDrag1" then
-
-Example: set the moveLinear["step"] of btn "mlBall" to the thumbPos of me
-
-Example: set the moveLinear["pingpong"] of btn "mlBall" to the hilite of me
-
-Example: set the constraincircular of btn "circleDrag" to the loc of grc "myGraphic",the width of grc "myGraphic"/2
-
-Example: on constrainCircularInit
-
-Example: end constrainCircularInit
-
-Example: on constrainCircularExit
-
-Example: end constrainCircularExit
-
-Example: set the constrainRectangular of grc "mpDrag1" to the rect of this card
-
-Example: set the constrainRectangular of grc "mpDrag2" to the rect of this card
-
-Example: set the constrainRectangular of grc "mpDrag3" to the rect of this card
-
-Example: set the constrainRectangular of grc "mpDrag4" to the rect of this card
-
-Example: set the constrainRectangular of grc "mpDrag5" to the rect of this card
-
-Example: set the label of me to stop
-
-Example: set the label of me to start
-
-Example: send movePolygonal to btn "mpBut"
-
-Example: repeat with i=1 to 5
-
-Example: put the loc of grc ("mpDrag"&i)&cr after tPointlist
-
-Example: end repeat
-
-Example: put the loc of grc "mpDrag1" after tPointList
-
-Example: set the points of grc "mpPath" to tPointlist
-
-Example: set the movePolygonal["pointlist"] of btn "mpBut" to tPointlist
-
-Example: set the movePolygonal["step"] of btn "mpBut" to the thumbPos of me
-
-Example: set the points of grc "slopeLine" to the loc of grc "slopeDrag1"&cr&the loc of grc "slopeDrag2"
-
-Example: if getslope(the loc of grc "slopeDrag1",the loc of grc "slopeDrag2")<>"y" then
-
-Example: put "The slope of the line is" && getslope(the loc of grc "slopeDrag1",the loc of grc "slopeDrag2") into fld "slopeDisplay"
-
-Example: put "The slope of the line is infinitive" into fld "slopeDisplay"
-
-Example: put the loc of grc "oval1" into tLoc1
-
-Example: put the loc of grc "oval2" into tLoc2
-
-Example: put the loc of btn "dragButton" into tLoc3
-
-Example: set the points of grc "myLine" to tLoc1 & cr & tLoc2
-
-Example: set the loc of btn "pointIndicator" to closestpointOnLine(tLoc1,tLoc2,tLoc3)
-
-Example: if fld "findangleStartAngle" is not a number then put 0 into fld "findangleStartAngle"
-
-Example: put fld "findangleStartAngle" into theStartAngle
-
-Example: put findangle2(the loc of img "findAngle1",the loc of img "findangle2",theStartAngle) into theAngle
-
-Example: set the startAngle of grc "angleDisplay" to 360-theangle-theStartAngle
-
-Example: put pointOncircle(the loc of img "findAngle1",theStartAngle,theDistance) into tSecondPoint
-
-Example: set the points of grc "angleLine2" to the loc of img "findAngle1" & cr & tSecondPoint
-
-Example: local lPoints,lAngleX,lAngleY,lAngleZ
-
-Example: put the fighter of me into lPoints
-
-Example: -- The custom property fighter holds the pointlist
-
-Example: put 0 into lAngleX
-
-Example: put 0 into lAngleY
-
-Example: put 0 into lAngleZ
-
-Example: rotateMe
-
-Example: on rotateMe
-
-Example: if the hilite of btn "rX" then
-
-Example: put lAngleX+1 into lAngleX
-
-Example: if the hilite of btn "rY" then
-
-Example: put lAngleY+1 into lAngleY
-
-Example: if the hilite of btn "rZ" then
-
-Example: put lAngleZ+1 into lAngleZ
-
-Example: repeat for each line theLine in lPoints
-
-Example: if theLine is not empty then
-
-Example: put rotate3DPoint(item 1 of theLine,item 2 of theLine,item 3 of theLine,\
-
-Example: lAngleX,lAngleY,lAngleZ) into theLine2
-
-Example: put ae3DConvertToScreen(item 1 of theLine2,item 2 of theLine2,item 3 of theLine2,\
-
-Example: 210,250,800)&cr after screenPoints
-
-Example: put cr&cr after screenPoints
-
-Example: set the points of grc "fighter" to screenPoints
-
-Example: if the flag of me then send rotateMe to me in 5 milliseconds
-
-Example: end rotateMe
-
-Example: repeat with j=5 down to 1
-
-Example: put 80,50+j*15,40+j*30 into tColor
-
-Example: if item 3 of tColor<50 then add (30+random(20)) to item 3 of tColor
-
-Example: put item 1 of tColor+27,item 2 of tColor+27,item 3 of tColor+27 into tColor2
-
-Example: repeat with i=5 down to 1
-
-Example: put j*30 into tJ
-
-Example: put i*30 into tI
-
-Example: drawIsoBox tJ,0,tI,30,random(10)*10+10,30,250,470
-
-Example: set the backColor of the last grc to tColor
-
-Example: set the forecolor of the last grc to tColor2
-
-Example: set the opaque of the last grc to true
-
-Example: on keyDown theKey
-
-Example: numbersOnly theKey
-
-Example: end keyDown
-
-Example: put findAngle(the loc of img "findAngle1",the loc of img "findAngle2") into theAngle
-
-Example: put findAngle(the loc of img "findAngle2",the loc of img "findAngle1") into theAngle
-
-Example: set the constrainRectangular of btn "rectangularDrag" to rect of grc "myGraphic"
-
-Example: put the formattedHeight of fld "easeIn" - the height of fld "easeIn" into lMax
-
-Example: set the vScroll of fld "easeIn" to round(aeEaseIn(0,lMax,2000,tCurrentTime,3))
-
-Example: set the constrainElliptical of btn "ellipseDrag" to the loc of grc "myGraphic",the width of grc "myGraphic"/2,the height of grc "myGraphic"/2
-
-Example: on constrainEllipticalInit
-
-Example: end constrainEllipticalInit
-
-Example: on constrainEllipticalExit
-
-Example: end constrainEllipticalExit
-
-Example: set the constrainRectangular of img "myImage1" to the rect of this card
-
-Example: put "The distance between the red and the blue ball's centers is " into fld "output"
-
-Example: put distance(the loc of img "myImage1",the loc of img "myImage2") && "Pixel"after fld "output"
-
-Example: set the constrainRectangular of grc "whereDrag1" to the rect of this card
-
-Example: set the constrainRectangular of grc "whereDrag2" to the rect of this card
-
-Example: set the constrainRectangular of btn "whereBut" to the rect of this card
-
-Example: set the points of grc "whereLine" to the loc of grc "whereDrag1"&cr&the loc of grc "wheredrag2"
-
-Example: put findAngleX(the loc of me,the loc of grc "whereDrag2") into theAngle
-
-Example: put distance(the loc of me,the loc of grc"whereDrag2")/2 into thehalfDistance
-
-Example: put pointOncircle(the loc of me,theAngle,theHalfDistance) into theOtherPoint
-
-Example: set the points of grc "WhereLine2" to the loc of me & cr & theOtherPoint
-
-Example: put whereIsThePoint(the loc of grc "whereDrag2",the loc of me,the loc of btn "whereBut") into thePointIs
-
-Example: switch thePointIs
-
-Example: case "on"
-
-Example: put "The point is on the line" into fld "whereOut"
-
-Example: put "The point is " & thePointIs &" of the line, looking into the direction of the red arrow" into fld "whereOut"
-
-Example: put findAngleX(the loc of me,the loc of grc "whereDrag1") into theAngle
-
-Example: put distance(the loc of me,the loc of grc"whereDrag1")/2 into thehalfDistance
-
-Example: put whereIsThePoint(the loc of grc "whereDrag1",the loc of me,the loc of btn "whereBut") into thePointIs
-
-Example: put whereIsThePoint(line 1 of the points of grc "whereLine",line 2 of the points of grc "whereLine" \
-
-Example: ,the loc of btn "whereBut") into thePointIs
-
-Example: set the constrainRectangular of grc "intRect1" to the rect of this card
-
-Example: set the constrainRectangular of grc "intRect2" to the rect of this card
-
-Example: if intersect(grc "intRect1",grc "intRect2") then
-
-Example: set the rect of grc "intRect3" to intersectRect(the rect of grc "intRect1",the rect of grc "intRect2")
-
-Example: show grc "intRect3"
-
-Example: hide grc "intRect3"
-
-Example: drawIsoLine "0,0,0,200,0,0,250,400"
-
-Example: set the foreColor of the last grc to "red"
-
-Example: drawIsoLine "0,0,0,0,200,0,250,400"
-
-Example: set the foreColor of the last grc to 0,125,0
-
-Example: drawIsoLine "0,0,0,0,0,200,250,400"
-
-Example: set the foreColor of the last grc to "blue"
-
-Example: set the constrainRectangular of btn "myButton" to 20,120,558,462
-
-Example: set the constrainRectangular of grc "myGraphic1" to 20,120,558,462
-
-Example: set the constrainRectangular of grc "myGraphic2" to 20,120,558,462
-
-Example: put line 1 of the points of grc "myLineGraphic" into tPoint1
-
-Example: put line 2 of the points of grc "myLineGraphic" into tPoint2
-
-Example: if circleLineSegmentCollide(tPoint1,tPoint2,the loc of btn "myButton",15) then
-
-Example: set the icon of btn "myButton" to the ID of img "ball_red_small.png"
-
-Example: set the icon of btn "myButton" to the ID of img "ball_blue_small.png"
-
-Example: set the points of grc "myLineGraphic" to the loc of grc "myGraphic1" & cr & the loc of grc "myGraphic2"
-
-Example: set the constrainRectangular of grc "lip1" to the rect of this card
-
-Example: set the constrainRectangular of grc "lip2" to the rect of this card
-
-Example: set the constrainRectangular of grc "lip3" to the rect of this card
-
-Example: set the constrainRectangular of grc "lip4" to the rect of this card
-
-Example: set the points of grc "lipline1" to the loc of grc "lip1" & cr &the loc of grc "lip2"
-
-Example: set the points of grc "lipline2" to the loc of grc "lip3" & cr &the loc of grc "lip4"
-
-Example: put lineIntersectionPoint(the loc of grc "lip1",the loc of grc "lip2",the loc of grc "lip3",the loc of grc "lip4") into thePoint
-
-Example: if thePoint<>"parallel" then
-
-Example: set the loc of btn "lipButton" to thePoint
-
-Example: show btn "lipButton"
-
-Example: put "The line intersectionpoint is at:" && thePoint into fld "lineIntersectionPointOutput"
-
-Example: hide btn "lipButton"
-
-Example: put "The lines are parallel" into fld "lineIntersectionPointOutput"
-
-Example: put findAngleX(the loc of btn "findAngle1",the loc of btn "findAngle2") into theAngle
-
-Example: put findAngleX(the loc of btn "findAngle2",the loc of btn "findAngle1") into theAngle
-
-Example: put the formattedHeight of fld "easeOut" - the height of fld "easeOut" into lMax
-
-Example: set the vScroll of fld "easeOut" to round(aeEaseOut(0,lMax,2000,tCurrentTime,3))
-
-Example: set the constrainRectangular of img "triangle" to the rect of this card
-
-Example: set the constrainRectangular of img "circle" to the rect of this card
-
-Example: if imageCollide(the name of img "circle",the name of img "triangle",0) then
-
-Example: put "Collision detected" into fld "imgCollide"
-
-Example: put "No collision" into fld "imgCollide"
-
-Example: send moveElliptical to btn "eBall"
-
-Example: set the loc of grc "moveEllipticalPath" to the thumbPos of me,item 2 of the loc of grc "moveEllipticalpath"
-
-Example: set the moveElliptical["centerX"] of btn "eBall" to item 2 of the loc of grc "moveEllipticalPath"
-
-Example: set the loc of grc "moveEllipticalPath" to item 1 of the loc of grc "moveEllipticalpath",the thumbPos of me
-
-Example: set the moveElliptical["centerY"] of btn "eBall" to item 2 of the loc of grc "moveEllipticalPath"
-
-Example: put the loc of grc "moveEllipticalPath" into tOldLoc
-
-Example: set the width of grc "moveEllipticalPath" to the thumbPos of me
-
-Example: set the loc of grc "moveEllipticalPath" to tOldLoc
-
-Example: set the moveElliptical["radiusX"] of btn "cBall" to the thumbPos of me/2
-
-Example: set the height of grc "moveEllipticalPath" to the thumbPos of me
-
-Example: set the moveElliptical["radiusY"] of btn "cBall" to the thumbPos of me/2
-
-Example: set the moveElliptical["step"] of btn "cBall" to the thumbPos of me
-
-Description:
-Use this handler to change the speed of an elliptical moving control with an ease in and out effect. You pass the following parameters:
-
-newStep - the new value for the moveElliptical["step"] of the control
-
-duration  - the duration of the ease effect in milliseconds
-
-exponent - optional parameter to achieve cubic, quadric or other easing
-aspectResize
-ratio
-1.666667
-example
-pointInPoly
-^
-About the pointInpoly example
-
-In this example you can drag a polygon graphic or a button. If the location of the button is within the polyGon the the icon of the button changes.
-
-Steps necessary to create this demo:
-
-Step 1
-
-Draw 2 icons for the button in your favourite image editor.
-
-Step 2
-
-Create a stack with a freehand polygon graphic, Set the name of it to "pipPoly". Create a button. Set the name of it to "pipBut". Import the images. Set the names of them to "myImage1" and "myImage2"
-
-Step 3
-
-In the messagebox do the following:
-
-Step 4
-
-Apply the following script to the graphic and the button:
-
-moveCircular
-2
-About the moveCircular example
-
-The following steps were necessary to create the demo (simplified)
-
-Step 1
-
-Create a stack with an oval graphic, 2 buttons and 4 sliders. Set the name of the graphic to "moveCircularPath". Set the names of the buttons to "cBall" and "animate". Set the values of the sliders to the following:
-
-Slider 1: startValue 100 endValue 300
-
-Slider 2: startValue 100 endValue 300
-
-Slider 3: startValue 0     endValue 100
-
-Slider 4: startValue 0     endValue 10
-
-Step 2
-
-Apply the following scripts:
-
-Button "animate"
-
-Slider 1:
-
-Slider 2:
-
-Slider 3:
-
-Slider 4:
-
-Step 3
-
-Drag all sliders and hit the "animate" button
-
-ae3dConvertToScreen
-midLeft
-constrainLinear
-
-About the constrainElliptical demo
-
-In this demo you can drag a ball on a linear path.
-
-The following steps were necessary to create this demo.
-
-Step 1
-
-Draw two ball images in an image editor of your choice.
-
-Step 2
-
-Create a stack, import the images. Set the names of the images to "myImage1" and "myImage2"Create a line graphic and a button. Set the name of the graphic to "myGraphic" and the name of the button to "linearDrag".
-
-Step 3
-
-In the messagebox do the following:
-
-The actual dragging is already set now. switch to the browse tool and try it.
-
-Step 4
-
-To improve the feel you can apply the following script to the button "circleDrag"
-
-moveCircularReversePath
-findPreciseAngle
-
-About the findPreciseAngle example
-
-In this example you can drag any of the two balls and get some visual feedback on the center angle.
-
-Steps that were necessaryto create this demo:
-
-Step 1
-
-Draw two ball images in your favourite image editor
-
-Step 2
-
-Create a stack. Create 2 oval graphics. Set the name of the first graphic to "angleDisplay2" set the name of the second graphic to "angleDisplay". Create 2 line graphics. Set the names of them to "angleLine1" and "angleLine2". Import the images you created. Set the names of them to "findAngle1" and "findAngle2". Create a field and set its name to "angleDisplay"
-
-Step 3
-
-In the messagebox do the following:
-
-Step 4
-
-Set the script of the blue balls image to:
-
-Set the script of the red balls image to:
-
-midRight
-circleCollide
-
-About the circleCollide example:
-
-You can drag either the yellow or the blue ball. If they touch their color turns to red. This is done using two buttons and simply setting their icon property, once a collision is detected.
-
-The following steps were necessary to create the demo:
-
-Step 1:
-
-Draw ball images in an image editor. Save them as .png files.
-
-Step 2:
-
-Create a new mainstack, import images.
-
-Step 3:
-
-Create two buttons, name them. I am assuming the names "myButton1" and "myButton2" in this example.
-
-Step 4:
-
-In messagebox:
-
-( The area you want to constrain the buttons movement to might differ in your stack )
-
-Step 5:
-
-Apply the following script to both buttons
-
-moveEllipticalReversePath
-polyCollide
-]
-About the polyCollide example
-
-In this example you can drag 2 polygon graphics. If these graphics touch they change color.
-
-Steps that were necessary to create this demo:
-
-Step 1
-
-Create a stack with 2 freehand polygon graphics. Set the names of the graphics to "polyColly1" and "polyColly2". Create 3 radio buttons. Group these buttons and check "hilite one radio button at a time. Set the name of the group to "polyCollymethod"
-
-Step 2
-
-In the messagebox do the following:
-
-Step 3
-
-Apply the following script to both graphics:
-
-lineSegmentIntersectionPoint
-
-About the lineSegmentIntersectionPoint example
-
-In this example you can drag 4 oval graphics to adjust 2 lines. The point where those 2 lines would cross is displayed or a message if they are parallel.
-
-Steps necessary to create this demo
-
-Step 1
-
-Create a stack with 2 line graphics, 4 oval graphics a field and a button
-
-Set the names of the line graphics to "lsipLine1" and "lsipLine2" Set the names of the oval graphics to "lsip1", "lsip2", "lsip3" and "lsip4". Set the name of the button to "lsipButton". Set the name of the field to "lineSegmentIntersectionPointOutput"
-
-Step 2
-
-In the messagebox do the following:
-
-Step 3
-
-Apply the following script to graphic "lsip1", "lsip2", "lsip3" and "lsip4"
-
-midBottom
-aeEaseInOut
-
-About the aeEaseInOut example
-
-In this example you hit a button to scroll a field with an ease in and out effect. Ease in and out means that the change in velocity starts slow, speeds up and finally slows down again.
-
-Steps that were necessary to create this demo:
-
-Step 1:
-
-Create a stack with a field and a button.
-
-Step 2:
-
-Put some text into the field. It must be enough text that the field needs to scroll.
-
-Step 3:
-
-Apply this script to the button:
-
-findPreciseAngleX
-
-About the findPreciseAngleX example
-
-In this example you can drag any of the two balls and get some visual feedback on the center angle.
-
-Steps that were necessaryto create this demo:
-
-Step 1
-
-Draw two ball images in your favourite image editor
-
-Step 2
-
-Create a stack. Create 2 oval graphics. Set the name of the first graphic to "angleDisplay2" set the name of the second graphic to "angleDisplay". Create 2 line graphics. Set the names of them to "angleLine1" and "angleLine2". Import the images you created. Set the names of them to "findAngle1" and "findAngle2". Create a field and set its name to "angleDisplay"
-
-Step 3
-
-In the messagebox do the following:
-
-Step 4
-
-Set the script of the blue balls image to:
-
-Set the script of the red balls image to:
-
-moveLinear
-
-About the moveLinear example
-
-In this example you move a button on a linear path. You can drag 2 oval graphics to adjust start and endpoint of the path. Drag a slider to control speed and check if the button should bounce back and forth.
-
-Steps that were necessary to create this demo (simplified)
-
-Step 1
-
-Create a stack with a line graphic, 2 oval graphics, a slider, a checkbox and 2 buttons. Set the name of the linegraphic to "mlLine". Set the names of the oval graphics to "mlDrag1" and "mlDrag2".  Set the names of the buttons to "mlBall" and "mlStart" Set the startvalue of the slider to 0 and its endvalue to 10.
-
-Step 2
-
-In the messagebox do the following:
-
-Step 3
-
-Apply the following scripts:
-
-button "mlStart"
-
-graphic "mlDrag1"
-
-graphic "mlDrag2"
-
-The slider
-
-The checkBox
-
-Step 4
-
-Switch to the run (browse) tool, drag the oval graphics and the slider. Hit the button to start the animation.
-
-constrainCircular
-
-About the constrainCircular demo
-
-In this demo you can drag a ball on a circular path.
-
-The following steps were necessary to create this demo.
-
-Step 1
-
-Draw two ball images in an image editor of your choice.
-
-Step 2
-
-Create a stack, import the images. Create an oval graphic and a button. Set the name of the button to "circleDrag". Hold down the shift key and resize the oval graphic. Holding down the shift key will make height and width the same.
-
-Step 3
-
-In the messagebox do the following:
-
-The actual dragging is already set now. switch to the browse tool and try it.
-
-Step 4
-
-To improve the feel you can apply the following script to the button "circleDrag"
-
-movePolygonal
-
-About the movePolygonal example
-
-In this example you can move a button on a polygonal path. You can drag a few oval graphics to adjust the path, and drag a slider to control the speed.
-
-The following steps were necessary to create the demo (simplified)
-
-Step 1
-
-Create a stack with a freehand polygon graphic, 5 oval graphics, a slider and 2 buttons. Set the name of the polygon graphic to "mpPath". Set the names of the oval graphics to "mpDrag1","mpDrag2","mpDrag3","mpDrag4","mpDrag5". Set the names of the buttons to "mpDrag" and "animate". Set the startvalue of the slider to 0, the endvalue to 10.
-
-Step 2
-
-In the messagebox do the following:
-
-Step 3
-
-Apply the following scripts:
-
-button "animate"
-
-Each oval graphic:
-
-The slider:
-
-findAngleY
-getSlope
-P
-About the getSlope example
-
-In this demo you can drag two circle to adjust a line. The slope is displayed in a text field.
-
-The following steps were necessary to create this demo:
-
-Step 1
-
-Create a stack with a line graphic, 2 oval graphics and a field. Set the name of the line graphic to "slopeLine", the name of the oval graphics to "slopeDrag1" and "slopeDrag". Set the name of the field to "slopeDisplay"
-
-Step 2
-
-In the messagebox do the following:
-
-Step 3
-
-Apply the following script to both oval graphics:
-
-closestPointOnLine
-y
-About the closestPointOnLine demo
-
-In this demo you can drag any blue circle. The orange circle indicates the closest point  to the blue circle with the cross that lays on the line you see. As a line is endless, this point doesn't necessarily lie on the linesegment specified by the blue circles you are able to drag, but might lie on the extension of that line.
-
-Steps that were necessary to create this demo:
-
-Step 1:
-
-Create a stack with a line graphic, 2 oval graphics and 2 buttons.
-
-Set the name of the line graphic to "myLine"
-
-Set the names of the oval graphics to "oval1" and "oval2"
-
-Set the name of the buttons to "dragButton" and "pointIndicator"
-
-Step 2:
-
-In the messagebox do the following:
-
-Step 3:
-
-Apply the following script to both oval graphics:
-
-Step 4:
-
-Apply the following script to button "dragButton":
-
-The script for all controls in action is almost the same. The only difference is that the script of the button does not need to set the points of the line graphic.
-
-findAngle2
-
-About the findAngle2 example
-
-In this example you can drag any of the two balls and get some visual feedback on the center angle.
-
-Steps that were necessaryto create this demo:
-
-Step 1
-
-Draw two ball images in your favourite image editor
-
-Step 2
-
-Create a stack. Create 2 oval graphics. Set the name of the first graphic to "angleDisplay2" set the name of the second graphic to "angleDisplay". Create 2 line graphics. Set the names of them to "angleLine1" and "angleLine2". Import the images you created. Set the names of them to "findAngle1" and "findAngle2". Create 2 fields and set their names to "angleDisplay" and "findAngleStartAngle". Create two buttons. Set the names of them to "+" and "-"
-
-Step 3
-
-In the messagebox do the following:
-
-Step 4
-
-Set the script of image "findAngle2" to:
-
-Set the script of image "findAngle1" to:
-
-rotate3DPoint
-6
-About the rotate3DPoint example
-
-In this example you can rotate a set of 3d points around the x-,y- and z-axis. The points are translated to screen coordinates using ae3dConvertToScreen.
-
-Steps that were necessary to create this demo.
-
-Step 1
-
-Create a stack with a freehand curve graphic, 3 checkboxes and a button. Set the name of the graphic to "fighter". Set the names of the checkboxes to "rX", "rY" and "rZ"
-
-Step 2
-
-Create a list of 3d points. Store it in a custom property of the button. For this example I have converted a 3d model of a rotater file.
-
-Step 3
-
-Apply the following script to the button:
-
-drawIsoBox
-
-About the drawIsoBox example
-
-In this example a bar chart in isometric view is created when you click a button.
-
-Steps that were necessary to create the example:
-
-Step 1
-
-Create a stack with a button.
-
-Step 2
-
-Apply the following script to the button:
-
-numbersOnly
-
-About the numbersonly example
-
-In this example you can type only numbers into a field. The field only accepts digits, "-" and "."
-
-Steps necessary to create this demo
-
-Step 1
-
-Create a stack and a field.
-
-Step 2
-
-Apply the following script to the field:
-
-findAngle
-
-About the findAngle example
-
-In this example you can drag any of the two balls and get some visual feedback on the center angle.
-
-Steps that were necessaryto create this demo:
-
-Step 1
-
-Draw two ball images in your favourite image editor
-
-Step 2
-
-Create a stack. Create 2 oval graphics. Set the name of the first graphic to "angleDisplay2" set the name of the second graphic to "angleDisplay". Create 2 line graphics. Set the names of them to "angleLine1" and "angleLine2". Import the images you created. Set the names of them to "findAngle1" and "findAngle2". Create a field and set its name to "angleDisplay"
-
-Step 3
-
-In the messagebox do the following:
-
-Step 4
-
-Set the script of the blue balls image to:
-
-Set the script of the red balls image to:
-
-constrainRectangular
-
-About the constrainRectangular demo
-
-In this demo you can drag a ball in a rectangle.
-
-The following steps were necessary to create this demo.
-
-Step 1
-
-Draw two ball images in an image editor of your choice.
-
-Step 2
-
-Create a stack, import the images. Set the names of the images to "myImage1" and "myImage2"Create a rectangle graphic and a button. Set the name of the graphic to "myGraphic" and the name of the button to "rectangularDrag".
-
-Step 3
-
-In the messagebox do the following:
-
-The actual dragging is already set now. switch to the browse tool and try it.
-
-Step 4
-
-To improve the feel you can apply the following script to the button "circleDrag"
-
-aeEaseIn
-
-About the aeEaseIn example
-
-In this example you hit a button to scroll a field with an ease in effect. Ease in means that the change in velocity starts slow and continuously speeds up.
-
-Steps that were necessary to create this demo:
-
-Step 1:
-
-Create a stack with a field and a button.
-
-Step 2:
-
-Put some text into the field. It must be enough text that the field needs to scroll.
-
-Step 3:
-
-Apply this script to the button:
-
-constrainElliptical
-
-About the constrainElliptical demo
-
-In this demo you can drag a ball on an elliptical path.
-
-The following steps were necessary to create this demo.
-
-Step 1
-
-Draw two ball images in an image editor of your choice.
-
-Step 2
-
-Create a stack, import the images. Set the names of the images to "myImage1" and "myImage2"Create an oval graphic and a button. Set the name of the graphic to "myGraphic" and the name of the button to "ellipseDrag".
-
-Step 3
-
-In the messagebox do the following:
-
-The actual dragging is already set now. switch to the browse tool and try it.
-
-Step 4
-
-To improve the feel you can apply the following script to the button "circleDrag"
-
-distance
-d
-About the distance example
-
-In this example you can drag 2 balls and the distance between them in pixels will be put into a field.
-
-Steps that were necessary to create this demo:
-
-Step 1
-
-Create 2 ball images in an image editor of your choice
-
-Step 2
-
-Create a new stack, import the images. Set the name of them to "myImage1" and "myImage2". Create a field and set the name of it to "output".
-
-Step 3
-
-In the messagebox do the following:
-
-Step 4
-
-Apply the following script to both images:
-
-whereIsThePoint
-
-About the whereIsThePoint example
-
-In this example you can drag 2 ovol graphics to adjust a line and a button that represents a point location. The applied script puts the location of the point in relation to the line in a field.
-
-Steps necessary to recreate the demo:
-
-Step 1
-
-Draw 2 icons in your favourite image editor.
-
-Step 2
-
-Create a stack with 2 line graphics, 2 oval graphics, a button and a field. Set the name of the line graphics to "whereLine" and "whereLine2". In the inspector check "end arrow" for graphic "whereLine2". Set the names of the oval graphics to "whereDrag1" and "whereDrag2". Set the name of the button to "whereBut". Set the name of the field to "whereOut"
-
-Step 3
-
-In the messagebox do the following:
-
-Step 4
-
-Apply the following scripts:
-
-graphic "whereDrag1"
-
-graphic "whereDrag2"
-
-button "whereBut"
-
-intersectRect
-
-About the intersectRect example
-
-In this demo you can drag one of two rectangle graphics. As soon as both rectangles touch, their smallest rectangle of intersection is displayed.
-
-Steps that were necessary to create this demo:
-
-Step 1
-
-Create a stack. Create 3 rectangle graphics. Set the names of them to "intRect1", "intRect2" and "intRect3". Set the opaque of grc "intRect3" to false.
-
-Step 2
-
-In the messagebox do the following:
-
-Step 3
-
-Apply the following script to graphic "intRect1" and graphic "intrect2":
-
-drawIsoLine
-
-About the drawIsoLine example
-
-In this example you hit a button to draw a coordinate system in isometric view.
-
-Steps that were necessary to create this demo:
-
-Step 1
-
-Create a stack with a button.
-
-Step 2
-
-Apply the following script to the button:
-
-circlelineSegmentCollide
-
-About the circleLineSegmentCollide example
-
-In this example you can drag the blue ball, or the blue circles. Dragging the circles will adjust the line graphic that is drawn. If the blue ball and the line graphic collide the ball turns red.
-
-The following steps were necessary to create the demo:
-
-Step 1:
-
-Draw ball images in an image editor. Save them as .png files.
-
-Step 2:
-
-Create a new mainstack, import images.
-
-Step 3:
-
-Create one button, one line graphic, 2 oval graphics. Name them. I am assuming the following names in this example:
-
-button:"myButton"
-
-line graphic: "myLineGraphic"
-
-oval graphics: "myGraphic1" and "myGraphic2"
-
-Step 4:
-
-In messagebox:
-
-( The area you want to constrain the buttons and graphics movement to might differ in your stack )
-
-Step 5:
-
-Apply the following scrips:
-
-For the button:
-
-For both oval graphics:
-
-lineIntersectionPoint
-
-About the lineIntersectionPoint example
-
-In this example you can drag 4 oval graphics to adjust 2 lines. The point where those 2 lines would cross is displayed or a message if they are parallel.
-
-Steps necessary to create this demo
-
-Step 1
-
-Create a stack with 2 line graphics, 4 oval graphics a field and a button
-
-Set the names of the line graphics to "lipLine1" and "lipLine2" Set the names of the oval graphics to "lip1", "lip2", "lip3" and "lip4". Set the name of the button to "lipButton". Set the name of the field to "lineIntersectionPointOutput"
-
-Step 2
-
-In the messagebox do the following:
-
-Step 3
-
-Apply the following script to graphic "lip1", "lip2", "lip3" and "lip4"
-
-findAngleX
-
-About the findAngleX example
-
-In this example you can drag any of the two balls and get some visual feedback on the center angle.
-
-Steps that were necessaryto create this demo:
-
-Step 1
-
-Draw two ball images in your favourite image editor
-
-Step 2
-
-Create a stack. Create 2 oval graphics. Set the name of the first graphic to "angleDisplay2" set the name of the second graphic to "angleDisplay". Create 2 line graphics. Set the names of them to "angleLine1" and "angleLine2". Import the images you created. Set the names of them to "findAngle1" and "findAngle2". Create a field and set its name to "angleDisplay"
-
-Step 3
-
-In the messagebox do the following:
-
-Step 4
-
-Set the script of the blue balls image to:
-
-Set the script of the red balls image to:
-
-midTop
-aeEaseOut
-
-About the aeEaseOut example
-
-In this example you hit a button to scroll a field with an ease in and out effect. Ease in and out means that the change in velocity starts fast and slows down in the end.
-
-Steps that were necessary to create this demo:
-
-Step 1:
-
-Create a stack with a field and a button.
-
-Step 2:
-
-Put some text into the field. It must be enough text that the field needs to scroll.
-
-Step 3:
-
-Apply this script to the button:
-
-imageCollide
-
-About the circleCollide example
-
-In this demo you can drag a triangle or circle image. If their opaque areas touch a collision is reported.
-
-The following steps were necessary to create this demo:
-
-Step 1
-
-Draw a triangle and a circle in your favourite image editor. Save them as .png files.
-
-Step 2
-
-Create a stack with a field and import the images to it. Set the name of the images to "circle" and "triangle". Set the name of the field to "imgcollide"
-
-Step 3
-
-In the messagebox do the following:
-
-Step 4
-
-Apply the following script to both images:
-
-moveElliptical
-6
-About the moveElliptical example
-
-The following steps were necessary to create the demo (simplified)
-
-Step 1
-
-Create a stack with an oval graphic, 2 buttons and 5 sliders. Set the name of the graphic to "moveEllipticalPath". Set the names of the buttons to "eBall" and "animate". Set the values of the sliders to the following:
-
-Slider 1: startValue 100 endValue 300
-
-Slider 2: startValue 100 endValue 300
-
-Slider 3: startValue 0     endValue 100
-
-Slider 4: startValue 0     endValue 100
-
-Slider 5: startValue 0     endValue 10
-
-Step 2
-
-Apply the following scripts:
-
-Button "animate"
-
-Slider 1:
-
-Slider 2:
-
-Slider 3:
-
-Slider 4:
-
-Slider 5:
-
-Step 3
-
-Drag all sliders and hit the "animate" button
 
 
