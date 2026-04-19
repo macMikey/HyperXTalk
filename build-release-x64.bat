@@ -131,6 +131,35 @@ echo Build started: %DATE% %TIME%
 echo Build started: %DATE% %TIME% > "%LOGFILE%"
 echo. >> "%LOGFILE%"
 
+:: ----------------------------------------------------------
+:: Regenerate revbuild.h from the version file.
+::
+:: All revbuild.h copies in the build tree are regenerated here
+:: before any engine compilation so the version string embedded
+:: in the binary always matches the top-level 'version' file.
+:: Without this step, MSBuild's tlog may keep a stale revbuild.h
+:: (e.g. the original 9.7.0-dp-1 values) if the version file was
+:: updated without a full rebuild.
+:: ----------------------------------------------------------
+echo Regenerating revbuild.h from version file ...
+set "REVBUILD_SHARED_DBG=%~dp0build-win-x86_64\livecode\engine\Debug\x64\obj\shared_intermediate"
+set "REVBUILD_SHARED_REL=%~dp0build-win-x86_64\livecode\engine\Release\x64\obj\shared_intermediate"
+set "REVBUILD_GLOBAL_DBG=%~dp0build-win-x86_64\livecode\Debug\obj\global_intermediate"
+set "REVBUILD_GLOBAL_REL=%~dp0build-win-x86_64\livecode\Release\obj\global_intermediate"
+set "REVBUILD_SRC=%~dp0engine\obj\global_intermediate"
+if not exist "%REVBUILD_SHARED_DBG%\include" mkdir "%REVBUILD_SHARED_DBG%\include"
+if not exist "%REVBUILD_SHARED_REL%\include" mkdir "%REVBUILD_SHARED_REL%\include"
+if not exist "%REVBUILD_GLOBAL_DBG%\include"  mkdir "%REVBUILD_GLOBAL_DBG%\include"
+if not exist "%REVBUILD_GLOBAL_REL%\include"  mkdir "%REVBUILD_GLOBAL_REL%\include"
+if not exist "%REVBUILD_SRC%\include"          mkdir "%REVBUILD_SRC%\include"
+python "%~dp0util\encode_version.py" "-66adce28fb01673e536b0a6a970155bec7ff00ad" "%~dp0engine" "%REVBUILD_SHARED_DBG%"
+if errorlevel 1 ( echo ERROR: encode_version.py failed & exit /b 1 )
+copy /Y "%REVBUILD_SHARED_DBG%\include\revbuild.h" "%REVBUILD_SHARED_REL%\include\revbuild.h" > nul
+copy /Y "%REVBUILD_SHARED_DBG%\include\revbuild.h" "%REVBUILD_GLOBAL_DBG%\include\revbuild.h"  > nul
+copy /Y "%REVBUILD_SHARED_DBG%\include\revbuild.h" "%REVBUILD_GLOBAL_REL%\include\revbuild.h"  > nul
+copy /Y "%REVBUILD_SHARED_DBG%\include\revbuild.h" "%REVBUILD_SRC%\include\revbuild.h"          > nul
+echo revbuild.h OK.
+
 echo Building libCore (Release) ...
 echo Building libCore ... >> "%LOGFILE%"
 "%MSBUILD%" %VCXPROJ_LIBCORE% /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
