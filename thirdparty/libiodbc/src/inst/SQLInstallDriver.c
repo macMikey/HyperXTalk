@@ -1,13 +1,13 @@
 /*
  *  SQLInstallDriver.c
  *
- *  $Id: SQLInstallDriver.c,v 1.10 2006/01/20 15:58:35 source Exp $
+ *  $Id$
  *
  *  Install a driver
  *
  *  The iODBC driver manager.
  *
- *  Copyright (C) 1996-2006 by OpenLink Software <iodbc@openlinksw.com>
+ *  Copyright (C) 1996-2023 OpenLink Software <iodbc@openlinksw.com>
  *  All Rights Reserved.
  *
  *  This software is released under the terms of either of the following
@@ -77,7 +77,7 @@
 
 #include <iodbc.h>
 #include <odbcinst.h>
-#include <unicode.h>
+#include "unicode.h"
 
 #include "misc.h"
 #include "inifile.h"
@@ -356,7 +356,7 @@ SQLInstallDriverW (LPCWSTR lpszInfFile, LPCWSTR lpszDriver, LPWSTR lpszPath,
 
   if (retcode == TRUE)
     {
-      dm_StrCopyOut2_U8toW (_path_u8, lpszPath, cbPathMax, pcbPathOut);
+      dm_StrCopyOut2_U8toW ((SQLCHAR *)_path_u8, lpszPath, cbPathMax, pcbPathOut);
     }
 
 done:

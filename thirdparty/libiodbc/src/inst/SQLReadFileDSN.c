@@ -1,13 +1,13 @@
 /*
  *  SQLReadFileDSN.c
  *
- *  $Id: SQLReadFileDSN.c,v 1.7 2006/01/20 15:58:35 source Exp $
+ *  $Id$
  *
  *  These functions intentionally left blank
  *
  *  The iODBC driver manager.
  *
- *  Copyright (C) 1996-2006 by OpenLink Software <iodbc@openlinksw.com>
+ *  Copyright (C) 1996-2023 OpenLink Software <iodbc@openlinksw.com>
  *  All Rights Reserved.
  *
  *  This software is released under the terms of either of the following
@@ -74,10 +74,9 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 #include <iodbc.h>
 #include <odbcinst.h>
-#include <unicode.h>
+#include "unicode.h"
 
 #include "inifile.h"
 #include "iodbc_error.h"
@@ -93,6 +92,7 @@ SQLReadFileDSN (LPCSTR lpszFileName, LPCSTR lpszAppName, LPCSTR lpszKeyName,
 {
   BOOL retcode = FALSE;
   WORD len = 0, i;
+  char filename[1024];
 
   /* Check input parameters */
   CLEAR_ERROR ();
@@ -112,9 +112,10 @@ SQLReadFileDSN (LPCSTR lpszFileName, LPCSTR lpszAppName, LPCSTR lpszKeyName,
   /* Is a file is specified */
   if (lpszFileName)
     {
+      _iodbcdm_getdsnfile (lpszFileName, filename, sizeof (filename));
       len =
 	  GetPrivateProfileString (lpszAppName, lpszKeyName, "", lpszString,
-	  cbString, lpszFileName);
+	  cbString, filename);
       if (numerrors == -1)
 	retcode = TRUE;
       goto quit;
@@ -186,7 +187,7 @@ SQLReadFileDSNW (LPCWSTR lpszFileName, LPCWSTR lpszAppName,
 
   if (retcode == TRUE)
     {
-      dm_StrCopyOut2_U8toW (_string_u8, lpszString, cbString, pcbString);
+      dm_StrCopyOut2_U8toW ((SQLCHAR *)_string_u8, lpszString, cbString, pcbString);
     }
 
 done:

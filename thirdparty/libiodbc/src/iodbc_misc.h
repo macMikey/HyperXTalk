@@ -1,9 +1,9 @@
 /*
- *  SetEnvAttr.c
+ *  iodbc_misc.h
  *
  *  $Id$
  *
- *  SQLSetEnvAttr trace functions
+ *  Misc functions
  *
  *  The iODBC driver manager.
  *
@@ -15,10 +15,6 @@
  *
  *      - GNU Library General Public License (see LICENSE.LGPL)
  *      - The BSD License (see LICENSE.BSD).
- *
- *  Note that the only valid version of the LGPL license as far as this
- *  project is concerned is the original GNU Library General Public License
- *  Version 2, dated June 1991.
  *
  *  While not mandated by the BSD license, any patches you make to the
  *  iODBC source code may be contributed back into the iODBC project
@@ -32,8 +28,8 @@
  *  ============================================
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
- *  License as published by the Free Software Foundation; only
- *  Version 2 of the License dated June 1991.
+ *  License as published by the Free Software Foundation; either
+ *  version 2 of the License, or (at your option) any later version.
  *
  *  This library is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -42,7 +38,7 @@
  *
  *  You should have received a copy of the GNU Library General Public
  *  License along with this library; if not, write to the Free
- *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ *  Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  *
  *  The BSD License
@@ -73,25 +69,17 @@
  *  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+#ifndef	_IODBC_MISC_H_
+#define	_IODBC_MISC_H_
 
-#include "trace.h"
+#include "inifile.h"
 
+int _iodbcdm_cfg_init_str (PCONFIG *ppconf, void *str, int size, int wide,
+    DM_CONV *conv);
+int _iodbcdm_cfg_parse_str (PCONFIG pconfig, void *str, int size, int wide,
+    DM_CONV *conv);
+void *_iodbcdm_cfg_lookup (PCONFIG pconfig, const char *id);
+int _iodbcdm_cfg_to_string (PCONFIG pconfig, char *section,
+			    char *buf, size_t buf_sz);
 
-#if ODBCVER >= 0x0300
-void
-trace_SQLSetEnvAttr (int trace_leave, int retcode,
-  SQLHENV		  EnvironmentHandle,
-  SQLINTEGER		  Attribute,
-  SQLPOINTER		  ValuePtr,
-  SQLINTEGER		  StringLength)
-{
-  /* Trace function */
-  _trace_print_function (en_SetEnvAttr, trace_leave, retcode);
-
-  /* Trace Arguments */
-  _trace_handle (SQL_HANDLE_ENV, EnvironmentHandle);
-  _trace_envattr_type (Attribute);
-  _trace_pointer (ValuePtr);
-  _trace_bufferlen (StringLength);
-}
-#endif
+#endif /* _IODBC_MISC_H_ */

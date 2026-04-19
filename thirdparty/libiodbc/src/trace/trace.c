@@ -1,13 +1,13 @@
 /*
  *  trace.c
  *
- *  $Id: trace.c,v 1.18 2006/01/24 00:09:25 source Exp $
+ *  $Id$
  *
  *  Trace functions
  *
  *  The iODBC driver manager.
  *
- *  Copyright (C) 1996-2006 by OpenLink Software <iodbc@openlinksw.com>
+ *  Copyright (C) 1996-2023 OpenLink Software <iodbc@openlinksw.com>
  *  All Rights Reserved.
  *
  *  This software is released under the terms of either of the following
@@ -75,9 +75,7 @@
  */
 
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
+#include <iodbc.h>
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -96,11 +94,11 @@
 #include <sqlext.h>
 #include <sqlucode.h>
 
+#include "unicode.h"
 #include "herr.h"
 #include "henv.h"
 #include "ithread.h"
 #include "trace.h"
-#include "unicode.h"
 
 #define NO_CARBON 1
 #if defined(macintosh)
@@ -113,12 +111,20 @@
 
 
 /*
+ *  Limit the size of the tracefile, to avoid a core dump when the 
+ *  the RLIMIT_FSIZE is reached.
+ */
+#define	MAX_TRACEFILE_LEN	1000000000L	/* about 1GB */
+
+
+/*
  *  Global trace flag
  */
 int ODBCSharedTraceFlag = SQL_OPT_TRACE_OFF;
 
 static char *trace_appname = NULL;
 static char *trace_fname = NULL;
+static char *trace_fname_template = NULL;
 static FILE *trace_fp = NULL;
 static int   trace_fp_close = 0;
 
@@ -147,25 +153,56 @@ trace_get_filename (void)
 }
 
 
+static void
+trace_strftime_now (char *buf, size_t buflen, char *format)
+{
+  time_t now;
+  struct tm *timeNow;
+#ifdef HAVE_LOCALTIME_R
+  struct tm keeptime;
+#endif
+
+  tzset ();
+  time (&now);
+
+#ifdef HAVE_LOCALTIME_R
+  timeNow = localtime_r (&now, &keeptime);
+#else
+  timeNow = localtime (&now);
+#endif
+
+  strftime (buf, buflen, format, timeNow);
+}
+
+
+
+
 void
-trace_set_filename (char *fname)
+trace_set_filename (char *template)
 {
   char *s, *p;
   struct passwd *pwd;
   char *buf;
   size_t buf_len, buf_pos;
-  char tmp[255];
+  char tmp[4096];
+
+  /* Make copy of template */
+  if (template)
+    {
+      MEM_FREE (trace_fname_template)
+      trace_fname_template = STRDUP (template);
+    }
 
   /*  Initialize */
   MEM_FREE (trace_fname);
   trace_fname = NULL;
-  buf = (char *) malloc (buf_len = strlen (fname) + sizeof (tmp) + 1);
+  buf = (char *) malloc (buf_len = strlen (trace_fname_template) + sizeof (tmp) + 1);
   if (!buf)
     return;			/* No more memory */
   buf_pos = 0;
   buf[0] = '\0';
 
-  for (s = fname; *s;)
+  for (s = trace_fname_template; *s;)
     {
       /*
        *  Make sure we can fit at least 1 more tmp buffer inside
@@ -245,17 +282,23 @@ trace_set_filename (char *fname)
 	    case 't':
 	    case 'T':
 	      {
-		time_t now;
-		struct tm *timeNow;
-
-		tzset ();
-		time (&now);
-		timeNow = localtime (&now);
-
-		strftime (tmp, sizeof (tmp), "%Y%m%d-%H%M%S", timeNow);
+		trace_strftime_now (tmp, sizeof (tmp), "%Y%m%d-%H%M%S");
 		strcpy (&buf[buf_pos], tmp);
 		buf_pos += strlen (tmp);
 		break;
+	      }
+
+	    case 's':
+	    case 'S':
+	      {
+		static unsigned int counter = 0;
+#if defined (HAVE_SNPRINTF)
+		snprintf (tmp, sizeof (tmp), "%d", ++counter);
+#else
+		sprintf (tmp, "%d", ++counter);
+#endif
+		strcpy (&buf[buf_pos], tmp);
+		buf_pos += strlen (tmp);
 	      }
 
 	    default:
@@ -339,20 +382,14 @@ trace_start(void)
   else
     {
       char mesgBuf[200];
-      time_t now;
-      struct tm *timeNow;
 
       trace_emit ("** iODBC Trace file\n");
 
       /*
        *  Show start time
        */
-      tzset ();
-      time (&now);
-      timeNow = localtime (&now);
-      strftime (mesgBuf,
-	  sizeof (mesgBuf), "** Trace started on %a %b %d %H:%M:%S %Y",
-	  timeNow);
+      trace_strftime_now (mesgBuf, sizeof (mesgBuf),
+	  "** Trace started on %a %b %d %H:%M:%S %Y");
       trace_emit ("%s\n", mesgBuf);
 
       /*
@@ -390,15 +427,9 @@ trace_start(void)
       trace_set_appname ("{No Application Name}");
   }
 #elif defined(__APPLE__)
-#ifdef MACOSX102
-  {
-    trace_set_appname ("{No Application Name}");
-  }
-#else
   {
     trace_set_appname ((char *) getprogname ());
   }
-#endif
 #endif
 
   /*
@@ -414,21 +445,14 @@ void
 trace_stop(void)
 {
   char mesgBuf[200];
-  time_t now;
-  struct tm *timeNow;
 
   if (trace_fp)
     {
       /*
        * Show end time
        */
-      tzset ();
-      time (&now);
-      timeNow = localtime (&now);
-      strftime (mesgBuf,
-	  sizeof (mesgBuf), "** Trace finished on %a %b %d %H:%M:%S %Y",
-	  timeNow);
-
+      trace_strftime_now (mesgBuf, sizeof (mesgBuf),
+	  "** Trace finished on %a %b %d %H:%M:%S %Y");
       trace_emit ("\n%s\n", mesgBuf);
 
       if (trace_fp_close)
@@ -478,11 +502,11 @@ trace_emit (char *fmt, ...)
 
 
 void
-trace_emit_string (SQLCHAR *str, int len, int is_utf8)
+trace_emit_string (SQLCHAR *str, ssize_t len, int is_utf8)
 {
   ssize_t length = len;
   int i, j;
-  long col;
+  int col;
   SQLCHAR *ptr;
   int bytes;
   int truncated = 0;
@@ -491,8 +515,8 @@ trace_emit_string (SQLCHAR *str, int len, int is_utf8)
     return;
 
   if (len == SQL_NTS)
-    length = strlen ((char *) str);
-  else if (len <= 0)
+    length = STRLEN ((char *) str);
+  if (len <= 0)
     return;
 
   /*
@@ -589,11 +613,11 @@ trace_emit_string (SQLCHAR *str, int len, int is_utf8)
 
 
 void
-trace_emit_binary (unsigned char *str, int len)
+trace_emit_binary (unsigned char *str, ssize_t  len)
 {
-  long length = len;
+  ssize_t length = len;
   int i;
-  long col;
+  int col;
   unsigned char *ptr;
   int truncated = 0;
   char buf[80];
@@ -656,13 +680,27 @@ _trace_print_function (int func, int trace_leave, int retcode)
 {
   extern char *odbcapi_symtab[];
   char *ptr = "invalid retcode";
+#ifdef HAVE_GETTIMEOFDAY
+  struct timeval tv;
+#endif
+
+  /*
+   * Guard against tracefile getting too big
+   */
+  if (trace_fp && ftell (trace_fp) > MAX_TRACEFILE_LEN)
+    {
+ 	trace_emit ("\n*** TRACEFILE LIMIT REACHED ***\n");
+	trace_stop ();
+	trace_set_filename (NULL);
+	trace_start ();	
+ 	trace_emit ("\n*** TRACEFILE CONTINUED ***\n\n");
+ 	return;
+    }
 
   /*
    * Calculate timestamp
    */
 #ifdef HAVE_GETTIMEOFDAY
-  struct timeval tv;
-
   gettimeofday (&tv, NULL);
   tv.tv_sec -= starttime.tv_sec;
   tv.tv_usec -= starttime.tv_usec;
@@ -671,7 +709,7 @@ _trace_print_function (int func, int trace_leave, int retcode)
       tv.tv_sec--;
       tv.tv_usec += 1000000L;
     }
-  trace_emit ("\n[%06ld.%06ld]\n", tv.tv_sec, tv.tv_usec);
+  trace_emit ("\n[%06ld.%06ld]\n", (long) tv.tv_sec, (long) tv.tv_usec);
 #else
   trace_emit ("\n");
 #endif
@@ -911,7 +949,7 @@ _trace_ulen_p (SQLULEN *p, int output)
 void
 _trace_string (SQLCHAR * str, SQLSMALLINT len, SQLSMALLINT * lenptr, int output)
 {
-  long length;
+  ssize_t length;
 
   if (!str)
     {
@@ -948,7 +986,7 @@ void
 _trace_string_w (SQLWCHAR * str, SQLSMALLINT len, SQLSMALLINT * lenptr,
     int output)
 {
-  long length;
+  ssize_t length;
 
   if (!str)
     {
@@ -1270,7 +1308,7 @@ _trace_bufferlen (SQLINTEGER length)
     }
 
   if (ptr)
-    trace_emit ("\t\t%-15.15s * %ld (%s)\n", "SQLINTEGER", length, ptr);
+    trace_emit ("\t\t%-15.15s * %ld (%s)\n", "SQLINTEGER", (long) length, ptr);
   else
     trace_emit ("\t\t%-15.15s * %ld\n", "SQLINTEGER", (long) length);
 }

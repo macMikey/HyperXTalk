@@ -1,11 +1,11 @@
 /*
  *  SQLWritePrivateProfileString.c
  *
- *  $Id: SQLWritePrivateProfileString.c,v 1.7 2006/01/20 15:58:35 source Exp $
+ *  $Id$
  *
  *  The iODBC driver manager.
  *
- *  Copyright (C) 1996-2006 by OpenLink Software <iodbc@openlinksw.com>
+ *  Copyright (C) 1996-2023 OpenLink Software <iodbc@openlinksw.com>
  *  All Rights Reserved.
  *
  *  This software is released under the terms of either of the following
@@ -75,7 +75,7 @@
 
 #include <iodbc.h>
 #include <odbcinst.h>
-#include <unicode.h>
+#include "unicode.h"
 
 #include "inifile.h"
 #include "iodbc_error.h"

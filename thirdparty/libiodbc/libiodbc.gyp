@@ -55,6 +55,7 @@
 							'src/herr.h',
 							'src/hstmt.h',
 							'src/iodbc.h',
+							'src/iodbc_misc.h',
 							'src/iodbcadm.h',
 							'src/iodbcext.h',
 							'src/iodbcinst.h',

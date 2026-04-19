@@ -1,14 +1,14 @@
 /*
  *  hstmt.h
  *
- *  $Id: hstmt.h,v 1.18 2006/01/20 15:58:34 source Exp $
+ *  $Id$
  *
  *  Query statement object management functions
  *
  *  The iODBC driver manager.
  *
- *  Copyright (C) 1995 by Ke Jin <kejin@empress.com>
- *  Copyright (C) 1996-2006 by OpenLink Software <iodbc@openlinksw.com>
+ *  Copyright (C) 1995 Ke Jin <kejin@empress.com>
+ *  Copyright (C) 1996-2023 OpenLink Software <iodbc@openlinksw.com>
  *  All Rights Reserved.
  *
  *  This software is released under the terms of either of the following
@@ -78,15 +78,16 @@
 #ifndef	_HSTMT_H
 #define	_HSTMT_H
 
-typedef struct PARAM
+typedef struct VAR
   {
     void *data;
     int   length;
   }
-PARAM_t;
+VAR_t;
 
-#define STMT_PARAMS_MAX      8
+#define STMT_VARS_MAX      8
 
+#define STMT_MAX_PARAM     1024
 
 /*
  *  Binding parameter from SQLBindCol
@@ -96,9 +97,16 @@ typedef struct BIND {
   SWORD		 bn_type;	  /* ODBC C data type */
   void *	 bn_data;	  /* Pointer to data */
   SDWORD	 bn_size;	  /* Size of data area */
-  SQLLEN	*bn_pInd;	  /* Holds SQL_NULL_DATA | 0. 
-                                   * And length of returned char/bin data 
+  SQLLEN	*bn_pInd;	  /* Holds SQL_NULL_DATA | 0.
+                                   * And length of returned char/bin data
 				   */
+  CONV_DIRECT    direct;          /* convert direction */
+  SQLLEN         bn_conv_size;
+  void*          bn_conv_data;
+  SQLLEN        *bn_conv_pInd;
+  void*          bn_tmp;
+  void*          bn_tmp_Ind;
+  BOOL           rebinded;  /* is col was rebinded */
 } BIND_t;
 
 typedef struct SBLST	TBLST, *PBLST;
@@ -109,6 +117,33 @@ struct SBLST {
   PBLST		 bl_nextBind;	/* Next binding */
   BIND_t	 bl_bind;	/* Binding information */
 };
+
+
+typedef struct SPARM  TPARM, *PPARM;
+
+struct SPARM {
+  SQLUSMALLINT	 pm_par;	  /* Parameter # */
+  SQLSMALLINT	 pm_c_type;	  /* C Type */
+  SQLSMALLINT	 pm_c_type_orig;  /* C Type original */
+  SQLLEN	 pm_size;	  /* size assoc. with pm_c_type or SQL_NTS */
+  SQLSMALLINT	 pm_sql_type;	  /* ODBC SQL Type */
+  SQLULEN	 pm_precision;	  /* Precision */
+  SQLSMALLINT	 pm_scale;	  /* Scale */
+  void 		*pm_data;	  /* Value / user handle */
+  SQLLEN        *pm_pOctetLength; /* Length of char/bin parameter data */
+  SQLLEN	*pm_pInd;	  /* Holds SQL_NULL_DATA | 0. Points to same
+				   * location as pm_pOctetLength for ODBC v2
+				   */
+  SQLLEN	 pm_cbValueMax;   /* cbValueMax */
+  SQLSMALLINT	 pm_usage;	  /* SQL_PARAM_INPUT, SQL_PARAM_OUTPUT etc */
+  void          *pm_tmp;
+  void          *pm_tmp_Ind;
+  void          *pm_conv_data;
+  SQLLEN        *pm_conv_pInd;
+  SQLLEN         pm_conv_el_size;
+  BOOL           rebinded; /* is parameter was rebinded */
+};
+
 
 
 typedef struct STMT
@@ -132,7 +167,16 @@ typedef struct STMT
     int stmt_cip;		/* Call in progress on this handle */
 
     SQLUINTEGER rowset_size;
-    SQLUINTEGER bind_type;
+    SQLUINTEGER row_bind_type;      /* row_bind_type */
+    SQLUINTEGER row_bind_offset;
+
+    SQLUINTEGER param_bind_type;     /* param_bind_type */
+    SQLUINTEGER param_bind_offset;
+
+    void         *params_buf;       /* buffer for W2W params conversion */
+    void         *rows_buf;       /* buffer for W2W params conversion */
+    SQLUINTEGER   conv_param_bind_type;
+    SQLUINTEGER   conv_row_bind_type;
 
 #if (ODBCVER >= 0x0300)
     DESC_t * imp_desc[4];
@@ -147,10 +191,16 @@ typedef struct STMT
 
     SQLSMALLINT err_rec;
 
-    PARAM_t params[STMT_PARAMS_MAX]; /* for a conversion parameters ansi<=>unicode*/
-    int     params_inserted;
+    VAR_t   vars[STMT_VARS_MAX]; /* for a conversion parameters ansi<=>unicode*/
+    int     vars_inserted;
 
     PBLST   st_pbinding;	/* API user bindings from SQLBindCol */
+
+    /* Binding variables */
+    PPARM	 st_pparam;	/* API user parameters from SQLSetParam */
+    SQLUSMALLINT st_nparam;	/* # params allocated */
+
+    PPARM	 st_need_param;
   }
 STMT_t;
 
@@ -179,14 +229,38 @@ STMT_t;
 	  } \
 	pstmt->stmt_cip = 1; \
 	CLEAR_ERRORS (pstmt); \
-	if (pstmt->asyn_on == en_NullProc && pstmt->params_inserted > 0) \
-	  _iodbcdm_FreeStmtParams(pstmt); \
+	if (pstmt->asyn_on == en_NullProc && pstmt->vars_inserted > 0) \
+	  _iodbcdm_FreeStmtVars(pstmt); \
+        ODBC_UNLOCK()
+	
+
+#define ENTER_STMT_CANCEL(hstmt, trace) \
+	STMT (pstmt, hstmt); \
+	SQLRETURN retcode = SQL_SUCCESS; \
+	int stmt_cip = 0; \
+        ODBC_LOCK(); \
+	TRACE (trace); \
+    	if (!IS_VALID_HSTMT (pstmt)) \
+	  { \
+	    retcode = SQL_INVALID_HANDLE; \
+	    goto done; \
+	  } \
+	stmt_cip = pstmt->stmt_cip; \
+	CLEAR_ERRORS (pstmt); \
         ODBC_UNLOCK()
 	
 
 #define LEAVE_STMT(hstmt, trace) \
 	ODBC_LOCK (); \
 	pstmt->stmt_cip = 0; \
+    done: \
+    	TRACE(trace); \
+	ODBC_UNLOCK (); \
+	return (retcode)
+
+
+#define LEAVE_STMT_CANCEL(hstmt, trace) \
+	ODBC_LOCK (); \
     done: \
     	TRACE(trace); \
 	ODBC_UNLOCK (); \
@@ -222,11 +296,16 @@ enum
  */
 SQLRETURN _iodbcdm_dropstmt (HSTMT stmt);
 
+SQLLEN _iodbcdm_OdbcCTypeSize (SWORD fCType);
 void _iodbcdm_FreeStmtParams(STMT_t *pstmt);
-void *_iodbcdm_alloc_param(STMT_t *pstmt, int i, int size);
-wchar_t *_iodbcdm_conv_param_A2W(STMT_t *pstmt, int i, SQLCHAR *pData, int pDataLength);
-char *_iodbcdm_conv_param_W2A(STMT_t *pstmt, int i, SQLWCHAR *pData, int pDataLength);
+void _iodbcdm_FreeStmtVars(STMT_t *pstmt);
+void *_iodbcdm_alloc_var(STMT_t *pstmt, int i, int size);
+void *_iodbcdm_conv_var(STMT_t *pstmt, int i, void *pData, int pDataLength,
+	CONV_DIRECT direct);
 void _iodbcdm_ConvBindData (STMT_t *pstmt);
+void _iodbcdm_ConvBindData_m2d (STMT_t *pstmt);
+
+SQLRETURN _iodbcdm_FixColBindData (STMT_t *pstmt);
 SQLRETURN _iodbcdm_BindColumn (STMT_t *pstmt, BIND_t *pbind);
 int _iodbcdm_UnBindColumn (STMT_t *pstmt, BIND_t *pbind);
 void _iodbcdm_RemoveBind (STMT_t *pstmt);

@@ -1,13 +1,13 @@
 /*
  *  misc.h
  *
- *  $Id: misc.h,v 1.4 2006/01/20 15:58:35 source Exp $
+ *  $Id$
  *
  *  Misc support functions
  *
  *  The iODBC driver manager.
  *
- *  Copyright (C) 1996-2006 by OpenLink Software <iodbc@openlinksw.com>
+ *  Copyright (C) 1996-2023 OpenLink Software <iodbc@openlinksw.com>
  *  All Rights Reserved.
  *
  *  This software is released under the terms of either of the following
@@ -78,9 +78,12 @@
 #define _MISC_H
 
 char *_iodbcadm_getinifile (char *buf, int size, int bIsInst, int doCreate);
+void _iodbcdm_getdsnfile(const char *filedsn, char *buf, size_t buf_sz);
 const char *_iodbcdm_check_for_string (const char *szList,
     const char *szString, int bContains);
 char *_iodbcdm_remove_quotes (const char *szString);
+size_t _iodbcdm_strlcpy(char *dst, const char *src, size_t siz);
+size_t _iodbcdm_strlcat(char *dst, const char *src, size_t siz);
 
 extern WORD wSystemDSN;
 extern WORD configMode;

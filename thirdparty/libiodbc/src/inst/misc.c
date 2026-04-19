@@ -1,13 +1,13 @@
 /*
  *  misc.c
  *
- *  $Id: misc.c,v 1.13 2006/01/20 15:58:35 source Exp $
+ *  $Id$
  *
  *  Miscellaneous functions
  *
  *  The iODBC driver manager.
  *
- *  Copyright (C) 1996-2006 by OpenLink Software <iodbc@openlinksw.com>
+ *  Copyright (C) 1996-2023 OpenLink Software <iodbc@openlinksw.com>
  *  All Rights Reserved.
  *
  *  This software is released under the terms of either of the following
@@ -101,6 +101,7 @@ WORD configMode = ODBC_BOTH_DSN;
 # define UNIX_PWD
 #endif
 
+
 /*
  * Algorithm for resolving an odbc.ini reference
  *
@@ -126,16 +127,14 @@ WORD configMode = ODBC_BOTH_DSN;
  *               3. No odbc.ini presence, return NULL.
  *
  * For MacX:     1. Check for $ODBCINI variable, if exists return $ODBCINI.
- *               2. Check for $HOME/.odbc.ini or ~/.odbc.ini file, if exists
- *                  return it.
- *               3. Check for $HOME/Library/ODBC/odbc.ini or
- *                  ~/.odbc.ini file, if exists return it.
- *               4. Check for SYS_ODBC_INI build variable, if exists return
+ *               2. Check for $HOME/Library/ODBC/odbc.ini, 
+ *                  if exists return it.
+ *               3. Check for SYS_ODBC_INI build variable, if exists return
  *                  it. (ie : /etc/odbc.ini).
- *               5. Check for /Library/ODBC/odbc.ini
+ *               4. Check for /Library/ODBC/odbc.ini
  *                  file, if exists return it.
- *               6. No odbc.ini presence, return NULL.
- */
+ *               5. No odbc.ini presence, return NULL.
+**/
 char *
 _iodbcadm_getinifile (char *buf, int size, int bIsInst, int doCreate)
 {
@@ -238,7 +237,7 @@ _iodbcadm_getinifile (char *buf, int size, int bIsInst, int doCreate)
 	  else if (doCreate)
 	    {
 	      int f = open ((char *) buf, O_CREAT,
-		  S_IREAD | S_IWRITE | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
+		  S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
 	      if (f != -1)
 		{
 		  close (f);
@@ -257,9 +256,7 @@ _iodbcadm_getinifile (char *buf, int size, int bIsInst, int doCreate)
       if (doCreate || access (buf, R_OK) == 0)
 	return buf;
 #  else	/* else VMS */
-      /*
-       *  2b. Check either $HOME/.odbc.ini or ~/.odbc.ini
-       */
+
       if ((ptr = getenv ("HOME")) == NULL)
 	{
 	  ptr = (char *) getpwuid (getuid ());
@@ -269,16 +266,10 @@ _iodbcadm_getinifile (char *buf, int size, int bIsInst, int doCreate)
 	}
 
       if (ptr != NULL)
-	{
-	  snprintf (buf, size, bIsInst ? "%s/.odbcinst.ini" : "%s/.odbc.ini",
-	      ptr);
-
-	  if (doCreate || access (buf, R_OK) == 0)
-	    return buf;
-
+        {
 #if defined(__APPLE__)
 	  /*
-	   * Try to check the ~/Library/ODBC/odbc.ini
+	   * 2b. Try to check the ~/Library/ODBC/odbc.ini
 	   */
 	  snprintf (buf, size,
 	      bIsInst ? "%s" ODBCINST_INI_APP : "%s" ODBC_INI_APP, ptr);
@@ -288,17 +279,26 @@ _iodbcadm_getinifile (char *buf, int size, int bIsInst, int doCreate)
 	  else if (doCreate)
 	    {
 	      int f = open ((char *) buf, O_CREAT,
-		  S_IREAD | S_IWRITE | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
+		  S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
 	      if (f != -1)
 		{
 		  close (f);
 		  return buf;
 		}
 	    }
-#   endif /* endif __APPLE__ */
-	}
+#   else /* else __APPLE__ */
+      
+          /*
+           *  2b. Check either $HOME/.odbc.ini or ~/.odbc.ini
+           */
+	  snprintf (buf, size, bIsInst ? "%s/.odbcinst.ini" : "%s/.odbc.ini",
+	      ptr);
 
+	  if (doCreate || access (buf, R_OK) == 0)
+	    return buf;
+#   endif /* endif __APPLE__ */
 #  endif /* endif VMS */
+        }
     }
 
   /*
@@ -318,7 +318,7 @@ _iodbcadm_getinifile (char *buf, int size, int bIsInst, int doCreate)
 	  else if (doCreate)
 	    {
 	      int f = open ((char *) buf, O_CREAT,
-		  S_IREAD | S_IWRITE | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
+		  S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
 	      if (f != -1)
 		{
 		  close (f);
@@ -338,7 +338,7 @@ _iodbcadm_getinifile (char *buf, int size, int bIsInst, int doCreate)
       else if (doCreate)
 	{
 	  int f = open ((char *) buf, O_CREAT,
-	      S_IREAD | S_IWRITE | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
+	      S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
 	  if (f != -1)
 	    {
 	      close (f);
@@ -357,7 +357,6 @@ _iodbcadm_getinifile (char *buf, int size, int bIsInst, int doCreate)
   return NULL;
 #endif /* UNIX_PWD */
 }
-
 
 const char *
 _iodbcdm_check_for_string(const char *szList, const char *szString, int bContains)
@@ -400,4 +399,127 @@ _iodbcdm_remove_quotes(const char *szString)
     *szPtr = 0;
 
   return szWork;
+}
+
+/*
+ * Get FILEDSN file name
+ *
+ * If file name does not contain path component, the default directory for
+ * saving and loading a .dsn file will be defined as follows:
+ * 1. if FILEDSNPATH is set in environment: use environment
+ * 2. if odbcinst.ini [odbc] FILEDSNPATH is set: use this
+ * 3. else use DEFAULT_FILEDSNPATH
+ *
+ * ".dsn" extension is always appended to the resulting filename
+ * (if not already exists).
+ */
+void
+_iodbcdm_getdsnfile(const char *filedsn, char *buf, size_t buf_sz)
+{
+  char *p;
+  char *default_path;
+
+  if (strchr (filedsn, '/') != NULL)
+    {
+      /* has path component -- copy as is */
+      _iodbcdm_strlcpy (buf, filedsn, buf_sz);
+      goto done;
+    }
+
+  /* get default path */
+  if ((default_path = getenv ("FILEDSNPATH")) != NULL)
+    _iodbcdm_strlcpy (buf, default_path, buf_sz);
+  else
+    {
+      SQLSetConfigMode (ODBC_BOTH_DSN);
+      if (!SQLGetPrivateProfileString ("ODBC", "FileDSNPath", "",
+				       buf, buf_sz, "odbcinst.ini"))
+        _iodbcdm_strlcpy (buf, DEFAULT_FILEDSNPATH, buf_sz);
+    }
+
+  /* append filedsn file name */
+  _iodbcdm_strlcat (buf, "/", buf_sz);
+  _iodbcdm_strlcat (buf, filedsn, buf_sz);
+
+done:
+  /* append ".dsn" if extension is not ".dsn" */
+  if ((p = strrchr (buf, '.')) == NULL ||
+      strcasecmp (p, ".dsn") != 0)
+    _iodbcdm_strlcat (buf, ".dsn", buf_sz);
+}
+
+
+/*
+ * Copy src to string dst of size siz.  At most siz-1 characters
+ * will be copied.  Always NUL terminates (unless siz == 0).
+ * Returns strlen(src); if retval >= siz, truncation occurred.
+ *
+ * Taken from FreeBSD libc.
+ */
+size_t
+_iodbcdm_strlcpy(char *dst, const char *src, size_t siz)
+{
+  char *d = dst;
+  const char *s = src;
+  size_t n = siz;
+
+  /* Copy as many bytes as will fit */
+  if (n != 0 && --n != 0)
+    {
+      do {
+        if ((*d++ = *s++) == 0)
+          break;
+      } while (--n != 0);
+    }
+
+  /* Not enough room in dst, add NUL and traverse rest of src */
+  if (n == 0)
+    {
+      if (siz != 0)
+        *d = '\0';		/* NUL-terminate dst */
+      while (*s++)
+        ;
+    }
+
+   return(s - src - 1);		/* count does not include NUL */
+}
+
+
+/*
+ * Appends src to string dst of size siz (unlike strncat, siz is the
+ * full size of dst, not space left).  At most siz-1 characters
+ * will be copied.  Always NUL terminates (unless siz <= strlen(dst)).
+ * Returns strlen(src) + MIN(siz, strlen(initial dst)).
+ * If retval >= siz, truncation occurred.
+ *
+ * Taken from FreeBSD libc.
+ */
+size_t
+_iodbcdm_strlcat(char *dst, const char *src, size_t siz)
+{
+  char *d = dst;
+  const char *s = src;
+  size_t n = siz;
+  size_t dlen;
+
+  /* Find the end of dst and adjust bytes left but don't go past end */
+  while (n-- != 0 && *d != '\0')
+    d++;
+  dlen = d - dst;
+  n = siz - dlen;
+
+  if (n == 0)
+    return(dlen + strlen(s));
+  while (*s != '\0')
+    {
+      if (n != 1)
+        {
+          *d++ = *s;
+          n--;
+        }
+      s++;
+    }
+  *d = '\0';
+
+  return(dlen + (s - src));	/* count does not include NUL */
 }

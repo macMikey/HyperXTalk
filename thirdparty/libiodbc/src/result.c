@@ -1,14 +1,14 @@
 /*
  *  result.c
  *
- *  $Id: result.c,v 1.23 2006/01/20 15:58:35 source Exp $
+ *  $Id$
  *
  *  Prepare for getting query result
  *
  *  The iODBC driver manager.
  *
- *  Copyright (C) 1995 by Ke Jin <kejin@empress.com>
- *  Copyright (C) 1996-2006 by OpenLink Software <iodbc@openlinksw.com>
+ *  Copyright (C) 1995 Ke Jin <kejin@empress.com>
+ *  Copyright (C) 1996-2023 OpenLink Software <iodbc@openlinksw.com>
  *  All Rights Reserved.
  *
  *  This software is released under the terms of either of the following
@@ -81,16 +81,16 @@
 #include <sqlext.h>
 #include <sqlucode.h>
 
-#include <unicode.h>
+#include "unicode.h"
 
-#include <dlproc.h>
+#include "dlproc.h"
 
-#include <herr.h>
-#include <henv.h>
-#include <hdbc.h>
-#include <hstmt.h>
+#include "herr.h"
+#include "henv.h"
+#include "hdbc.h"
+#include "hstmt.h"
 
-#include <itrace.h>
+#include "itrace.h"
 
 static SQLRETURN
 SQLBindCol_Internal (
@@ -190,16 +190,15 @@ SQLBindCol_Internal (
 
   if (icol != 0 && !penv->unicode_driver && nCType == SQL_C_WCHAR)
     {
-      CALL_DRIVER (pstmt->hdbc, pstmt, retcode, hproc, en_BindCol,
+      CALL_DRIVER (pstmt->hdbc, pstmt, retcode, hproc,
           (pstmt->dhstmt, icol, SQL_C_CHAR, rgbValue, 
            cbValueMax, pcbValue));
     }
   else
-    CALL_DRIVER (pstmt->hdbc, pstmt, retcode, hproc, en_BindCol,
+    CALL_DRIVER (pstmt->hdbc, pstmt, retcode, hproc,
         (pstmt->dhstmt, icol, nCType, rgbValue, cbValueMax, pcbValue));
 
-  if (icol != 0 && !penv->unicode_driver && nCType == SQL_C_WCHAR 
-      && (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO))
+  if (SQL_SUCCEEDED (retcode))
     {
       BIND_t tbind;
 
@@ -208,7 +207,17 @@ SQLBindCol_Internal (
       tbind.bn_data = rgbValue;
       tbind.bn_size = cbValueMax;
       tbind.bn_pInd = pcbValue;
-      
+      tbind.direct  = CD_NONE;
+      tbind.bn_conv_size = 0;
+      tbind.bn_conv_data = NULL;
+      tbind.bn_conv_pInd = NULL;
+      tbind.bn_tmp = NULL;
+      tbind.bn_tmp_Ind = NULL;
+      tbind.rebinded = FALSE;
+
+      if (nCType == SQL_C_WCHAR)
+        tbind.direct  = penv->unicode_driver ? CD_W2W : CD_A2W;
+
       if (rgbValue)
         _iodbcdm_BindColumn (pstmt, &tbind);
       else
@@ -256,6 +265,8 @@ SQLGetCursorName_Internal (
   SQLRETURN retcode = SQL_SUCCESS;
   void * cursorOut = szCursor;
   void * _Cursor = NULL;
+  CONV_DIRECT conv_direct = CD_NONE;
+  DM_CONV *conv = &pdbc->conv;
 
   /* check argument */
   if (cbCursorMax < (SWORD) 0)
@@ -281,29 +292,31 @@ SQLGetCursorName_Internal (
       return SQL_ERROR;
     }
 
+  if (penv->unicode_driver && waMode != 'W')
+    conv_direct = CD_A2W;
+  else if (!penv->unicode_driver && waMode == 'W')
+    conv_direct = CD_W2A;
+  else if (waMode == 'W' && conv->dm_cp != conv->drv_cp)
+    conv_direct = CD_W2W;
+
   /* call driver's function */
-
-
-  if ((penv->unicode_driver && waMode != 'W') 
-      || (!penv->unicode_driver && waMode == 'W'))
+  if (conv_direct == CD_A2W || conv_direct == CD_W2W)
     {
-      if (waMode != 'W')
-        {
-        /* ansi=>unicode*/
-          if ((_Cursor = malloc((cbCursorMax + 1) * sizeof(wchar_t))) == NULL)
-	    {
-              PUSHSQLERR (pstmt->herr, en_HY001);
-              return SQL_ERROR;
-            }
+      /* ansi<=unicode*/
+      if ((_Cursor = malloc((cbCursorMax + 1) * DRV_WCHARSIZE_ALLOC(conv))) == NULL)
+	{
+          PUSHSQLERR (pstmt->herr, en_HY001);
+          return SQL_ERROR;
         }
-      else
-        {
-        /* unicode=>ansi*/
-          if ((_Cursor = malloc(cbCursorMax + 1)) == NULL)
-	    {
-              PUSHSQLERR (pstmt->herr, en_HY001);
-              return SQL_ERROR;
-            }
+      cursorOut = _Cursor;
+    }
+  else if (conv_direct == CD_W2A)
+    {
+      /* unicode<=ansi*/
+      if ((_Cursor = malloc(cbCursorMax * MB_CUR_MAX + 1)) == NULL)
+	{
+          PUSHSQLERR (pstmt->herr, en_HY001);
+          return SQL_ERROR;
         }
       cursorOut = _Cursor;
     }
@@ -323,20 +336,26 @@ SQLGetCursorName_Internal (
       return SQL_ERROR;
     }
 
-  if (szCursor 
-      && (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO)
-      &&  ((penv->unicode_driver && waMode != 'W') 
-          || (!penv->unicode_driver && waMode == 'W')))
+  if (szCursor && conv_direct != CD_NONE
+      && SQL_SUCCEEDED (retcode))
     {
-      if (waMode != 'W')
+      if (conv_direct == CD_A2W)
         {
-        /* ansi<=unicode*/
-          dm_StrCopyOut2_W2A ((SQLWCHAR *) cursorOut, (SQLCHAR *) szCursor, cbCursorMax, NULL);
+         /*ansi<=unicode*/
+          dm_StrCopyOut2_W2A_d2m (conv, cursorOut, (SQLCHAR *) szCursor,
+		cbCursorMax, NULL, NULL);
         }
-      else
+      else if (conv_direct == CD_W2A)
         {
-        /* unicode<=ansi*/
-          dm_StrCopyOut2_A2W ((SQLCHAR *) cursorOut, (SQLWCHAR *) szCursor, cbCursorMax, NULL);
+         /*unicode<=ansi*/
+          dm_StrCopyOut2_A2W_d2m (conv, (SQLCHAR *) cursorOut, szCursor,
+		cbCursorMax * DM_WCHARSIZE(conv), NULL, NULL);
+        }
+      else if (conv_direct == CD_W2W)
+        {
+         /*unicode<=unicode*/
+          dm_StrCopyOut2_W2W_d2m (conv, cursorOut, szCursor,
+		cbCursorMax * DM_WCHARSIZE(conv), NULL, NULL);
         }
     }
 
@@ -448,7 +467,7 @@ SQLRowCount_Internal (
       return SQL_ERROR;
     }
 
-  CALL_DRIVER (pstmt->hdbc, pstmt, retcode, hproc, en_RowCount,
+  CALL_DRIVER (pstmt->hdbc, pstmt, retcode, hproc,
       (pstmt->dhstmt, pcrow));
 
   return retcode;
@@ -508,7 +527,7 @@ _iodbcdm_NumResultCols (
       return SQL_ERROR;
     }
 
-  CALL_DRIVER (pstmt->hdbc, pstmt, retcode, hproc, en_NumResultCols,
+  CALL_DRIVER (pstmt->hdbc, pstmt, retcode, hproc,
       (pstmt->dhstmt, &ccol));
 
   /* state transition */
@@ -632,6 +651,8 @@ SQLDescribeCol_Internal (
   void * _ColName = NULL;
   void * colNameOut = szColName;
   sqlstcode_t sqlstat = en_00000;
+  CONV_DIRECT conv_direct = CD_NONE;
+  DM_CONV *conv = &pdbc->conv;
 
   /* check arguments */
   if (icol == 0)
@@ -672,31 +693,38 @@ SQLDescribeCol_Internal (
       return SQL_ERROR;
     }
 
+  if (penv->unicode_driver && waMode != 'W')
+    conv_direct = CD_A2W;
+  else if (!penv->unicode_driver && waMode == 'W')
+    conv_direct = CD_W2A;
+  else if (waMode == 'W' && conv->dm_cp != conv->drv_cp)
+    conv_direct = CD_W2W;
+
   /* call driver */
 
-  if ((penv->unicode_driver && waMode != 'W') 
-      || (!penv->unicode_driver && waMode == 'W'))
+  if (szColName != NULL && cbColNameMax > 0)
     {
-      if (waMode != 'W')
+      if (conv_direct == CD_A2W || conv_direct == CD_W2W)
         {
-        /* ansi=>unicode*/
-          if ((_ColName = _iodbcdm_alloc_param(pstmt, 0, 
-          	             cbColNameMax * sizeof(wchar_t))) == NULL)
+          /*ansi<=unicode*/
+          if ((_ColName = _iodbcdm_alloc_var(pstmt, 0,
+                     cbColNameMax * DRV_WCHARSIZE_ALLOC(conv))) == NULL)
 	    {
               PUSHSQLERR (pstmt->herr, en_HY001);
               return SQL_ERROR;
             }
+          colNameOut = _ColName;
         }
-      else
+      else if (conv_direct == CD_W2A)
         {
-        /* unicode=>ansi*/
-          if ((_ColName = _iodbcdm_alloc_param(pstmt, 0, cbColNameMax)) == NULL)
+          /*unicode<=ansi*/
+          if ((_ColName = _iodbcdm_alloc_var(pstmt, 0, cbColNameMax * MB_CUR_MAX + 1)) == NULL)
 	    {
               PUSHSQLERR (pstmt->herr, en_HY001);
               return SQL_ERROR;
             }
+          colNameOut = _ColName;
         }
-      colNameOut = _ColName;
     }
 
   /* call driver */
@@ -714,7 +742,7 @@ SQLDescribeCol_Internal (
 
   if (hproc == SQL_NULL_HPROC)
     {
-      _iodbcdm_FreeStmtParams(pstmt);
+      _iodbcdm_FreeStmtVars(pstmt);
       PUSHSQLERR (pstmt->herr, en_IM001);
       return SQL_ERROR;
     }
@@ -725,25 +753,31 @@ SQLDescribeCol_Internal (
   if (SQL_SUCCEEDED(retcode) && pfSqlType)
     *pfSqlType = _iodbcdm_map_sql_type (*pfSqlType, genv->odbc_ver);
 
-  if (szColName 
-      && (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO)
-      &&  ((penv->unicode_driver && waMode != 'W') 
-          || (!penv->unicode_driver && waMode == 'W')))
+  if (szColName && conv_direct != CD_NONE
+      && SQL_SUCCEEDED (retcode))
     {
-      if (waMode != 'W')
+      if (conv_direct == CD_A2W)
         {
-        /* ansi<=unicode*/
-          dm_StrCopyOut2_W2A ((SQLWCHAR *) colNameOut, (SQLCHAR *) szColName, cbColNameMax, NULL);
+         /*ansi<=unicode*/
+          dm_StrCopyOut2_W2A_d2m (conv, colNameOut, (SQLCHAR *) szColName,
+		cbColNameMax, NULL, NULL);
         }
-      else
+      else if (conv_direct == CD_W2A)
         {
-        /* unicode<=ansi*/
-          dm_StrCopyOut2_A2W ((SQLCHAR *) colNameOut, (SQLWCHAR *) szColName, cbColNameMax, NULL);
+         /*unicode<=ansi*/
+          dm_StrCopyOut2_A2W_d2m (conv, (SQLCHAR *) colNameOut, szColName,
+		cbColNameMax * DM_WCHARSIZE(conv), NULL, NULL);
+        }
+      else if (conv_direct == CD_W2W)
+        {
+         /*unicode<=unicode*/
+          dm_StrCopyOut2_W2W_d2m (conv, colNameOut, szColName,
+		cbColNameMax * DM_WCHARSIZE(conv), NULL, NULL);
         }
     }
 
   if (retcode != SQL_STILL_EXECUTING)
-    _iodbcdm_FreeStmtParams(pstmt);
+    _iodbcdm_FreeStmtVars(pstmt);
 
   /* state transition */
   if (pstmt->asyn_on == en_DescribeCol)
@@ -927,12 +961,18 @@ SQLColAttributes_Internal (
   STMT(pstmt, hstmt);
   CONN (pdbc, pstmt->hdbc);
   ENVR (penv, pdbc->henv);
-  HPROC hproc = SQL_NULL_HPROC;
+  HPROC hproc2 = SQL_NULL_HPROC;
+  HPROC hproc3 = SQL_NULL_HPROC;
   SQLRETURN retcode = SQL_SUCCESS;
   void * _Desc = NULL;
   void * descOut = rgbDesc;
   sqlstcode_t sqlstat = en_00000;
   SQLUSMALLINT new_attr = fDescType;
+  SQLUINTEGER odbc_ver = ((GENV_t *) pdbc->genv)->odbc_ver;
+  SQLUINTEGER dodbc_ver = ((ENV_t *) pdbc->henv)->dodbc_ver;
+  CONV_DIRECT conv_direct = CD_NONE;
+  DM_CONV *conv = &pdbc->conv;
+  SQLSMALLINT _cbDescMax = cbDescMax;
 
   /* check arguments */
   if (icol == 0 && fDescType != SQL_COLUMN_COUNT)
@@ -980,9 +1020,15 @@ SQLColAttributes_Internal (
       return SQL_ERROR;
     }
 
+  if (penv->unicode_driver && waMode != 'W')
+    conv_direct = CD_A2W;
+  else if (!penv->unicode_driver && waMode == 'W')
+    conv_direct = CD_W2A;
+  else if (waMode == 'W' && conv->dm_cp != conv->drv_cp)
+    conv_direct = CD_W2W;
+
   /* call driver */
-  if ((penv->unicode_driver && waMode != 'W') 
-      || (!penv->unicode_driver && waMode == 'W'))
+  if (conv_direct != CD_NONE)
     {
       switch(fDescType)
         {
@@ -993,27 +1039,32 @@ SQLColAttributes_Internal (
         case SQL_COLUMN_TABLE_NAME:
         case SQL_COLUMN_TYPE_NAME:
 
-          if (waMode != 'W')
+          if (conv_direct == CD_A2W || conv_direct == CD_W2W)
             {
-            /* ansi=>unicode*/
-              cbDescMax *= sizeof(wchar_t);
-              if ((_Desc = _iodbcdm_alloc_param(pstmt, 0, cbDescMax)) == NULL)
+             /*ansi<=unicode*/
+              if (conv_direct == CD_W2W)
+                _cbDescMax /= DM_WCHARSIZE(conv);
+
+              if ((_Desc = _iodbcdm_alloc_var(pstmt, 0,
+		        (_cbDescMax + 1) * DRV_WCHARSIZE_ALLOC(conv))) == NULL)
 	        {
                   PUSHSQLERR (pstmt->herr, en_HY001);
                   return SQL_ERROR;
                 }
+              _cbDescMax *= DRV_WCHARSIZE_ALLOC(conv);
+              descOut = _Desc;
             }
-          else
+          else if (conv_direct == CD_W2A)
             {
-            /* unicode=>ansi*/
-              cbDescMax /= sizeof(wchar_t);
-              if ((_Desc = _iodbcdm_alloc_param(pstmt, 0, cbDescMax)) == NULL)
+             /*unicode<=ansi*/
+              if ((_Desc = _iodbcdm_alloc_var(pstmt, 0, _cbDescMax * MB_CUR_MAX + 1)) == NULL)
 	        {
                   PUSHSQLERR (pstmt->herr, en_HY001);
                   return SQL_ERROR;
                 }
+              _cbDescMax /= DM_WCHARSIZE(conv);
+              descOut = _Desc;
             }
-          descOut = _Desc;
           break;
         }
     }
@@ -1029,13 +1080,20 @@ SQLColAttributes_Internal (
 
   if (penv->unicode_driver)
     {
-      /* SQL_XXX_W */
+      hproc2 = _iodbcdm_getproc (pdbc, en_ColAttributesW);
 #if (ODBCVER >= 0x0300)
-      if ((hproc = _iodbcdm_getproc (pdbc, en_ColAttributeW)) 
-          != SQL_NULL_HPROC)
+      hproc3 = _iodbcdm_getproc (pdbc, en_ColAttributeW);
+#endif
+
+      if (odbc_ver == SQL_OV_ODBC2 && 
+          (  dodbc_ver == SQL_OV_ODBC2
+           || (dodbc_ver == SQL_OV_ODBC3 && hproc2 != SQL_NULL_HPROC)))
+        hproc3 = SQL_NULL_HPROC;
+
+#if (ODBCVER >= 0x0300)
+      if (hproc3 != SQL_NULL_HPROC)
         {
-          CALL_DRIVER (pstmt->hdbc, pstmt, retcode, hproc, 
-               en_ColAttributeW, (
+          CALL_DRIVER (pstmt->hdbc, pstmt, retcode, hproc3, (
        	          pstmt->dhstmt, 
        	          icol, 
        	          new_attr, 
@@ -1044,99 +1102,80 @@ SQLColAttributes_Internal (
        	          pcbDesc, 
        	          pfDesc));
         }
-      else 
+      else
 #endif
-      if ((hproc = _iodbcdm_getproc (pdbc, en_ColAttributesW)) 
-          != SQL_NULL_HPROC)
         {
-          CALL_DRIVER (pstmt->hdbc, pstmt, retcode, hproc, 
-               en_ColAttributesW, (
+          if (hproc2 == SQL_NULL_HPROC)
+            {
+              _iodbcdm_FreeStmtVars(pstmt);
+              PUSHSQLERR (pstmt->herr, en_IM001);
+              return SQL_ERROR;
+            }
+
+          CALL_DRIVER (pstmt->hdbc, pstmt, retcode, hproc2, (
       	          pstmt->dhstmt, 
-      	          icol, 
-      	          fDescType, 
-      	          descOut, 
-      	          cbDescMax, 
-      	          pcbDesc, 
-      	          pfDesc));
-       	}
+	          icol,
+	          fDescType,
+	          descOut,
+	          _cbDescMax,
+	          pcbDesc,
+	          pfDesc));
+        }
     }
   else
     {
       /* SQL_XXX */
       /* SQL_XXX_A */
+      hproc2 = _iodbcdm_getproc (pdbc, en_ColAttributes);
+      if (hproc2 == SQL_NULL_HPROC)
+        hproc2 = _iodbcdm_getproc (pdbc, en_ColAttributesA);
 #if (ODBCVER >= 0x0300)
-      if ((hproc = _iodbcdm_getproc (pdbc, en_ColAttribute)) 
-          != SQL_NULL_HPROC)
-        {
-          CALL_DRIVER (pstmt->hdbc, pstmt, retcode, hproc, 
-               en_ColAttribute, (
-       	          pstmt->dhstmt, 
-       	          icol, 
-       	          new_attr, 
-       	          descOut, 
-       	          cbDescMax, 
-       	          pcbDesc, 
-       	          pfDesc));
-        }
-      else 
+      hproc3 = _iodbcdm_getproc (pdbc, en_ColAttribute);
+      if (hproc3 == SQL_NULL_HPROC)
+        hproc3 = _iodbcdm_getproc (pdbc, en_ColAttributeA);
 #endif
-      if ((hproc = _iodbcdm_getproc (pdbc, en_ColAttributes)) 
-          != SQL_NULL_HPROC)
+      
+      if (odbc_ver == SQL_OV_ODBC2 && 
+          (  dodbc_ver == SQL_OV_ODBC2
+           || (dodbc_ver == SQL_OV_ODBC3 && hproc2 != SQL_NULL_HPROC)))
+        hproc3 = SQL_NULL_HPROC;
+
+#if (ODBCVER >= 0x0300)
+      if (hproc3 != SQL_NULL_HPROC)
         {
-          CALL_DRIVER (pstmt->hdbc, pstmt, retcode, hproc, 
-               en_ColAttributes, (
-      	          pstmt->dhstmt, 
-      	          icol, 
-      	          fDescType, 
-      	          descOut, 
-      	          cbDescMax, 
-      	          pcbDesc, 
-      	          pfDesc));
+          CALL_DRIVER (pstmt->hdbc, pstmt, retcode, hproc3, (
+       	          pstmt->dhstmt, 
+	          icol,
+	          new_attr,
+	          descOut,
+	          _cbDescMax,
+	          pcbDesc,
+	          pfDesc));
         }
       else
-#if (ODBCVER >= 0x0300)
-      if ((hproc = _iodbcdm_getproc (pdbc, en_ColAttributeA)) 
-          != SQL_NULL_HPROC)
-        {
-          CALL_DRIVER (pstmt->hdbc, pstmt, retcode, hproc, 
-               en_ColAttributeA, (
-       	          pstmt->dhstmt, 
-       	          icol, 
-       	          new_attr, 
-       	          descOut, 
-       	          cbDescMax, 
-       	          pcbDesc, 
-       	          pfDesc));
-        }
-      else 
 #endif
-      if ((hproc = _iodbcdm_getproc (pdbc, en_ColAttributesA)) 
-          != SQL_NULL_HPROC)
         {
-          CALL_DRIVER (pstmt->hdbc, pstmt, retcode, hproc, 
-               en_ColAttributesA, (
+          if (hproc2 == SQL_NULL_HPROC)
+            {
+              _iodbcdm_FreeStmtVars(pstmt);
+              PUSHSQLERR (pstmt->herr, en_IM001);
+              return SQL_ERROR;
+            }
+
+          CALL_DRIVER (pstmt->hdbc, pstmt, retcode, hproc2, (
       	          pstmt->dhstmt, 
-      	          icol, 
-      	          fDescType, 
-      	          descOut, 
-      	          cbDescMax, 
-      	          pcbDesc, 
-      	          pfDesc));
+	          icol,
+	          fDescType,
+	          descOut,
+	          _cbDescMax,
+	          pcbDesc,
+	          pfDesc));
         }
     }
 
-  if (hproc == SQL_NULL_HPROC)
+  if (rgbDesc && conv_direct != CD_NONE && SQL_SUCCEEDED (retcode))
     {
-      _iodbcdm_FreeStmtParams(pstmt);
-      PUSHSQLERR (pstmt->herr, en_IM001);
-      return SQL_ERROR;
-    }
-
-  if (rgbDesc 
-      && (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO)
-      &&  ((penv->unicode_driver && waMode != 'W') 
-          || (!penv->unicode_driver && waMode == 'W')))
-    {
+      int count;
       switch(fDescType)
         {
         case SQL_COLUMN_QUALIFIER_NAME:
@@ -1145,23 +1184,35 @@ SQLColAttributes_Internal (
         case SQL_COLUMN_OWNER_NAME:
         case SQL_COLUMN_TABLE_NAME:
         case SQL_COLUMN_TYPE_NAME:
-          if (waMode != 'W')
+          if (conv_direct == CD_A2W)
             {
-            /* ansi<=unicode*/
-              dm_StrCopyOut2_W2A ((SQLWCHAR *) descOut, (SQLCHAR *) rgbDesc, cbDescMax / sizeof(wchar_t), pcbDesc);
-            }
-          else
-            {
-            /* unicode<=ansi*/
-              dm_StrCopyOut2_A2W ((SQLCHAR *) descOut, (SQLWCHAR *) rgbDesc, cbDescMax, pcbDesc);
+             /*ansi<=unicode*/
+              dm_StrCopyOut2_W2A_d2m (conv, descOut, (SQLCHAR *) rgbDesc,
+		cbDescMax, NULL, &count);
               if (pcbDesc)
-                *pcbDesc = *pcbDesc * sizeof(wchar_t);
+                *pcbDesc = (SQLSMALLINT)count;
+            }
+          else if (conv_direct == CD_W2A)
+            {
+             /*unicode<=ansi*/
+              dm_StrCopyOut2_A2W_d2m (conv, (SQLCHAR *) descOut, rgbDesc,
+		cbDescMax, NULL, &count);
+              if (pcbDesc)
+                *pcbDesc = (SQLSMALLINT)count;
+            }
+          else if (conv_direct == CD_W2W)
+            {
+             /*unicode<=unicode*/
+              dm_StrCopyOut2_W2W_d2m (conv, descOut, rgbDesc,
+                cbDescMax, NULL, &count);
+              if (pcbDesc)
+                *pcbDesc = (SQLSMALLINT)count;
             }
         }
     }
 
   if (retcode != SQL_STILL_EXECUTING)
-    _iodbcdm_FreeStmtParams(pstmt);
+    _iodbcdm_FreeStmtVars(pstmt);
 
   /* state transition */
   if (pstmt->asyn_on == en_ColAttributes)

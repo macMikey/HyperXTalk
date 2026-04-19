@@ -1,14 +1,14 @@
 /*
  *  sqltypes.h
  *
- *  $Id: sqltypes.h,v 1.20 2006/01/24 15:02:23 source Exp $
+ *  $Id$
  *
  *  ODBC typedefs
  *
  *  The iODBC driver manager.
  *
- *  Copyright (C) 1995 by Ke Jin <kejin@empress.com>
- *  Copyright (C) 1996-2006 by OpenLink Software <iodbc@openlinksw.com>
+ *  Copyright (C) 1995 Ke Jin <kejin@empress.com>
+ *  Copyright (C) 1996-2023 OpenLink Software <iodbc@openlinksw.com>
  *  All Rights Reserved.
  *
  *  This software is released under the terms of either of the following
@@ -78,12 +78,18 @@
 #ifndef _SQLTYPES_H
 #define _SQLTYPES_H
 
-
 /*
  *  Set default specification to  ODBC 3.51
  */
 #ifndef ODBCVER
 #define ODBCVER		0x0351
+#endif
+
+/*
+ *  Include Windows style defines and typedefs on Unix
+ */
+#ifndef _IODBCUNIX_H
+#include <iodbcunix.h>
 #endif
 
 #ifdef __cplusplus
@@ -337,7 +343,7 @@ SQL_INTERVAL_STRUCT;
  */
 #if (ODBCVER >= 0x0300)
 
-#if (_MSC_VER >= 900)
+#if defined(_MSC_VER) && (_MSC_VER >= 900)
 #  define ODBCINT64 		__int64
 #endif
 
@@ -397,9 +403,12 @@ typedef unsigned short SQLWCHAR;
 #  if defined(__cplusplus)		|| \
       defined(_WCHAR_T)			|| \
       defined(_WCHAR_T_DEFINED)		|| \
-      defined(_WCHAR_T_DECLARED)        || \
-      defined(_BSD_WCHAR_T_DEFINED_)    || \
-      defined(_BSD_WCHAR_T_)
+      defined(_WCHAR_T_DEFINED_)	|| \
+      defined(_WCHAR_T_DECLARED)	|| \
+      defined(_BSD_WCHAR_T_DEFINED_)	|| \
+      defined(_BSD_WCHAR_T_)		|| \
+      defined(_BSD_CT_RUNE_T_)      || \
+      defined(__DEFINED_wchar_t)
 typedef wchar_t SQLWCHAR;
 #  else
 #    error Please make sure your system supports the wchar_t type
