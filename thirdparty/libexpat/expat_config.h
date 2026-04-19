@@ -63,7 +63,7 @@
 #define PACKAGE_NAME "expat"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "expat 2.1.0"
+#define PACKAGE_STRING "expat 2.6.4"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "expat"
@@ -72,7 +72,7 @@
 #define PACKAGE_URL ""
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "2.1.0"
+#define PACKAGE_VERSION "2.6.4"
 
 /* Define to 1 if you have the ANSI C header files. */
 #define STDC_HEADERS 1
@@ -86,6 +86,9 @@
 
 /* Define to make parameter entity parsing functionality available. */
 #define XML_DTD 1
+
+/* Define to 1 to enable general entity support. */
+#define XML_GE 1
 
 /* Define to make XML Namespaces functionality available. */
 #define XML_NS 1
