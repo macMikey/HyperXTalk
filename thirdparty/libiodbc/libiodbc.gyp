@@ -42,13 +42,12 @@
 							'src/include/sqlext.h',
 							'src/include/sqltypes.h',
 							'src/include/sqlucode.h',
-							'src/include/dlproc.h',
-							
+
 							'src/config.h',
 							'src/config.linux.h',
 							'src/config.mac.ppc.h',
 							'src/config.mac.x86.h',
-#							'src/dlproc.h',
+							'src/dlproc.h',
 							'src/hdbc.h',
 							'src/hdesc.h',
 							'src/henv.h',
