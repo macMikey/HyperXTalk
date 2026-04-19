@@ -6087,7 +6087,7 @@ on aeChangeforecolorOfChunk
    if tforecolorOfChunk is not a color then return "error:"&&tforecolorOfChunk&&"is not a valid color"
    if tduration is not a number then return "error:"&&tDuration&&"is not a valid duration"
    if tMethod is not among the items of "in,out,inout,bounce,overshoot," then return "error:"&&tMethod&&"is not a valid easing method. Must be in,out or inOut"
-   set the backColor of the templateGraphic to (the effective foreColor ot tTest2)
+   set the backColor of the templateGraphic to (the effective foreColor of tTest2)
       set the backPixel of the templateGraphic to (the effective backPixel of the templateGraphic)
       put the backColor of the templateGraphic into tCurrentForeColorOfChunk
    #set the backcolor of grc "testColor" of stack "animationEngine" to the effective forecolor of tTest2
