@@ -408,6 +408,10 @@ uint2 MCScreenDC::getvclass()
 	return DirectColor;
 }
 
+// Forward declarations for dark-mode helpers defined later in this file.
+extern "C" bool MCplatformIsDarkMode(void);
+static void MCWin32ApplyDarkModeChrome(HWND p_hwnd, BOOL p_dark);
+
 // MW-2007-07-05: [[ Bug 471 ]] Modal/Sheets do not enable/disable windows correctly.
 void MCScreenDC::openwindow(Window w, Boolean override)
 {
@@ -431,6 +435,10 @@ void MCScreenDC::openwindow(Window w, Boolean override)
         SetWindowLongPtr((HWND)w->handle.window, GWLP_HWNDPARENT, (LONG_PTR)m_main_window_current);
     }
 
+	// Apply dark/light title-bar chrome before the window becomes visible so
+	// there is no flash of the wrong colour.
+	MCWin32ApplyDarkModeChrome((HWND)w->handle.window, MCplatformIsDarkMode() ? TRUE : FALSE);
+
 	if (override)
 		ShowWindow((HWND)w->handle.window, SW_SHOWNA);
 	else
@@ -439,7 +447,7 @@ void MCScreenDC::openwindow(Window w, Boolean override)
 			ShowWindow((HWND)w->handle.window, SW_SHOWMINIMIZED);
 		else if (IsIconic((HWND)w->handle.window))
 			ShowWindow((HWND)w->handle.window, SW_RESTORE);
-		else 
+		else
 			ShowWindow((HWND)w->handle.window, SW_SHOW);
 
 	if (t_stack != NULL)
@@ -829,35 +837,87 @@ static MCRectangle snaprect;
 static int32_t snapoffsetx, snapoffsety;
 
 typedef HRESULT (CALLBACK *DwmIsCompositionEnabledPtr)(BOOL *p_enabled);
+typedef HRESULT (CALLBACK *DwmSetWindowAttributePtr)(HWND, DWORD, LPCVOID, DWORD);
 static HMODULE s_dwmapi_library = NULL;
 static DwmIsCompositionEnabledPtr s_dwm_is_composition_enabled = NULL;
+static DwmSetWindowAttributePtr   s_dwm_set_window_attribute   = NULL;
+
+// DWMWA_USE_IMMERSIVE_DARK_MODE: tells DWM to draw the title bar in dark mode.
+// Value 20 is the SDK constant (Win10 20H1 / build 19041+).
+// Value 19 is the undocumented equivalent for older Win10 insider builds.
+#ifndef DWMWA_USE_IMMERSIVE_DARK_MODE
+#define DWMWA_USE_IMMERSIVE_DARK_MODE 20
+#endif
+
+static bool s_ensure_dwmapi(void)
+{
+	if (s_dwmapi_library != NULL)
+		return true;
+
+	s_dwmapi_library = LoadLibraryA("dwmapi.dll");
+	if (s_dwmapi_library == NULL)
+		return false;
+
+	s_dwm_is_composition_enabled = (DwmIsCompositionEnabledPtr)GetProcAddress(s_dwmapi_library, "DwmIsCompositionEnabled");
+	s_dwm_set_window_attribute   = (DwmSetWindowAttributePtr)  GetProcAddress(s_dwmapi_library, "DwmSetWindowAttribute");
+
+	if (s_dwm_is_composition_enabled == NULL)
+	{
+		FreeLibrary(s_dwmapi_library);
+		s_dwmapi_library = NULL;
+		return false;
+	}
+	return true;
+}
 
 static bool WindowsIsCompositionEnabled(void)
 {
 	if (MCmajorosversion < MCOSVersionMake(6,0,0))
 		return false;
 
-	if (s_dwmapi_library == NULL)
-	{
-		s_dwmapi_library = LoadLibraryA("dwmapi.dll");
-		if (s_dwmapi_library == NULL)
-			return false;
-
-		s_dwm_is_composition_enabled = (DwmIsCompositionEnabledPtr)GetProcAddress(s_dwmapi_library, "DwmIsCompositionEnabled");
-
-		if (s_dwm_is_composition_enabled == NULL)
-		{
-			FreeLibrary(s_dwmapi_library);
-			s_dwmapi_library = NULL;
-			return false;
-		}
-	}
+	if (!s_ensure_dwmapi())
+		return false;
 
 	BOOL t_enabled;
 	if (s_dwm_is_composition_enabled(&t_enabled) != S_OK)
 		return false;
 
 	return t_enabled != FALSE;
+}
+
+// Apply (or remove) dark-mode title bar chrome to a single HWND.
+// Safe to call on any HWND; silently no-ops if DWM is unavailable.
+static void MCWin32ApplyDarkModeChrome(HWND p_hwnd, BOOL p_dark)
+{
+	if (p_hwnd == NULL || !s_ensure_dwmapi() || s_dwm_set_window_attribute == NULL)
+		return;
+
+	// Try the documented attribute (20) first; fall back to the pre-release
+	// undocumented attribute (19) for older Win10 insider builds.
+	if (FAILED(s_dwm_set_window_attribute(p_hwnd, DWMWA_USE_IMMERSIVE_DARK_MODE, &p_dark, sizeof(p_dark))))
+		s_dwm_set_window_attribute(p_hwnd, 19, &p_dark, sizeof(p_dark));
+}
+
+// Apply the current dark/light mode to every visible top-level stack window.
+static void MCWin32SyncAllWindowChrome(void)
+{
+	BOOL t_dark = MCplatformIsDarkMode() ? TRUE : FALSE;
+	MCStacknode *t_node = MCstacks->topnode();
+	if (t_node == nullptr)
+		return;
+	MCStacknode *t_first = t_node;
+	do
+	{
+		MCStack *t_stack = t_node->getstack();
+		if (t_stack != nullptr)
+		{
+			Window t_win = t_stack->getwindow();
+			if (t_win != nullptr && t_win->handle.window != nullptr)
+				MCWin32ApplyDarkModeChrome((HWND)t_win->handle.window, t_dark);
+		}
+		t_node = t_node->next();
+	}
+	while (t_node != t_first);
 }
 
 // MW-2014-02-20: [[ Bug 11811 ]] Updated to scale snapshot to requested size.
@@ -1236,7 +1296,11 @@ void MCScreenDC::processdesktopchanged(bool p_notify, bool p_update_fonts)
 	if (p_update_fonts)
 	    MCdispatcher->recomputefonts(NULL, true);
     //MCRedrawDirtyScreen();
-    
+
+	// Sync dark/light title-bar chrome on all open windows whenever desktop
+	// settings change (covers both ImmersiveColorSet and display changes).
+	MCWin32SyncAllWindowChrome();
+
 	if (p_notify && t_changed)
 		MCscreen -> delaymessage(MCdefaultstackptr -> getcurcard(), MCM_desktop_changed);
 }
