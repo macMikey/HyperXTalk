@@ -756,12 +756,8 @@ on ideStyleTextRequest pWhich, pValue, pSelectedChunk, pSelectedObject
 end ideStyleTextRequest
 
 // HXT
-on systemAppearanceChanged pMode, pWindowColor
+on systemAppearanceChanged pMode, pWindowColor, pTextColor
    set the cInspectorBackgroundColor of stack "revPreferences" to pWindowColor
    set the backgroundColor of this stack to pWindowColor
-   if pMode is "dark" then
-      set the foreColor of me to "white"
-   else
-      set the foreColor of me to "black"
-   end if
+   set the foregroundColor of this stack to pTextColor
 end systemAppearanceChanged

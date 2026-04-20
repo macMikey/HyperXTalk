@@ -2,6 +2,8 @@
 constant kPropertyInspectorPrefix = "revPropertyInspector"
 on preOpenStack
    inspectorMessagesRegister
+   set the backgroundColor of me to (the systemWindowColor)
+   set the foregroundColor of me to (the systemTextColor)
 end preOpenStack
 
 on inspectorMessagesRegister
@@ -264,14 +266,3 @@ on highlightObject pObjectData
    dispatch "navSelected" to tTargetInspector with pObjectData["section"]
    unlock screen
 end highlightObject
-
-
-
-// HXT
-on preOpenStack
-   if (the systemAppearance is "dark") then
-      set the backColor of me to "#323232"
-   else
-      set the backColor of me to "#ececec"
-   end if
-end preOpenStack
