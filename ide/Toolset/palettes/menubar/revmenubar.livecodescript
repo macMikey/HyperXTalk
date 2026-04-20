@@ -1442,14 +1442,14 @@ private function revMenubarFileMenu pContext
    local tFile
    put "&New Stack" & return after tFile
    put tab & "Default Size/CMD SHIFT N" & return after tFile
-   --   put tab & "-" & return after tFile
-   --   put tab & "iPhone 4 (320x480)" & return after tFile
-   --   put tab & "iPhone 5 (320x568)" & return after tFile
+   put tab & "-" & return after tFile
+   put tab & "Medium (800x600)" & return after tFile
+   put tab & "Large (1024x768)" & return after tFile
    --   put tab & "iPhone 6 (375x667)" & return after tFile
    --   put tab & "iPhone 6 Plus (414x736)" & return after tFile
-   --   put tab & "iPad//Tablet Portrait (768x1024)" & return after tFile
-   --   put tab & "iPad//Tablet Landscape (1024x768)" & return after tFile
-   --   put tab & "-" & return after tFile
+   put tab & "Large Portrait (768x1024)" & return after tFile
+   --   put tab & "Landscape (1024x768)" & return after tFile
+   put tab & "-" & return after tFile
    put tab & "Script only Stack" & return after tFile
    
    if tIsUserTarget and not tIsScriptOnly then
