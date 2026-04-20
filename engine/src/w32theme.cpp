@@ -1189,41 +1189,153 @@ Boolean MCNativeTheme::drawprogressbar(MCDC *dc, const MCWidgetInfo &winfo, cons
 
 
 
+// Helper used by drawslider: build a track strip (3 px thick) centred on the
+// axis perpendicular to travel, from the supplied track-segment rect.
+static MCRectangle s_slider_track_strip(const MCRectangle &seg, bool t_vertical)
+{
+	const int2 k_thickness = 3;
+	MCRectangle r;
+	if (t_vertical)
+	{
+		int2 cx = seg.x + seg.width / 2;
+		MCU_set_rect(r, cx - k_thickness / 2, seg.y, k_thickness, seg.height);
+	}
+	else
+	{
+		int2 cy = seg.y + seg.height / 2;
+		MCU_set_rect(r, seg.x, cy - k_thickness / 2, seg.width, k_thickness);
+	}
+	return r;
+}
+
+// Helper used by drawslider: build a square thumb rect that is:
+//   · Centred on the thumb position along the travel axis (from sbthumbrect)
+//   · Centred on the cross axis within drect
+//   · Fully contained within drect (diameter = min(control cross-size, 14) − 2)
+static MCRectangle s_slider_thumb_rect(const MCRectangle &sbthumbrect,
+                                        const MCRectangle &drect,
+                                        bool t_vertical)
+{
+	// Diameter: leave at least 1 px margin on each side of the cross-axis.
+	int2 t_cross = t_vertical ? drect.width : drect.height;
+	int2 t_diam  = t_cross - 2;
+	if (t_diam < 4)  t_diam = 4;
+	if (t_diam > 14) t_diam = 14;
+	// Make it even so halving gives no fractional pixel.
+	if (t_diam % 2 != 0) t_diam--;
+
+	int2 t_cx, t_cy;
+	if (t_vertical)
+	{
+		t_cx = drect.x + drect.width  / 2;
+		t_cy = sbthumbrect.y + sbthumbrect.height / 2;
+	}
+	else
+	{
+		t_cx = sbthumbrect.x + sbthumbrect.width / 2;
+		t_cy = drect.y + drect.height / 2;
+	}
+
+	MCRectangle r;
+	MCU_set_rect(r, t_cx - t_diam / 2, t_cy - t_diam / 2, t_diam, t_diam);
+	return r;
+}
+
 Boolean MCNativeTheme::drawslider(MCDC *dc, const MCWidgetInfo &winfo, const MCRectangle &drect)
 {
 	if (winfo.datatype != WTHEME_DATA_SCROLLBAR &&
 	        winfo.type != WTHEME_TYPE_SMALLSCROLLBAR)
 		return False;
-	MCWidgetScrollBarInfo *sbinfo = (MCWidgetScrollBarInfo *)winfo.data;
-	//draw arrows
+
 	MCWidgetInfo twinfo = winfo;
-	MCRectangle sbincarrowrect,sbdecarrowrect, sbthumbrect, sbinctrackrect, sbdectrackrect;
-	getscrollbarrects(winfo, drect, sbincarrowrect, sbdecarrowrect, sbthumbrect,sbinctrackrect,sbdectrackrect);
-	uint4 sbpartdefaultstate = winfo.state & WTHEME_STATE_DISABLED? WTHEME_STATE_DISABLED: WTHEME_STATE_CLEAR;
-	memset(&twinfo,0,sizeof(MCWidgetInfo)); //clear widget info
-	//draw upper and lower tracks first
-	twinfo.type = winfo.attributes & WTHEME_ATT_SBVERTICAL ? WTHEME_TYPE_SLIDER_TRACK_VERTICAL: WTHEME_TYPE_SLIDER_TRACK_HORIZONTAL;
-	twinfo.state = sbpartdefaultstate;
-	if (winfo.part == WTHEME_PART_TRACK_DEC || winfo.part == WTHEME_PART_TRACK_INC)
-		twinfo.state = winfo.state;
-	MCRectangle trect;
-	getwidgetrect(twinfo,WTHEME_METRIC_OPTIMUMSIZE,drect,trect);
-	if (winfo.attributes & WTHEME_ATT_SBVERTICAL)
+	MCRectangle sbincarrowrect, sbdecarrowrect, sbthumbrect, sbinctrackrect, sbdectrackrect;
+	getscrollbarrects(winfo, drect, sbincarrowrect, sbdecarrowrect, sbthumbrect, sbinctrackrect, sbdectrackrect);
+	memset(&twinfo, 0, sizeof(MCWidgetInfo));
+
+	bool t_dark     = MCplatformIsDarkMode();
+	bool t_disabled = (winfo.state & WTHEME_STATE_DISABLED) != 0;
+	bool t_hover    = (winfo.state & WTHEME_STATE_HOVER)    != 0;
+	bool t_pressed  = (winfo.state & WTHEME_STATE_PRESSED)  != 0;
+	bool t_vertical = (winfo.attributes & WTHEME_ATT_SBVERTICAL) != 0;
+
+	// ── Custom slider: used for BOTH light and dark mode ───────────────────────
+	// Design: thin 3 px track split at the thumb (blue dec-side, grey inc-side)
+	//         + circular thumb fully contained within the control rect.
+
+	// ── Dec track (filled / blue) ─────────────────────────────────────────────
+	if (sbdectrackrect.width > 0 && sbdectrackrect.height > 0)
 	{
-		trect.height = drect.height;
-		trect.x += (sbthumbrect.width - trect.width) >> 1;
+		MCRectangle t_dec = s_slider_track_strip(sbdectrackrect, t_vertical);
+		MCColor t_blue;
+		if (t_disabled)
+		{
+			if (t_dark) { MCColor c = {0x4040, 0x5858, 0x7878}; t_blue = c; }
+			else         { MCColor c = {0x9898, 0xb8b8, 0xd8d8}; t_blue = c; }  // desaturated blue
+		}
+		else { MCColor c = {0x0000, 0x7878, 0xd4d4}; t_blue = c; }  // #0078D4
+		dc->setforeground(t_blue);
+		dc->setfillstyle(FillSolid, nil, 0, 0);
+		dc->fillrect(t_dec);
 	}
-	else
+
+	// ── Inc track (unfilled / grey) ───────────────────────────────────────────
+	if (sbinctrackrect.width > 0 && sbinctrackrect.height > 0)
 	{
-		trect.width = drect.width;
-		trect.y += (sbthumbrect.height - trect.height) >> 1;
+		MCRectangle t_inc = s_slider_track_strip(sbinctrackrect, t_vertical);
+		MCColor t_grey;
+		if (t_dark)
+		{
+			if (t_disabled) { MCColor c = {0x3535, 0x3535, 0x3535}; t_grey = c; }
+			else             { MCColor c = {0x5555, 0x5555, 0x5555}; t_grey = c; }
+		}
+		else
+		{
+			if (t_disabled) { MCColor c = {0xd8d8, 0xd8d8, 0xd8d8}; t_grey = c; }
+			else             { MCColor c = {0xc8c8, 0xc8c8, 0xc8c8}; t_grey = c; }  // #C8C8C8
+		}
+		dc->setforeground(t_grey);
+		dc->setfillstyle(FillSolid, nil, 0, 0);
+		dc->fillrect(t_inc);
 	}
-	drawwidget(dc, twinfo, trect);
-	twinfo.state = sbpartdefaultstate;
-	twinfo.type = winfo.attributes & WTHEME_ATT_SBVERTICAL ? WTHEME_TYPE_SLIDER_THUMB_VERTICAL: WTHEME_TYPE_SLIDER_THUMB_HORIZONTAL;
-	if (winfo.part == WTHEME_PART_THUMB)
-		twinfo.state = winfo.state;
-	drawwidget(dc, twinfo, sbthumbrect);
+
+	// ── Thumb (filled circle, always square and within drect) ─────────────────
+	if (sbthumbrect.width > 0 && sbthumbrect.height > 0)
+	{
+		// Build a properly-sized square rect — fixes the half-circle clipping issue
+		// that occurs when the UxTheme-reported thumb height > drect height.
+		MCRectangle t_thumb = s_slider_thumb_rect(sbthumbrect, drect, t_vertical);
+
+		MCColor t_fill, t_border;
+		if (t_dark)
+		{
+			// Dark mode: light grey thumb on dark background
+			if      (t_disabled) { MCColor c = {0x4848, 0x4848, 0x4848}; t_fill = c; }
+			else if (t_pressed)  { MCColor c = {0xbcbc, 0xbcbc, 0xbcbc}; t_fill = c; }
+			else if (t_hover)    { MCColor c = {0xf5f5, 0xf5f5, 0xf5f5}; t_fill = c; }
+			else                 { MCColor c = {0xe8e8, 0xe8e8, 0xe8e8}; t_fill = c; }
+
+			if (t_disabled) { MCColor c = {0x3535, 0x3535, 0x3535}; t_border = c; }
+			else             { MCColor c = {0x9898, 0x9898, 0x9898}; t_border = c; }
+		}
+		else
+		{
+			// Light mode: white thumb, mid-grey border (matches reference image)
+			if      (t_disabled) { MCColor c = {0xc8c8, 0xc8c8, 0xc8c8}; t_fill = c; }
+			else if (t_pressed)  { MCColor c = {0xe0e0, 0xe0e0, 0xe0e0}; t_fill = c; }
+			else if (t_hover)    { MCColor c = {0xfafa, 0xfafa, 0xfafa}; t_fill = c; }
+			else                 { MCColor c = {0xffff, 0xffff, 0xffff}; t_fill = c; }  // white
+
+			if (t_disabled) { MCColor c = {0xc0c0, 0xc0c0, 0xc0c0}; t_border = c; }
+			else             { MCColor c = {0xadad, 0xadad, 0xadad}; t_border = c; }  // #ADADAD
+		}
+
+		dc->setforeground(t_fill);
+		dc->setfillstyle(FillSolid, nil, 0, 0);
+		dc->fillarc(t_thumb, 0, 360, false);
+
+		dc->setforeground(t_border);
+		dc->drawarc(t_thumb, 0, 360, false);
+	}
 
 	return True;
 }
