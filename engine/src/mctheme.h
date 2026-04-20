@@ -244,6 +244,10 @@ public:
 
 	virtual uint2 getthemeid();
 	virtual uint2 getthemefamilyid();
+	// Returns true when the platform is currently in dark mode.
+	// Used by the button drawing code to choose appropriate text colours for
+	// menu bar items when the theme has taken over background painting.
+	virtual bool isdarkmodeactive() { return false; }
 	virtual int4 getmetric(Widget_Metric wmetric);
 	virtual Boolean iswidgetsupported(Widget_Type wtype);
 	virtual int4 getwidgetmetric(const MCWidgetInfo &winfo,Widget_Metric wmetric);

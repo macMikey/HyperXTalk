@@ -46,6 +46,9 @@ along with LiveCode.  If not see <http://www.gnu.org/licenses/>.  */
 
 #include "graphicscontext.h"
 #include "graphics_util.h"
+#include "redraw.h"
+#include "mctheme.h"
+#include "w32theme.h"
 
 #ifndef CS_DROPSHADOW
 #define CS_DROPSHADOW   0x00020000
@@ -870,6 +873,52 @@ static bool s_ensure_dwmapi(void)
 	return true;
 }
 
+// ── Private uxtheme.dll dark-mode APIs ───────────────────────────────────────
+// These ordinals are not in any public SDK header but have been stable since
+// Windows 10 build 17763 (1809) and are used by many open-source apps
+// (e.g. Mozilla, Chromium) to enable per-window and per-process dark mode for
+// UxTheme-drawn controls (including LiveCode's custom menu bar).
+//
+//   Ordinal 133  AllowDarkModeForWindow(HWND, BOOL) -> BOOL
+//   Ordinal 135  SetPreferredAppMode(int) -> int   (1903+; fallback: AllowDarkModeForApp)
+//   Ordinal 136  FlushMenuThemes() -> void
+typedef BOOL (WINAPI *AllowDarkModeForWindowPtr)(HWND hwnd, BOOL allow);
+typedef int  (WINAPI *SetPreferredAppModePtr)(int mode);   // 0=Default, 1=AllowDark, 2=ForceDark, 3=ForceLight
+typedef void (WINAPI *FlushMenuThemesPtr)(void);
+
+static HMODULE                 s_uxtheme_library            = NULL;
+static AllowDarkModeForWindowPtr s_allow_dark_mode_for_window = NULL;
+static SetPreferredAppModePtr    s_set_preferred_app_mode     = NULL;
+static FlushMenuThemesPtr        s_flush_menu_themes          = NULL;
+
+static bool s_ensure_uxtheme_dark(void)
+{
+	if (s_uxtheme_library != NULL)
+		return true;
+
+	s_uxtheme_library = LoadLibraryA("uxtheme.dll");
+	if (s_uxtheme_library == NULL)
+		return false;
+
+	s_allow_dark_mode_for_window = (AllowDarkModeForWindowPtr) GetProcAddress(s_uxtheme_library, MAKEINTRESOURCEA(133));
+	s_set_preferred_app_mode     = (SetPreferredAppModePtr)    GetProcAddress(s_uxtheme_library, MAKEINTRESOURCEA(135));
+	s_flush_menu_themes          = (FlushMenuThemesPtr)        GetProcAddress(s_uxtheme_library, MAKEINTRESOURCEA(136));
+
+	// All three must be present; fall back gracefully on older Windows.
+	if (s_allow_dark_mode_for_window == NULL ||
+	    s_set_preferred_app_mode     == NULL ||
+	    s_flush_menu_themes          == NULL)
+	{
+		// Not all functions available – clear so callers skip dark-mode logic.
+		s_allow_dark_mode_for_window = NULL;
+		s_set_preferred_app_mode     = NULL;
+		s_flush_menu_themes          = NULL;
+		// Keep the library handle so we don't keep retrying.
+		return false;
+	}
+	return true;
+}
+
 static bool WindowsIsCompositionEnabled(void)
 {
 	if (MCmajorosversion < MCOSVersionMake(6,0,0))
@@ -885,11 +934,23 @@ static bool WindowsIsCompositionEnabled(void)
 	return t_enabled != FALSE;
 }
 
-// Apply (or remove) dark-mode title bar chrome to a single HWND.
-// Safe to call on any HWND; silently no-ops if DWM is unavailable.
+// Apply (or remove) dark-mode chrome to a single HWND.
+// Sets both the DWM title-bar colour and the uxtheme window-level dark mode
+// flag so that OpenThemeData(hwnd, "Menu") returns the correct dark/light
+// HTHEME for LiveCode's custom-drawn menu bar.
+// Safe to call on any HWND; silently no-ops if the APIs are unavailable.
 static void MCWin32ApplyDarkModeChrome(HWND p_hwnd, BOOL p_dark)
 {
-	if (p_hwnd == NULL || !s_ensure_dwmapi() || s_dwm_set_window_attribute == NULL)
+	if (p_hwnd == NULL)
+		return;
+
+	// Mark the window as dark/light for uxtheme so OpenThemeData honours the
+	// setting.  Must be done before (re)opening any theme handles for this hwnd.
+	if (s_ensure_uxtheme_dark() && s_allow_dark_mode_for_window != NULL)
+		s_allow_dark_mode_for_window(p_hwnd, p_dark);
+
+	// Paint the title bar dark/light via DWM.
+	if (!s_ensure_dwmapi() || s_dwm_set_window_attribute == NULL)
 		return;
 
 	// Try the documented attribute (20) first; fall back to the pre-release
@@ -1300,6 +1361,44 @@ void MCScreenDC::processdesktopchanged(bool p_notify, bool p_update_fonts)
 	// Sync dark/light title-bar chrome on all open windows whenever desktop
 	// settings change (covers both ImmersiveColorSet and display changes).
 	MCWin32SyncAllWindowChrome();
+
+	// ── Dark-mode menu bar refresh ────────────────────────────────────────────
+	// LiveCode draws its menu bar with UxTheme (OpenThemeData / DrawThemeBackground).
+	// The HTHEME for the "Menu" class must be (re)opened against a window that
+	// has AllowDarkModeForWindow applied; otherwise Windows always returns the
+	// light-mode theme even when the system is in dark mode.
+	//
+	// Sequence:
+	//  1. Tell Windows this process honours dark mode (SetPreferredAppMode).
+	//  2. Mark the invisible window as dark/light (AllowDarkModeForWindow).
+	//  3. Flush uxtheme's internal menu-theme cache (FlushMenuThemes).
+	//  4. Cycle MCcurtheme so it closes the stale HTHEME handles and re-opens
+	//     them – the new "Menu" handle will now be dark when appropriate.
+	//  5. Repaint everything.
+	if (s_ensure_uxtheme_dark())
+	{
+		// 1. Process-level preference: allow dark mode when the system requests it.
+		s_set_preferred_app_mode(1 /* AllowDark */);
+
+		// 2. Mark the invisible window so OpenThemeData(invisiblehwnd, "Menu")
+		//    returns the dark HTHEME.  MCNativeTheme::load() will use this hwnd.
+		BOOL t_dark = MCplatformIsDarkMode() ? TRUE : FALSE;
+		MCWin32ApplyDarkModeChrome(invisiblehwnd, t_dark);
+
+		// 3. Invalidate uxtheme's cached menu theme data.
+		s_flush_menu_themes();
+
+		// 4. Cycle the native theme so it re-opens all HTHEME handles
+		//    (including mMenuTheme) against the now-configured window.
+		if (MCcurtheme && MCcurtheme->getthemeid() == LF_NATIVEWIN)
+		{
+			MCcurtheme->unload();
+			MCcurtheme->load();
+		}
+
+		// 5. Repaint all windows with fresh theme data.
+		MCRedrawDirtyScreen();
+	}
 
 	if (p_notify && t_changed)
 		MCscreen -> delaymessage(MCdefaultstackptr -> getcurcard(), MCM_desktop_changed);

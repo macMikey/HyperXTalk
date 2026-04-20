@@ -33,6 +33,7 @@ along with LiveCode.  If not see <http://www.gnu.org/licenses/>.  */
 #include "cdata.h"
 #include "image.h"
 #include "button.h"
+#include "mctheme.h"
 #include "field.h"
 #include "stacklst.h"
 #include "undolst.h"
@@ -40,7 +41,6 @@ along with LiveCode.  If not see <http://www.gnu.org/licenses/>.  */
 #include "param.h"
 
 #include "globals.h"
-#include "mctheme.h"
 
 #include "context.h"
 #include "graphics_util.h"
@@ -148,17 +148,41 @@ void MCButton::draw(MCDC *dc, const MCRectangle& p_dirty, bool p_isolated, bool 
 			MCcurtheme -> drawmenuheaderbackground(dc, dirty, this))
 		{
 			t_themed_menu = true;
-            //dc -> setforeground(getflag(F_DISABLED) ? dc -> getgray() : dc -> getblack());
-            setforeground(dc, DI_PSEUDO_BUTTON_TEXT, False);
+			if (MCcurtheme->isdarkmodeactive())
+			{
+				// Dark background was painted by the theme — use light text.
+				// Disabled items get a mid-grey; normal/hovered items get near-white.
+				MCColor t_text;
+				if (getflag(F_DISABLED))
+					t_text = {0x7373, 0x7373, 0x7373};
+				else
+					t_text = {0xf3f3, 0xf3f3, 0xf3f3};
+				dc->setforeground(t_text);
+			}
+			else
+			{
+				setforeground(dc, DI_PSEUDO_BUTTON_TEXT, False);
+			}
 		}
 		else if (menucontrol != MENUCONTROL_NONE && MCcurtheme != NULL &&
 				MCcurtheme -> drawmenuitembackground(dc, dirty, this))
 		{
 			t_themed_menu = true;
 			indicator = False;
-            //dc -> setforeground(getflag(F_DISABLED) ? dc -> getgray() : dc -> getblack());
-            setforeground(dc, DI_PSEUDO_BUTTON_TEXT, False);
-        }
+			if (MCcurtheme->isdarkmodeactive())
+			{
+				MCColor t_text;
+				if (getflag(F_DISABLED))
+					t_text = {0x7373, 0x7373, 0x7373};
+				else
+					t_text = {0xf3f3, 0xf3f3, 0xf3f3};
+				dc->setforeground(t_text);
+			}
+			else
+			{
+				setforeground(dc, DI_PSEUDO_BUTTON_TEXT, False);
+			}
+		}
 		else
 		{
 		if (flags & F_OPAQUE && (MCcurtheme == NULL || !noback
@@ -371,12 +395,28 @@ void MCButton::draw(MCDC *dc, const MCRectangle& p_dirty, bool p_isolated, bool 
 				dc->setforeground(dc->getgray());
 				dc->setfillstyle(FillSolid, nil, 0, 0);
 			}
+			else if (IsNativeWin() && MCcurtheme->isdarkmodeactive())
+			{
+				// Dark-mode disabled button text: medium grey so it's readable on
+				// the dark (#2A2A2A) disabled button background.
+				MCColor t_dis_text = {0x7373, 0x7373, 0x7373};
+				dc->setforeground(t_dis_text);
+				dc->setfillstyle(FillSolid, nil, 0, 0);
+			}
 			else
 				setforeground(dc, DI_TOP, False);
         }
 		else
         {
-			if ((white && state & CS_KFOCUSED && !(state & CS_SUBMENU)) ||
+			if (IsNativeWin() && MCcurtheme->isdarkmodeactive())
+			{
+				// Dark-mode enabled button text: near-white over the dark
+				// (#373737 / #454545) button background.
+				MCColor t_text = {0xf3f3, 0xf3f3, 0xf3f3};
+				dc->setforeground(t_text);
+				dc->setfillstyle(FillSolid, nil, 0, 0);
+			}
+			else if ((white && state & CS_KFOCUSED && !(state & CS_SUBMENU)) ||
 				(isstdbtn && noback && (MCcurtheme == NULL || (MCcurtheme->getthemeid() != LF_NATIVEWIN && MCcurtheme->getthemeid() != LF_NATIVEGTK)) && state & CS_HILITED && !MCaqua) ||
 				(MClook != LF_MOTIF && style == F_MENU && flags & F_OPAQUE && state & CS_ARMED && !(flags & F_SHOW_BORDER)))
 				setforeground(dc, DI_PSEUDO_BUTTON_TEXT_SEL, False, True);
@@ -1678,9 +1718,20 @@ void MCButton::drawtabs(MCDC *dc, MCRectangle &srect)
 				dc->setfillstyle(FillSolid, nil, 0, 0);
 				break;
 			default:
-				setforeground(dc, DI_TOP, False);
-                dc -> drawtext_substring(textx, cury + yoffset + 1, t_tab, t_range, m_font, false, kMCDrawTextNoBreak);
-				setforeground(dc, DI_BOTTOM, False);
+				if (IsNativeWin() && MCcurtheme->isdarkmodeactive())
+				{
+					// Disabled tab text in dark mode: dimmed grey readable on
+					// the dark (#282828) unselected-tab background.
+					MCColor t_dis_tab = {0x6060, 0x6060, 0x6060};
+					dc->setforeground(t_dis_tab);
+					dc->setfillstyle(FillSolid, nil, 0, 0);
+				}
+				else
+				{
+					setforeground(dc, DI_TOP, False);
+                	dc -> drawtext_substring(textx, cury + yoffset + 1, t_tab, t_range, m_font, false, kMCDrawTextNoBreak);
+					setforeground(dc, DI_BOTTOM, False);
+				}
 				break;
 			}
 		}
@@ -1732,6 +1783,13 @@ void MCButton::drawtabs(MCDC *dc, MCRectangle &srect)
                 else
 #endif
                     setforeground(dc, DI_PSEUDO_BUTTON_TEXT_SEL, False, True);
+			}
+			else if (IsNativeWin() && MCcurtheme->isdarkmodeactive())
+			{
+				// Dark-mode tab text: near-white on the dark tab/pane background.
+				MCColor t_tab_text = {0xf3f3, 0xf3f3, 0xf3f3};
+				dc->setforeground(t_tab_text);
+				dc->setfillstyle(FillSolid, nil, 0, 0);
 			}
 			else
 				setforeground(dc, DI_PSEUDO_BUTTON_TEXT, False);

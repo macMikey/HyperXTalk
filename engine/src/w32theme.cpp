@@ -287,7 +287,17 @@ Boolean MCNativeTheme::load()
 	}
 	
 	if (MCmajorosversion >= MCOSVersionMake(6,0,0))
-		mMenuTheme = (MCWinSysHandle)openTheme(NULL, L"Menu");
+	{
+		// Open the menu theme against the invisible window (rather than NULL) so
+		// that uxtheme honours the AllowDarkModeForWindow flag set on it.  When
+		// dark mode is active and AllowDarkModeForWindow has been called on this
+		// HWND, OpenThemeData returns the dark "Menu" HTHEME; otherwise it
+		// returns the light one.  The invisible window is guaranteed to exist by
+		// the time load() is called (it is created in MCScreenDC::open()).
+		HWND t_invis = ((MCScreenDC *)MCscreen)->getinvisiblewindow();
+		HWND t_hwnd  = (t_invis != NULL) ? t_invis : NULL;
+		mMenuTheme = (MCWinSysHandle)openTheme(t_hwnd, L"Menu");
+	}
 
 	return GetTheme(WTHEME_TYPE_PUSHBUTTON) != NULL;
 }
@@ -443,6 +453,15 @@ MCWinSysHandle MCNativeTheme::GetTheme(Widget_Type wtype)
 
 void MCNativeTheme::CloseData()
 {
+	// mMenuTheme is opened in load() against the invisible window so that
+	// AllowDarkModeForWindow affects it.  It must be closed here so that the
+	// unload()/load() cycle in processdesktopchanged() re-opens it with the
+	// updated dark/light state.
+	if (mMenuTheme)
+	{
+		closeTheme(mMenuTheme);
+		mMenuTheme = NULL;
+	}
 	if (mToolbarTheme)
 	{
 		closeTheme(mToolbarTheme);
@@ -774,6 +793,33 @@ uint2 MCNativeTheme::getthemefamilyid()
 	return LF_WIN95; //however it belongs to the win32 theme family
 }
 
+// Forward declaration so drawwidget() can query dark mode before the full
+// isdarkmodeactive() / drawmenu* block further down in this file.
+extern "C" bool MCplatformIsDarkMode(void);
+
+// ── Dark-mode colour helpers ───────────────────────────────────────────────────
+// Defined here (before drawwidget and the drawmenu* functions) so every
+// function in this translation unit can use them without forward declarations.
+//
+// Menu bar colours (Windows 11 Fluent dark appearance):
+static MCColor s_dark_menu_bg()        { MCColor c = {0x2020, 0x2020, 0x2020}; return c; }
+static MCColor s_dark_menu_hover()     { MCColor c = {0x3b3b, 0x3b3b, 0x3b3b}; return c; }
+static MCColor s_dark_menu_pressed()   { MCColor c = {0x4d4d, 0x4d4d, 0x4d4d}; return c; }
+//
+// Control colours (buttons, fields, tabs, groups):
+static MCColor s_dark_ctrl_bg()        { MCColor c = {0x3737, 0x3737, 0x3737}; return c; }  // #373737 normal
+static MCColor s_dark_ctrl_bg_hover()  { MCColor c = {0x4545, 0x4545, 0x4545}; return c; }  // #454545 hover
+static MCColor s_dark_ctrl_bg_press()  { MCColor c = {0x2b2b, 0x2b2b, 0x2b2b}; return c; }  // #2B2B2B pressed
+static MCColor s_dark_ctrl_bg_dis()    { MCColor c = {0x2a2a, 0x2a2a, 0x2a2a}; return c; }  // #2A2A2A disabled
+static MCColor s_dark_ctrl_border()    { MCColor c = {0x5c5c, 0x5c5c, 0x5c5c}; return c; }  // #5C5C5C border
+static MCColor s_dark_ctrl_focus()     { MCColor c = {0x3c78, 0x7878, 0xdcdc}; return c; }  // #3C78DC focus ring
+static MCColor s_dark_field_bg()       { MCColor c = {0x1e1e, 0x1e1e, 0x1e1e}; return c; }  // #1E1E1E field fill
+static MCColor s_dark_field_border()   { MCColor c = {0x5555, 0x5555, 0x5555}; return c; }  // #555555 field border
+static MCColor s_dark_tab_sel_bg()     { MCColor c = {0x3c3c, 0x3c3c, 0x3c3c}; return c; }  // #3C3C3C selected tab
+static MCColor s_dark_tab_unsel_bg()   { MCColor c = {0x2828, 0x2828, 0x2828}; return c; }  // #282828 unselected tab
+static MCColor s_dark_pane_bg()        { MCColor c = {0x2d2d, 0x2d2d, 0x2d2d}; return c; }  // #2D2D2D pane fill
+static MCColor s_dark_group_border()   { MCColor c = {0x5050, 0x5050, 0x5050}; return c; }  // #505050 group border
+
 Boolean MCNativeTheme::drawwidget(MCDC *dc, const MCWidgetInfo &winfo, const MCRectangle &drect)
 {
 	HANDLE htheme = GetTheme(winfo.type);
@@ -901,6 +947,191 @@ Boolean MCNativeTheme::drawwidget(MCDC *dc, const MCWidgetInfo &winfo, const MCR
 		}
 		break;
 	}
+
+	// ── Dark-mode bypass ──────────────────────────────────────────────────────
+	// UxTheme DrawThemeBackground has no dark variant for buttons, text fields,
+	// tabs, or group boxes — it always renders a light-mode appearance regardless
+	// of AllowDarkModeForWindow / SetPreferredAppMode.  In dark mode we skip
+	// UxTheme entirely and paint the controls manually with Fluent dark colours.
+	if (MCplatformIsDarkMode())
+	{
+		bool t_dark_handled = true;
+		switch (winfo.type)
+		{
+		// ── Push / bevel / option buttons ─────────────────────────────────
+		case WTHEME_TYPE_PUSHBUTTON:
+		case WTHEME_TYPE_BEVELBUTTON:
+		case WTHEME_TYPE_RECTANGLE_BUTTON:
+		case WTHEME_TYPE_PULLDOWN:
+		case WTHEME_TYPE_COMBOBUTTON:
+		case WTHEME_TYPE_OPTIONBUTTONARROW:
+		{
+			MCColor t_bg;
+			if (winfo.state & WTHEME_STATE_DISABLED)
+				t_bg = s_dark_ctrl_bg_dis();
+			else if (winfo.state & WTHEME_STATE_PRESSED || winfo.state & WTHEME_STATE_HILITED)
+				t_bg = s_dark_ctrl_bg_press();
+			else if (winfo.state & WTHEME_STATE_HOVER)
+				t_bg = s_dark_ctrl_bg_hover();
+			else
+				t_bg = s_dark_ctrl_bg();
+			dc->setforeground(t_bg);
+			dc->setfillstyle(FillSolid, nil, 0, 0);
+			dc->fillrect(trect);
+			// Border: use focus-ring colour when focused, standard border otherwise
+			MCColor t_border;
+			if (winfo.state & WTHEME_STATE_HASFOCUS)
+				t_border = s_dark_ctrl_focus();
+			else
+				t_border = s_dark_ctrl_border();
+			dc->setforeground(t_border);
+			dc->drawrect(trect, false);
+			break;
+		}
+
+		// ── Checkbox ──────────────────────────────────────────────────────
+		case WTHEME_TYPE_CHECKBOX:
+		{
+			// Draw the indicator box in dark colours
+			MCColor t_bg;
+			if (winfo.state & WTHEME_STATE_DISABLED)
+				t_bg = s_dark_ctrl_bg_dis();
+			else
+				t_bg = s_dark_field_bg();
+			dc->setforeground(t_bg);
+			dc->setfillstyle(FillSolid, nil, 0, 0);
+			dc->fillrect(trect);
+			MCColor t_border;
+			if (winfo.state & WTHEME_STATE_HASFOCUS)
+				t_border = s_dark_ctrl_focus();
+			else
+				t_border = s_dark_ctrl_border();
+			dc->setforeground(t_border);
+			dc->drawrect(trect, false);
+			// If checked, draw a simple check mark using the focus / accent colour
+			if (winfo.state & WTHEME_STATE_HILITED)
+			{
+				MCColor t_check = s_dark_ctrl_focus();
+				dc->setforeground(t_check);
+				// Two line segments forming a "tick": left→mid-low→top-right
+				int2 cx = trect.x + trect.width / 2;
+				int2 cy = trect.y + trect.height / 2;
+				dc->drawline(trect.x + 2,               cy - 1,
+				             cx - 1,                    trect.y + trect.height - 3);
+				dc->drawline(cx - 1,                    trect.y + trect.height - 3,
+				             trect.x + trect.width - 3, trect.y + 2);
+			}
+			break;
+		}
+
+		// ── Radio button ──────────────────────────────────────────────────
+		case WTHEME_TYPE_RADIOBUTTON:
+		{
+			MCColor t_bg;
+			if (winfo.state & WTHEME_STATE_DISABLED)
+				t_bg = s_dark_ctrl_bg_dis();
+			else
+				t_bg = s_dark_field_bg();
+			dc->setforeground(t_bg);
+			dc->setfillstyle(FillSolid, nil, 0, 0);
+			dc->fillrect(trect);
+			MCColor t_border;
+			if (winfo.state & WTHEME_STATE_HASFOCUS)
+				t_border = s_dark_ctrl_focus();
+			else
+				t_border = s_dark_ctrl_border();
+			dc->setforeground(t_border);
+			dc->drawarc(trect, 0, 360);
+			// If selected, draw a small filled dot in the centre
+			if (winfo.state & WTHEME_STATE_HILITED)
+			{
+				MCColor t_dot = s_dark_ctrl_focus();
+				dc->setforeground(t_dot);
+				dc->setfillstyle(FillSolid, nil, 0, 0);
+				int2 inset = trect.width / 4;
+				MCRectangle dot = MCU_reduce_rect(trect, inset);
+				dc->fillrect(dot);
+			}
+			break;
+		}
+
+		// ── Text fields ───────────────────────────────────────────────────
+		case WTHEME_TYPE_TEXTFIELD:
+		case WTHEME_TYPE_TEXTFIELD_FRAME:
+		case WTHEME_TYPE_COMBOTEXT:
+		case WTHEME_TYPE_COMBOFRAME:
+		{
+			// Draw the outer border; the fill is drawn separately as TEXTFIELD_FILL.
+			dc->setforeground(s_dark_field_border());
+			dc->setfillstyle(FillSolid, nil, 0, 0);
+			dc->drawrect(trect, false);
+			break;
+		}
+
+		case WTHEME_TYPE_TEXTFIELD_FILL:
+		{
+			// Fill the content interior of the text field.
+			dc->setforeground(s_dark_field_bg());
+			dc->setfillstyle(FillSolid, nil, 0, 0);
+			dc->fillrect(crect);
+			break;
+		}
+
+		// ── Tab buttons ───────────────────────────────────────────────────
+		case WTHEME_TYPE_TAB:
+		{
+			MCColor t_bg;
+			if (winfo.state & WTHEME_STATE_HILITED)
+				t_bg = s_dark_tab_sel_bg();
+			else
+				t_bg = s_dark_tab_unsel_bg();
+			dc->setforeground(t_bg);
+			dc->setfillstyle(FillSolid, nil, 0, 0);
+			dc->fillrect(trect);
+			dc->setforeground(s_dark_ctrl_border());
+			dc->drawrect(trect, false);
+			break;
+		}
+
+		// ── Tab pane ──────────────────────────────────────────────────────
+		case WTHEME_TYPE_TABPANE:
+		{
+			dc->setforeground(s_dark_pane_bg());
+			dc->setfillstyle(FillSolid, nil, 0, 0);
+			dc->fillrect(trect);
+			dc->setforeground(s_dark_ctrl_border());
+			dc->drawrect(trect, false);
+			break;
+		}
+
+		// ── Group / secondary-group frame ─────────────────────────────────
+		case WTHEME_TYPE_GROUP_FRAME:
+		case WTHEME_TYPE_SECONDARYGROUP_FRAME:
+		{
+			dc->setforeground(s_dark_group_border());
+			dc->setfillstyle(FillSolid, nil, 0, 0);
+			dc->drawrect(trect, false);
+			break;
+		}
+
+		// ── Group / secondary-group fill ──────────────────────────────────
+		case WTHEME_TYPE_GROUP_FILL:
+		case WTHEME_TYPE_SECONDARYGROUP_FILL:
+		{
+			dc->setforeground(s_dark_pane_bg());
+			dc->setfillstyle(FillSolid, nil, 0, 0);
+			dc->fillrect(trect);
+			break;
+		}
+
+		default:
+			t_dark_handled = false;
+			break;
+		}
+		if (t_dark_handled)
+			return True;
+	}
+	// ── End dark-mode bypass ───────────────────────────────────────────────────
 
 	MCThemeDrawInfo t_info;
 	t_info . theme = (MCWinSysHandle)htheme;
@@ -1644,8 +1875,22 @@ bool MCNativeTheme::drawmenubackground(MCDC *dc, const MCRectangle& dirty, const
 	return true;
 }
 
+// ── Dark-mode detection ───────────────────────────────────────────────────────
+extern "C" bool MCplatformIsDarkMode(void);
+bool MCNativeTheme::isdarkmodeactive() { return MCplatformIsDarkMode(); }
+
 bool MCNativeTheme::drawmenubarbackground(MCDC *dc, const MCRectangle& dirty, const MCRectangle& rect, bool is_active)
 {
+	if (MCplatformIsDarkMode())
+	{
+		// UxTheme MENU_BARBACKGROUND has no dark variant — fill manually.
+		MCColor t_bg = s_dark_menu_bg();
+		dc->setforeground(t_bg);
+		dc->setfillstyle(FillSolid, nil, 0, 0);
+		dc->fillrect(rect);
+		return true;
+	}
+
 	if (getmenutheme() == NULL)
 		return false;
 
@@ -1663,6 +1908,27 @@ bool MCNativeTheme::drawmenubarbackground(MCDC *dc, const MCRectangle& dirty, co
 
 bool MCNativeTheme::drawmenuheaderbackground(MCContext *p_context, const MCRectangle& p_dirty, MCButton *p_button)
 {
+	if (MCplatformIsDarkMode())
+	{
+		// UxTheme MENU_BARITEM has no dark variant — fill manually.
+		// Normal state is transparent (menu bar background shows through).
+		// Hover/armed states get a subtle highlight.
+		bool t_armed   = p_button->getstate(CS_ARMED);
+		bool t_hovering = p_button->gethovering();
+
+		if (t_armed || t_hovering)
+		{
+			MCColor t_fill = t_armed ? s_dark_menu_pressed() : s_dark_menu_hover();
+			p_context->setforeground(t_fill);
+			p_context->setfillstyle(FillSolid, nil, 0, 0);
+			p_context->fillrect(p_button->getrect());
+		}
+		// Return true: caller (buttondraw.cpp) will set foreground via
+		// setforeground(dc, DI_PSEUDO_BUTTON_TEXT).  isdarkmodeactive() lets
+		// buttondraw.cpp override that with white text.
+		return true;
+	}
+
 	if (getmenutheme() == NULL)
 		return false;
 

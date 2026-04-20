@@ -948,11 +948,20 @@ void MCField::drawrect(MCDC *dc, const MCRectangle &dirty)
 			else
 				t_fill_rect = trect;
 
-			setforeground(dc, DI_BACK, False, flags & F_SHOW_BORDER && (!(flags & F_F_AUTO_ARM) || MClook == LF_WIN95));
-			
-			// MW-2012-09-04: [[ Bug 9759 ]] Make sure any pattern is offset correctly.
-			adjustpixmapoffset(dc, DI_BACK);
-			
+			if (IsNativeWin() && MCcurtheme && MCcurtheme->isdarkmodeactive())
+			{
+				// Dark-mode field background: #1E1E1E (matches TEXTFIELD_FILL theme colour).
+				MCColor t_dark_bg = {0x1e1e, 0x1e1e, 0x1e1e};
+				dc->setforeground(t_dark_bg);
+				dc->setfillstyle(FillSolid, nil, 0, 0);
+			}
+			else
+			{
+				setforeground(dc, DI_BACK, False, flags & F_SHOW_BORDER && (!(flags & F_F_AUTO_ARM) || MClook == LF_WIN95));
+				// MW-2012-09-04: [[ Bug 9759 ]] Make sure any pattern is offset correctly.
+				adjustpixmapoffset(dc, DI_BACK);
+			}
+
 			dc->fillrect(t_fill_rect);
 		}
 
@@ -967,7 +976,13 @@ void MCField::drawrect(MCDC *dc, const MCRectangle &dirty)
 		trect = MCU_intersect_rect(trect, textrect);
 		if (flags & F_FIXED_HEIGHT && (flags & F_SHOW_LINES || state & CS_SIZE))
 		{
-			dc->setforeground(dc->getblack());
+			if (IsNativeWin() && MCcurtheme && MCcurtheme->isdarkmodeactive())
+			{
+				MCColor t_ruler = {0x5050, 0x5050, 0x5050};
+				dc->setforeground(t_ruler);
+			}
+			else
+				dc->setforeground(dc->getblack());
 			dc->setlineatts(1, LineOnOffDash, CapButt, JoinBevel);
 			dc->setdashes(0, dotlist, 2);
 			
@@ -987,7 +1002,15 @@ void MCField::drawrect(MCDC *dc, const MCRectangle &dirty)
 		uint2 fontstyle;
 		fontstyle = gettextstyle();
 		
-		setforeground(dc, DI_FORE, False);
+		if (IsNativeWin() && MCcurtheme && MCcurtheme->isdarkmodeactive())
+		{
+			// Dark-mode field text: near-white so it's readable on the #1E1E1E background.
+			MCColor t_dark_text = {0xf3f3, 0xf3f3, 0xf3f3};
+			dc->setforeground(t_dark_text);
+			dc->setfillstyle(FillSolid, nil, 0, 0);
+		}
+		else
+			setforeground(dc, DI_FORE, False);
 
 		// Compute the find range.
 		MCParagraph *foundpgptr = NULL;
