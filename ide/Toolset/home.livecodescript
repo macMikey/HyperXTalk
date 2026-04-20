@@ -1198,7 +1198,7 @@ command revInternal__InitialiseLibraries
    
    local tLoadList
    put "revCommonLibrary" into tLoadList 
-   put return & "revDatabaseLibrary" after tLoadList 
+   // HXT put return & "revDatabaseLibrary" after tLoadList 
    put return & "revIDEDocumentationLibrary" after tLoadList
    put return & "revMetadataLibrary" after tLoadList   
    put return & "revSBLibrary" after tLoadList

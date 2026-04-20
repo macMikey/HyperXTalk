@@ -88,6 +88,8 @@ command updateInclusions
          addToList sExtensionData[tIndex], tExclusions
       end if
    end repeat
+   sort lines of tInclusions
+   sort lines of tExclusions
    revSBUpdateInclusions tInclusions, tExclusions, getTargetStackName()
 end updateInclusions
 
@@ -181,6 +183,7 @@ function getExtensionHiliteList pExtensionData
             --            end repeat
             break
       end switch
+      sort lines of tShouldHilite
       put tShouldHilite into tHiliteList[tIndex]
    end repeat
    

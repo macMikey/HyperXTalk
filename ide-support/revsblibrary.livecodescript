@@ -1882,8 +1882,83 @@ function revSBAvailableInclusions
       addToList tInclusion, tInclusions
    end repeat
    
+   // HXT
+   local tSortedArray
+   put sortedArray(tInclusions, "title", "", "") into tInclusions  
    return tInclusions
 end revSBAvailableInclusions
+
+
+/*******************************************************************************
+* [[DESCRIPTION]]
+* The 'sortedArray' function is used to sort an array in LiveCode.
+*
+* Parameters:
+* pArray: This is the array that will be sorted.
+*
+* pKeyBySort: This is the key by which the array will be sorted. If it's empty,
+* the array will be sorted by its values.
+*
+* pDirection: This is the direction of the sort. It can be 'ascending' or
+* 'descending'. If not specified or not 'descending', it defaults to 'ascending'.
+*
+* pSortType: This is the type of sort. It can be 'international', 'numeric',
+* 'datetime', 'text', or 'binary'. If not specified or not one of these,
+* it defaults to 'text'.
+*******************************************************************************/
+
+private function sortedArray pArray,pKeyBySort,pDirection, pSortType
+   /* Local variables */
+   local tLine, tArrayKeyNames, tCount, tScoresSorted
+   
+   /* Get the keys of the array */
+   put the keys of pArray into tArrayKeyNames
+   
+   /* Check the direction of the sort */
+   if pDirection is not among the items of "descending" then
+      put "ascending" into pDirection
+   end if
+   
+   /* Check the type of sort */
+   if pSortType is not among the items of "international,numeric,datetime,text,binary" then
+      put space into pSortType
+   end if
+   
+   /* Sort the array */
+   if pKeyBySort is empty then
+      do "sort lines of tArrayKeyNames "& pDirection && pSortType & " by pArray[each]"
+   else
+      do "sort lines of tArrayKeyNames "& pDirection && pSortType & " by pArray[each][pKeyBySort]"
+   end if
+   
+   /* Initialize the counter */
+   put 1 into tCount
+   
+   /* Loop through the keys of the array */
+   repeat for each line tLine in tArrayKeyNames
+      
+      /* Check if the value is an array */
+      if pArray[tLine] is a array then
+         
+         /* Loop through the keys of the subarray */
+         repeat for each key tKey in pArray[tLine]
+            
+            /* Assign the value to the sorted array */
+            put pArray[tLine][tKey] into tScoresSorted[tCount][tKey]
+         end repeat
+      else
+         
+         /* Assign the value to the sorted array */
+         put pArray[tLine][pKeyBySort] into tScoresSorted[tCount][pKeyBySort]
+      end if
+      
+      /* Increment the counter */
+      add 1 to tCount
+   end repeat
+   
+   /* Return the sorted array */
+   return tScoresSorted
+end sortedArray
 
 private command inclusionKeyAndIdentifier pElement, @rKey, @rId
    switch pElement["type"]
