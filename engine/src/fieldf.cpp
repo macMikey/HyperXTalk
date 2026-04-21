@@ -948,7 +948,12 @@ void MCField::drawrect(MCDC *dc, const MCRectangle &dirty)
 			else
 				t_fill_rect = trect;
 
-			if (IsNativeWin() && MCcurtheme && MCcurtheme->isdarkmodeactive())
+			// Dark-mode background: only override when no explicit colour/pattern
+			// has been set on this field — so user-configured fields (e.g. the
+			// script editor with its preference colours) keep their own look.
+			uint2 t_ci;
+			bool t_has_explicit_back = getcindex(DI_BACK, t_ci) || getpindex(DI_BACK, t_ci);
+			if (IsNativeWin() && MCcurtheme && MCcurtheme->isdarkmodeactive() && !t_has_explicit_back)
 			{
 				// Dark-mode field background: #1E1E1E (matches TEXTFIELD_FILL theme colour).
 				MCColor t_dark_bg = {0x1e1e, 0x1e1e, 0x1e1e};
@@ -1002,7 +1007,12 @@ void MCField::drawrect(MCDC *dc, const MCRectangle &dirty)
 		uint2 fontstyle;
 		fontstyle = gettextstyle();
 		
-		if (IsNativeWin() && MCcurtheme && MCcurtheme->isdarkmodeactive())
+		// Dark-mode text colour: same explicit-colour guard as the background.
+		// If the field has an explicit foreground (e.g. script editor syntax
+		// colours set via preferences), honour it; otherwise use near-white.
+		uint2 t_fi;
+		bool t_has_explicit_fore = getcindex(DI_FORE, t_fi) || getpindex(DI_FORE, t_fi);
+		if (IsNativeWin() && MCcurtheme && MCcurtheme->isdarkmodeactive() && !t_has_explicit_fore)
 		{
 			// Dark-mode field text: near-white so it's readable on the #1E1E1E background.
 			MCColor t_dark_text = {0xf3f3, 0xf3f3, 0xf3f3};
