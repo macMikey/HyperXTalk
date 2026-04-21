@@ -1077,7 +1077,7 @@
 						['exclude', '(^|/)sysosx.*\\.(cpp|mm)$'],
 						['exclude', '\\.mac\\.'],
 						['exclude', '(^|/)mac-'],
-						['exclude', '-mac\.(mm|cpp)$'],
+						['exclude', '-mac\\.(mm|cpp)$'],
 					],
 					
 					'sources!':
@@ -1095,7 +1095,7 @@
 						['exclude', '(^|/)dsklnx.*\\.cpp$'],
 						['exclude', '(^|/)syslnx.*\\.cpp$'],
 						['exclude', '(^|/)linux-'],
-						['exclude', '-x11\.cpp$'],
+						['exclude', '-x11\\.cpp$'],
 					],
 					
 					'sources!':
@@ -1112,7 +1112,7 @@
 						['exclude', '(^|/)sysw32.*\\.cpp$'],
 						['exclude', '(^|/)dskw32.*\\.cpp$'],
 						['exclude', '(^|/)win(dows|32)?-'],
-						['exclude', '-win32\.cpp$'],
+						['exclude', '-win32\\.cpp$'],
 					],
 					
 					'sources!':
@@ -1136,7 +1136,7 @@
 				{
 					'sources/':
 					[
-						['exclude', '-android\.cpp$'],
+						['exclude', '-android\\.cpp$'],
 					],
 
 					'sources!':
@@ -1150,7 +1150,7 @@
 				{
 					'sources/':
 					[
-						['exclude', '-ios\.(mm|cpp)$'],
+						['exclude', '-ios\\.(mm|cpp)$'],
 					],
 
 					'sources!':
