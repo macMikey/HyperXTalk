@@ -4702,7 +4702,7 @@ command revIDEOpenPalette pPaletteName
       case "extension builder"
       case "plugin preferences"
       case "about"
-         //eh      case "resource center"
+         // HXT      case "resource center"
          modeless stack tStackName
          break
       case "dictionary"
