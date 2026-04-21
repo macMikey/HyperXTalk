@@ -2191,9 +2191,11 @@ Boolean MCSocket::initsslcontext()
 	
 	if (t_success)
 	{
-#if defined(TARGET_SUBPLATFORM_IPHONE) || defined(TARGET_SUBPLATFORM_ANDROID)
-        // MM-2015-06-04: [[ MobileSockets ]] Since iOS and Android don't expose the root certificates directly, we can't use OpenSSL's verification routines.
-        //   Instead we'll do it ourselves using the OS APIs.
+#if defined(TARGET_SUBPLATFORM_IPHONE) || defined(TARGET_SUBPLATFORM_ANDROID) || defined(TARGET_PLATFORM_MACOS_X)
+        // On iOS, Android, and macOS we use the platform's Security framework
+        // for certificate verification after the handshake rather than OpenSSL's
+        // chain building. Set VERIFY_NONE here so OpenSSL doesn't abort the
+        // handshake; MCSSLVerifyCertificate handles the actual trust evaluation.
         SSL_CTX_set_verify(_ssl_context, SSL_VERIFY_NONE, NULL);
 #else
         SSL_CTX_set_verify(_ssl_context, sslverify? SSL_VERIFY_PEER: SSL_VERIFY_NONE,verify_callback);
@@ -2250,8 +2252,10 @@ Boolean MCSocket::sslconnect()
 	{
 		if (sslverify)
 		{
-#if defined(TARGET_SUBPLATFORM_IPHONE) || defined(TARGET_SUBPLATFORM_ANDROID)
-            // MM-2015-06-04: [[ MobileSockets ]] On the mobile platforms we verify the certificate ourselves rather than using OpenSSL
+#if defined(TARGET_SUBPLATFORM_IPHONE) || defined(TARGET_SUBPLATFORM_ANDROID) || defined(TARGET_PLATFORM_MACOS_X)
+            // On iOS, Android, and macOS use the platform Security framework
+            // for trust evaluation: it handles intermediate cert fetching (AIA)
+            // and uses the system keychain, unlike OpenSSL's chain builder.
             if (!MCSSLVerifyCertificate(_ssl_conn, *t_hostname, sslerror))
             {
                 errno = EPIPE;
@@ -2259,7 +2263,7 @@ Boolean MCSocket::sslconnect()
             }
 #else
             rc = post_connection_check(_ssl_conn, *t_host);
-            
+
             if (rc != X509_V_OK)
             {
                 MCAutoStringRef t_message;
@@ -2443,8 +2447,9 @@ Boolean MCSocket::sslaccept()
             else if (MCStringFirstIndexOfChar(*t_hostname, '|', 0, kMCCompareExact, t_pos))
                 /* UNCHECKED */ MCStringRemove(*t_hostname, MCRangeMakeMinMax(t_pos, MCStringGetLength(*t_hostname)));
 			
-#if defined(TARGET_SUBPLATFORM_IPHONE) || defined(TARGET_SUBPLATFORM_ANDROID)
-            // MM-2015-06-04: [[ MobileSockets ]] On the mobile platforms we verify the certificate ourselves rather than using OpenSSL
+#if defined(TARGET_SUBPLATFORM_IPHONE) || defined(TARGET_SUBPLATFORM_ANDROID) || defined(TARGET_PLATFORM_MACOS_X)
+            // On iOS, Android, and macOS use the platform Security framework
+            // for trust evaluation rather than OpenSSL's chain builder.
             if (!MCSSLVerifyCertificate(_ssl_conn, *t_hostname, sslerror))
             {
                 errno = EPIPE;

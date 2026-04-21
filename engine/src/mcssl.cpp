@@ -1102,7 +1102,7 @@ bool export_system_crl_stack(STACK_OF(X509_CRL) *&r_crls)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-#if defined(TARGET_SUBPLATFORM_IPHONE)
+#if defined(TARGET_SUBPLATFORM_IPHONE) || defined(TARGET_PLATFORM_MACOS_X)
 
 #ifdef MCSSL
 
@@ -1311,7 +1311,7 @@ bool MCSSLVerifyCertificate(SSL *ssl, MCStringRef p_host_name, MCStringRef &r_er
 #endif /* MCSSL */
 }
 
-#endif /* TARGET_SUBPLATFORM_IPHONE */
+#endif /* TARGET_SUBPLATFORM_IPHONE || TARGET_PLATFORM_MACOS_X */
 
 #if defined(TARGET_SUBPLATFORM_ANDROID)
 
