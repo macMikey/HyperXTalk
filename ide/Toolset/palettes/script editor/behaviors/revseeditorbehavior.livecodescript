@@ -1,4 +1,4 @@
-﻿script "revSEEditorBehavior"
+﻿script "revSEEditorBehavior" with behavior "com.livecode.scripteditor.behavior.editorcommon"
 # Stores the following mapping
 #  <handler name>,type   => string representing the handler type eg PF for private function
 # <handler name>,start  => line offset to start of handler
@@ -1062,15 +1062,18 @@ private command prepareContextMenu
    
    put "Set Breakpoint" & return after tText
    put "-" & return after tText
+   put "Comment Selection" & return after tText
+   put "Uncomment Selection" & return after tText
+   put "-" & return after tText
    
    if scriptLocked() then
       put "(Cut" & return & \
-             "Copy" & return & \
-             "(Paste" after tText
+            "Copy" & return & \
+            "(Paste" after tText
    else
       put"Cut" & return & \
-             "Copy" & return & \
-             "Paste" after tText
+            "Copy" & return & \
+            "Paste" after tText
    end if
    
    if the last char of tText is not return then
@@ -1132,6 +1135,13 @@ on menuPick pItemName
             revDebuggerActivateBreakpoint getObjectID(), tLineNumber
             updateGutterRequest empty, empty, empty, empty, false, false, true
          end if
+         break
+         
+      case "Comment Selection"
+         scriptComment
+         break
+      case "Uncomment Selection"
+         scriptUncomment
          break
          
       case "Find in"
