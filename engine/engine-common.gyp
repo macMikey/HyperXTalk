@@ -102,9 +102,15 @@
 					{
 						# macOS: OpenSSL is statically linked; supply no-op stubs so
 						# initialise_weak_link_* resolve without dlopen("revsecurity").
+						# Also link libcustomssl.a / libcustomcrypto.a directly.
 						'sources':
 						[
 							'src/openssl3_static_stubs.cpp',
+						],
+
+						'dependencies':
+						[
+							'../prebuilt/libopenssl.gyp:libopenssl',
 						],
 					},
 				],

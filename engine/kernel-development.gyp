@@ -68,6 +68,15 @@
 					},
 				],
 				[
+					'OS == "mac"',
+					{
+						'dependencies':
+						[
+							'../prebuilt/libopenssl.gyp:libopenssl',
+						],
+					},
+				],
+				[
 					'OS != "mac"',
 					{
 						'dependencies':
