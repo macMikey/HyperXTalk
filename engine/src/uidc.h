@@ -378,6 +378,10 @@ public:
 	MCColor black_pixel;
 	MCColor gray_pixel;
 	MCColor background_pixel;
+    // Updated by MCScreenDC::updatesystemcolors() on appearance change.
+    // Starts as black; on platforms that support dark-mode (macOS arm64,
+    // Windows) it tracks NSColor.labelColor / GetSysColor(COLOR_WINDOWTEXT).
+    MCColor system_fore_pixel;
 
 	MCUIDC();
 	virtual ~MCUIDC();
@@ -742,6 +746,13 @@ public:
     const MCColor& getbg(void) const
     {
         return background_pixel;
+    }
+
+    // Returns the system label/text colour (black in light mode, near-white
+    // in dark mode).  Used as the DI_FORE fallback in MCObject::getforecolor.
+    const MCColor& getsystemfore(void) const
+    {
+        return system_fore_pixel;
     }
 };
 

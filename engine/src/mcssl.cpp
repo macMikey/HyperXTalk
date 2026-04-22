@@ -1227,29 +1227,31 @@ bool MCSSLVerifyCertificate(SSL *ssl, MCStringRef p_host_name, MCStringRef &r_er
     if (t_success)
         t_success = SecTrustCreateWithCertificates(t_certs, t_policies, &t_trust) == noErr;
     
-    SecTrustResultType t_verification_result;
-    if (t_success)
-        t_success = SecTrustEvaluate(t_trust, &t_verification_result) == noErr;
-    
+    // Use the modern SecTrustEvaluateWithError (available macOS 10.14+) in
+    // preference to the deprecated SecTrustEvaluate (deprecated 10.15,
+    // removed in future SDKs).  The new API returns a CFError that carries
+    // a human-readable description we can surface directly.
     if (t_success)
     {
-        switch (t_verification_result)
+        CFErrorRef t_cf_error = NULL;
+        bool t_trusted = SecTrustEvaluateWithError(t_trust, &t_cf_error);
+        if (!t_trusted)
         {
-            case kSecTrustResultUnspecified:
-            case kSecTrustResultProceed:
-                break;
-            case kSecTrustResultDeny:
-                t_error = MCSTR("The user has chosen not to trust this certificate");
-                t_success = false;
-                break;
-            case kSecTrustResultRecoverableTrustFailure:
-            case kSecTrustResultFatalTrustFailure:
+            if (t_cf_error != NULL)
+            {
+                CFStringRef t_cf_desc = CFErrorCopyDescription(t_cf_error);
+                if (t_cf_desc != NULL)
+                {
+                    MCAutoStringRef t_desc;
+                    if (MCStringCreateWithCFStringRef(t_cf_desc, &t_desc))
+                        t_error = MCValueRetain(*t_desc);
+                    CFRelease(t_cf_desc);
+                }
+                CFRelease(t_cf_error);
+            }
+            if (t_error == NULL)
                 t_error = MCSTR("A certificate in the chain is defective");
-                t_success = false;
-                break;
-            default:
-                t_success = false;
-                break;
+            t_success = false;
         }
     }
     

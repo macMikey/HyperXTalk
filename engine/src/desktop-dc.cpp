@@ -16,6 +16,9 @@
 
 #include "platform.h"
 
+#include <cstdio>   // sscanf (used by MCParseHexColor)
+#include <cstring>  // strlen
+
 #include "globdefs.h"
 #include "filedefs.h"
 #include "osspec.h"
@@ -98,11 +101,16 @@ Boolean MCScreenDC::open()
 {
 	black_pixel.red = black_pixel.green = black_pixel.blue = 0; //black pixel
 	white_pixel.red = white_pixel.green = white_pixel.blue = 0xFFFF; //white pixel
-	
+
 	MCzerocolor = MCbrushcolor = white_pixel;
 	MCselectioncolor = MCpencolor = black_pixel;
 	gray_pixel.red = gray_pixel.green = gray_pixel.blue = 0x8888;
 	background_pixel.red = background_pixel.green = background_pixel.blue = 0xffff;
+    system_fore_pixel.red = system_fore_pixel.green = system_fore_pixel.blue = 0; // black
+
+    // Seed background_pixel / system_fore_pixel from the current OS appearance
+    // so that stacks without explicit colours are correct from the first draw.
+    updatesystemcolors();
 
 	MCPlatformGetSystemProperty(kMCPlatformSystemPropertyHiliteColor, kMCPlatformPropertyTypeColor, &MChilitecolor);
 	MCPlatformGetSystemProperty(kMCPlatformSystemPropertyAccentColor, kMCPlatformPropertyTypeColor, &MCaccentcolor);
@@ -976,6 +984,39 @@ void MCScreenDC::getsystemappearance(MCSystemAppearance &r_appearance)
 extern "C" void MCplatformGetWindowBackgroundColor(char *, size_t);
 extern "C" void MCplatformGetLabelColor(char *, size_t);
 #endif
+
+// Parse a "#rrggbb" hex string (as produced by MCplatformGetWindowBackgroundColor
+// and MCplatformGetLabelColor) into an MCColor.  Component range 0..255 is
+// scaled to the LiveCode 0..65535 range by multiplying by 257 (= 0x0101).
+static bool MCParseHexColor(const char *p_hex, MCColor &r_color)
+{
+    if (p_hex == nullptr || p_hex[0] != '#')
+        return false;
+    unsigned r = 0, g = 0, b = 0;
+    if (sscanf(p_hex + 1, "%02x%02x%02x", &r, &g, &b) != 3)
+        return false;
+    r_color.red   = (uint16_t)(r * 257);
+    r_color.green = (uint16_t)(g * 257);
+    r_color.blue  = (uint16_t)(b * 257);
+    return true;
+}
+
+void MCScreenDC::updatesystemcolors(void)
+{
+#if (defined(_MACOSX) && (defined(__arm64__) || defined(__aarch64__))) || defined(_WINDOWS)
+    char t_win_buf[8] = "#ffffff";
+    MCplatformGetWindowBackgroundColor(t_win_buf, sizeof(t_win_buf));
+    MCColor t_win_color;
+    if (MCParseHexColor(t_win_buf, t_win_color))
+        background_pixel = t_win_color;
+
+    char t_txt_buf[8] = "#000000";
+    MCplatformGetLabelColor(t_txt_buf, sizeof(t_txt_buf));
+    MCColor t_txt_color;
+    if (MCParseHexColor(t_txt_buf, t_txt_color))
+        system_fore_pixel = t_txt_color;
+#endif
+}
 
 void MCScreenDC::getsystemwindowcolor(MCStringRef &r_color)
 {

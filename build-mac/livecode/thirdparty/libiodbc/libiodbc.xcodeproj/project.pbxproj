@@ -68,6 +68,7 @@
 		73BBC435637FFEA8313DD7E7 /* SetDescField.c in Sources */ = {isa = PBXBuildFile; fileRef = 8C6CE43F914AD6D5281E5615 /* SetDescField.c */; };
 		74B9B0C58490490A21F90E5F /* CopyDesc.c in Sources */ = {isa = PBXBuildFile; fileRef = 488E89D26F2D630B895FD09D /* CopyDesc.c */; };
 		74C97D63B8B70C60FB60B3C3 /* SQLReadFileDSN.c in Sources */ = {isa = PBXBuildFile; fileRef = C6DD7EA429E8B7B5AA3AEE81 /* SQLReadFileDSN.c */; };
+		AA11BB22CC33DD44EE55FF66 /* SQLWriteFileDSN.c in Sources */ = {isa = PBXBuildFile; fileRef = BB22CC33DD44EE55FF66AA11 /* SQLWriteFileDSN.c */; };
 		776BAD44F2FD324F22625575 /* SQLWritePrivateProfileString.c in Sources */ = {isa = PBXBuildFile; fileRef = E62AE639A58EABDAA9B2BDA1 /* SQLWritePrivateProfileString.c */; };
 		7B4EA0F49375617F9BB7723D /* execute.c in Sources */ = {isa = PBXBuildFile; fileRef = 13052B09FE3B7F9496DD2BF6 /* execute.c */; };
 		7D2E12DA9CCDB0D506C0AB1B /* SetPos.c in Sources */ = {isa = PBXBuildFile; fileRef = 4EDBEA08CAF33DC80185DBE2 /* SetPos.c */; };
@@ -260,6 +261,7 @@
 		C2425AE0D26AE1AB98BFF34D /* AllocHandle.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = AllocHandle.c; sourceTree = "<group>"; };
 		C40F809EECBEC7005E9ECB11 /* TablePrivileges.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = TablePrivileges.c; sourceTree = "<group>"; };
 		C6DD7EA429E8B7B5AA3AEE81 /* SQLReadFileDSN.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = SQLReadFileDSN.c; sourceTree = "<group>"; };
+		BB22CC33DD44EE55FF66AA11 /* SQLWriteFileDSN.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = SQLWriteFileDSN.c; sourceTree = "<group>"; };
 		CE3C34F66E6AB1206C32450A /* isqlext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = isqlext.h; sourceTree = "<group>"; };
 		D0D446E4DD10DDADA281329B /* hstmt.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = hstmt.h; sourceTree = "<group>"; };
 		D18B32BD289565A8005B742E /* iodbc_error.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iodbc_error.h; sourceTree = "<group>"; };
@@ -351,6 +353,7 @@
 				61097712C3A077670D0D32F5 /* SQLManageDataSource.c */,
 				1E97C9212EFFF190D1DFDECD /* SQLPostInstallerError.c */,
 				C6DD7EA429E8B7B5AA3AEE81 /* SQLReadFileDSN.c */,
+				BB22CC33DD44EE55FF66AA11 /* SQLWriteFileDSN.c */,
 				305CC4994AD9340017A42800 /* SQLRemoveDSNFromIni.c */,
 				A8ED54ACEF50A691DAD11C22 /* SQLRemoveDefaultDataSource.c */,
 				0E5CC528DDF05C3929851838 /* SQLRemoveDriver.c */,
@@ -649,6 +652,7 @@
 				AB7152760584736D4CAF0304 /* SQLManageDataSource.c in Sources */,
 				BC180B9F74CD32D8A6E69F55 /* SQLPostInstallerError.c in Sources */,
 				74C97D63B8B70C60FB60B3C3 /* SQLReadFileDSN.c in Sources */,
+				AA11BB22CC33DD44EE55FF66 /* SQLWriteFileDSN.c in Sources */,
 				18550E9C5BEFAACE3A801AE8 /* SQLRemoveDefaultDataSource.c in Sources */,
 				D01ED0BBA7BDE340225709AD /* SQLRemoveDriver.c in Sources */,
 				8E6A9B4019956117A3346E7B /* SQLRemoveDriverManager.c in Sources */,

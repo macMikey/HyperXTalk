@@ -1605,7 +1605,10 @@ Boolean MCObject::getforecolor(uint2 p_di, Boolean rev, Boolean hilite,
 		if (rev)
 			c = MCscreen->getwhite();
 		else
-			c = MCscreen->getblack();
+			// Use the system label colour so objects without an explicit
+			// foreColor automatically flip between near-black (light mode)
+			// and near-white (dark mode) when the OS appearance changes.
+			c = MCscreen->getsystemfore();
 		break;
 	case DI_BACK:
 #ifdef _MAC_DESKTOP

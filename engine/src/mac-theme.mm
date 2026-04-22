@@ -292,11 +292,24 @@ bool MCPlatformGetControlThemePropColor(MCPlatformControlType p_type, MCPlatform
                             return false;
                         }
                         /* FALLTHROUGH */
-                        
+
                     case kMCPlatformControlTypeMessageBox:
-                        // windowBackgroundColor is a pattern
-                        t_is_pattern = true;
-                        t_color = [NSColor windowBackgroundColor];
+                        // NSColor.windowBackgroundColor is a dynamic/semantic colour
+                        // that adapts to light and dark mode.  Resolve it to a
+                        // concrete sRGB value inside the effective appearance so the
+                        // correct shade is returned for the current mode.
+                        {
+                            __block NSColor *t_resolved = nil;
+                            [[NSApp effectiveAppearance] performAsCurrentDrawingAppearance:^{
+                                t_resolved = [[NSColor windowBackgroundColor]
+                                              colorUsingColorSpace:[NSColorSpace sRGBColorSpace]];
+                            }];
+                            if (t_resolved == nil)
+                                t_resolved = [[NSColor windowBackgroundColor]
+                                              colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
+                            t_color = t_resolved;
+                            // t_is_pattern stays false — the resolved colour is solid.
+                        }
                         break;
                         
                     default:

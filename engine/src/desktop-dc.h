@@ -147,6 +147,11 @@ public:
 	virtual void getsystemwindowcolor(MCStringRef &r_color);
 	virtual void getsystemtextcolor(MCStringRef &r_color);
 
+    // Refresh background_pixel and system_fore_pixel from the platform's
+    // current window-background and label colours.  Called at startup and
+    // whenever MCPlatformHandleSystemAppearanceChanged fires.
+    void updatesystemcolors(void);
+
 	//////////
 	
 	bool isbackdrop(MCPlatformWindowRef window);

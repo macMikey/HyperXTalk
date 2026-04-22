@@ -110,6 +110,7 @@
 							'src/inst/SQLManageDataSource.c',
 							'src/inst/SQLPostInstallerError.c',
 							'src/inst/SQLReadFileDSN.c',
+							'src/inst/SQLWriteFileDSN.c',
 							'src/inst/SQLRemoveDefaultDataSource.c',
 							'src/inst/SQLRemoveDriver.c',
 							'src/inst/SQLRemoveDriverManager.c',

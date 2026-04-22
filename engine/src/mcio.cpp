@@ -34,6 +34,7 @@ along with LiveCode.  If not see <http://www.gnu.org/licenses/>.  */
 
 #include "stacksecurity.h"
 
+
 bool IO_findstream(Streamnode *p_nodes, uindex_t p_node_count, MCNameRef p_name, uindex_t& r_index)
 {
 	while (p_node_count-- > 0)
@@ -141,7 +142,7 @@ real8 IO_cleansockets(real8 ctime)
 					s->revents->timeout = ctime + MCsockettimeout;
 				if (s->wevents != NULL)
 					s->wevents->timeout = ctime + MCsockettimeout;
-                
+
                 if (s->object.IsValid())
                     MCscreen->delaymessage(s->object, MCM_socket_timeout, MCNameGetString(s->name));
 			}

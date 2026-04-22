@@ -191,7 +191,15 @@ void MCPlatformHandleSystemAppearanceChanged(void)
 	if (MCscreen == nil)
 		return;
 
-// Send systemAppearanceChanged to all open stacks with three parameters:
+    // 1. Refresh background_pixel and system_fore_pixel so that any object
+    //    without an explicit colour immediately uses the new system colours.
+    //    This must happen before delaymessage so that the first redraw
+    //    triggered by queuing the message already uses the updated values.
+    static_cast<MCScreenDC *>(MCscreen)->updatesystemcolors();
+
+    // 2. Gather the new colour strings and dark-mode flag.
+    //
+    // Send systemAppearanceChanged to all open stacks with three parameters:
     //   p1 – "dark" or "light"
     //   p2 – window background colour as "#rrggbb"
     //   p3 – label (text) colour as "#rrggbb"
@@ -214,6 +222,12 @@ void MCPlatformHandleSystemAppearanceChanged(void)
         MCStack *t_stack = t_stack_node->getstack();
         if (t_stack != nil && t_stack->getcurcard() != nil)
         {
+            // 3. Mark the stack dirty so it repaints with the new system
+            //    colours before the script handler even runs.
+            t_stack->dirtyall();
+
+            // 4. Queue the systemAppearanceChanged message so scripts can
+            //    perform additional appearance customisation.
             MCStringRef t_color_str;
             /* UNCHECKED */ MCStringCreateWithCString(t_color_buf, t_color_str);
             MCStringRef t_text_color_str;

@@ -96,6 +96,7 @@ extern char *osx_cfstring_to_cstring(CFStringRef p_string, bool p_release, bool 
 
 #include "mcssl.h"
 
+
 #if defined(TARGET_SUBPLATFORM_ANDROID)
 #include "mblandroidjava.h"
 #endif
@@ -2010,20 +2011,25 @@ int4 MCSocket::write(const char *buffer, uint4 towrite, Boolean securewrite)
 	if (securewrite)
 	{
 		sslstate &= ~SSTATE_RETRYWRITE;
-#if defined(_WINDOWS_DESKTOP) || defined(_WINDOWS_SERVER)
 
-		if (sslstate & SSTATE_RETRYCONNECT ||
-		        sslstate & SSTATE_RETRYREAD)
+		// Only block SSL writes when the connect/accept handshake is still in
+		// progress. SSTATE_RETRYREAD (set when SSL_read returns WANT_READ) must
+		// NOT block writes — the HTTP request must be sent even if no response
+		// data has arrived yet.
+		if (sslstate & (SSTATE_RETRYCONNECT | SSTATE_RETRYACCEPT))
 		{
-#else
-		if (sslstate & SSLRETRYFLAGS)
-		{
-#endif
 			if (sslstate & SSTATE_RETRYCONNECT)
 			{
 				if (!sslconnect())
 				{
-					errno = EPIPE;
+					// Fatal handshake failure: SSTATE_RETRYCONNECT is cleared
+					// by sslconnect() on error, so set EPIPE for the caller.
+					// If somehow still set (shouldn't happen on fatal error),
+					// use EAGAIN to avoid premature close.
+					if (sslstate & SSTATE_RETRYCONNECT)
+						errno = EAGAIN;
+					else
+						errno = EPIPE;
 					return -1;
 				}
 #ifndef _WINDOWS
@@ -2034,8 +2040,10 @@ int4 MCSocket::write(const char *buffer, uint4 towrite, Boolean securewrite)
 				}
 #endif
 			}
-			//for write which requires read...if read is available return and wait for write again
-			errno =  EAGAIN;
+			// Handshake still in progress (sslconnect set SSTATE_RETRYCONNECT
+			// again) or just completed — return EAGAIN so writesome() waits
+			// for the next select() event before retrying the SSL_write.
+			errno = EAGAIN;
 			return -1;
 		}
 		if (!_ssl_conn)
@@ -2090,7 +2098,15 @@ int4 MCSocket::read(char *buffer, uint4 toread, Boolean secureread)
 			if (sslstate & SSTATE_RETRYCONNECT)
 			{
 				if (!sslconnect())
+				{
+					// If the handshake is still pending (SSTATE_RETRYCONNECT
+					// was re-set because SSL needs more I/O), return EAGAIN
+					// so readsome() does NOT call doclose().  The socket stays
+					// alive and sslconnect() is retried on the next fd event.
+					if (sslstate & SSTATE_RETRYCONNECT)
+						errno = EAGAIN;
 					return -1;
+				}
 			}
 #ifndef _WINDOWS
 			else  if (sslstate & SSTATE_RETRYACCEPT)
@@ -2283,6 +2299,12 @@ Boolean MCSocket::sslconnect()
 	errno = SSL_get_error(_ssl_conn, rc);
 	if ((errno != SSL_ERROR_WANT_READ) && (errno != SSL_ERROR_WANT_WRITE))
 	{
+		// Print the OpenSSL error queue for fatal errors
+		unsigned long ossl_err = ERR_get_error();
+		if (ossl_err) {
+			char errbuf[256];
+			ERR_error_string_n(ossl_err, errbuf, sizeof(errbuf));
+		}
 		return False;
 	}
 	else
@@ -2292,7 +2314,7 @@ Boolean MCSocket::sslconnect()
 		if (errno == SSL_ERROR_WANT_WRITE)
 			setselect(BIONB_TESTWRITE);
 		else if (errno == SSL_ERROR_WANT_READ)
-			setselect(BIONB_TESTWRITE);
+			setselect(BIONB_TESTREAD); // was incorrectly BIONB_TESTWRITE — caused TLS handshake to never complete
 
 #if defined(_WINDOWS_DESKTOP) || defined(_WINDOWS_SERVER)
 
