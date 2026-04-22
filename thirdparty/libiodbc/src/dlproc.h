@@ -1,14 +1,14 @@
 /*
  *  dlproc.h
  *
- *  $Id: dlproc.h,v 1.17 2006/01/20 15:58:34 source Exp $
+ *  $Id$
  *
  *  Load driver and resolve driver's function entry point
  *
  *  The iODBC driver manager.
  *
- *  Copyright (C) 1995 by Ke Jin <kejin@empress.com>
- *  Copyright (C) 1996-2006 by OpenLink Software <iodbc@openlinksw.com>
+ *  Copyright (C) 1995 Ke Jin <kejin@empress.com>
+ *  Copyright (C) 1996-2023 OpenLink Software <iodbc@openlinksw.com>
  *  All Rights Reserved.
  *
  *  This software is released under the terms of either of the following
@@ -93,16 +93,7 @@ typedef SQLRETURN (* HPROC) ();
 #ifdef DLDAPI_HP_SHL
 #include <dl.h>
 typedef shl_t HDLL;
-#endif
-
-#if defined(_BE)		|| \
-    defined(_MAC)		|| \
-    defined(_MACX)		|| \
-    defined(DLDAPI_AIX_LOAD)	|| \
-    defined(DLDAPI_DYLD)	|| \
-    defined(DLDAPI_MACX)	|| \
-    defined(DLDAPI_SVR4_DLFCN)	|| \
-    defined(VMS)
+#elif !defined(WIN32)
 typedef void *HDLL;
 #endif
 

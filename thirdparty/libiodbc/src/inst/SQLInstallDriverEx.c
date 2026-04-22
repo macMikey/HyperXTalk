@@ -1,13 +1,13 @@
 /*
  *  SQLInstallDriverEx.c
  *
- *  $Id: SQLInstallDriverEx.c,v 1.11 2006/01/20 15:58:35 source Exp $
+ *  $Id$
  *
  *  These functions intentionally left blank
  *
  *  The iODBC driver manager.
  *
- *  Copyright (C) 1996-2006 by OpenLink Software <iodbc@openlinksw.com>
+ *  Copyright (C) 1996-2023 OpenLink Software <iodbc@openlinksw.com>
  *  All Rights Reserved.
  *
  *  This software is released under the terms of either of the following
@@ -77,7 +77,7 @@
 
 #include <iodbc.h>
 #include <odbcinst.h>
-#include <unicode.h>
+#include "unicode.h"
 
 #include "misc.h"
 #include "inifile.h"
@@ -229,7 +229,7 @@ SQLInstallDriverEx (LPCSTR lpszDriver, LPCSTR lpszPathIn, LPSTR lpszPathOut,
 
   CLEAR_ERROR ();
 
-  if (lpszPathIn && access (lpszPathIn, R_OK | W_OK | X_OK))
+  if (lpszPathIn && access (lpszPathIn, R_OK | X_OK))
     {
       PUSH_ERROR (ODBC_ERROR_INVALID_PATH);
       goto quit;
@@ -348,7 +348,7 @@ SQLInstallDriverExW (LPCWSTR lpszDriver, LPCWSTR lpszPathIn,
 	{
 	  for (ptr = (SQLWCHAR *) lpszDriver, ptr_u8 = _driver_u8; *ptr;
 	      ptr += WCSLEN (ptr) + 1, ptr_u8 += STRLEN (ptr_u8) + 1)
-	    dm_StrCopyOut2_W2A (ptr, ptr_u8, WCSLEN (ptr) * UTF8_MAX_CHAR_LEN,
+	    dm_StrCopyOut2_W2A (ptr, (SQLCHAR *)ptr_u8, WCSLEN (ptr) * UTF8_MAX_CHAR_LEN,
 		NULL);
 	  *ptr_u8 = '\0';
 	}
@@ -385,7 +385,7 @@ SQLInstallDriverExW (LPCWSTR lpszDriver, LPCWSTR lpszPathIn,
 
   if (retcode == TRUE)
     {
-      dm_StrCopyOut2_U8toW (_pathout_u8, lpszPathOut, cbPathOutMax,
+      dm_StrCopyOut2_U8toW ((SQLCHAR *)_pathout_u8, lpszPathOut, cbPathOutMax,
 	  pcbPathOut);
     }
 

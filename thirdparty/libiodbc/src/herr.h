@@ -1,14 +1,14 @@
 /*
  *  herr.h
  *
- *  $Id: herr.h,v 1.11 2006/01/20 15:58:34 source Exp $
+ *  $Id$
  *
  *  Error stack management functions
  *
  *  The iODBC driver manager.
  *
- *  Copyright (C) 1995 by Ke Jin <kejin@empress.com>
- *  Copyright (C) 1996-2006 by OpenLink Software <iodbc@openlinksw.com>
+ *  Copyright (C) 1995 Ke Jin <kejin@empress.com>
+ *  Copyright (C) 1996-2023 OpenLink Software <iodbc@openlinksw.com>
  *  All Rights Reserved.
  *
  *  This software is released under the terms of either of the following
@@ -90,6 +90,7 @@ typedef enum
     en_01S02,
     en_01S03,
     en_01S04,
+    en_01S08,
     en_07001,
     en_07006,
     en_08001,
@@ -123,6 +124,7 @@ typedef enum
     en_HY024,
     en_HY091,
     en_HY092,
+    en_HY110,
     en_HYC00,
     en_IM001,
     en_IM002,

@@ -49,6 +49,7 @@ along with LiveCode.  If not see <http://www.gnu.org/licenses/>.  */
 #include <sys/dir.h>
 #include <sys/wait.h>
 #include <sys/time.h>
+#include <sys/stat.h>
 #include <sys/statvfs.h>
 #include <dlfcn.h>
 #include <termios.h>
@@ -59,15 +60,6 @@ along with LiveCode.  If not see <http://www.gnu.org/licenses/>.  */
 
 // SN-2014-12-17: [[ Bug 14220 ]] Server should not wait put rather poll
 #include <poll.h>
-
-#include <libgnome/gnome-url.h>
-#include <libgnome/gnome-program.h>
-#include <libgnome/gnome-init.h>
-
-#include <libgnomevfs/gnome-vfs.h>
-#include <libgnomevfs/gnome-vfs-utils.h>
-#include <libgnomevfs/gnome-vfs-mime.h>
-#include <libgnomevfs/gnome-vfs-mime-handlers.h>
 
 #include <gtk/gtk.h>
 
@@ -2103,33 +2095,7 @@ public:
 #ifdef _LINUX_SERVER
         MCresult -> sets("not supported");
 #else
-        const char * p_mime_type;
-        GList * p_args = NULL;
-        GnomeVFSMimeApplication * p_gvfs ;
-
-        if (MCuselibgnome)
-        {
-            if (gnome_vfs_initialized())
-            {
-                MCAutoStringRefAsSysString t_document_sys;
-                /* UNCHECKED */ t_document_sys.Lock(p_document);
-
-                p_mime_type = gnome_vfs_get_mime_type_for_name(*t_document_sys);
-                p_gvfs = gnome_vfs_mime_get_default_application_for_uri(*t_document_sys, p_mime_type);
-                if (p_gvfs != NULL)
-                {
-                    p_args = g_list_append(p_args, (gpointer)*t_document_sys);
-                    gnome_vfs_mime_application_launch(p_gvfs, p_args);
-                    g_list_free(p_args);
-                }
-            }
-            else
-                MCresult -> sets("not supported");
-        }
-        else
-        {
-            LaunchUrl(p_document);
-        }
+        LaunchUrl(p_document);
 #endif
     }
 
@@ -2139,20 +2105,9 @@ public:
         MCresult->setvalueref(MCSTR("no association"));
         return;
 #else
-        GError *err = NULL;
-        if (MCuselibgnome)
-        {
-            MCAutoStringRefAsSysString t_document_sys;
-            /* UNCHECKED */ t_document_sys.Lock(p_document);
-            if (!gnome_url_show(*t_document_sys, &err))
-                MCresult -> sets(err->message);
-        }
-        else
-        {
-            MCAutoStringRef t_handler;
-            /* UNCHECKED */ MCStringFormat(&t_handler, LAUNCH_URL_SCRIPT, p_document);
-            MCdefaultstackptr->domess(*t_handler);
-        }
+        MCAutoStringRef t_handler;
+        /* UNCHECKED */ MCStringFormat(&t_handler, LAUNCH_URL_SCRIPT, p_document);
+        MCdefaultstackptr->domess(*t_handler);
 #endif
     }
 

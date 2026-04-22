@@ -28,8 +28,6 @@ function unxzBinary
 }
 
 function buildFTSrcLibrary {
-	cmakeBinary
-	mesonBinary
 	# MDW 2025.03.28 use rsync instead of cp because osx doesn't support "cp -u"
 	rsync -ur ${BUILDDIR}/${ARCHIVE_DESTINATION}/include ${INCLUDE_DIRECTORY}
 	rsync -ur ${BUILDDIR}/${ARCHIVE_DESTINATION}/src ${FILE_DIRECTORY}

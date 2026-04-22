@@ -67,12 +67,3 @@ along with LiveCode.  If not see <http://www.gnu.org/licenses/>.  */
 #include <locale.h>
 #include <pwd.h>
 
-#include <libgnome/gnome-url.h>
-#include <libgnome/gnome-program.h>
-#include <libgnome/gnome-init.h>
-
-#include <libgnomevfs/gnome-vfs.h>
-#include <libgnomevfs/gnome-vfs-utils.h>
-#include <libgnomevfs/gnome-vfs-mime.h>
-#include <libgnomevfs/gnome-vfs-mime-handlers.h>
-

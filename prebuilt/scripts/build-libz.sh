@@ -13,5 +13,14 @@ FILE_DIRECTORY="../../thirdparty/${THIS}/src"
 
 fetchBinary
 untarBinary
-buildLibrary
+
+# Use configure script instead of cmake for zlib
+cd "${BUILDDIR}/${ARCHIVE_DESTINATION}"
+if [ -e "./configure" ]; then
+	echo "configuring zlib with configure script"
+	./configure
+	make
+	cp zlib.h zconf.h "${BUILDDIR}/../include/" 2>/dev/null || true
+	cp libz.a "${BUILDDIR}/../lib/${PLATFORM}/" 2>/dev/null || true
+fi
 

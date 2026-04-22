@@ -48,9 +48,6 @@ along with LiveCode.  If not see <http://www.gnu.org/licenses/>.  */
 #include <fcntl.h>
 #include <sys/shm.h>
 
-#include <libgnomevfs/gnome-vfs.h>
-#include <libgnomevfs/gnome-vfs-utils.h>
-
 namespace x11
 {
 #include <X11/extensions/Xv.h>
@@ -86,9 +83,6 @@ extern "C" int initialise_weak_link_gtk(void);
 extern "C" int initialise_weak_link_gtk_color_dialog(void);
 extern "C" int initialise_weak_link_gtk_file_dialog(void);
 extern "C" int initialise_weak_link_gtk_print_dialog(void);
-extern "C" int initialise_weak_link_gnome_vfs ( void ) ;
-extern "C" int initialise_weak_link_libgnome ( void ) ;
-extern "C" int initialise_weak_link_libgnome ( void ) ;
 extern "C" int initialise_weak_link_libxv ( void ) ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -539,12 +533,6 @@ Boolean MCScreenDC::open()
         g_signal_connect(m_im_context, "retrieve-surrounding", G_CALLBACK(&on_retrieve_surrounding), this);
     }
 		
-	if ( initialise_weak_link_gnome_vfs() != 0 )
-	{
-		MCuselibgnome = initialise_weak_link_libgnome();
-		gnome_vfs_init();
-	}
-    
     // There are also some atoms that we need to set up
     MCworkareaatom = gdk_atom_intern_static_string("_NET_WORKAREA");
     MCclientlistatom = gdk_atom_intern_static_string("_NET_CLIENT_LIST");

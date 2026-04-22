@@ -773,7 +773,9 @@ def configure_linux(opts):
     export_opts(opts, ('CC', 'CXX', 'AR', 'LINK', 'OBJCOPY', 'OBJDUMP', 'STRIP', 'LD'))
 
     args = core_gyp_args(opts) + ['-Dtarget_arch=' + opts['TARGET_ARCH'],
-                                  '-Djavahome=' + opts['JAVA_SDK']]
+                                  '-Djavahome=' + opts['JAVA_SDK'],
+                                  '-Duse_system_libmysql=1',
+                                  '-Duse_system_libpq=1']
     exec_gyp(args + opts['GYP_OPTIONS'])
 
 def configure_rpi(opts):

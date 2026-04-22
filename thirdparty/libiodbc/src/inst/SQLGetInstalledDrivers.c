@@ -1,13 +1,13 @@
 /*
  *  SQLGetInstalledDrivers.c
  *
- *  $Id: SQLGetInstalledDrivers.c,v 1.10 2006/01/20 15:58:35 source Exp $
+ *  $Id$
  *
  *  Get a list of installed drivers
  *
  *  The iODBC driver manager.
  *
- *  Copyright (C) 1996-2006 by OpenLink Software <iodbc@openlinksw.com>
+ *  Copyright (C) 1996-2023 OpenLink Software <iodbc@openlinksw.com>
  *  All Rights Reserved.
  *
  *  This software is released under the terms of either of the following
@@ -77,7 +77,7 @@
 
 #include <iodbc.h>
 #include <odbcinst.h>
-#include <unicode.h>
+#include "unicode.h"
 
 #include "misc.h"
 #include "iodbc_error.h"
@@ -109,7 +109,7 @@ SQLGetInstalledDrivers_Internal (LPSTR lpszBuf, WORD cbBufMax,
     WORD * pcbBufOut, SQLCHAR waMode)
 {
   char buffer[4096], desc[1024], *ptr, *oldBuf = lpszBuf;
-  int i, j, usernum = 0, num_entries = 0;
+  int len, i, j, usernum = 0, num_entries = 0;
   void **sect = NULL;
   SQLUSMALLINT fDir = SQL_FETCH_FIRST_USER;
 
@@ -186,29 +186,36 @@ SQLGetInstalledDrivers_Internal (LPSTR lpszBuf, WORD cbBufMax,
   if (num_entries > 1)
     {
       qsort (sect, num_entries, sizeof (char **), SectSorter);
+    }
 
-      /* Copy back the result */
-      for (i = 0; cbBufMax > 0 && i < num_entries; i++)
-	{
-	  if (waMode == 'A')
-	    {
-	      STRNCPY (lpszBuf, sect[i], cbBufMax);
-	      cbBufMax -= (STRLEN (sect[i]) + 1);
-	      lpszBuf += (STRLEN (sect[i]) + 1);
-	    }
-	  else
-	    {
-	      dm_StrCopyOut2_A2W (sect[i], (LPWSTR) lpszBuf, cbBufMax, NULL);
-	      cbBufMax -= (STRLEN (sect[i]) + 1);
-	      lpszBuf += (STRLEN (sect[i]) + 1) * sizeof (wchar_t);
-	    }
-	}
+  len = cbBufMax;
+  /* Copy back the result as will fit */
+  for (i = 0; len > 0 && i < num_entries; i++)
+    {
+      int sect_len = STRLEN (sect[i]) + 1;
+
+      if (sect_len > len)
+        break;
 
       if (waMode == 'A')
-	*lpszBuf = '\0';
+        {
+          STRNCPY (lpszBuf, sect[i], sect_len);
+          len -= sect_len;
+          lpszBuf += sect_len;
+        }
       else
-	*((wchar_t *) lpszBuf) = L'\0';
+        {
+          dm_StrCopyOut2_A2W (sect[i], (LPWSTR) lpszBuf, sect_len, NULL);
+          len -= sect_len;
+          lpszBuf += sect_len * sizeof (wchar_t);
+        }
     }
+
+  /* put final \0 */
+  if (waMode == 'A')
+    *lpszBuf = '\0';
+  else
+    *((wchar_t *) lpszBuf) = L'\0';
 
   /*
    *  Free old section list

@@ -1,13 +1,13 @@
 /*
  *  GetFunctions.c
  *
- *  $Id: GetFunctions.c,v 1.5 2006/01/20 15:58:35 source Exp $
+ *  $Id$
  *
  *  SQLGetFunctions trace functions
  *
  *  The iODBC driver manager.
  *
- *  Copyright (C) 1996-2006 by OpenLink Software <iodbc@openlinksw.com>
+ *  Copyright (C) 1996-2023 OpenLink Software <iodbc@openlinksw.com>
  *  All Rights Reserved.
  *
  *  This software is released under the terms of either of the following
@@ -179,7 +179,7 @@ _trace_func_name (SQLUSMALLINT fFunc, int format)
   if (format)
     trace_emit ("\t\t%-15.15s   %d (%s)\n", "SQLUSMALLINT", (int) fFunc, ptr);
   else
-    trace_emit_string (ptr, SQL_NTS, 0);
+    trace_emit_string ((SQLCHAR *)ptr, SQL_NTS, 0);
 }
 
 

@@ -1,13 +1,13 @@
 /*
  *  SQLGetTranslator.c
  *
- *  $Id: SQLGetTranslator.c,v 1.14 2006/01/20 15:58:35 source Exp $
+ *  $Id$
  *
  *  These functions intentionally left blank
  *
  *  The iODBC driver manager.
  *
- *  Copyright (C) 1996-2006 by OpenLink Software <iodbc@openlinksw.com>
+ *  Copyright (C) 1996-2023 OpenLink Software <iodbc@openlinksw.com>
  *  All Rights Reserved.
  *
  *  This software is released under the terms of either of the following
@@ -78,50 +78,134 @@
 #include <iodbc.h>
 #include <odbcinst.h>
 #include <iodbcadm.h>
-#include <unicode.h>
+#include "unicode.h"
 
 #include "dlf.h"
 #include "inifile.h"
 #include "misc.h"
 #include "iodbc_error.h"
 
-#if defined (__APPLE__) && !(defined (NO_FRAMEWORKS) || defined (_LP64))
+#if defined (__APPLE__) && !defined (NO_FRAMEWORKS)
 #include <Carbon/Carbon.h>
 #endif
 
 #ifndef WIN32
 #include <unistd.h>
+
+#if defined (__APPLE__) && !defined (NO_FRAMEWORKS)
+
 #define CALL_CONFIG_TRANSLATOR(path) \
-	if ((handle = DLL_OPEN(path)) != NULL) \
-	{ \
-		if ((pConfigTranslator = (pConfigTranslatorFunc)DLL_PROC(handle, "ConfigTranslator")) != NULL) \
-		{ \
-	  	if (pConfigTranslator(hwndParent, pvOption)) \
-	  	{ \
-	    	DLL_CLOSE(handle); \
-	    	finish = retcode = TRUE; \
-	    	goto done; \
-	  	} \
-			else \
-			{ \
-				PUSH_ERROR(ODBC_ERROR_GENERAL_ERR); \
-	    	DLL_CLOSE(handle); \
-	    	retcode = FALSE; \
-	    	goto done; \
-			} \
-		} \
-		DLL_CLOSE(handle); \
-	}
+    if (path) \
+      { \
+	char *tmp_path = strdup (path); \
+	if (tmp_path) \
+	  { \
+	    char *ptr = strstr (tmp_path, "/Contents/MacOS/"); \
+	    if (ptr) \
+	      *ptr = 0; \
+	    liburl = CFURLCreateFromFileSystemRepresentation (NULL, (UInt8 *) tmp_path, strlen (tmp_path), FALSE); \
+	    CFArrayRef arr = CFBundleCopyExecutableArchitecturesForURL (liburl); \
+	    if (arr) \
+	      bundle_dll = CFBundleCreate (NULL, liburl); \
+	    if (arr) \
+	      CFRelease (arr); \
+	    if (liburl) \
+	      CFRelease (liburl); \
+	  } \
+	MEM_FREE (tmp_path); \
+	CALL_CONFIG_TRANSLATOR_BUNDLE (); \
+      }
+
+#define CALL_CONFIG_TRANSLATOR_BUNDLE() \
+    if (bundle_dll != NULL) \
+      { \
+	if ((pConfigTranslator = (pConfigTranslatorFunc) CFBundleGetFunctionPointerForName (bundle_dll, CFSTR ("ConfigTranslator"))) != NULL) \
+	  { \
+	    if (pConfigTranslator (hwndParent, pvOption)) \
+	      { \
+		finish = retcode = TRUE; \
+		goto done; \
+	      } \
+	    else \
+	      { \
+		PUSH_ERROR (ODBC_ERROR_GENERAL_ERR); \
+		retcode = FALSE; \
+		goto done; \
+	      } \
+	  } \
+      }
+
 
 #define CALL_TRSCHOOSE_DIALBOX(path) \
-	if ((handle = DLL_OPEN(path)) != NULL) \
-	{ \
-		if ((pTrsChoose = (pTrsChooseFunc)DLL_PROC(handle, "_iodbcdm_trschoose_dialbox")) != NULL) \
-		  ret = pTrsChoose(hwndParent, translator, sizeof(translator), NULL); \
-		else ret = SQL_NO_DATA; \
-		DLL_CLOSE(handle); \
-	} \
-	else ret = SQL_NO_DATA;
+    if (path) \
+      { \
+	char *tmp_path = strdup (path); \
+	if (tmp_path) \
+	  { \
+	    char *ptr = strstr (tmp_path, "/Contents/MacOS/"); \
+	    if (ptr) \
+	      *ptr = 0; \
+	    liburl = CFURLCreateFromFileSystemRepresentation (NULL, (UInt8 *) tmp_path, strlen (tmp_path), FALSE); \
+	    CFArrayRef arr = CFBundleCopyExecutableArchitecturesForURL (liburl); \
+	    if (arr) \
+	      bundle_dll = CFBundleCreate (NULL, liburl); \
+	    if (arr) \
+	      CFRelease (arr); \
+	    if (liburl) \
+	      CFRelease (liburl); \
+	  } \
+	MEM_FREE (tmp_path); \
+	CALL_TRSCHOOSE_DIALBOX_BUNDLE (); \
+      }
+
+#define CALL_TRSCHOOSE_DIALBOX_BUNDLE() \
+    if (bundle_dll != NULL) \
+      { \
+	if ((pTrsChoose = (pTrsChooseFunc) CFBundleGetFunctionPointerForName (bundle_dll, CFSTR ("_iodbcdm_trschoose_dialbox"))) != NULL) \
+	  ret = pTrsChoose (hwndParent, translator, sizeof (translator), NULL); \
+	else \
+	  ret = SQL_NO_DATA; \
+      } \
+    else \
+      ret = SQL_NO_DATA;
+
+#else
+
+#define CALL_CONFIG_TRANSLATOR(path) \
+    if ((handle = DLL_OPEN (path)) != NULL) \
+      { \
+	if ((pConfigTranslator = (pConfigTranslatorFunc) DLL_PROC (handle, "ConfigTranslator")) != NULL) \
+	  { \
+	    if (pConfigTranslator (hwndParent, pvOption)) \
+	      { \
+		DLL_CLOSE (handle); \
+		finish = retcode = TRUE; \
+		goto done; \
+	      } \
+	    else \
+	      { \
+		PUSH_ERROR (ODBC_ERROR_GENERAL_ERR); \
+		DLL_CLOSE (handle); \
+		retcode = FALSE; \
+		goto done; \
+	      } \
+	  } \
+	DLL_CLOSE (handle); \
+      }
+
+#define CALL_TRSCHOOSE_DIALBOX(path) \
+    if ((handle = DLL_OPEN (path)) != NULL) \
+      { \
+	if ((pTrsChoose = (pTrsChooseFunc) DLL_PROC (handle, "_iodbcdm_trschoose_dialbox")) != NULL) \
+	  ret = pTrsChoose (hwndParent, translator, sizeof (translator), NULL); \
+	else \
+	  ret = SQL_NO_DATA; \
+	DLL_CLOSE (handle); \
+      } \
+    else \
+      ret = SQL_NO_DATA;
+#endif
+
 #endif
 
 extern SQLRETURN _iodbcdm_trschoose_dialbox (HWND, LPSTR, DWORD, int *);
@@ -139,40 +223,35 @@ GetTranslator (HWND hwndParent, LPSTR lpszName, WORD cbNameMax,
   RETCODE ret = SQL_NO_DATA;
   void *handle;
   char translator[1024];
-#if defined (__APPLE__) && !(defined (NO_FRAMEWORKS) || defined (_LP64))
-  CFStringRef libname = NULL;
-  CFBundleRef bundle;
+#if defined (__APPLE__) && !defined (NO_FRAMEWORKS)
+  CFBundleRef bundle = NULL;
+  CFBundleRef bundle_dll = NULL;
   CFURLRef liburl;
-  char name[1024] = { 0 };
 #endif
 
   do
     {
       /* Load the Admin dialbox function */
-#if defined (__APPLE__) && !(defined (NO_FRAMEWORKS) || defined (_LP64))
-      bundle = CFBundleGetBundleWithIdentifier (CFSTR ("org.iodbc.inst"));
+#if defined (__APPLE__)
+# if !defined(NO_FRAMEWORKS)
+      bundle = CFBundleGetBundleWithIdentifier (CFSTR ("org.iodbc.core"));
       if (bundle)
 	{
 	  /* Search for the iODBCadm library */
 	  liburl =
 	      CFBundleCopyResourceURL (bundle, CFSTR ("iODBCadm.bundle"),
 	      NULL, NULL);
-	  if (liburl
-	      && (libname =
-		  CFURLCopyFileSystemPath (liburl, kCFURLPOSIXPathStyle)))
-	    {
-	      CFStringGetCString (libname, name, sizeof (name),
-		  kCFStringEncodingASCII);
-	      STRCAT (name, "/Contents/MacOS/iODBCadm");
-	      CALL_TRSCHOOSE_DIALBOX (name);
-	    }
 	  if (liburl)
-	    CFRelease (liburl);
-	  if (libname)
-	    CFRelease (libname);
+	    {
+      	      bundle_dll = CFBundleCreate (NULL, liburl);
+              CFRelease (liburl);
+      	      CALL_TRSCHOOSE_DIALBOX_BUNDLE ();
+	    }
 	}
+# endif
 #else
-      CALL_TRSCHOOSE_DIALBOX ("libiodbcadm.so");
+
+      CALL_TRSCHOOSE_DIALBOX ("libiodbcadm.so.2");
 #endif
 
       if (ret == SQL_NO_DATA)
@@ -229,7 +308,7 @@ GetTranslator (HWND hwndParent, LPSTR lpszName, WORD cbNameMax,
 	    }
 
 	  /* The last ressort, a proxy driver */
-	  CALL_CONFIG_TRANSLATOR ("libtranslator.so");
+	  CALL_CONFIG_TRANSLATOR ("libtranslator.so.2");
 
 	  /* Error : ConfigDSN could no be found */
 	  PUSH_ERROR (ODBC_ERROR_LOAD_LIB_FAILED);
@@ -319,8 +398,8 @@ SQLGetTranslatorW (HWND hwnd,
 
   if (retcode == TRUE)
     {
-      dm_StrCopyOut2_U8toW (_name_u8, lpszName, cbNameMax, pcbNameOut);
-      dm_StrCopyOut2_U8toW (_path_u8, lpszPath, cbPathMax, pcbPathOut);
+      dm_StrCopyOut2_U8toW ((SQLCHAR *)_name_u8, lpszName, cbNameMax, pcbNameOut);
+      dm_StrCopyOut2_U8toW ((SQLCHAR *)_path_u8, lpszPath, cbPathMax, pcbPathOut);
     }
 
 done:

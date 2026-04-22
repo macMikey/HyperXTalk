@@ -68,7 +68,6 @@ extern MCStringRef MCfiletype;
 extern MCStringRef MCstackfiletype;
 
 extern Boolean MCuseXft ;
-extern Boolean MCuselibgnome ;
 extern Boolean MCuseESD ;
 
 #ifdef TARGET_PLATFORM_LINUX

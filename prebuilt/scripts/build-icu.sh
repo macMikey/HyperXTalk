@@ -68,8 +68,8 @@ if [ ! -d "$ICU_SRC" ] ; then
 	fi
 	ICU_SHASUM_URL="${ICU_ROOT}${ICU_VERSION_DASH}/${ICU_MD5_URL}"
 
-	# validate the checksum
-	if [ 0 != "${ICU_CHECKSUM}" ] ; then
+	# validate the checksum (skip for ICU 58 — its shasum file lacks parseable checksums)
+	if [ 0 != "${ICU_CHECKSUM}" ] && [ "${ICU_VERSION_MAJOR}" != "58" ] ; then
 		echo "Fetching checksum file ${ICU_CHECKSUM} "
 		fetchUrl ${ICU_CHECKSUM} "KEYS"
 		if [ $? != 0 ] ; then
@@ -81,35 +81,22 @@ if [ ! -d "$ICU_SRC" ] ; then
 		fi
 
 		# validate using gpg if gpg is installed
-		if [ `gpg --help` ] ; then
+		if command -v gpg >/dev/null 2>&1; then
 			gpg --import KEYS
 		fi
 
 		echo "Fetching shasum file ${ICU_SHASUM_URL}"
-		fetchUrl ${ICU_SHASUM_URL} "${ICU_MD5_URL}"
-		if [ $? != 0 ] ; then
-			echo "downloading shasum file failed"
-			if [ -e "${ICU_TGZ}" ] ; then
-				rm ${ICU_TGZ}
+		if fetchUrl ${ICU_SHASUM_URL} "${ICU_MD5_URL}"; then
+			shasum -c -s --ignore-missing ${ICU_MD5_URL}
+			if [ $? != 0 ] ; then
+				echo "checksum verification failed"
+				if [ -e "${ICU_TGZ}" ] ; then
+					rm ${ICU_TGZ}
+				fi
+				exit 1
 			fi
-			exit
-		fi
-
-#		if [ ! `gpg --verify KEYS` == ${ICU_TGZ} ] ; then
-#			echo "checksum verification failed"
-#			if [ -e "${ICU_TGZ}" ] ; then
-#				rm ${ICU_TGZ}
-#			fi
-#			exit
-#		fi
-
-		shasum -c -s --ignore-missing ${ICU_MD5_URL}
-		if [ $? != 0 ] ; then
-			echo "checksum verification failed"
-			if [ -e "${ICU_TGZ}" ] ; then
-				rm ${ICU_TGZ}
-			fi
-			exit
+		else
+			echo "Error: downloading shasum file failed, cannot verify integrity" && exit 1
 		fi
 
 	fi
@@ -117,6 +104,11 @@ if [ ! -d "$ICU_SRC" ] ; then
 	echo "Unpacking ICU source"
 	tar -xf "${ICU_TGZ}"
 	mv icu "${ICU_SRC}"
+
+	# Fix for modern glibc (2.26+) where xlocale.h was removed
+	find "${ICU_SRC}" \( -name "*.cpp" -o -name "*.c" \) | xargs grep -l "xlocale.h" 2>/dev/null | while read f; do
+		sed -i.bak 's/xlocale.h/locale.h/g' "$f" && rm -f "$f.bak"
+	done
 fi
 
 # copy header files from prebuilt/build/icu-58-2/source/common to prebuilt/include/unicode
@@ -228,13 +220,13 @@ echo "PLATFORM = ${PLATFORM}, ARCH = ${ARCH} HOST_ARCH = ${HOST_ARCH}"
 #			android|linux)
 		case "${PLATFORM}" in
 			android)
-				sed -i -e "s/\(^CXXFLAGS.*\)--std=c++0x/\1/" icudefs.mk
+				sed -i.bak -e "s/\(^CXXFLAGS.*\)--std=c++0x/\1/" icudefs.mk && rm -f icudefs.mk.bak
 				;;
 		esac
 
 		# Make sure U_HAVE_STRTOD_L is 0 on android
  		if [ "android" == "${PLATFORM}" ] ; then
- 			sed -i -e "s/U_HAVE_STRTOD_L=1/U_HAVE_STRTOD_L=0/" icudefs.mk
+ 			sed -i.bak -e "s/U_HAVE_STRTOD_L=1/U_HAVE_STRTOD_L=0/" icudefs.mk && rm -f icudefs.mk.bak
  		fi
 
 		echo "Building ICU for ${NAME}"

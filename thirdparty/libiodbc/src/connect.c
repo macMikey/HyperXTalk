@@ -1,14 +1,14 @@
 /*
  *  connect.c
  *
- *  $Id: connect.c,v 1.44 2006/01/24 00:09:25 source Exp $
+ *  $Id$
  *
  *  Connect (load) driver
  *
  *  The iODBC driver manager.
  *
- *  Copyright (C) 1995 by Ke Jin <kejin@empress.com>
- *  Copyright (C) 1996-2006 by OpenLink Software <iodbc@openlinksw.com>
+ *  Copyright (C) 1995 Ke Jin <kejin@empress.com>
+ *  Copyright (C) 1996-2023 OpenLink Software <iodbc@openlinksw.com>
  *  All Rights Reserved.
  *
  *  This software is released under the terms of either of the following
@@ -75,30 +75,33 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 #include <iodbc.h>
 
+#include <assert.h>
 #include <sql.h>
 #include <sqlext.h>
 #include <sqlucode.h>
 #include <iodbcext.h>
 #include <odbcinst.h>
 
-#include <dlproc.h>
+#include "dlproc.h"
 
-#include <herr.h>
-#include <henv.h>
-#include <hdbc.h>
-#include <hstmt.h>
+#include "unicode.h"
+#include "herr.h"
+#include "henv.h"
+#include "hdbc.h"
+#include "hstmt.h"
 
-#include <itrace.h>
+#include "itrace.h"
 
-#include <unicode.h>
+#include "unicode.h"
 
-#if defined (__APPLE__) && !(defined (NO_FRAMEWORKS) || defined (_LP64))
+#if defined (__APPLE__) && !defined (NO_FRAMEWORKS)
 #include <Carbon/Carbon.h>
 #endif
 
+#include "misc.h"
+#include "iodbc_misc.h"
 
 /*
  *  Identification strings
@@ -110,17 +113,13 @@ char *iodbc_version = VERSION;
 /*
  *  Prototypes
  */
-extern SQLRETURN _iodbcdm_driverunload (HDBC hdbc);
+extern SQLRETURN _iodbcdm_driverunload (HDBC hdbc, int ver);
 extern SQLRETURN SQL_API _iodbcdm_SetConnectOption (SQLHDBC hdbc,
     SQLUSMALLINT fOption, SQLULEN vParam, SQLCHAR waMode);
 
-extern char * _iodbcdm_getkeyvalinstr (char *cnstr, int cnlen,
-    char *keywd, char *value, int size);
-extern wchar_t * _iodbcdm_getkeyvalinstrw (wchar_t *cnstr, int cnlen,
-    wchar_t *keywd, wchar_t *value, int size);
 
-
-#define CHECK_DRVCONN_DIALBOXW(path) \
+#if 0
+#define CHECK_DRVCONN_DIALBOX(path) \
   { \
     if ((handle = DLL_OPEN(path)) != NULL) \
       { \
@@ -147,77 +146,73 @@ extern wchar_t * _iodbcdm_getkeyvalinstrw (wchar_t *cnstr, int cnlen,
 
 static BOOL
 _iodbcdm_CheckDriverLoginDlg (
-    SQLPOINTER  drv,
-    SQLPOINTER  dsn,
-    UCHAR       waMode
+    LPSTR drv,
+    LPSTR dsn
 )
 {
-  wchar_t *szDSN = NULL;
-  wchar_t *szDriver = NULL;
-  wchar_t tokenstr[4096];
-  char *_szdriver_u8 = NULL;
+  char tokenstr[4096];
   char drvbuf[4096] = { L'\0'};
   HDLL handle;
   BOOL retVal = FALSE;
 
-  if (waMode != 'W')
-   {
-     szDSN = dm_SQL_A2W((SQLCHAR *)dsn, SQL_NTS);
-     szDriver = dm_SQL_A2W((SQLCHAR *)drv, SQL_NTS);
-   }
-
   /* Check if the driver is provided */
-  if (szDriver == NULL)
+  if (drv == NULL)
     {
       SQLSetConfigMode (ODBC_BOTH_DSN);
-      SQLGetPrivateProfileStringW (L"ODBC Data Sources",
-        szDSN && szDSN[0] != L'\0' ? szDSN : L"default",
-        L"", tokenstr, sizeof (tokenstr)/sizeof(wchar_t), NULL);
-      szDriver = tokenstr;
+      SQLGetPrivateProfileString ("ODBC Data Sources",
+        dsn && dsn[0] != '\0' ? dsn : "Default",
+        "", tokenstr, sizeof (tokenstr), NULL);
+      drv = tokenstr;
     }
 
   /* Call the iodbcdm_drvconn_dialbox */
-  _szdriver_u8 = dm_SQL_W2A (szDriver, SQL_NTS);
 
   SQLSetConfigMode (ODBC_USER_DSN);
-  if (!access (_szdriver_u8, X_OK))
-    { CHECK_DRVCONN_DIALBOXW (_szdriver_u8); }
-  if (SQLGetPrivateProfileString (_szdriver_u8, "Driver", "", drvbuf,
+  if (!access (drv, X_OK))
+    { CHECK_DRVCONN_DIALBOX (drv); }
+  if (SQLGetPrivateProfileString (drv, "Driver", "", drvbuf,
     sizeof (drvbuf), "odbcinst.ini"))
-    { CHECK_DRVCONN_DIALBOXW (drvbuf); }
-  if (SQLGetPrivateProfileString (_szdriver_u8, "Setup", "", drvbuf,
+    { CHECK_DRVCONN_DIALBOX (drvbuf); }
+  if (SQLGetPrivateProfileString (drv, "Setup", "", drvbuf,
     sizeof (drvbuf), "odbcinst.ini"))
-    { CHECK_DRVCONN_DIALBOXW (drvbuf); }
+    { CHECK_DRVCONN_DIALBOX (drvbuf); }
   if (SQLGetPrivateProfileString ("Default", "Driver", "", drvbuf,
     sizeof (drvbuf), "odbcinst.ini"))
-    { CHECK_DRVCONN_DIALBOXW (drvbuf); }
+    { CHECK_DRVCONN_DIALBOX (drvbuf); }
   if (SQLGetPrivateProfileString ("Default", "Setup", "", drvbuf,
     sizeof (drvbuf), "odbcinst.ini"))
-    { CHECK_DRVCONN_DIALBOXW (drvbuf); }
+    { CHECK_DRVCONN_DIALBOX (drvbuf); }
 
 
   SQLSetConfigMode (ODBC_SYSTEM_DSN);
-  if (!access (_szdriver_u8, X_OK))
-    { CHECK_DRVCONN_DIALBOXW (_szdriver_u8); }
-  if (SQLGetPrivateProfileString (_szdriver_u8, "Driver", "", drvbuf,
+  if (!access (drv, X_OK))
+    { CHECK_DRVCONN_DIALBOX (drv); }
+  if (SQLGetPrivateProfileString (drv, "Driver", "", drvbuf,
     sizeof (drvbuf), "odbcinst.ini"))
-    { CHECK_DRVCONN_DIALBOXW (drvbuf); }
-  if (SQLGetPrivateProfileString (_szdriver_u8, "Setup", "", drvbuf,
+    { CHECK_DRVCONN_DIALBOX (drvbuf); }
+  if (SQLGetPrivateProfileString (drv, "Setup", "", drvbuf,
     sizeof (drvbuf), "odbcinst.ini"))
-    { CHECK_DRVCONN_DIALBOXW (drvbuf); }
+    { CHECK_DRVCONN_DIALBOX (drvbuf); }
   if (SQLGetPrivateProfileString ("Default", "Driver", "", drvbuf,
     sizeof (drvbuf), "odbcinst.ini"))
-    { CHECK_DRVCONN_DIALBOXW (drvbuf); }
+    { CHECK_DRVCONN_DIALBOX (drvbuf); }
   if (SQLGetPrivateProfileString ("Default", "Setup", "", drvbuf,
     sizeof (drvbuf), "odbcinst.ini"))
-    { CHECK_DRVCONN_DIALBOXW (drvbuf); }
+    { CHECK_DRVCONN_DIALBOX (drvbuf); }
 
 quit:
 
-  MEM_FREE (_szdriver_u8);
-
   return retVal;
 }
+#endif
+
+
+#define RETURN(_ret)							\
+  do {									\
+    retcode = _ret;							\
+    goto end;								\
+  } while (0)
+
 
 
 static SQLRETURN
@@ -232,6 +227,8 @@ _iodbcdm_SetConnectOption_init (
   HPROC hproc = SQL_NULL_HPROC;
   SQLRETURN retcode = SQL_SUCCESS;
   int retinfo = 0;
+  CONV_DIRECT conv_direct = CD_NONE;
+  DM_CONV *conv = &pdbc->conv;
 
   SQLINTEGER strLength = 0;
   void *ptr = (void *) vParam;
@@ -242,33 +239,30 @@ _iodbcdm_SetConnectOption_init (
       retinfo = 1;		/* Change SQL_ERROR -> SQL_SUCCESS_WITH_INFO */
     }
 
-  if ((penv->unicode_driver && waMode != 'W')
-      || (!penv->unicode_driver && waMode == 'W'))
+  if (penv->unicode_driver && waMode != 'W')
+    conv_direct = CD_A2W;
+  else if (!penv->unicode_driver && waMode == 'W')
+    conv_direct = CD_W2A;
+  else if (waMode == 'W' && conv->dm_cp!=conv->drv_cp)
+    conv_direct = CD_W2W;
+
+  switch (fOption)
     {
-      switch (fOption)
-        {
-          case SQL_ATTR_TRACEFILE:
-          case SQL_CURRENT_QUALIFIER:
-          case SQL_TRANSLATE_DLL:
-          case SQL_APPLICATION_NAME:
-          case SQL_COPT_SS_ENLIST_IN_DTC:
-          case SQL_COPT_SS_PERF_QUERY_LOG:
-          case SQL_COPT_SS_PERF_DATA_LOG:
-          case SQL_CURRENT_SCHEMA:
-            if (waMode != 'W')
-              {
-              /* ansi=>unicode*/
-                _vParam = dm_SQL_A2W((SQLCHAR *)vParam, SQL_NTS);
-              }
-            else
-              {
-              /* unicode=>ansi*/
-                _vParam = dm_SQL_W2A((SQLWCHAR *)vParam, SQL_NTS);
-              }
+      case SQL_ATTR_TRACEFILE:
+      case SQL_CURRENT_QUALIFIER:
+      case SQL_TRANSLATE_DLL:
+      case SQL_APPLICATION_NAME:
+      case SQL_COPT_SS_ENLIST_IN_DTC:
+      case SQL_COPT_SS_PERF_QUERY_LOG:
+      case SQL_COPT_SS_PERF_DATA_LOG:
+      case SQL_CURRENT_SCHEMA:
+        if (conv_direct != CD_NONE)
+          {
+            _vParam = conv_text_m2d(conv, (void *)vParam, SQL_NTS, conv_direct);
             ptr = _vParam;
             strLength = SQL_NTS;
-            break;
-        }
+          }
+        break;
     }
 
   if (penv->unicode_driver)
@@ -278,15 +272,14 @@ _iodbcdm_SetConnectOption_init (
           != SQL_NULL_HPROC)
         {
           CALL_DRIVER (hdbc, pdbc, retcode, hproc,
-              en_SetConnectOptionW, (pdbc->dhdbc, fOption, ptr));
+	      (pdbc->dhdbc, fOption, ptr));
         }
 #if (ODBCVER >= 0x300)
-      else
-      if ((hproc = _iodbcdm_getproc (pdbc, en_SetConnectAttrW))
+      else if ((hproc = _iodbcdm_getproc (pdbc, en_SetConnectAttrW))
           != SQL_NULL_HPROC)
         {
           CALL_DRIVER (hdbc, pdbc, retcode, hproc,
-              en_SetConnectAttrW, (pdbc->dhdbc, fOption, ptr, strLength));
+	      (pdbc->dhdbc, fOption, ptr, strLength));
         }
 #endif
     }
@@ -298,29 +291,26 @@ _iodbcdm_SetConnectOption_init (
            != SQL_NULL_HPROC)
         {
           CALL_DRIVER (hdbc, pdbc, retcode, hproc,
-	          en_SetConnectOption, (pdbc->dhdbc, fOption, vParam));
+	      (pdbc->dhdbc, fOption, vParam));
         }
-      else
-      if ((hproc = _iodbcdm_getproc (pdbc, en_SetConnectOptionA))
+      else if ((hproc = _iodbcdm_getproc (pdbc, en_SetConnectOptionA))
            != SQL_NULL_HPROC)
         {
           CALL_DRIVER (hdbc, pdbc, retcode, hproc,
-              en_SetConnectOptionA, (pdbc->dhdbc, fOption, vParam));
+	      (pdbc->dhdbc, fOption, vParam));
         }
 #if (ODBCVER >= 0x300)
-      else
-      if ((hproc = _iodbcdm_getproc (pdbc, en_SetConnectAttr))
+      else if ((hproc = _iodbcdm_getproc (pdbc, en_SetConnectAttr))
           != SQL_NULL_HPROC)
         {
           CALL_DRIVER (hdbc, pdbc, retcode, hproc,
-              en_SetConnectAttr, (pdbc->dhdbc, fOption, vParam, strLength));
+	      (pdbc->dhdbc, fOption, vParam, strLength));
         }
-      else
-      if ((hproc = _iodbcdm_getproc (pdbc, en_SetConnectAttrA))
+      else if ((hproc = _iodbcdm_getproc (pdbc, en_SetConnectAttrA))
           != SQL_NULL_HPROC)
         {
           CALL_DRIVER (hdbc, pdbc, retcode, hproc,
-             en_SetConnectAttrA,(pdbc->dhdbc, fOption, vParam, strLength));
+	      (pdbc->dhdbc, fOption, vParam, strLength));
         }
 #endif
     }
@@ -337,6 +327,54 @@ _iodbcdm_SetConnectOption_init (
 
   return retcode;
 }
+
+
+static SQLRETURN
+_iodbcdm_SetConnectAttr_init (
+    SQLHDBC		  hdbc,
+    SQLUSMALLINT	  fOption,
+    SQLULEN		  vParam)
+{
+  CONN (pdbc, hdbc);
+  ENVR (penv, pdbc->henv);
+  HPROC hproc = SQL_NULL_HPROC;
+  SQLRETURN retcode = SQL_ERROR;
+  SQLINTEGER strLength = 0;
+  void *ptr = (void *) vParam;
+
+
+  if (penv->unicode_driver)
+    {
+#if (ODBCVER >= 0x300)
+      if ((hproc = _iodbcdm_getproc (pdbc, en_SetConnectAttrW))
+          != SQL_NULL_HPROC)
+        {
+          CALL_DRIVER (hdbc, pdbc, retcode, hproc,
+	      (pdbc->dhdbc, fOption, ptr, strLength));
+        }
+#endif
+    }
+  else
+    {
+#if (ODBCVER >= 0x300)
+      if ((hproc = _iodbcdm_getproc (pdbc, en_SetConnectAttr))
+          != SQL_NULL_HPROC)
+        {
+          CALL_DRIVER (hdbc, pdbc, retcode, hproc,
+	      (pdbc->dhdbc, fOption, vParam, strLength));
+        }
+      else if ((hproc = _iodbcdm_getproc (pdbc, en_SetConnectAttrA))
+          != SQL_NULL_HPROC)
+        {
+          CALL_DRIVER (hdbc, pdbc, retcode, hproc,
+	      (pdbc->dhdbc, fOption, vParam, strLength));
+        }
+#endif
+    }
+
+  return retcode;
+}
+
 
 
 static SQLRETURN
@@ -381,6 +419,618 @@ _iodbcdm_getInfo_init (SQLHDBC hdbc,
 }
 
 
+static SQLRETURN
+_iodbcdm_finish_disconnect (HDBC hdbc, BOOL driver_disconnect)
+{
+  CONN (pdbc, hdbc);
+  HPROC hproc = SQL_NULL_HPROC;
+
+  DPRINTF ((stderr,
+      "DEBUG: _iodbcdm_finish_disconnect (conn %p, driver_disconnect %d)\n",
+      hdbc, driver_disconnect));
+
+  if (driver_disconnect)
+    {
+      SQLRETURN retcode;
+
+      hproc = _iodbcdm_getproc (pdbc, en_Disconnect);
+      if (hproc == SQL_NULL_HPROC)
+        {
+          PUSHSQLERR (pdbc->herr, en_IM001);
+          return SQL_ERROR;
+        }
+
+      ODBC_UNLOCK ();
+      CALL_DRIVER (hdbc, pdbc, retcode, hproc, (pdbc->dhdbc));
+      ODBC_LOCK ();
+
+      if (!SQL_SUCCEEDED (retcode))
+        {
+          /* diff from MS specs. We disallow
+           * driver SQLDisconnect() return
+           * SQL_SUCCESS_WITH_INFO and post
+           * error message.
+           */
+          return retcode;
+        }
+    }
+
+  /* free all statement handle(s) on this connection */
+  while (pdbc->hstmt != NULL)
+    _iodbcdm_dropstmt (pdbc->hstmt);
+
+  /* state transition */
+  pdbc->state = en_dbc_allocated;
+
+  return SQL_SUCCESS;
+}
+
+
+#if (ODBCVER >= 0x300)
+/*
+ * Set Retry Wait timeout
+ */
+static void
+_iodbcdm_pool_set_retry_wait (HDBC hdbc)
+{
+  CONN (pdbc, hdbc);
+  int retry_wait = 0;
+  char buf[1024];
+
+  /* Get the "Retry Wait" keyword value from the Pooling section */
+  SQLSetConfigMode (ODBC_BOTH_DSN);
+  if (SQLGetPrivateProfileString ("ODBC Connection Pooling", "Retry Wait", "",
+         buf, sizeof (buf), "odbcinst.ini") != 0 &&
+         buf[0] != '\0')
+    retry_wait = atoi(buf);
+
+  DPRINTF ((stderr, "DEBUG: setting RetryWait %d (conn %p)\n",
+      retry_wait, hdbc));
+  pdbc->cp_retry_wait = time(NULL) + retry_wait;
+}
+
+
+extern SQLRETURN SQLFreeConnect_Internal (SQLHDBC hdbc);
+
+/*
+ * Drop connection from the pool
+ */
+void
+_iodbcdm_pool_drop_conn (HDBC hdbc, HDBC hdbc_prev)
+{
+  CONN (pdbc, hdbc);
+  CONN (pdbc_prev, hdbc_prev);
+
+  assert (!pdbc->cp_in_use);
+
+  DPRINTF ((stderr, "DEBUG: dropping connection %p (prev %p) from the pool\n",
+      hdbc, hdbc_prev));
+
+  /* remove from pool */
+  if (pdbc_prev != NULL)
+    pdbc_prev->next = pdbc->next;
+  else
+    {
+      GENV (genv, pdbc->genv);
+
+      genv->pdbc_pool = pdbc->next;
+    }
+
+  /* finish disconnect and free connection */
+  _iodbcdm_finish_disconnect (hdbc, TRUE);
+  SQLFreeConnect_Internal (hdbc);
+  MEM_FREE (hdbc);
+}
+
+
+/*
+ * Copy connection parameters from src to dst and reset src parameters
+ * so that src can be correctly freed by SQLDisconnect.
+ */
+static void
+_iodbcdm_pool_copy_conn (HDBC hdbc_dst, HDBC hdbc_src)
+{
+  CONN (pdbc_dst, hdbc_dst);
+  CONN (pdbc_src, hdbc_src);
+  HDBC next;
+  time_t cp_timeout, cp_expiry_time;
+
+  /* Preserve `next', `cp_timeout' and `cp_expiry_time' */
+  next = pdbc_dst->next;
+  cp_timeout = pdbc_dst->cp_timeout;
+  cp_expiry_time = pdbc_dst->cp_expiry_time;
+  *pdbc_dst = *pdbc_src;
+  pdbc_dst->next = next;
+  pdbc_dst->cp_timeout = cp_timeout;
+  pdbc_dst->cp_expiry_time = cp_expiry_time;
+
+  /* Reset parameters of source connection */
+  pdbc_src->herr = SQL_NULL_HERR;
+  pdbc_src->dhdbc = SQL_NULL_HDBC;
+  pdbc_src->henv = SQL_NULL_HENV;
+  pdbc_src->hstmt = SQL_NULL_HSTMT;
+  pdbc_src->hdesc = SQL_NULL_HDESC;
+  pdbc_src->current_qualifier = NULL;
+  pdbc_src->drvopt = NULL;
+
+  pdbc_src->cp_probe = NULL;
+  pdbc_src->cp_dsn = NULL;
+  pdbc_src->cp_uid = NULL;
+  pdbc_src->cp_pwd = NULL;
+  pdbc_src->cp_connstr = NULL;
+}
+
+
+/*
+ * Check if attributes of two connections match
+ */
+static BOOL
+_iodbcdm_pool_check_attr_match (HDBC hdbc, HDBC cp_hdbc)
+{
+  CONN (pdbc, hdbc);
+  GENV (genv, pdbc->genv);
+  CONN (cp_pdbc, cp_hdbc);
+  BOOL strict_match = (genv->cp_match == SQL_CP_STRICT_MATCH);
+
+  DPRINTF ((stderr, "DEBUG: check attr match (conn %p, cp_conn %p)\n",
+      hdbc, cp_hdbc));
+
+  /*
+   * Check attrs that must be set before connection has been made:
+   * - SQL_ATTR_PACKET_SIZE (packet_size)
+   * - SQL_ATTR_ODBC_CURSORS (odbc_cursors)
+   *
+   * SQL_ATTR_PACKET_SIZE can be different if !strict_match.
+   * The value of SQL_ATTR_LOGIN_TIMEOUT is not examined.
+   */
+  if (strict_match && pdbc->packet_size != cp_pdbc->packet_size)
+    {
+      DPRINTF ((stderr, "DEBUG: packet_size does not match (conn %p, cp_conn %p, strict_match %d)",
+        hdbc, cp_hdbc, strict_match));
+      return FALSE;
+    }
+
+  if (pdbc->odbc_cursors != cp_pdbc->odbc_cursors)
+    {
+      DPRINTF ((stderr, "DEBUG: odbc_cursors does not match (conn %p, cp_conn %p, strict_match %d)",
+        hdbc, cp_hdbc, strict_match));
+      return FALSE;
+    }
+
+  if (pdbc->conv.dm_cp != cp_pdbc->conv.dm_cp || pdbc->conv.drv_cp != cp_pdbc->conv.drv_cp)
+    {
+      DPRINTF ((stderr, "DEBUG: unicode mode does not match (conn %p, cp_conn %p)",
+        hdbc, cp_hdbc));
+      return FALSE;
+    }
+
+  /*
+   * Check attrs that must be set either before or after the connection
+   * has been made:
+   * - SQL_ATTR_ACCESS_MODE (access_mode, default SQL_MODE_DEFAULT)
+   * - SQL_ATTR_AUTOCOMMIT (autocommit, default SQL_AUTOCOMMIT_DEFAULT)
+   * - SQL_ATTR_CURRENT_CATALOG (current_qualifier)
+   * - SQL_ATTR_QUIET_MODE (quiet_mode)
+   * - SQL_ATTR_TXN_ISOLATION (txn_isolation, default SQL_TXN_READ_UNCOMMITTED)
+   *
+   * If an attr is not set by the application but set in the pool:
+   * - if there is a default, an attr is reset to the default value
+   * (see _iodbcdm_pool_reset_conn_attrs()).
+   * - if there is no default value, pooled connection is not considered
+   * a match
+   *
+   * If an attr is set by the application, this value overrides the
+   * value from the pool.
+   */
+  if (pdbc->current_qualifier == NULL && cp_pdbc->current_qualifier != NULL)
+    {
+      /* has not been set by application, but set in the pool */
+      DPRINTF ((stderr, "DEBUG: current_qualifier has not been set by application, but is set in the pool (conn %p, cp_conn %p)",
+        hdbc, cp_hdbc));
+      return FALSE;
+    }
+
+  if (pdbc->quiet_mode == 0 && cp_pdbc->quiet_mode != 0)
+    {
+      /* has not been set by application, but set in the pool */
+      DPRINTF ((stderr, "DEBUG: quiet_mode has not been set by application, but is set in the pool (conn %p, cp_conn %p)",
+        hdbc, cp_hdbc));
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+
+/*
+ * Reset connection attributes to the default values (if an attr is not set
+ * by application and there is a default) or to the value set by application.
+ */
+SQLRETURN
+_iodbcdm_pool_reset_conn_attrs (SQLHDBC hdbc, SQLHDBC cp_hdbc)
+{
+  CONN (pdbc, hdbc);
+  CONN (cp_pdbc, cp_hdbc);
+  SQLRETURN retcode = SQL_SUCCESS;
+  SQLRETURN ret;
+
+  if (pdbc->access_mode != cp_pdbc->access_mode)
+    {
+      cp_pdbc->access_mode = pdbc->access_mode;
+
+      ret = _iodbcdm_SetConnectOption_init (
+          cp_pdbc, SQL_ACCESS_MODE, cp_pdbc->access_mode, 'A');
+      retcode |= ret;
+    }
+
+  if (pdbc->autocommit != cp_pdbc->autocommit)
+    {
+      cp_pdbc->autocommit = pdbc->autocommit;
+
+      ret = _iodbcdm_SetConnectOption_init (
+	  cp_pdbc, SQL_AUTOCOMMIT, cp_pdbc->autocommit, 'A');
+      retcode |= ret;
+    }
+
+  if (pdbc->current_qualifier != NULL)
+    {
+      if (cp_pdbc->current_qualifier != NULL)
+        MEM_FREE (cp_pdbc->current_qualifier);
+      cp_pdbc->current_qualifier = pdbc->current_qualifier;
+      pdbc->current_qualifier = NULL;
+      cp_pdbc->current_qualifier_WA = pdbc->current_qualifier_WA;
+
+      ret = _iodbcdm_SetConnectOption_init (
+          cp_pdbc, SQL_CURRENT_QUALIFIER,
+	  (SQLULEN) cp_pdbc->current_qualifier, cp_pdbc->current_qualifier_WA);
+      retcode |= ret;
+    }
+
+  if (cp_pdbc->quiet_mode != pdbc->quiet_mode)
+    {
+      cp_pdbc->quiet_mode = pdbc->quiet_mode;
+
+      ret = _iodbcdm_SetConnectOption_init (
+	  cp_pdbc, SQL_QUIET_MODE, cp_pdbc->quiet_mode, 'A');
+      retcode |= ret;
+    }
+
+  if (pdbc->txn_isolation != cp_pdbc->txn_isolation)
+    {
+      cp_pdbc->txn_isolation = pdbc->txn_isolation;
+
+      ret = _iodbcdm_SetConnectOption_init (
+          cp_pdbc, SQL_TXN_ISOLATION, cp_pdbc->txn_isolation, 'A');
+      retcode |= ret;
+    }
+
+  return retcode;
+}
+
+
+extern SQLRETURN
+SQLAllocStmt_Internal (SQLHDBC hdbc, SQLHSTMT *phstmt);
+extern SQLRETURN
+SQLFreeStmt_Internal (SQLHSTMT hstmt, SQLUSMALLINT fOption);
+extern SQLRETURN SQL_API
+SQLExecDirect_Internal (SQLHSTMT hstmt,
+    SQLPOINTER szSqlStr, SQLINTEGER cbSqlStr, SQLCHAR waMode);
+extern SQLRETURN SQLFetch_Internal (SQLHSTMT hstmt);
+
+/*
+ * Execute CPProbe statement to check if connection is dead
+ */
+static SQLRETURN
+_iodbcdm_pool_exec_cpprobe (HDBC hdbc, char *cp_probe)
+{
+  HSTMT hstmt = SQL_NULL_HSTMT;
+  SQLRETURN retcode;
+  SQLSMALLINT num_cols;
+
+  DPRINTF ((stderr, "DEBUG: executing CPProbe (conn %p, stmt [%s])\n",
+      hdbc, cp_probe));
+
+  /* allocate statement handle */
+  retcode = SQLAllocStmt_Internal (hdbc, &hstmt);
+  if (!SQL_SUCCEEDED (retcode))
+    RETURN (retcode);
+
+  /* execute statement */
+  retcode = SQLExecDirect_Internal (hstmt, cp_probe, SQL_NTS, 'A');
+  if (!SQL_SUCCEEDED (retcode))
+    RETURN (retcode);
+
+  /* check that there is a result set */
+  retcode = _iodbcdm_NumResultCols (hstmt, &num_cols);
+  if (!SQL_SUCCEEDED (retcode))
+    RETURN (retcode);
+
+  /* if there was no result set -- success */
+  if (num_cols == 0)
+    RETURN (SQL_SUCCESS);
+
+  /* fetch results */
+  do
+    {
+      retcode = SQLFetch_Internal (hstmt);
+      if (!SQL_SUCCEEDED (retcode))
+        RETURN (retcode);
+    }
+  while (retcode != SQL_NO_DATA);
+
+  /* success */
+  RETURN (SQL_SUCCESS);
+
+end:
+  if (hstmt != SQL_NULL_HSTMT)
+    SQLFreeStmt_Internal (hstmt, SQL_DROP);
+  return retcode;
+}
+
+
+/*
+ * Check if connection is dead
+ */
+static BOOL
+_iodbcdm_pool_conn_dead (HDBC hdbc)
+{
+  CONN (pdbc, hdbc);
+  HPROC hproc = SQL_NULL_HPROC;
+  SQLRETURN retcode;
+  SQLINTEGER attr_dead;
+
+  DPRINTF ((stderr, "DEBUG: checking if connection is dead (conn %p)\n",
+      hdbc));
+
+  /* first try SQLGetConnectAttr */
+  CALL_UDRIVER(pdbc, pdbc, retcode, hproc, 'A', en_GetConnectAttr,
+      (pdbc->dhdbc, SQL_ATTR_CONNECTION_DEAD, &attr_dead, 0, NULL));
+  if (hproc != SQL_NULL_HPROC && SQL_SUCCEEDED (retcode))
+    {
+      DPRINTF ((stderr, "DEBUG: GetConnectAttr: attr_dead = %ld (conn %p)\n",
+          attr_dead, hdbc));
+      return attr_dead == SQL_CD_TRUE;
+    }
+
+  /* try SQLGetConnectOption */
+  CALL_UDRIVER(pdbc, pdbc, retcode, hproc, 'A', en_GetConnectOption,
+      (pdbc->dhdbc, SQL_ATTR_CONNECTION_DEAD, &attr_dead));
+  if (hproc != SQL_NULL_HPROC && SQL_SUCCEEDED (retcode))
+    {
+      DPRINTF ((stderr, "DEBUG: GetConnectOption: attr_dead = %ld (conn %p)\n",
+          attr_dead, hdbc));
+      return attr_dead == SQL_CD_TRUE;
+    }
+
+  /* try CPProbe statement */
+  if (pdbc->cp_probe != NULL && STRLEN(pdbc->cp_probe) > 0)
+    {
+      retcode = _iodbcdm_pool_exec_cpprobe (pdbc, pdbc->cp_probe);
+      return SQL_SUCCEEDED (retcode);
+    }
+
+  /* don't know, assume it is alive */
+  return FALSE;
+}
+
+
+/*
+ * Get the connection from to the pool
+ *
+ * Returns 0 if the connection was put successfully
+ * Returns -1 otherwise
+ */
+static SQLRETURN
+_iodbcdm_pool_get_conn (
+    HDBC hdbc, char *dsn, char *uid, char *pwd, char *connstr)
+{
+  CONN (pdbc, hdbc);
+  GENV (genv, pdbc->genv);
+  DBC_t *cp_pdbc, *cp_pdbc_next, *cp_pdbc_prev = NULL;
+  time_t current_time;
+
+  DPRINTF ((stderr, "DEBUG: getting connection %p from the pool (dsn [%s], uid [%s], pwd [%s], connstr [%s])\n",
+      hdbc, dsn, uid, pwd, connstr));
+
+  current_time = time(NULL);
+
+  for (cp_pdbc = genv->pdbc_pool; cp_pdbc != NULL;
+       cp_pdbc_prev = cp_pdbc, cp_pdbc = cp_pdbc_next)
+    {
+      SQLRETURN retcode;
+
+      cp_pdbc_next = cp_pdbc->next;
+
+      /* skip connections in use */
+      if (cp_pdbc->cp_in_use)
+        {
+	  DPRINTF ((stderr, "DEBUG: skipping connection %p (in use)\n",
+            cp_pdbc));
+	  continue;
+	}
+
+      /*
+       * Check that pooled connection timeout has not expired
+       */
+      if (current_time >= cp_pdbc->cp_expiry_time)
+        {
+	  DPRINTF ((stderr, "DEBUG: connection %p expired (cp_expiry_time %d, current_time %d)\n",
+            cp_pdbc, cp_pdbc->cp_expiry_time, current_time));
+	  _iodbcdm_pool_drop_conn (cp_pdbc, cp_pdbc_prev);
+          cp_pdbc = cp_pdbc_prev;
+	  continue;
+        }
+
+      /*
+       * Check that requested dsn, uid, pwd and connstr match
+       * pooled connection
+       */
+      if (dsn != NULL)
+        {
+          if (cp_pdbc->cp_dsn == NULL ||
+              strcmp (dsn, cp_pdbc->cp_dsn) != 0)
+            continue;
+	}
+      else if (cp_pdbc->cp_dsn != NULL)
+        continue;
+      if (uid != NULL)
+        {
+          if (cp_pdbc->cp_uid == NULL ||
+              strcmp (uid, cp_pdbc->cp_uid) != 0)
+            continue;
+        }
+      else if (cp_pdbc->cp_uid != NULL)
+        continue;
+      if (pwd != NULL)
+        {
+          if (cp_pdbc->cp_pwd == NULL ||
+              strcmp (pwd, cp_pdbc->cp_pwd) != 0)
+            continue;
+        }
+      else if (cp_pdbc->cp_pwd != NULL)
+        continue;
+      if (connstr != NULL)
+        {
+          if (cp_pdbc->cp_connstr == NULL ||
+              strcmp (connstr, cp_pdbc->cp_connstr) != 0)
+            continue;
+        }
+      else if (cp_pdbc->cp_connstr != NULL)
+        continue;
+
+      DPRINTF ((stderr, "DEBUG: found matching pooled connection %p\n",
+          cp_pdbc));
+
+      /* check that connection attributes match */
+      if (!_iodbcdm_pool_check_attr_match (pdbc, cp_pdbc))
+	continue;
+
+      /*
+       * Match found!
+       */
+
+      /*
+       * Check Retry Wait timeout
+       */
+      if (cp_pdbc->cp_retry_wait != 0)
+	{
+	  if (current_time < cp_pdbc->cp_retry_wait)
+	    {
+	      /* Retry Wait timeout has not expired yet */
+              DPRINTF ((stderr,
+		  "DEBUG: RetryWait timeout has not expired yet (cp_pdbc %p, cp_retry_wait %d, current_time %d)\n",
+                  cp_pdbc, cp_pdbc->cp_retry_wait, current_time));
+
+              /* remember matching pooled connection */
+	      pdbc->cp_pdbc = cp_pdbc;
+
+	      return SQL_ERROR;
+	    }
+
+          DPRINTF ((stderr, "DEBUG: RetryWait timeout reset (cp_pdbc %p)\n",
+             cp_pdbc));
+          /* reset Retry Wait timeout */
+          cp_pdbc->cp_retry_wait = 0;
+        }
+
+      /*
+       * Check if connection is dead
+       */
+      if (_iodbcdm_pool_conn_dead (cp_pdbc))
+        {
+	  /* Connection is dead -- try to reconnect */
+          DPRINTF ((stderr, "DEBUG: pooled connection is dead (cp_pdbc %p)\n",
+             cp_pdbc));
+
+          /* remember matching pooled connection */
+	  pdbc->cp_pdbc = cp_pdbc;
+          cp_pdbc->cp_in_use = TRUE;
+
+	  return SQL_ERROR;
+        }
+
+      /* reset connection attrs */
+      retcode = _iodbcdm_pool_reset_conn_attrs (pdbc, cp_pdbc);
+      if (retcode != SQL_SUCCESS)
+        retcode = SQL_SUCCESS_WITH_INFO;
+
+      /* copy parameters */
+      _iodbcdm_pool_copy_conn (pdbc, cp_pdbc);
+
+      /* remember matching pooled connection */
+      pdbc->cp_pdbc = cp_pdbc;
+      cp_pdbc->cp_in_use = TRUE;
+
+      DPRINTF ((stderr, "DEBUG: got connection from the pool (cp_pdbc %p)\n",
+          cp_pdbc));
+      /* found a connection in a pool */
+      return retcode;
+    }
+
+  DPRINTF ((stderr, "DEBUG: no matching connection in the pool\n"));
+  /* can't find a connection in a pool */
+  return SQL_ERROR;
+}
+
+
+/*
+ * Put the connection back to the pool
+ *
+ * Return 0 if the connection was put successfully
+ * Return -1 otherwise
+ */
+static int
+_iodbcdm_pool_put_conn (HDBC hdbc)
+{
+  CONN (pdbc, hdbc);
+  GENV (genv, NULL);
+  DBC_t *cp_pdbc = pdbc->cp_pdbc;
+
+  DPRINTF ((stderr, "DEBUG: putting connection back to the pool (conn %p, dsn [%s], uid [%s], pwd [%s], connstr [%s])\n",
+      hdbc, pdbc->cp_dsn, pdbc->cp_uid, pdbc->cp_pwd, pdbc->cp_connstr));
+
+  if (cp_pdbc == NULL)
+    {
+      cp_pdbc = (DBC_t *) MEM_ALLOC (sizeof (DBC_t));
+      if (cp_pdbc == NULL)
+        {
+	  return -1;
+	}
+
+      /* put to the pool */
+      genv = (GENV_t *) pdbc->genv;
+      cp_pdbc->next = genv->pdbc_pool;
+      genv->pdbc_pool = cp_pdbc;
+
+      cp_pdbc->cp_timeout = pdbc->cp_timeout;
+      DPRINTF ((stderr, "DEBUG: new pooled connection %p\n", cp_pdbc));
+    }
+
+  /* copy out parameters */
+  _iodbcdm_pool_copy_conn(cp_pdbc, pdbc);
+  pdbc->cp_pdbc = NULL;
+
+  /* free all statement handle(s) on connection in pool */
+  while (cp_pdbc->hstmt != NULL)
+    _iodbcdm_dropstmt (cp_pdbc->hstmt);
+
+  /* set expiration time and other parameters for connection in pool */
+  cp_pdbc->cp_pdbc = NULL;
+  if (cp_pdbc->cp_retry_wait == 0)
+    {
+      /* set new expiry time only if we are not returning the connection
+	 to the pool after unsuccessful reconnect attempt */
+      cp_pdbc->cp_expiry_time = time(NULL) + cp_pdbc->cp_timeout;
+    }
+  cp_pdbc->cp_in_use = FALSE;
+
+  DPRINTF ((stderr, "DEBUG: connection %p put back to the pool (cp_pdbc %p, cp_timeout %d)\n",
+      hdbc, cp_pdbc, cp_pdbc->cp_timeout));
+  return 0;
+}
+#endif /* (ODBCVER >= 0x300) */
+
+
 /* - Load driver share library( or increase its reference count
  *   if it has already been loaded by another active connection)
  * - Call driver's SQLAllocEnv() (for the first reference only)
@@ -390,10 +1040,12 @@ _iodbcdm_getInfo_init (SQLHDBC hdbc,
  */
 SQLRETURN
 _iodbcdm_driverload (
-    char * path,
+    char * dsn,
+    char * drv,
     HDBC hdbc,
     SWORD thread_safe,
     SWORD unload_safe,
+    IODBC_CHARSET iodbcinst_drv_cp,
     UCHAR waMode)
 {
   CONN (pdbc, hdbc);
@@ -403,9 +1055,16 @@ _iodbcdm_driverload (
   HPROC hproc;
   SQLRETURN retcode = SQL_SUCCESS;
   sqlstcode_t sqlstat = en_00000;
-  char driverbuf[1024];
+  char buf[1024];
+  char path_tmp[1024];
+  char *path = drv;
+  char cp_probe[1024] = {""};
+  int cp_timeout = 0;
+  void *pfaux;
+  int driver_unicode_cp = -1;
+  SQLINTEGER wchar_id;
 
-  if (path == NULL || ((char *) path)[0] == '\0')
+  if (drv == NULL || ((char*)drv)[0] == '\0')
     {
       PUSHSQLERR (pdbc->herr, en_IM002);
       return SQL_ERROR;
@@ -417,44 +1076,106 @@ _iodbcdm_driverload (
     }
 
   /*
-   *  If path does not start with / or ., we may have a symbolic driver name
+   *  If drv does not start with / or ., we may have a symbolic driver name
    */
-  if (!(path[0] == '/' || path[0] == '.'))
+  if (!(drv[0] == '/' || drv[0] == '.'))
     {
-      char *tmp_path = NULL;
+      char *tmp_drv = NULL;
 
       /*
        *  Remove curly braces
        */
-      if (path[0] == '{')
+      if (drv[0] == '{')
 	{
-	  tmp_path = strdup (path);
-	  if (tmp_path[strlen (path) - 1] == '}')
-	    tmp_path[strlen (path) - 1] = '\0';
-	  path = &tmp_path[1];
+	  tmp_drv = strdup (drv);
+	  if (tmp_drv[strlen (drv) - 1] == '}')
+	    tmp_drv[strlen (drv) - 1] = '\0';
+	  drv = &tmp_drv[1];
 	}
 
       /*
        *  Hopefully the driver was registered under that name in the 
        *  odbcinst.ini file
        */
-      if (SQLGetPrivateProfileString ((char *) path, "Driver", "",
-	      driverbuf, sizeof (driverbuf), "odbcinst.ini") && driverbuf[0])
-	path = driverbuf;
+      if (SQLGetPrivateProfileString ((char *) drv, "Driver", "",
+	      path_tmp, sizeof (path_tmp), "odbcinst.ini") && path_tmp[0])
+	path = path_tmp;
 
-      if (tmp_path)
-	free (tmp_path);
+      /*
+       *  Get CPTimeout value
+       */
+      SQLSetConfigMode (ODBC_BOTH_DSN);
+      if (SQLGetPrivateProfileString (drv, "CPTimeout", "",
+	    buf, sizeof(buf), "odbcinst.ini") && buf[0])
+        cp_timeout = atoi(buf);
+
+      /*
+       *  Get CPProbe value
+       */
+      SQLGetPrivateProfileString (drv, "CPProbe", "",
+   	    cp_probe, sizeof(cp_probe), "odbcinst.ini");
+
+      if (SQLGetPrivateProfileString ((char *) drv,
+          "DriverUnicodeType", "3", buf, sizeof (buf), "odbcinst.ini"))
+        {
+          if (STRCASEEQ (buf, "1") || STRCASEEQ (buf, "utf16") || STRCASEEQ (buf, "ucs2"))
+            iodbcinst_drv_cp = CP_UTF16;
+          else if (STRCASEEQ (buf, "2") || STRCASEEQ (buf, "utf8"))
+            iodbcinst_drv_cp = CP_UTF8;
+          else
+            iodbcinst_drv_cp = CP_UCS4;
+
+          DPRINTF ((stderr,
+            "DEBUG: _iodbcdm_driverload-0(odbcinst.ini) DriverUnicodeType=%s\n",
+              iodbcinst_drv_cp==CP_UCS4?"UCS4":(iodbcinst_drv_cp==CP_UTF16?"UTF16":"UTF8")));
+        }
+
+      if (tmp_drv)
+	free (tmp_drv);
+    }
+  else if (dsn != NULL && *dsn != '\0')
+    {
+      char tmp_drv[1024] = {""};
+
+      SQLSetConfigMode (ODBC_BOTH_DSN);
+      if (SQLGetPrivateProfileString ("ODBC Data Sources", dsn, "",
+	    tmp_drv, sizeof(tmp_drv), NULL) && tmp_drv[0])
+	{
+          /*
+           *  Get CPTimeout value
+           */
+          if (SQLGetPrivateProfileString (tmp_drv, "CPTimeout", "",
+	        buf, sizeof(buf), "odbcinst.ini") && buf[0])
+            cp_timeout = atoi(buf);
+
+          /*
+           *  Get CPProbe value
+           */
+          SQLGetPrivateProfileString (tmp_drv, "CPProbe", "",
+  	      cp_probe, sizeof(cp_probe), "odbcinst.ini");
+
+          if (SQLGetPrivateProfileString ((char *) tmp_drv,
+              "DriverUnicodeType", "3", buf, sizeof (buf), "odbcinst.ini"))
+            {
+              if (STRCASEEQ (buf, "1") || STRCASEEQ (buf, "utf16") || STRCASEEQ (buf, "ucs2"))
+                iodbcinst_drv_cp = CP_UTF16;
+              else if (STRCASEEQ (buf, "2") || STRCASEEQ (buf, "utf8"))
+                iodbcinst_drv_cp = CP_UTF8;
+              else
+                iodbcinst_drv_cp = CP_UCS4;
+
+              DPRINTF ((stderr,
+                "DEBUG: _iodbcdm_driverload-1(odbcinst.ini) DriverUnicodeType=%s\n",
+                  iodbcinst_drv_cp==CP_UCS4?"UCS4":(iodbcinst_drv_cp==CP_UTF16?"UTF16":"UTF8")));
+            }
+  	}
     }
 
   genv = (GENV_t *) pdbc->genv;
 
   /* This will either load the driver dll or increase its reference count */
   hdll = _iodbcdm_dllopen ((char *) path);
-
-  /* Set flag if it is safe to unload the driver after use */
-  if (unload_safe)
-    _iodbcdm_safe_unload (hdll);
-
+  
   if (hdll == SQL_NULL_HDLL)
     {
       PUSHSYSERR (pdbc->herr, _iodbcdm_dllerror ());
@@ -462,13 +1183,17 @@ _iodbcdm_driverload (
       return SQL_ERROR;
     }
 
+  /* Set flag if it is safe to unload the driver after use */
+  if (unload_safe)
+    _iodbcdm_safe_unload (hdll);
+
   penv = (ENV_t *) (pdbc->henv);
 
   if (penv != NULL)
     {
       if (penv->hdll != hdll)
 	{
-	  _iodbcdm_driverunload (hdbc);
+	  _iodbcdm_driverunload (hdbc, 3);
 	  penv->hdll = hdll;
 	}
       else
@@ -519,6 +1244,8 @@ _iodbcdm_driverload (
 	      return SQL_ERROR;
 	    }
 
+	  penv->conv.dm_cp    = genv->conv.dm_cp;
+	  penv->conv.drv_cp   = iodbcinst_drv_cp;
 	  /*
 	   *  Initialize array of ODBC functions
 	   */
@@ -532,6 +1259,7 @@ _iodbcdm_driverload (
 	    }
 
 	  pdbc->henv = penv;
+	  pdbc->conv = penv->conv;
 	  penv->hdll = hdll;
 
           /*
@@ -546,7 +1274,8 @@ _iodbcdm_driverload (
           /*
            *  If the driver is Unicode
            */
-	  if ( _iodbcdm_getproc (pdbc, en_ConnectW))
+          pfaux = _iodbcdm_getproc (pdbc, en_ConnectW);
+          if ((pfaux) && (pfaux != (void *)SQLConnectW))
             penv->unicode_driver = 1;
 
 	  /* call driver's SQLAllocHandle() or SQLAllocEnv() */
@@ -556,9 +1285,9 @@ _iodbcdm_driverload (
 
 	  if (hproc)
 	    {
-	      CALL_DRIVER (hdbc, genv, retcode, hproc, en_AllocHandle,
+	      CALL_DRIVER (hdbc, genv, retcode, hproc,
 		  (SQL_HANDLE_ENV, SQL_NULL_HANDLE, &(penv->dhenv)));
-	      if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO)
+	      if (SQL_SUCCEEDED (retcode))
 		{		
 		  /* 
 		   * This appears to be an ODBC3 driver
@@ -571,12 +1300,64 @@ _iodbcdm_driverload (
 		  hproc = _iodbcdm_getproc (pdbc, en_SetEnvAttr);
 		  if (hproc != SQL_NULL_HPROC)
 		    {
-		      CALL_DRIVER (hdbc, genv, retcode, hproc, en_SetEnvAttr,
+		      CALL_DRIVER (hdbc, genv, retcode, hproc,
 			  (penv->dhenv, SQL_ATTR_ODBC_VERSION, genv->odbc_ver, 
 			  0));
 		      if (retcode == SQL_SUCCESS)
 			penv->dodbc_ver = SQL_OV_ODBC3;
 		    }
+
+		  hproc = _iodbcdm_getproc (pdbc, en_GetEnvAttr);
+		  if (hproc != SQL_NULL_HPROC)
+                    {
+                      SQLINTEGER val, len;
+
+                      val = -1;
+                      CALL_DRIVER (hdbc, penv, retcode, hproc,
+			(penv->dhenv, SQL_ATTR_DRIVER_UNICODE_TYPE, &val, 0, 0));
+                      if (retcode == SQL_SUCCESS && val !=-1)
+                        {
+                          DPRINTF ((stderr,
+                           "DEBUG: _iodbcdm_driverload(ODBC Driver return=%d)\n", val));
+
+                          if (val == SQL_DM_CP_UCS4 || val == SQL_DM_CP_UTF16 || val == SQL_DM_CP_UTF8)
+                            {
+                              switch(val)
+                                {
+                                case SQL_DM_CP_UTF16:
+                                  penv->conv.drv_cp = CP_UTF16;
+                                  pdbc->conv.drv_cp = CP_UTF16;
+                                  driver_unicode_cp = CP_UTF16;
+                                  break;
+                                case SQL_DM_CP_UTF8:
+                                  penv->conv.drv_cp = CP_UTF8;
+                                  pdbc->conv.drv_cp = CP_UTF8;
+                                  driver_unicode_cp = CP_UTF8;
+                                  break;
+                                default:
+                                case SQL_DM_CP_UCS4:
+                                  penv->conv.drv_cp = CP_UCS4;
+                                  pdbc->conv.drv_cp = CP_UCS4;
+                                  driver_unicode_cp = CP_UCS4;
+                                  break;
+                                }
+                              DPRINTF ((stderr,
+                               "DEBUG: _iodbcdm_driverload(ODBC Driver return DriverUnicodeType=%s)\n",
+                                penv->conv.drv_cp==CP_UCS4
+                                  ?"UCS4"
+                                  :(penv->conv.drv_cp==CP_UTF16?"UTF16":"UTF8")));
+                            }
+                          else
+                            {
+                              penv->conv.drv_cp = iodbcinst_drv_cp;
+                              pdbc->conv.drv_cp = iodbcinst_drv_cp;
+
+                              DPRINTF ((stderr,
+                               "DEBUG: _iodbcdm_driverload(ODBC Driver use DriverUnicodeType=UCS4 (default))\n"));
+                            }
+                        }
+                    }
+
 		  retcode = save_retcode;
 		}
 	    }
@@ -594,8 +1375,7 @@ _iodbcdm_driverload (
 #if (ODBCVER >= 0x0300)
 		  penv->dodbc_ver = SQL_OV_ODBC2;
 #endif
-		  CALL_DRIVER (hdbc, genv, retcode, hproc,
-		      en_AllocEnv, (&(penv->dhenv)));
+		  CALL_DRIVER (hdbc, genv, retcode, hproc, (&(penv->dhenv)));
 		}
 	    }
 
@@ -607,11 +1387,47 @@ _iodbcdm_driverload (
 	  if (sqlstat != en_00000)
 	    {
 	      _iodbcdm_dllclose (hdll);
-	      MEM_FREE (penv);
 	      PUSHSQLERR (pdbc->herr, en_IM004);
+
+	      /* free internal env */
+	      MEM_FREE (penv);
+	      pdbc->henv = NULL;
 
 	      return SQL_ERROR;
 	    }
+
+          if (driver_unicode_cp == -1
+              && penv->unicode_driver
+              && dsn != NULL && *dsn != '\0')
+            {
+              SQLSetConfigMode (ODBC_BOTH_DSN);
+
+              if ( SQLGetPrivateProfileString ((char *) dsn,
+                    "DriverUnicodeType", "", buf, sizeof(buf), "odbc.ini"))
+                {
+                  if (STRCASEEQ (buf, "1") || STRCASEEQ (buf, "utf16"))
+                    {
+                      penv->conv.drv_cp = CP_UTF16;
+                      pdbc->conv.drv_cp = CP_UTF16;
+                    }
+                  else if (STRCASEEQ (buf, "2") || STRCASEEQ (buf, "utf8"))
+                    {
+                      penv->conv.drv_cp = CP_UTF8;
+                      pdbc->conv.drv_cp = CP_UTF8;
+                    }
+                  else if (STRCASEEQ (buf, "3") || STRCASEEQ (buf, "ucs4"))
+                    {
+                      penv->conv.drv_cp = CP_UCS4;
+                      pdbc->conv.drv_cp = CP_UCS4;
+                    }
+
+                  DPRINTF ((stderr,
+                   "DEBUG: _iodbcdm_driverload(DSN attribute) DriverUnicodeType=%s\n",
+                    penv->conv.drv_cp==CP_UCS4
+                      ?"UCS4":(penv->conv.drv_cp==CP_UTF16?"UTF16":"UTF8")));
+
+                }
+            }
 
 	  /* insert into dll env list */
 	  penv->next = (ENV_t *) genv->henv;
@@ -623,6 +1439,40 @@ _iodbcdm_driverload (
 				 * success
 				 */
 	}
+      else /* penv != NULL */
+        {
+          pdbc->conv.drv_cp = penv->conv.drv_cp;
+#if (ODBCVER >= 0x0300)
+	  hproc = _iodbcdm_getproc (pdbc, en_GetEnvAttr);
+	  if (hproc != SQL_NULL_HPROC)
+            {
+              SQLINTEGER val;
+
+              val = -1;
+              CALL_DRIVER (hdbc, penv, retcode, hproc,
+	  	    (penv->dhenv, SQL_ATTR_DRIVER_UNICODE_TYPE, &val, 0, 0));
+              if (retcode == SQL_SUCCESS && val !=-1)
+                {
+                  if (val == SQL_DM_CP_UCS4 || val == SQL_DM_CP_UTF16 || val == SQL_DM_CP_UTF8)
+                    {
+                      switch(val)
+                        {
+                        case SQL_DM_CP_UTF16:
+                          driver_unicode_cp = CP_UTF16;
+                          break;
+                        case SQL_DM_CP_UTF8:
+                          driver_unicode_cp = CP_UTF8;
+                          break;
+                        default:
+                        case SQL_DM_CP_UCS4:
+                          driver_unicode_cp = CP_UCS4;
+                          break;
+                        }
+                    }
+                }
+            }
+#endif
+        }
 
       pdbc->henv = penv;
 
@@ -634,7 +1484,7 @@ _iodbcdm_driverload (
 
 	  if (hproc)
 	    {
-	      CALL_DRIVER (hdbc, genv, retcode, hproc, en_AllocHandle,
+	      CALL_DRIVER (hdbc, genv, retcode, hproc,
 		  (SQL_HANDLE_DBC, penv->dhenv, &(pdbc->dhdbc)));
 	    }
 	  else
@@ -650,7 +1500,7 @@ _iodbcdm_driverload (
 	      else
 		{
 		  CALL_DRIVER (hdbc, genv, retcode, hproc,
-		      en_AllocConnect, (penv->dhenv, &(pdbc->dhdbc)));
+		      (penv->dhenv, &(pdbc->dhdbc)));
 		}
 	    }
 
@@ -661,7 +1511,7 @@ _iodbcdm_driverload (
 
 	  if (sqlstat != en_00000)
 	    {
-	      _iodbcdm_driverunload (hdbc);
+	      _iodbcdm_driverunload (hdbc, 3);
 
 	      pdbc->dhdbc = SQL_NULL_HDBC;
 	      PUSHSQLERR (pdbc->herr, en_IM005);
@@ -672,6 +1522,40 @@ _iodbcdm_driverload (
 
       pdbc->henv = penv;
       penv->refcount++;		/* bookkeeping reference count on this driver */
+    }
+  else  /*penv != NULL */
+    {
+      pdbc->conv.drv_cp = penv->conv.drv_cp;
+#if (ODBCVER >= 0x0300)
+      hproc = _iodbcdm_getproc (pdbc, en_GetEnvAttr);
+      if (hproc != SQL_NULL_HPROC)
+        {
+          SQLINTEGER val;
+
+          val = -1;
+          CALL_DRIVER (hdbc, penv, retcode, hproc,
+              (penv->dhenv, SQL_ATTR_DRIVER_UNICODE_TYPE, &val, 0, 0));
+          if (retcode == SQL_SUCCESS && val !=-1)
+            {
+              if (val == SQL_DM_CP_UCS4 || val == SQL_DM_CP_UTF16 || val == SQL_DM_CP_UTF8)
+                {
+                  switch(val)
+                    {
+                    case SQL_DM_CP_UTF16:
+                      driver_unicode_cp = CP_UTF16;
+                      break;
+                    case SQL_DM_CP_UTF8:
+                      driver_unicode_cp = CP_UTF8;
+                      break;
+                    default:
+                    case SQL_DM_CP_UCS4:
+                      driver_unicode_cp = CP_UCS4;
+                      break;
+                    }
+                }
+            }
+        }
+#endif
     }
 
   /* driver's login timeout option must been set before
@@ -708,6 +1592,50 @@ _iodbcdm_driverload (
         }
     }
 
+
+    wchar_id = penv->conv.dm_cp;
+    
+    retcode = _iodbcdm_SetConnectAttr_init (hdbc, SQL_ATTR_APP_WCHAR_TYPE, wchar_id);
+
+    DPRINTF ((stderr, "DEBUG: _iodbcdm_driverload(set ODBC Driver WCHAR_TYPE=%d) retcode=%d\n", wchar_id, retcode));
+    
+    if (retcode == SQL_SUCCESS)
+      {
+        penv->conv.drv_cp = wchar_id;
+        pdbc->conv.drv_cp = wchar_id;
+
+        DPRINTF ((stderr,
+            "DEBUG: _iodbcdm_driverload(set ODBC Driver WCHAR_TYPE=%d) %s\n",
+               penv->conv.drv_cp,
+               penv->conv.drv_cp==CP_UCS4
+                          ?"UCS4"
+                          :(penv->conv.drv_cp==CP_UTF16?"UTF16":"UTF8")));
+      }
+    else if (driver_unicode_cp != -1)
+      {
+        wchar_id = driver_unicode_cp;
+        
+        retcode = _iodbcdm_SetConnectAttr_init (hdbc, SQL_ATTR_APP_WCHAR_TYPE, wchar_id);
+
+        DPRINTF ((stderr, "DEBUG: _iodbcdm_driverload(set ODBC Driver WCHAR_TYPE=%d) retcode=%d\n", wchar_id, retcode));
+        if (retcode == SQL_SUCCESS)
+          {
+            penv->conv.drv_cp = wchar_id;
+            pdbc->conv.drv_cp = wchar_id;
+
+            DPRINTF ((stderr,
+                "DEBUG: _iodbcdm_driverload(set ODBC Driver WCHAR_TYPE=%d) %s\n",
+                   penv->conv.drv_cp,
+                   penv->conv.drv_cp==CP_UCS4
+                          ?"UCS4"
+                          :(penv->conv.drv_cp==CP_UTF16?"UTF16":"UTF8")));
+          }
+      }
+
+  pdbc->cp_timeout = cp_timeout;
+  MEM_FREE (pdbc->cp_probe);
+  pdbc->cp_probe = strdup (cp_probe);
+
   return SQL_SUCCESS;
 }
 
@@ -720,13 +1648,13 @@ _iodbcdm_driverload (
  * - state transition to allocated
  */
 SQLRETURN
-_iodbcdm_driverunload (HDBC hdbc)
+_iodbcdm_driverunload (HDBC hdbc, int ver)
 {
   CONN (pdbc, hdbc);
   ENVR (penv, pdbc->henv);
   GENV (genv, pdbc->genv);
   ENV_t *tpenv;
-  HPROC hproc;
+  HPROC hproc2, hproc3;
   SQLRETURN retcode = SQL_SUCCESS;
 
   if (!IS_VALID_HDBC (pdbc))
@@ -734,70 +1662,79 @@ _iodbcdm_driverunload (HDBC hdbc)
       return SQL_INVALID_HANDLE;
     }
 
-  if (penv == NULL || penv->hdll == SQL_NULL_HDLL)
+  if (penv == NULL || penv->hdll == SQL_NULL_HDLL ||
+      pdbc->dhdbc == SQL_NULL_HDBC)
     {
       return SQL_SUCCESS;
     }
 
+  /*
+   *  When calling from an ODBC 2.x application, we favor the ODBC 2.x call 
+   *  in the driver if the driver implements both
+   */
+  hproc2 = _iodbcdm_getproc (pdbc, en_FreeConnect);
 #if (ODBCVER >= 0x0300)
-  hproc = _iodbcdm_getproc (pdbc, en_FreeHandle);
+  hproc3 = _iodbcdm_getproc (pdbc, en_FreeHandle);
 
-  if (hproc)
-    {
-      CALL_DRIVER (hdbc, pdbc, retcode, hproc, en_FreeHandle,
-	  (SQL_HANDLE_DBC, pdbc->dhdbc));
-    }
-  else
+  if (ver == 3 && hproc2 != SQL_NULL_HPROC && hproc3 != SQL_NULL_HPROC)
+    hproc2 = SQL_NULL_HPROC;
+#else
+  hproc3 = SQL_NULL_HPROC;
 #endif
 
+  if (hproc2 != SQL_NULL_HPROC)
     {
-      hproc = _iodbcdm_getproc (pdbc, en_FreeConnect);
+      CALL_DRIVER (hdbc, pdbc, retcode, hproc2, (pdbc->dhdbc));
 
-      if (hproc != SQL_NULL_HPROC)
-	{
-	  CALL_DRIVER (hdbc, pdbc, retcode, hproc,
-	      en_FreeConnect, (pdbc->dhdbc));
-
-	  pdbc->dhdbc = SQL_NULL_HDBC;
-	}
+      pdbc->dhdbc = SQL_NULL_HDBC;
     }
+#if (ODBCVER >= 0x0300)
+  else if (hproc3 != SQL_NULL_HPROC)
+    {
+      CALL_DRIVER (hdbc, pdbc, retcode, hproc3,
+	  (SQL_HANDLE_DBC, pdbc->dhdbc));
+    }
+#endif
 
   penv->refcount--;
 
   if (!penv->refcount)
     /* no other connections still attaching with this driver */
     {
-
+      /*
+       *  When calling from an ODBC 2.x application, we favor the ODBC 2.x call 
+       *  in the driver if the driver implements both
+       */
+      hproc2 = _iodbcdm_getproc (pdbc, en_FreeEnv);
 #if (ODBCVER >= 0x0300)
-      hproc = _iodbcdm_getproc (pdbc, en_FreeHandle);
+      hproc3 = _iodbcdm_getproc (pdbc, en_FreeHandle);
 
-      if (hproc)
-	{
-	  CALL_DRIVER (hdbc, genv, retcode, hproc, en_FreeHandle,
-	      (SQL_HANDLE_ENV, penv->dhenv));
-	}
-      else
+      if (ver == 3 && hproc2 != SQL_NULL_HPROC && hproc3 != SQL_NULL_HPROC)
+	hproc2 = SQL_NULL_HPROC;
+#else
+      hproc3 = SQL_NULL_HPROC;
 #endif
 
+      if (hproc2 != SQL_NULL_HPROC)
 	{
-	  hproc = _iodbcdm_getproc (pdbc, en_FreeEnv);
+	  CALL_DRIVER (hdbc, genv, retcode, hproc2, (penv->dhenv));
 
-	  if (hproc != SQL_NULL_HPROC)
-	    {
-	      CALL_DRIVER (hdbc, genv, retcode, hproc, en_FreeEnv,
-		  (penv->dhenv));
-
-	      penv->dhenv = SQL_NULL_HENV;
-	    }
+	  penv->dhenv = SQL_NULL_HENV;
 	}
+#if (ODBCVER >= 0x0300)
+      else if (hproc3 != SQL_NULL_HPROC)
+	{
+	  CALL_DRIVER (hdbc, genv, retcode, hproc3,
+	      (SQL_HANDLE_ENV, penv->dhenv));
+	}
+#endif
 
       _iodbcdm_dllclose (penv->hdll);
 
       penv->hdll = SQL_NULL_HDLL;
 
       for (tpenv = (ENV_t *) genv->henv;
-	  tpenv != NULL;
-	  tpenv = (ENV_t *) penv->next)
+	  tpenv != NULL; tpenv = (ENV_t *) tpenv->next)
 	{
 	  if (tpenv == penv)
 	    {
@@ -812,7 +1749,9 @@ _iodbcdm_driverunload (HDBC hdbc)
 	    }
 	}
 
+      /* free internal env */
       MEM_FREE (penv);
+      pdbc->henv = NULL;
     }
 
   /* pdbc->henv = SQL_NULL_HENV; */
@@ -832,6 +1771,34 @@ _iodbcdm_driverunload (HDBC hdbc)
   pdbc->packet_size = 0UL;
   pdbc->quiet_mode = (UDWORD) NULL;
   pdbc->txn_isolation = SQL_TXN_READ_UNCOMMITTED;
+
+#if (ODBCVER >= 0x0300)
+  if (pdbc->cp_probe != NULL)
+    {
+      MEM_FREE (pdbc->cp_probe);
+      pdbc->cp_probe = NULL;
+    }
+  if (pdbc->cp_dsn != NULL)
+    {
+      MEM_FREE (pdbc->cp_dsn);
+      pdbc->cp_dsn = NULL;
+    }
+  if (pdbc->cp_uid != NULL)
+    {
+      MEM_FREE (pdbc->cp_uid);
+      pdbc->cp_uid = NULL;
+    }
+  if (pdbc->cp_pwd != NULL)
+    {
+      MEM_FREE (pdbc->cp_pwd);
+      pdbc->cp_pwd = NULL;
+    }
+  if (pdbc->cp_connstr != NULL)
+    {
+      MEM_FREE (pdbc->cp_connstr);
+      pdbc->cp_connstr = NULL;
+    }
+#endif
 
   if (pdbc->current_qualifier != NULL)
     {
@@ -900,7 +1867,7 @@ _iodbcdm_dbcdelayset (HDBC hdbc, UCHAR waMode)
     }
 
   /* check error code for driver's SQLSetConnectOption() call */
-  if (retcode != SQL_SUCCESS && retcode != SQL_SUCCESS_WITH_INFO)
+  if (!SQL_SUCCEEDED (retcode))
     {
       PUSHSQLERR (pdbc->herr, en_IM006);
       retcode = SQL_ERROR;
@@ -966,6 +1933,168 @@ _iodbcdm_con_settracing (HDBC hdbc, SQLCHAR *dsn, int dsnlen, UCHAR waMode)
 }
 
 
+#define CATBUF(buf, str, buf_sz)					\
+  do {									\
+    if (_iodbcdm_strlcat (buf, str, buf_sz) >= buf_sz)			\
+      return -1;							\
+  } while (0)
+
+
+/*
+ * Merge the contents of .dsn file into config
+ */
+static int
+_iodbcdm_cfg_merge_filedsn (PCONFIG pconfig, const char *filedsn,
+			    char *buf, size_t buf_sz, int wide,
+			    DM_CONV *conv)
+{
+  BOOL override;	/* TRUE if params from conn str
+			   override params from .dsn file */
+  WORD len;
+  char *p, *p_next;
+  char entries[1024];
+  char value[1024];
+  char drv_value[1024] = {"\0"};
+  char *tmp = NULL;
+  int rc = 0;
+
+  /* identify params precedence */
+  if (SQLReadFileDSN (filedsn, "ODBC", "DRIVER", value, sizeof (value), &len) &&
+      len > 0)
+    {
+      /* if DRIVER is the same, then conn str params have precedence */
+      if (_iodbcdm_cfg_find (pconfig, "ODBC", "DRIVER") == 0 &&
+	  !strcasecmp (value, pconfig->value))
+        override = TRUE;
+      else
+        override = FALSE;
+    }
+  else
+    override = TRUE;
+
+  /* get list of entries in .dsn file */
+  if (!SQLReadFileDSN (filedsn, "ODBC", NULL,
+		       entries, sizeof (entries), &len))
+    return -1;
+
+  /* ignore DSN from connection string */
+  _iodbcdm_cfg_write (pconfig, "ODBC", "DSN", NULL);
+
+  /* add params from the .dsn file */
+  for (p = entries; *p != '\0'; p = p_next)
+    {
+      /* get next entry */
+      p_next = strchr (p, ';');
+      if (p_next)
+        *p_next++ = '\0';
+
+      if ((override || !strcasecmp (p, "DRIVER")) &&
+	  _iodbcdm_cfg_find (pconfig, "ODBC", p) == 0)
+        {
+	  /* skip param because it is specified in connection string */
+          continue;
+        }
+
+      if (!SQLReadFileDSN (filedsn, "ODBC", p, value, sizeof(value), &len))
+        return -1;
+      _iodbcdm_cfg_write (pconfig, "ODBC", p, value);
+    }
+
+  /* remove FILEDSN from new config */
+  _iodbcdm_cfg_write (pconfig, "ODBC", "FILEDSN", NULL);
+
+  if (_iodbcdm_cfg_find (pconfig, "ODBC", "DRIVER") == 0)
+    strncpy(drv_value, pconfig->value, sizeof(drv_value));
+
+  /* remove DRIVER from new config */
+  _iodbcdm_cfg_write (pconfig, "ODBC", "DRIVER", NULL);
+
+  /* construct new connection string */
+  if ((rc =_iodbcdm_cfg_to_string (pconfig, "ODBC", buf, buf_sz)) == -1)
+    goto done;
+
+  tmp = strdup(buf);
+  strncpy(buf, "DRIVER=", buf_sz);
+  CATBUF(buf, drv_value, buf_sz);
+  CATBUF(buf, ";", buf_sz);
+  CATBUF(buf, tmp, buf_sz);
+  MEM_FREE(tmp);
+
+  if (wide)
+    {
+      SQLWCHAR *_in = DM_U8toW (conv, (SQLCHAR *)buf, SQL_NTS);
+      if (_in == NULL)
+        {
+          rc = -1;
+          goto done;
+        }
+      DM_WCSNCPY (conv, buf, _in, buf_sz / DM_WCHARSIZE(conv));
+      MEM_FREE (_in);
+    }
+
+  rc = 0;
+
+done:
+  if (drv_value[0])
+    _iodbcdm_cfg_write (pconfig, "ODBC", "DRIVER", drv_value);
+    
+  return rc;
+}
+
+
+/*
+ * Save connection string into the file
+ */
+static int
+_iodbcdm_cfg_savefile (const char *savefile, void *conn_str, int wide,
+	DM_CONV *conv)
+{
+  int ret = 0;
+  PCONFIG pconfig;
+  BOOL atsection = FALSE;
+
+  /* parse connection string into pconfig */
+  if (_iodbcdm_cfg_init_str (&pconfig, conn_str, SQL_NTS, wide, conv) == -1)
+    return -1;
+
+  /* don't save PWD, FILEDSN and SAVEFILE */
+  _iodbcdm_cfg_write (pconfig, "ODBC", "PWD", NULL);
+  _iodbcdm_cfg_write (pconfig, "ODBC", "FILEDSN", NULL);
+  _iodbcdm_cfg_write (pconfig, "ODBC", "SAVEFILE", NULL);
+  _iodbcdm_cfg_write (pconfig, "ODBC", "DSN", NULL);
+
+  /* save the file */
+  SQLWriteFileDSN (savefile, "ODBC", "DSN", NULL);
+  _iodbcdm_cfg_rewind (pconfig);
+  while (_iodbcdm_cfg_nextentry (pconfig) == 0)
+    {
+      if (atsection)
+	{
+	  if (_iodbcdm_cfg_section (pconfig))
+	    {
+              /* found next section -- we're done */
+              break;
+            }
+	  else if (_iodbcdm_cfg_define (pconfig))
+	    {
+              if (!SQLWriteFileDSN (savefile, "ODBC",
+				    pconfig->id, pconfig->value))
+		{
+		  ret = -1;
+		  break;
+		}
+	    }
+	}
+      else if (_iodbcdm_cfg_section (pconfig)
+	  && !strcasecmp (pconfig->section, "ODBC"))
+	atsection = TRUE;
+    }
+
+  _iodbcdm_cfg_done (pconfig);
+  return ret;
+}
+
+
 static
 SQLRETURN SQL_API
 SQLConnect_Internal (SQLHDBC hdbc,
@@ -979,6 +2108,9 @@ SQLConnect_Internal (SQLHDBC hdbc,
 {
   CONN (pdbc, hdbc);
   ENVR (penv, NULL);
+#if (ODBCVER >= 0x300)
+  GENV (genv, NULL);
+#endif
   SQLRETURN retcode = SQL_SUCCESS;
   SQLRETURN setopterr = SQL_SUCCESS;
   /* MS SDK Guide specifies driver path can't longer than 255. */
@@ -992,6 +2124,9 @@ SQLConnect_Internal (SQLHDBC hdbc,
   void * _szAuthStr = NULL;
   SQLCHAR *_dsn = (SQLCHAR *) szDSN;
   SQLSMALLINT _dsn_len = cbDSN;
+  CONV_DIRECT conv_direct = CD_NONE;
+  DM_CONV *conv = NULL;
+  IODBC_CHARSET drv_cp = CP_DEF;
 
   /* check arguments */
   if ((cbDSN < 0 && cbDSN != SQL_NTS)
@@ -1000,41 +2135,175 @@ SQLConnect_Internal (SQLHDBC hdbc,
       || (cbDSN > SQL_MAX_DSN_LENGTH))
     {
       PUSHSQLERR (pdbc->herr, en_S1090);
-      return SQL_ERROR;
+      RETURN (SQL_ERROR);
     }
 
   if (szDSN == NULL || cbDSN == 0)
     {
       PUSHSQLERR (pdbc->herr, en_IM002);
-      return SQL_ERROR;
+      RETURN (SQL_ERROR);
     }
 
   /* check state */
   if (pdbc->state != en_dbc_allocated)
     {
       PUSHSQLERR (pdbc->herr, en_08002);
-      return SQL_ERROR;
+      RETURN (SQL_ERROR);
     }
 
 
+  conv = (penv != SQL_NULL_HENV) ? &penv->conv : &((GENV_t *) pdbc->genv)->conv;
+
   if (waMode == 'W')
     {
-      _szDSN = (void *) dm_SQL_WtoU8((SQLWCHAR *)szDSN, cbDSN);
+      _szDSN = (void *) DM_WtoU8(conv, szDSN, cbDSN);
       _dsn = (SQLCHAR *) _szDSN;
       _dsn_len = SQL_NTS;
       if (_dsn == NULL)
         {
           PUSHSQLERR (pdbc->herr, en_S1001);
-          return SQL_ERROR;
+          RETURN (SQL_ERROR);
         }
     }
 
   /* Get the config mode */
   if (_iodbcdm_con_settracing (pdbc, _dsn, _dsn_len, waMode) == SQL_ERROR)
+    RETURN (SQL_ERROR);
+
+#if (ODBCVER >= 0x300)
+  genv = (GENV_t *) pdbc->genv;
+
+  if (genv->connection_pooling != SQL_CP_OFF)
     {
-      MEM_FREE(_szDSN);
-      return SQL_ERROR;
+      char *_uid = szUID;
+      char *_pwd = szAuthStr;
+
+      /*
+       * _dsn is already an UTF8 string so
+       * need to convert to UTF8 only szUID and szAuthStr
+       */
+      if (waMode == 'W')
+        {
+          if (szUID != NULL)
+	    {
+              _szUID = (void *) DM_WtoU8(conv, (SQLWCHAR *) szUID, cbUID);
+	      if (_szUID == NULL)
+	        {
+		  PUSHSQLERR (pdbc->herr, en_S1001);
+		  RETURN (SQL_ERROR);
+	        }
+	    }
+          if (szAuthStr != NULL)
+	    {
+              _szAuthStr = (void *) DM_WtoU8(conv,
+	          (SQLWCHAR *) szAuthStr, cbAuthStr);
+	      if (_szAuthStr == NULL)
+	        {
+		  PUSHSQLERR (pdbc->herr, en_S1001);
+		  RETURN (SQL_ERROR);
+	        }
+	    }
+	  _uid = _szUID;
+	  _pwd = _szAuthStr;
+        }
+
+      retcode = _iodbcdm_pool_get_conn (pdbc, (char *)_dsn, _uid, _pwd, NULL);
+      if (SQL_SUCCEEDED (retcode))
+        {
+	  /*
+	   * Got connection from the pool
+	   */
+
+          /* state transition */
+          pdbc->state = en_dbc_connected;
+
+          RETURN (retcode);
+        }
+
+      if (pdbc->cp_pdbc != NULL)
+        {
+	  /*
+	   * Dead connection was taken from pool
+	   */
+
+          if (pdbc->cp_pdbc->cp_retry_wait != 0)
+	    {
+	      /*
+	       * Retry Wait timeout has not expired yet
+	       */
+              PUSHSQLERR (pdbc->herr, en_08004);
+	      RETURN (SQL_ERROR);
+	    }
+
+	  /*
+	   * Free connection parameters.
+	   */
+	  if (waMode == 'W')
+	    {
+	      if (_szUID != NULL)
+	        {
+		  MEM_FREE (_szUID);
+		  _szUID = NULL;
+	        }
+	      if (_szAuthStr != NULL)
+	        {
+		  MEM_FREE (_szAuthStr);
+		  _szAuthStr = NULL;
+	        }
+	    }
+	}
+      else
+        {
+          /*
+	   * Connection was not found in the pool --
+	   * save connection parameters
+	   */
+	  if (pdbc->cp_dsn != NULL)
+	    MEM_FREE (pdbc->cp_dsn);
+	  if (pdbc->cp_uid != NULL)
+	    MEM_FREE (pdbc->cp_uid);
+	  if (pdbc->cp_pwd != NULL)
+	    MEM_FREE (pdbc->cp_pwd);
+
+          if (waMode == 'W')
+	    {
+	      pdbc->cp_dsn = _szDSN;
+	      _szDSN = NULL;
+	      pdbc->cp_uid = _szUID;
+	      _szUID = NULL;
+	      pdbc->cp_pwd = _szAuthStr;
+	      _szAuthStr = NULL;
+	    }
+	  else
+	    {
+	      pdbc->cp_dsn = strdup ((char *)_dsn);
+	      if (pdbc->cp_dsn == NULL)
+	        {
+		  PUSHSQLERR (pdbc->herr, en_S1001);
+		  RETURN (SQL_ERROR);
+		}
+	      if (_uid != NULL)
+	        {
+		  pdbc->cp_uid = strdup (_uid);
+		  if (pdbc->cp_uid == NULL)
+		    {
+		      PUSHSQLERR (pdbc->herr, en_S1001);
+		      RETURN (SQL_ERROR);
+		    }
+		}
+	      if (_pwd != NULL)
+	        {
+		  pdbc->cp_pwd = strdup (_pwd);
+		  if (pdbc->cp_pwd == NULL)
+		    {
+		      PUSHSQLERR (pdbc->herr, en_S1001);
+		      RETURN (SQL_ERROR);
+		    }
+		}
+	    }
+	}
     }
+#endif /* (ODBCVER >= 0x300) */
 
   /*
    *  Check whether driver is thread safe
@@ -1072,16 +2341,14 @@ SQLConnect_Internal (SQLHDBC hdbc,
     /* No specified or default dsn section or
      * no driver specification in this dsn section */
     {
-      MEM_FREE(_szDSN);
-      _szDSN = NULL;
       PUSHSQLERR (pdbc->herr, en_IM002);
-      return SQL_ERROR;
+      RETURN (SQL_ERROR);
     }
+
+  retcode = _iodbcdm_driverload ((char *)_dsn, (char *)driver, pdbc, thread_safe, unload_safe, drv_cp, waMode);
 
   MEM_FREE(_szDSN);
   _szDSN = NULL;
-
-  retcode = _iodbcdm_driverload ((char *)driver, pdbc, thread_safe, unload_safe, waMode);
 
   switch (retcode)
     {
@@ -1103,24 +2370,20 @@ SQLConnect_Internal (SQLHDBC hdbc,
     }
 
   penv = (ENV_t *) pdbc->henv;
+  conv = &pdbc->conv;
 
-  if ((penv->unicode_driver && waMode != 'W')
-      || (!penv->unicode_driver && waMode == 'W'))
+  if (penv->unicode_driver && waMode != 'W')
+    conv_direct = CD_A2W;
+  else if (!penv->unicode_driver && waMode == 'W')
+    conv_direct = CD_W2A;
+  else if (waMode == 'W' && conv->dm_cp!=conv->drv_cp)
+    conv_direct = CD_W2W;
+
+  if (conv_direct != CD_NONE)
     {
-      if (waMode != 'W')
-        {
-        /* ansi=>unicode*/
-          _szDSN = dm_SQL_A2W((SQLCHAR *)szDSN, cbDSN);
-          _szUID = dm_SQL_A2W((SQLCHAR *)szUID, cbUID);
-          _szAuthStr = dm_SQL_A2W((SQLCHAR *)szAuthStr, cbAuthStr);
-        }
-      else
-        {
-        /* unicode=>ansi*/
-          _szDSN = dm_SQL_W2A((SQLWCHAR *)szDSN, cbDSN);
-          _szUID = dm_SQL_W2A((SQLWCHAR *)szUID, cbUID);
-          _szAuthStr = dm_SQL_W2A((SQLWCHAR *)szAuthStr, cbAuthStr);
-        }
+      _szDSN = conv_text_m2d (conv, szDSN, cbDSN, conv_direct);
+      _szUID = conv_text_m2d (conv, szUID, cbUID, conv_direct);
+      _szAuthStr = conv_text_m2d (conv, szAuthStr, cbAuthStr, conv_direct);
       cbDSN = SQL_NTS;
       cbUID = SQL_NTS;
       cbAuthStr = SQL_NTS;
@@ -1129,6 +2392,7 @@ SQLConnect_Internal (SQLHDBC hdbc,
       szAuthStr = _szAuthStr;
     }
 
+  ODBC_UNLOCK ();
   CALL_UDRIVER(hdbc, pdbc, retcode, hproc, penv->unicode_driver,
     en_Connect, (
        pdbc->dhdbc,
@@ -1138,27 +2402,24 @@ SQLConnect_Internal (SQLHDBC hdbc,
        cbUID,
        szAuthStr,
        cbAuthStr));
-
-  MEM_FREE(_szDSN);
-  MEM_FREE(_szUID);
-  MEM_FREE(_szAuthStr);
+  ODBC_LOCK ();
 
   if (hproc == SQL_NULL_HPROC)
     {
-      _iodbcdm_driverunload (pdbc);
+      _iodbcdm_driverunload (pdbc, 3);
       PUSHSQLERR (pdbc->herr, en_IM001);
-      return SQL_ERROR;
+      RETURN (SQL_ERROR);
     }
 
-  if (retcode != SQL_SUCCESS && retcode != SQL_SUCCESS_WITH_INFO)
+  if (!SQL_SUCCEEDED (retcode))
     {
       /* not unload driver for retrieve error
        * message from driver */
 		/*********
-		_iodbcdm_driverunload( hdbc );
+		_iodbcdm_driverunload( hdbc , 3);
 		**********/
 
-      return retcode;
+      RETURN (retcode);
     }
 
   /* state transition */
@@ -1168,9 +2429,31 @@ SQLConnect_Internal (SQLHDBC hdbc,
   setopterr |= _iodbcdm_dbcdelayset (pdbc, waMode);
 
   if (setopterr != SQL_SUCCESS)
+    retcode = SQL_SUCCESS_WITH_INFO;
+
+end:
+#if (ODBCVER >= 0x300)
+  if (!SQL_SUCCEEDED (retcode) &&
+      pdbc->cp_pdbc != NULL)
     {
-      return SQL_SUCCESS_WITH_INFO;
+      int rc;
+
+      /*
+       * Dead connection was taken from the pool
+       * but reconnection attempt has failed:
+       * set cp_retry_wait time and return connection to the pool.
+       */
+      _iodbcdm_pool_set_retry_wait (pdbc);
+      rc = _iodbcdm_pool_put_conn (pdbc);
+      assert (rc == 0);
     }
+#endif
+  if (_szDSN != NULL)
+    MEM_FREE(_szDSN);
+  if (_szUID != NULL)
+    MEM_FREE (_szUID);
+  if (_szAuthStr != NULL)
+    MEM_FREE (_szAuthStr);
 
   return retcode;
 }
@@ -1208,7 +2491,6 @@ SQLConnect (
 }
 
 
-#if ODBCVER >= 0x0300
 SQLRETURN SQL_API
 SQLConnectA (
   SQLHDBC		  hdbc,
@@ -1271,7 +2553,6 @@ SQLConnectW (SQLHDBC hdbc,
 	szUID, cbUID,
 	szAuthStr, cbAuthStr));
 }
-#endif
 
 
 SQLRETURN SQL_API
@@ -1288,30 +2569,40 @@ SQLDriverConnect_Internal (
 {
   CONN (pdbc, hdbc);
   ENVR (penv, NULL);
+#if (ODBCVER >= 0x300)
+  GENV (genv, NULL);
+#endif
   HDLL hdll = NULL;
-  void *drv;
-  SQLWCHAR drvbuf[1024];
-  void *dsn;
-  SQLWCHAR dsnbuf[SQL_MAX_DSN_LENGTH + 1];
-  SQLWCHAR prov[1024];
+  SQLCHAR *drv = NULL;
+  SQLCHAR drvbuf[1024];
+  SQLCHAR *dsn = NULL;
+  SQLCHAR dsnbuf[SQL_MAX_DSN_LENGTH + 1];
+  SQLWCHAR prov[2048];
+  SQLWCHAR StrInTmp[2048];
   SWORD thread_safe;
   SWORD unload_safe;
-  char buf[1024];
+  SQLCHAR buf[1024];
   HPROC hproc = SQL_NULL_HPROC;
   void *_ConnStrIn = NULL;
   void *_ConnStrOut = NULL;
   void *connStrOut = szConnStrOut;
   void *connStrIn = szConnStrIn;
-  char *_dsn_u8 = NULL;
-  char *_drv_u8 = NULL;
+  SQLSMALLINT connStrOutMax = cbConnStrOutMax;
+  SQLWCHAR connStrOut_buf[2048];
+  SQLWCHAR connStrIn_buf[2048];
   UWORD config;
+  PCONFIG pconfig = NULL;
   BOOL bCallDmDlg = FALSE;
-#if defined (__APPLE__) && !(defined (NO_FRAMEWORKS) || defined (_LP64))
-  CFStringRef libname = NULL;
+#if defined (__APPLE__) && !defined (NO_FRAMEWORKS)
   CFBundleRef bundle = NULL;
+  CFBundleRef bundle_dll = NULL;
   CFURLRef liburl = NULL;
-  char name[1024] = { 0 };
 #endif
+  SQLCHAR *filedsn = NULL;
+  SQLCHAR *savefile = NULL;
+  CONV_DIRECT conv_direct = CD_NONE;
+  DM_CONV *conv = NULL;
+  IODBC_CHARSET drv_cp = CP_DEF;
 
   HPROC dialproc = SQL_NULL_HPROC;
 
@@ -1324,32 +2615,240 @@ SQLDriverConnect_Internal (
       (cbConnStrOutMax < 0 && cbConnStrOutMax != SQL_NTS))
     {
       PUSHSQLERR (pdbc->herr, en_S1090);
-      return SQL_ERROR;
+      RETURN (SQL_ERROR);
     }
 
   /* check state */
   if (pdbc->state != en_dbc_allocated)
     {
       PUSHSQLERR (pdbc->herr, en_08002);
-      return SQL_ERROR;
+      RETURN (SQL_ERROR);
     }
 
   /* Save config mode */
   SQLGetConfigMode (&config);
 
-  if (waMode != 'W')
+  conv = (penv != SQL_NULL_HENV) ? &penv->conv : &((GENV_t *) pdbc->genv)->conv;
+
+  if (_iodbcdm_cfg_init_str (&pconfig, connStrIn, cbConnStrIn,
+			     waMode == 'W', conv) == -1)
     {
-      drv = _iodbcdm_getkeyvalinstr ((char *) szConnStrIn, cbConnStrIn,
-	  "DRIVER", (char *) drvbuf, sizeof (drvbuf));
-      dsn = _iodbcdm_getkeyvalinstr ((char *) szConnStrIn, cbConnStrIn,
-	  "DSN", (char *) dsnbuf, sizeof (dsnbuf));
+      PUSHSQLERR (pdbc->herr, en_HY001);
+      RETURN (SQL_ERROR);
     }
-  else
+  assert (_iodbcdm_cfg_valid(pconfig));
+
+  /* lookup and save original SAVEFILE value */
+  if (_iodbcdm_cfg_find (pconfig, "ODBC", "SAVEFILE") == 0)
     {
-      drv = _iodbcdm_getkeyvalinstrw ((wchar_t *) szConnStrIn, cbConnStrIn,
-	  L"DRIVER", drvbuf, sizeof (drvbuf) / sizeof (SQLWCHAR));
-      dsn = _iodbcdm_getkeyvalinstrw ((wchar_t *) szConnStrIn, cbConnStrIn,
-	  L"DSN", dsnbuf, sizeof (dsnbuf) / sizeof (SQLWCHAR));
+      savefile = (SQLCHAR *)strdup (pconfig->value);
+      if (savefile == NULL)
+        {
+          PUSHSQLERR (pdbc->herr, en_HY001);
+          RETURN (SQL_ERROR);
+        }
+    }
+
+
+#if (ODBCVER >= 0x300)
+  genv = (GENV_t *) pdbc->genv;
+
+  /*
+   * Try to find pooled connection.
+   * Pooling is disabled if SAVEFILE is present.
+   */
+  if (genv->connection_pooling != SQL_CP_OFF && savefile == NULL)
+    {
+      char *_connstr = connStrIn;
+
+      if (fDriverCompletion != SQL_DRIVER_NOPROMPT)
+        {
+          PUSHSQLERR (pdbc->herr, en_HY110);
+          RETURN (SQL_ERROR);
+        }
+
+      if (waMode == 'W')
+        {
+          _ConnStrIn = DM_WtoU8(conv, (SQLWCHAR *) connStrIn, cbConnStrIn);
+	  if (_ConnStrIn == NULL)
+	    {
+              PUSHSQLERR (pdbc->herr, en_HY001);
+              RETURN (SQL_ERROR);
+	    }
+	  _connstr = _ConnStrIn;
+	}
+
+      retcode = _iodbcdm_pool_get_conn (pdbc, NULL, NULL, NULL, _connstr);
+      if (SQL_SUCCEEDED (retcode))
+        {
+	  /*
+	   * Got connection from the pool
+	   */
+
+          /* copy out connection string */
+          if (szConnStrOut != NULL)
+	    {
+	      if (waMode == 'W')
+		{
+		  DM_WCSNCPY (conv, szConnStrOut, szConnStrIn, cbConnStrOutMax);
+
+		  if (pcbConnStrOut != NULL)
+		    {
+		      if (conv && conv->dm_cp == CP_UTF8)
+			*(SQLSMALLINT *) pcbConnStrOut = strlen ((char *) szConnStrOut);
+		      else
+			*(SQLSMALLINT *) pcbConnStrOut = DM_WCSLEN (conv, szConnStrOut);
+		    }
+		}
+	      else
+		{
+		  _iodbcdm_strlcpy (szConnStrOut, szConnStrIn, cbConnStrOutMax);
+		  if (pcbConnStrOut != NULL)
+		    *(SQLSMALLINT *) pcbConnStrOut = strlen (szConnStrOut);
+		}
+	    }
+
+          /* state transition */
+          pdbc->state = en_dbc_connected;
+
+          RETURN (retcode);
+        }
+
+      if (pdbc->cp_pdbc != NULL)
+        {
+	  /*
+	   * Dead connection was taken from pool
+	   */
+
+          if (pdbc->cp_pdbc->cp_retry_wait != 0)
+	    {
+	      /*
+	       * Retry Wait timeout has not expired yet
+	       */
+              PUSHSQLERR (pdbc->herr, en_08004);
+	      RETURN (SQL_ERROR);
+	    }
+
+	  /*
+	   * Free connection parameters.
+	   */
+	  if (waMode == 'W')
+	    {
+	      if (_ConnStrIn != NULL)
+	        {
+		  MEM_FREE (_ConnStrIn);
+		  _ConnStrIn = NULL;
+	        }
+	    }
+        }
+      else
+        {
+          /*
+	   * Connection was not found in the pool --
+	   * save connection parameters
+	   */
+	  if (pdbc->cp_connstr != NULL)
+	    MEM_FREE (pdbc->cp_connstr);
+
+          if (waMode == 'W')
+	    {
+	      pdbc->cp_connstr = _ConnStrIn;
+	      _ConnStrIn = NULL;
+	    }
+	  else
+	    {
+              pdbc->cp_connstr = strdup (_connstr);
+	      if (pdbc->cp_connstr == NULL)
+	        {
+                  PUSHSQLERR (pdbc->herr, en_HY001);
+                  RETURN (SQL_ERROR);
+	        }
+	    }
+        }
+    }
+#endif /* (ODBCVER >= 0x300) */
+
+  /* always get (even if not requested) out connection string for SAVEFILE */
+  if (!connStrOut)
+    {
+      connStrOut = connStrOut_buf;
+      connStrOutMax = sizeof(connStrOut_buf);
+    }
+
+  /* now look for DSN or FILEDSN, whichever comes first */
+  _iodbcdm_cfg_rewind (pconfig);
+  while (_iodbcdm_cfg_nextentry (pconfig) == 0)
+    {
+      if (!_iodbcdm_cfg_define (pconfig))
+        continue;
+
+      if (!strcasecmp(pconfig->id, "DSN"))
+        {
+          /* not a file dsn */
+          break;
+        }
+      else if (!strcasecmp(pconfig->id, "FILEDSN"))
+        {
+          /* file dsn */
+          filedsn = (SQLCHAR *)strdup (pconfig->value);
+	  if (filedsn == NULL)
+	    {
+              PUSHSQLERR (pdbc->herr, en_HY001);
+              RETURN (SQL_ERROR);
+	    }
+	  break;
+	}
+    }
+
+
+  /* get connect parameters from .dsn file if requested */
+  if (filedsn != NULL)
+    {
+      /* merge params from .dsn file */
+      if (_iodbcdm_cfg_merge_filedsn (pconfig, (char *)filedsn,
+	      (char *) connStrIn_buf, sizeof (connStrIn_buf),
+	      waMode == 'W', conv) == -1)
+        {
+          PUSHSQLERR (pdbc->herr, en_IM015);
+          RETURN (SQL_ERROR);
+	}
+
+      /* update connection string and its length */
+      connStrIn = connStrIn_buf;
+      if (cbConnStrIn != SQL_NTS)
+	{
+	  if (waMode != 'W')
+	    cbConnStrIn = STRLEN (connStrIn);
+	  else
+	    cbConnStrIn = DM_WCSLEN (conv, connStrIn);
+	}
+    }
+
+  if (_iodbcdm_cfg_find (pconfig, "ODBC", "DRIVER") == 0)
+    {
+      /* copy because pconfig can be reinitialized later */
+      _iodbcdm_strlcpy ((char *) drvbuf, pconfig->value, sizeof (drvbuf));
+      drv = drvbuf;
+    }
+  if (_iodbcdm_cfg_find (pconfig, "ODBC", "DSN") == 0)
+    {
+      /* copy because pconfig can be reinitialized later */
+      _iodbcdm_strlcpy ((char *) dsnbuf, pconfig->value, sizeof (dsnbuf));
+      dsn = dsnbuf;
+    }
+
+  if (_iodbcdm_cfg_find (pconfig, "ODBC", "DriverUnicodeType") == 0)
+    {
+      if (STRCASEEQ(pconfig->value, "1") || STRCASEEQ(pconfig->value, "utf16"))
+        drv_cp = CP_UTF16;
+      else if (STRCASEEQ(pconfig->value, "2") || STRCASEEQ(pconfig->value, "utf8"))
+        drv_cp = CP_UTF8;
+      else if (STRCASEEQ(pconfig->value, "3") || STRCASEEQ(pconfig->value, "ucs4"))
+        drv_cp = CP_UCS4;
+
+      DPRINTF ((stderr,
+       "DEBUG: SQLDriverConnect DriverUnicodeType=%s\n",
+          drv_cp==CP_UCS4?"UCS4":(drv_cp==CP_UTF16?"UTF16":"UTF8")));
     }
 
   switch (fDriverCompletion)
@@ -1359,7 +2858,7 @@ SQLDriverConnect_Internal (
       if (!dsn && !drv)
 	{
 	  PUSHSQLERR (pdbc->herr, en_IM007);
-	  return SQL_ERROR;
+	  RETURN (SQL_ERROR);
 	}
       break;
 
@@ -1375,100 +2874,168 @@ SQLDriverConnect_Internal (
        * current executable */
       /* Not really sure here, but should load that from the iodbcadm */
       if (waMode == 'A')
-	strncpy ((char *) prov, szConnStrIn, sizeof (prov));
+	_iodbcdm_strlcpy ((char *) prov, connStrIn, sizeof (prov));
+      else if (conv && conv->dm_cp == CP_UTF8)
+	_iodbcdm_strlcpy ((char *) prov, connStrIn, sizeof (prov));
       else
-	wcsncpy (prov, szConnStrIn, sizeof (prov) / sizeof (wchar_t));
+        DM_WCSNCPY (conv, prov, connStrIn, sizeof (prov) / DM_WCHARSIZE(conv));
 
-      if (!dsn && !drv)
-        bCallDmDlg = TRUE;
-      else if ( _iodbcdm_CheckDriverLoginDlg(drv, dsn, waMode) == FALSE)
-        bCallDmDlg = TRUE;
-
-      /* not call iODBC function "iodbcdm_drvconn_dialbox", if there is
-       * the function "_iodbcdm_drvconn_dialbox" in the odbc driver,
-       * odbc driver must call its function itself
-       */
-      if (!bCallDmDlg)
-        break;
-
-      ODBC_UNLOCK ();
-#if defined (__APPLE__) && !(defined (NO_FRAMEWORKS) || defined (_LP64))
-      bundle = CFBundleGetBundleWithIdentifier (CFSTR ("org.iodbc.core"));
-      if (bundle)
-	{
-	  /* Search for the drvproxy library */
-	  liburl =
-	      CFBundleCopyResourceURL (bundle, CFSTR ("iODBCadm.bundle"),
-	      NULL, NULL);
-	  if (liburl
-	      && (libname =
-		  CFURLCopyFileSystemPath (liburl, kCFURLPOSIXPathStyle)))
-	    {
-	      CFStringGetCString (libname, name, sizeof (name),
-		  kCFStringEncodingASCII);
-	      STRCAT (name, "/Contents/MacOS/iODBCadm");
-	      hdll = _iodbcdm_dllopen (name);
-	    }
-	  if (liburl)
-	    CFRelease (liburl);
-	  if (libname)
-	    CFRelease (libname);
-	}
-#else
-      hdll = _iodbcdm_dllopen ("libiodbcadm.so");
+#if 0
+        if (!dsn && !drv)
+          bCallDmDlg = TRUE;
+        else if ( _iodbcdm_CheckDriverLoginDlg(drv, dsn) == FALSE)
+          bCallDmDlg = TRUE;
+  
+        /* not call iODBC function "iodbcdm_drvconn_dialbox", if there is
+         * the function "_iodbcdm_drvconn_dialbox" in the odbc driver,
+         * odbc driver must call its function itself
+         */
+        if (!bCallDmDlg)
+          break;
 #endif
 
-      if (!hdll)
-	break;
+      ODBC_UNLOCK ();
+#if defined (__APPLE__)
+# if !defined(NO_FRAMEWORKS)
+    bundle = CFBundleGetBundleWithIdentifier (CFSTR ("org.iodbc.core"));
+    if (bundle)
+      {
+        /* Search for the drvproxy library */
+        liburl =
+            CFBundleCopyResourceURL (bundle, CFSTR ("iODBCadm.bundle"),
+            NULL, NULL);
+          if (liburl) {
+              bundle_dll = CFBundleCreate (NULL, liburl);
+              if (bundle_dll){
+                  if (waMode != 'W')
+                      dialproc = (HPROC)CFBundleGetFunctionPointerForName (bundle_dll, CFSTR("iodbcdm_drvconn_dialbox"));
+                  else
+                      dialproc = (HPROC)CFBundleGetFunctionPointerForName (bundle_dll, CFSTR("iodbcdm_drvconn_dialboxw"));
+              }
+          }
+          
+          if (liburl)
+            CFRelease (liburl);
+      }
+      if (!bundle_dll)
+          break;
+# endif
+#else
 
+      hdll = _iodbcdm_dllopen ("libiodbcadm.so.2");
+            
+      if (!hdll)
+         break;
+            
       if (waMode != 'W')
-	dialproc = _iodbcdm_dllproc (hdll, "iodbcdm_drvconn_dialbox");
+        dialproc = _iodbcdm_dllproc (hdll, "iodbcdm_drvconn_dialbox");
       else
-	dialproc = _iodbcdm_dllproc (hdll, "iodbcdm_drvconn_dialboxw");
+        dialproc = _iodbcdm_dllproc (hdll, "iodbcdm_drvconn_dialboxw");
+#endif
 
       if (dialproc == SQL_NULL_HPROC)
-	{
-	  sqlstat = en_IM008;
-	  break;
-	}
+        {
+          sqlstat = en_IM008;
+          break;
+        }
 
-      retcode = dialproc (hwnd,	/* window or display handle */
-	  prov,			/* input/output dsn buf */
-	  sizeof (prov) / (waMode == 'A' ? 1 : sizeof (SQLWCHAR)),	/* buf size */
-	  &sqlstat,		/* error code */
-	  fDriverCompletion,	/* type of completion */
-	  &config);		/* config mode */
+      {
+        IODBC_CHARSET m_charset = (conv) ? conv->dm_cp : CP_DEF;
+        ssize_t size = cbConnStrIn;
+
+        /*** convert DM_WCHAR => SYS_WCHAR ***/
+        if (waMode == 'A')
+	  _iodbcdm_strlcpy ((char *) prov, connStrIn, sizeof (prov));
+        else
+          {
+            if (size == SQL_NTS)
+              {
+                if (m_charset == CP_UTF8)
+	          size = strlen((char*) connStrIn);
+                else
+	          size = DM_WCSLEN (conv, connStrIn);
+	      }
+
+	    if (m_charset != CP_UTF8)
+	      size *= DM_WCHARSIZE(conv);
+
+	    if (size >= sizeof(prov))
+	      size = sizeof(prov) - DM_WCHARSIZE(conv);
+
+            size = dm_conv_W2W(connStrIn, cbConnStrIn, prov,
+		sizeof(prov)-sizeof(SQLWCHAR), m_charset, CP_DEF);
+            prov[size/sizeof(SQLWCHAR)] = L'\0';
+          }
+
+        retcode = dialproc (hwnd,	/* window or display handle */
+          prov,		        /* input/output dsn buf */
+          sizeof (prov) / (waMode == 'A' ? 1 : sizeof (SQLWCHAR)), /* buf size */
+          &sqlstat,		/* error code */
+          fDriverCompletion,	/* type of completion */
+          &config);		/* config mode */
 
 
-      ODBC_LOCK ();
+        ODBC_LOCK ();
+        fDriverCompletion = SQL_DRIVER_NOPROMPT;
 
-      if (retcode != SQL_SUCCESS)
-	{
-	  if (retcode != SQL_NO_DATA_FOUND)
-	    PUSHSQLERR (pdbc->herr, sqlstat);
-	  goto end;
-	}
+        if (retcode != SQL_SUCCESS)
+          {
+            if (retcode != SQL_NO_DATA_FOUND)
+  	      PUSHSQLERR (pdbc->herr, sqlstat);
+	    goto end;
+          }
 
-      connStrIn = szConnStrIn = prov;
+        if (waMode == 'W')
+          {
+            /*** convert SYS_WCHAR => DM_WCHAR ***/
+            size = dm_conv_W2W(prov, SQL_NTS, StrInTmp, sizeof(StrInTmp)-sizeof(SQLWCHAR),
+          	CP_DEF, m_charset);
+            StrInTmp[size/sizeof(SQLWCHAR)] = L'\0';
+            connStrIn = StrInTmp;
+          }
+        else
+          connStrIn = prov;
+      }
 
       /*
-       * Recalculate length of szConnStrIn if needed, as it may have been
+       * Recalculate length of connStrIn if needed, as it may have been
        * changed by iodbcdm_drvconn_dialbox
        */
       if (cbConnStrIn != SQL_NTS)
-	{
+        {
 	  if (waMode != 'W')
-	    cbConnStrIn = STRLEN (szConnStrIn);
+	    cbConnStrIn = STRLEN (connStrIn);
 	  else
-	    cbConnStrIn = WCSLEN (szConnStrIn);
+	    cbConnStrIn = DM_WCSLEN (conv, connStrIn);
 	}
 
-      if (waMode != 'W')
-	dsn = _iodbcdm_getkeyvalinstr ((char *) prov, STRLEN (prov),
-	    "DSN", (char *) dsnbuf, sizeof (dsnbuf));
-      else
-	dsn = _iodbcdm_getkeyvalinstrw (prov, WCSLEN (prov),
-	    L"DSN", dsnbuf, sizeof (dsnbuf) / sizeof (SQLWCHAR));
+      if (_iodbcdm_cfg_parse_str (pconfig, connStrIn, cbConnStrIn,
+				  waMode == 'W', conv) == -1)
+        {
+          PUSHSQLERR (pdbc->herr, en_HY001);
+          RETURN (SQL_ERROR);
+        }
+      if (_iodbcdm_cfg_find (pconfig, "ODBC", "DSN") == 0)
+        dsn = (SQLCHAR *)pconfig->value;
+      if (_iodbcdm_cfg_find (pconfig, "ODBC", "DRIVER") == 0)
+        {
+          /* copy because pconfig can be reinitialized later */
+          _iodbcdm_strlcpy ((char *) drvbuf, pconfig->value, sizeof (drvbuf));
+          drv = drvbuf;
+        }
+      if (_iodbcdm_cfg_find (pconfig, "ODBC", "DriverUnicodeType") == 0)
+        {
+          if (STRCASEEQ(pconfig->value, "1") || STRCASEEQ(pconfig->value, "utf16"))
+            drv_cp = CP_UTF16;
+          else if (STRCASEEQ(pconfig->value, "2") || STRCASEEQ(pconfig->value, "utf8"))
+            drv_cp = CP_UTF8;
+          else if (STRCASEEQ(pconfig->value, "3") || STRCASEEQ(pconfig->value, "ucs4"))
+            drv_cp = CP_UCS4;
+
+          DPRINTF ((stderr,
+           "DEBUG: SQLDriverConnect DriverUnicodeType=%s\n",
+              drv_cp==CP_UCS4?"UCS4":(drv_cp==CP_UTF16?"UTF16":"UTF8")));
+        }
       break;
 
     default:
@@ -1479,33 +3046,8 @@ SQLDriverConnect_Internal (
   if (sqlstat != en_00000)
     {
       PUSHSQLERR (pdbc->herr, sqlstat);
-      return SQL_ERROR;
+      RETURN (SQL_ERROR);
     }
-
-  if (waMode == 'W')
-    {
-      if (dsn != NULL)
-	{
-	  dsn = _dsn_u8 = (char *) dm_SQL_WtoU8 ((SQLWCHAR *) dsn, SQL_NTS);
-	  if (dsn == NULL)
-	    {
-	      PUSHSQLERR (pdbc->herr, en_S1001);
-	      return SQL_ERROR;
-	    }
-	}
-
-      if (drv != NULL)
-	{
-	  drv = _drv_u8 = (char *) dm_SQL_WtoU8 ((SQLWCHAR *) drv, SQL_NTS);
-	  if (drv == NULL)
-	    {
-	      PUSHSQLERR (pdbc->herr, en_S1001);
-	      return SQL_ERROR;
-	    }
-	}
-
-    }
-
 
   if (dsn == NULL || *(char *) dsn == '\0')
     {
@@ -1514,8 +3056,8 @@ SQLDriverConnect_Internal (
   else
     /* if you want tracing, you must use a DSN */
     {
-      setopterr |=
-	  _iodbcdm_con_settracing (pdbc, (SQLCHAR *) dsn, SQL_NTS, waMode);
+      setopterr |= 
+          _iodbcdm_con_settracing (pdbc, (SQLCHAR *) dsn, SQL_NTS, waMode);
     }
 
   /*
@@ -1524,8 +3066,8 @@ SQLDriverConnect_Internal (
   thread_safe = 1;		/* Assume driver is thread safe */
 
   SQLSetConfigMode (ODBC_BOTH_DSN);
-  if (SQLGetPrivateProfileString ((char *) dsn, "ThreadManager", "",
-	  buf, sizeof (buf), "odbc.ini")
+  if (SQLGetPrivateProfileString ((char *) dsn, "ThreadManager", "", 
+	(LPSTR)buf, sizeof (buf), "odbc.ini")
       && (STRCASEEQ (buf, "on") || STRCASEEQ (buf, "1")))
     {
       thread_safe = 0;		/* Driver needs a thread manager */
@@ -1537,8 +3079,8 @@ SQLDriverConnect_Internal (
   unload_safe = 0;		/* Assume driver is not unload safe */
 
   SQLSetConfigMode (ODBC_BOTH_DSN);
-  if (SQLGetPrivateProfileString ((char *) dsn, "UnloadSafe", "",
-	  buf, sizeof (buf), "odbc.ini")
+  if (SQLGetPrivateProfileString ((char *) dsn, "UnloadSafe", "", 
+	(LPSTR)buf, sizeof (buf), "odbc.ini")
       && (STRCASEEQ (buf, "on") || STRCASEEQ (buf, "1")))
     {
       unload_safe = 1;
@@ -1550,27 +3092,22 @@ SQLDriverConnect_Internal (
   if (drv == NULL || *(char *) drv == '\0')
     {
       SQLSetConfigMode (ODBC_BOTH_DSN);
-      if (SQLGetPrivateProfileString ((char *) dsn, "Driver", "",
-	      buf, sizeof (buf), "odbc.ini") != 0)
+      if (SQLGetPrivateProfileString ((char *) dsn, "Driver", "", 
+	      (char *) drvbuf, sizeof (drvbuf), "odbc.ini") != 0)
 	{
-	  drv = buf;
+	  drv = drvbuf;
 	}
     }
 
   if (drv == NULL)
     {
-      MEM_FREE (_dsn_u8);
-      MEM_FREE (_drv_u8);
       PUSHSQLERR (pdbc->herr, en_IM002);
-      return SQL_ERROR;
+      RETURN (SQL_ERROR);
     }
 
   retcode =
-      _iodbcdm_driverload ((char *) drv, pdbc, thread_safe, unload_safe,
-      waMode);
-
-  MEM_FREE (_dsn_u8);
-  MEM_FREE (_drv_u8);
+      _iodbcdm_driverload ((char *)dsn, (char *) drv, pdbc, thread_safe, unload_safe,
+      drv_cp, waMode);
 
   switch (retcode)
     {
@@ -1588,35 +3125,37 @@ SQLDriverConnect_Internal (
       break;
 
     default:
-      return retcode;
+      RETURN (retcode);
     }
 
-  penv = (ENV_t *) pdbc->henv;
+#if (ODBCVER >= 0x300)
+  /*
+   * Pooling is disabled if SAVEFILE is present.
+   */
+  if (savefile != NULL)
+    pdbc->cp_timeout = 0;
+#endif
 
-  if ((penv->unicode_driver && waMode != 'W')
-      || (!penv->unicode_driver && waMode == 'W'))
+  penv = (ENV_t *) pdbc->henv;
+  conv = &pdbc->conv;
+
+  if (penv->unicode_driver && waMode != 'W')
+    conv_direct = CD_A2W;
+  else if (!penv->unicode_driver && waMode == 'W')
+    conv_direct = CD_W2A;
+  else if (waMode == 'W' && conv->dm_cp!=conv->drv_cp)
+    conv_direct = CD_W2W;
+
+  if (conv_direct != CD_NONE)
     {
-      if (waMode != 'W')
+      if ((_ConnStrOut =
+	      malloc ((connStrOutMax + 1) * WCHAR_MAXSIZE)) == NULL)
 	{
-	  /* ansi=>unicode */
-	  if ((_ConnStrOut =
-		  malloc (cbConnStrOutMax * sizeof (SQLWCHAR) + 1)) == NULL)
-	    {
-	      PUSHSQLERR (pdbc->herr, en_HY001);
-	      return SQL_ERROR;
-	    }
-	  _ConnStrIn = dm_SQL_A2W ((SQLCHAR *) szConnStrIn, cbConnStrIn);
+	  PUSHSQLERR (pdbc->herr, en_HY001);
+	  RETURN (SQL_ERROR);
 	}
-      else
-	{
-	  /* unicode=>ansi */
-	  if ((_ConnStrOut = malloc (cbConnStrOutMax + 1)) == NULL)
-	    {
-	      PUSHSQLERR (pdbc->herr, en_HY001);
-	      return SQL_ERROR;
-	    }
-	  _ConnStrIn = dm_SQL_W2A ((SQLWCHAR *) szConnStrIn, cbConnStrIn);
-	}
+      _ConnStrIn = conv_text_m2d (conv, connStrIn, cbConnStrIn, conv_direct);
+
       connStrOut = _ConnStrOut;
       connStrIn = _ConnStrIn;
       cbConnStrIn = SQL_NTS;
@@ -1625,53 +3164,112 @@ SQLDriverConnect_Internal (
   /* Restore config mode */
   SQLSetConfigMode (config);
 
+  ODBC_UNLOCK (); 
   CALL_UDRIVER (hdbc, pdbc, retcode, hproc, penv->unicode_driver,
       en_DriverConnect, (pdbc->dhdbc,
 	  hwnd,
 	  connStrIn,
 	  cbConnStrIn,
-	  connStrOut, cbConnStrOutMax, pcbConnStrOut, fDriverCompletion));
-
-  MEM_FREE (_ConnStrIn);
+	  connStrOut, connStrOutMax, pcbConnStrOut, fDriverCompletion));
+  ODBC_LOCK ();
 
   if (hproc == SQL_NULL_HPROC)
     {
-      MEM_FREE (_ConnStrOut);
-      _iodbcdm_driverunload (pdbc);
+      _iodbcdm_driverunload (pdbc, 3);
       PUSHSQLERR (pdbc->herr, en_IM001);
-      return SQL_ERROR;
+      RETURN (SQL_ERROR);
     }
 
-  if (szConnStrOut
-      && (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO)
-      && ((penv->unicode_driver && waMode != 'W')
-	  || (!penv->unicode_driver && waMode == 'W')))
+  if (szConnStrOut && SQL_SUCCEEDED (retcode) && conv_direct != CD_NONE)
     {
-      if (waMode != 'W')
-	{
+      if (conv_direct == CD_A2W)
+        {
 	  /* ansi<=unicode */
-	  dm_StrCopyOut2_W2A ((SQLWCHAR *) connStrOut,
-	      (SQLCHAR *) szConnStrOut, cbConnStrOutMax, NULL);
-	}
-      else
-	{
+          dm_StrCopyOut2_W2A_d2m (conv, connStrOut,
+              (SQLCHAR *) szConnStrOut, cbConnStrOutMax, NULL, NULL);
+        }
+      else if (conv_direct == CD_W2A)
+        {
 	  /* unicode<=ansi */
-	  dm_StrCopyOut2_A2W ((SQLCHAR *) connStrOut,
-	      (SQLWCHAR *) szConnStrOut, cbConnStrOutMax, NULL);
+          dm_StrCopyOut2_A2W_d2m (conv, (SQLCHAR *) connStrOut,
+              szConnStrOut, cbConnStrOutMax * DM_WCHARSIZE(conv), NULL, NULL);
+        }
+      else if (conv_direct == CD_W2W)
+        {
+	  /* unicode<=unicode */
+          dm_StrCopyOut2_W2W_d2m (conv, connStrOut,
+              szConnStrOut, cbConnStrOutMax * DM_WCHARSIZE(conv), NULL, NULL);
+        }
+    }
+
+  if (szConnStrOut != NULL)
+    {
+      if (filedsn != NULL)
+        {
+          /* append FILEDSN to the out connection string */
+          if (waMode == 'W')
+            {
+              char tmp[4096] = {""};
+              size_t outSize = DM_WCSLEN(conv, szConnStrOut);
+              char *out = szConnStrOut;
+
+              out += outSize * DM_WCHARSIZE(conv);
+
+              _iodbcdm_strlcat (tmp, ";FILEDSN=", sizeof(tmp));
+              _iodbcdm_strlcat (tmp, (char *)filedsn, sizeof(tmp));
+              dm_StrCopyOut2_U8toW_d2m(conv, (SQLCHAR *)tmp, out,
+			(cbConnStrOutMax - outSize) * DM_WCHARSIZE(conv),
+			NULL, NULL);
+	    }
+          else
+            {
+              _iodbcdm_strlcat (szConnStrOut, ";FILEDSN=", cbConnStrOutMax);
+              _iodbcdm_strlcat (szConnStrOut, (char *)filedsn, cbConnStrOutMax);
+            }
+        }
+      if (savefile != NULL)
+        {
+          /* append SAVEFILE to the out connection string */
+          if (waMode == 'W')
+            {
+              char tmp[4096] = {""};
+              size_t outSize = DM_WCSLEN(conv, szConnStrOut);
+              char *out = szConnStrOut;
+
+              out += outSize * DM_WCHARSIZE(conv);
+
+              _iodbcdm_strlcat (tmp, ";SAVEFILE=", sizeof(tmp));
+              _iodbcdm_strlcat (tmp, (char *)savefile, sizeof(tmp));
+              dm_StrCopyOut2_U8toW_d2m(conv, (SQLCHAR *)tmp, out,
+			(cbConnStrOutMax - outSize) * DM_WCHARSIZE(conv),
+			NULL, NULL);
+	    }
+          else
+            {
+              _iodbcdm_strlcat (szConnStrOut, ";SAVEFILE=", cbConnStrOutMax);
+              _iodbcdm_strlcat (szConnStrOut, (char *)savefile, cbConnStrOutMax);
+            }
+        }
+
+      /* fixup pcbConnStrOut */
+      if (pcbConnStrOut != NULL)
+	{
+	  if (waMode == 'W')
+	    *(SQLSMALLINT *) pcbConnStrOut = DM_WCSLEN (conv, szConnStrOut);
+	  else
+	    *(SQLSMALLINT *) pcbConnStrOut = strlen (szConnStrOut);
 	}
     }
 
-  MEM_FREE (_ConnStrOut);
-
-  if (retcode != SQL_SUCCESS && retcode != SQL_SUCCESS_WITH_INFO)
+  if (!SQL_SUCCEEDED (retcode))
     {
       /* don't unload driver here for retrieve
        * error message from driver */
 		/********
-		_iodbcdm_driverunload( hdbc );
+		_iodbcdm_driverunload( hdbc , 3);
 		*********/
 
-      return retcode;
+      RETURN (retcode);
     }
 
   /* state transition */
@@ -1681,11 +3279,48 @@ SQLDriverConnect_Internal (
   setopterr |= _iodbcdm_dbcdelayset (pdbc, waMode);
 
   if (setopterr != SQL_SUCCESS)
+    retcode = SQL_SUCCESS_WITH_INFO;
+
+  /* save .dsn file if requested */
+  if (savefile != NULL)
     {
-      return SQL_SUCCESS_WITH_INFO;
+      assert (connStrOut != NULL);
+
+      if (_iodbcdm_cfg_savefile ((char *)savefile, connStrOut,
+				 penv->unicode_driver, conv) == -1)
+        {
+	  PUSHSQLERR (pdbc->herr, en_01S08);
+	  retcode = SQL_SUCCESS_WITH_INFO;
+	}
     }
 
 end:
+#if (ODBCVER >= 0x300)
+  if (!SQL_SUCCEEDED (retcode) &&
+      pdbc->cp_pdbc != NULL)
+    {
+      int rc;
+
+      /*
+       * Dead connection was taken from the pool
+       * but reconnection attempt has failed:
+       * set cp_retry_wait time and return connection to the pool.
+       */
+      _iodbcdm_pool_set_retry_wait (pdbc);
+      rc = _iodbcdm_pool_put_conn (pdbc);
+      assert (rc == 0);
+    }
+#endif
+  _iodbcdm_cfg_done (pconfig);
+  if (_ConnStrIn != NULL)
+    MEM_FREE (_ConnStrIn);
+  if (_ConnStrOut != NULL)
+    MEM_FREE (_ConnStrOut);
+  if (savefile != NULL)
+    MEM_FREE (savefile);
+  if (filedsn != NULL)
+    MEM_FREE (filedsn);
+
   return retcode;
 }
 
@@ -1726,7 +3361,6 @@ SQLDriverConnect (SQLHDBC hdbc,
 }
 
 
-#if ODBCVER >= 0x0300
 SQLRETURN SQL_API
 SQLDriverConnectA (SQLHDBC hdbc,
     SQLHWND hwnd,
@@ -1797,7 +3431,6 @@ SQLDriverConnectW (SQLHDBC hdbc,
 	szConnStrOut, cbConnStrOutMax, pcbConnStrOut,
 	fDriverCompletion));
 }
-#endif
 
 
 SQLRETURN SQL_API
@@ -1810,9 +3443,6 @@ SQLBrowseConnect_Internal (SQLHDBC hdbc,
 {
   CONN (pdbc, hdbc);
   ENVR (penv, NULL);
-  void *drv, *dsn;
-  char drvbuf[4096];
-  char dsnbuf[SQL_MAX_DSN_LENGTH * UTF8_MAX_CHAR_LEN + 1];
   char buf[1024];
   SWORD thread_safe;
   SWORD unload_safe;
@@ -1821,6 +3451,9 @@ SQLBrowseConnect_Internal (SQLHDBC hdbc,
   void * _ConnStrOut = NULL;
   void * connStrOut = szConnStrOut;
   void * connStrIn = szConnStrIn;
+  CONV_DIRECT conv_direct = CD_NONE;
+  DM_CONV *conv = NULL;
+  IODBC_CHARSET drv_cp = CP_DEF;
 
   SQLRETURN retcode = SQL_SUCCESS;
   SQLRETURN setopterr = SQL_SUCCESS;
@@ -1832,14 +3465,37 @@ SQLBrowseConnect_Internal (SQLHDBC hdbc,
       return SQL_ERROR;
     }
 
+  conv = (penv != SQL_NULL_HENV) ? &penv->conv : &((GENV_t *) pdbc->genv)->conv;
+
   if (pdbc->state == en_dbc_allocated)
     {
-        drv = _iodbcdm_getkeyvalinstr ((char *) szConnStrIn, cbConnStrIn,
-	  "DRIVER", (char*)drvbuf, sizeof (drvbuf));
+        PCONFIG pconfig;
+        void *drv = NULL, *dsn = NULL;
 
-        dsn = _iodbcdm_getkeyvalinstr ((char *) szConnStrIn, cbConnStrIn,
-	  "DSN", (char*)dsnbuf, sizeof (dsnbuf));
+        if (_iodbcdm_cfg_init_str (&pconfig, szConnStrIn, cbConnStrIn,
+			     waMode == 'W', conv) == -1)
+          {
+            PUSHSQLERR (pdbc->herr, en_HY001);
+            return SQL_ERROR;
+          }
+        if (_iodbcdm_cfg_find (pconfig, "ODBC", "DRIVER") == 0)
+          drv = pconfig->value;
+        if (_iodbcdm_cfg_find (pconfig, "ODBC", "DSN") == 0)
+          dsn = pconfig->value;
 
+        if (_iodbcdm_cfg_find (pconfig, "ODBC", "DriverUnicodeType") == 0)
+          {
+            if (STRCASEEQ(pconfig->value, "1") || STRCASEEQ(pconfig->value, "utf16"))
+              drv_cp = CP_UTF16;
+            else if (STRCASEEQ(pconfig->value, "2") || STRCASEEQ(pconfig->value, "utf8"))
+              drv_cp = CP_UTF8;
+            else if (STRCASEEQ(pconfig->value, "0") || STRCASEEQ(pconfig->value, "ucs4"))
+              drv_cp = CP_UCS4;
+
+            DPRINTF ((stderr,
+             "DEBUG: SQLBrowseConnect DriverUnicodeType=%s\n",
+                drv_cp==CP_UCS4?"UCS4":(drv_cp==CP_UTF16?"UTF16":"UTF8")));
+          }
 
         if (dsn == NULL || ((char*)dsn)[0] == '\0')
           dsn = (void *) "default";
@@ -1848,6 +3504,7 @@ SQLBrowseConnect_Internal (SQLHDBC hdbc,
           {
 	    if (_iodbcdm_con_settracing (pdbc, (SQLCHAR *) dsn, SQL_NTS, waMode) == SQL_ERROR)
 	      {
+                _iodbcdm_cfg_done (pconfig);
 	        return SQL_ERROR;
 	      }
 	  }
@@ -1894,10 +3551,13 @@ SQLBrowseConnect_Internal (SQLHDBC hdbc,
       if (drv == NULL)
 	{
 	  PUSHSQLERR (pdbc->herr, en_IM002);
+          _iodbcdm_cfg_done (pconfig);
 	  return SQL_ERROR;
 	}
 
-      retcode = _iodbcdm_driverload ((char *) drv, pdbc, thread_safe, unload_safe, waMode);
+      retcode = _iodbcdm_driverload (dsn, (char *) drv, pdbc, thread_safe,
+		unload_safe, drv_cp, waMode);
+      _iodbcdm_cfg_done (pconfig);
 
       switch (retcode)
 	{
@@ -1925,35 +3585,30 @@ SQLBrowseConnect_Internal (SQLHDBC hdbc,
     }
 
   penv = (ENV_t *) pdbc->henv;
+  conv = &pdbc->conv;
 
-  if ((penv->unicode_driver && waMode != 'W')
-      || (!penv->unicode_driver && waMode == 'W'))
+  if (penv->unicode_driver && waMode != 'W')
+    conv_direct = CD_A2W;
+  else if (!penv->unicode_driver && waMode == 'W')
+    conv_direct = CD_W2A;
+  else if (waMode == 'W' && conv->dm_cp!=conv->drv_cp)
+    conv_direct = CD_W2W;
+
+  if (conv_direct != CD_NONE)
     {
-      if (waMode != 'W')
-        {
-        /* ansi=>unicode*/
-          if ((_ConnStrOut = malloc(cbConnStrOutMax * sizeof(SQLWCHAR) + 1)) == NULL)
-	    {
-              PUSHSQLERR (pdbc->herr, en_HY001);
-	      return SQL_ERROR;
-            }
-          _ConnStrIn = dm_SQL_A2W((SQLCHAR *)szConnStrIn, SQL_NTS);
+      if ((_ConnStrOut = malloc((cbConnStrOutMax + 1)* WCHAR_MAXSIZE)) == NULL)
+	{
+          PUSHSQLERR (pdbc->herr, en_HY001);
+	  return SQL_ERROR;
         }
-      else
-        {
-        /* unicode=>ansi*/
-          if ((_ConnStrOut = malloc(cbConnStrOutMax + 1)) == NULL)
-	    {
-              PUSHSQLERR (pdbc->herr, en_HY001);
-	      return SQL_ERROR;
-            }
-          _ConnStrIn = dm_SQL_W2A((SQLWCHAR *)szConnStrIn, SQL_NTS);
-        }
+      _ConnStrIn = conv_text_m2d (conv, szConnStrIn, SQL_NTS, conv_direct);
+
       connStrIn = _ConnStrIn;
       cbConnStrIn = SQL_NTS;
       connStrOut = _ConnStrOut;
     }
 
+  ODBC_UNLOCK ();
   CALL_UDRIVER(hdbc, pdbc, retcode, hproc, penv->unicode_driver,
     en_BrowseConnect, (
        pdbc->dhdbc,
@@ -1962,32 +3617,38 @@ SQLBrowseConnect_Internal (SQLHDBC hdbc,
        connStrOut,
        cbConnStrOutMax,
        pcbConnStrOut));
+  ODBC_LOCK ();
 
   MEM_FREE(_ConnStrIn);
 
   if (hproc == SQL_NULL_HPROC)
     {
       MEM_FREE(_ConnStrOut);
-      _iodbcdm_driverunload (pdbc);
+      _iodbcdm_driverunload (pdbc, 3);
       pdbc->state = en_dbc_allocated;
       PUSHSQLERR (pdbc->herr, en_IM001);
       return SQL_ERROR;
     }
 
-  if (szConnStrOut
-      && (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO)
-      &&  ((penv->unicode_driver && waMode != 'W')
-          || (!penv->unicode_driver && waMode == 'W')))
+  if (szConnStrOut && SQL_SUCCEEDED (retcode) && conv_direct != CD_NONE)
     {
-      if (waMode != 'W')
+      if (conv_direct == CD_A2W)
         {
         /* ansi<=unicode*/
-          dm_StrCopyOut2_W2A ((SQLWCHAR *) connStrOut, (SQLCHAR *) szConnStrOut, cbConnStrOutMax, NULL);
+          dm_StrCopyOut2_W2A_d2m (conv, connStrOut, (SQLCHAR *) szConnStrOut,
+		cbConnStrOutMax, NULL, NULL);
         }
-      else
+      else if (conv_direct == CD_W2A)
         {
         /* unicode<=ansi*/
-          dm_StrCopyOut2_A2W ((SQLCHAR *) connStrOut, (SQLWCHAR *) szConnStrOut, cbConnStrOutMax, NULL);
+          dm_StrCopyOut2_A2W_d2m (conv, (SQLCHAR *) connStrOut, szConnStrOut,
+		cbConnStrOutMax * DM_WCHARSIZE(conv), NULL, NULL);
+        }
+      else if (conv_direct == CD_W2W)
+        {
+        /* unicode<=unicode*/
+          dm_StrCopyOut2_W2W_d2m (conv, connStrOut, szConnStrOut,
+		cbConnStrOutMax * DM_WCHARSIZE(conv), NULL, NULL);
         }
     }
 
@@ -2053,7 +3714,6 @@ SQLBrowseConnect (SQLHDBC hdbc,
 }
 
 
-#if ODBCVER >= 0x0300
 SQLRETURN SQL_API
 SQLBrowseConnectA (SQLHDBC hdbc,
     SQLCHAR * szConnStrIn,
@@ -2108,28 +3768,27 @@ SQLBrowseConnectW (SQLHDBC hdbc,
 	szConnStrIn, cbConnStrIn,
 	szConnStrOut, cbConnStrOutMax, pcbConnStrOut));
 }
-#endif
 
 
 static SQLRETURN
 SQLDisconnect_Internal (SQLHDBC hdbc)
 {
   CONN (pdbc, hdbc);
+#if (ODBCVER >= 0x300)
+  GENV (genv, pdbc->genv);
+#endif
   STMT (pstmt, NULL);
-  SQLRETURN retcode;
-  HPROC hproc = SQL_NULL_HPROC;
-
-  sqlstcode_t sqlstat = en_00000;
 
   /* check hdbc state */
   if (pdbc->state == en_dbc_allocated)
     {
-      sqlstat = en_08003;
+      PUSHSQLERR (pdbc->herr, en_08003);
+      return SQL_ERROR;
     }
 
   /* check stmt(s) state */
   for (pstmt = (STMT_t *) pdbc->hstmt;
-      pstmt != NULL && sqlstat == en_00000;
+      pstmt != NULL;
       pstmt = (STMT_t *) pstmt->next)
     {
       if (pstmt->state >= en_stmt_needdata
@@ -2137,56 +3796,30 @@ SQLDisconnect_Internal (SQLHDBC hdbc)
 	/* In this case one need to call
 	 * SQLCancel() first */
 	{
-	  sqlstat = en_S1010;
+          PUSHSQLERR (pdbc->herr, en_S1010);
+	  return SQL_ERROR;
 	}
     }
 
-  if (sqlstat == en_00000)
+#if (ODBCVER >= 0x300)
+  /*
+   * Try to return the connected connection to the pool if
+   * - connection was taken from the pool
+   * - pooling is enabled and CPTimeout > 0
+   */
+  if ((pdbc->state == en_dbc_connected || pdbc->state == en_dbc_hstmt)
+      && (pdbc->cp_pdbc != NULL ||
+           (genv->connection_pooling != SQL_CP_OFF && pdbc->cp_timeout > 0)))
     {
-      hproc = _iodbcdm_getproc (pdbc, en_Disconnect);
-
-      if (hproc == SQL_NULL_HPROC)
-	{
-	  sqlstat = en_IM001;
-	}
+      if (_iodbcdm_pool_put_conn (pdbc) == 0)
+        {
+          _iodbcdm_finish_disconnect (pdbc, FALSE);
+          return SQL_SUCCESS;
+        }
     }
+#endif /* (ODBCVER >= 0x300) */
 
-  if (sqlstat != en_00000)
-    {
-      PUSHSQLERR (pdbc->herr, sqlstat);
-      return SQL_ERROR;
-    }
-
-  CALL_DRIVER (hdbc, pdbc, retcode, hproc, en_Disconnect, (
-	  pdbc->dhdbc));
-
-  if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO)
-    {
-      /* diff from MS specs. We disallow
-       * driver SQLDisconnect() return
-       * SQL_SUCCESS_WITH_INFO and post
-       * error message.
-       */
-      retcode = SQL_SUCCESS;
-    }
-  else
-    {
-      return retcode;
-    }
-
-  /* free all statement handle(s) on this connection */
-  for (; pdbc->hstmt;)
-    {
-      _iodbcdm_dropstmt (pdbc->hstmt);
-    }
-
-  /* state transition */
-  if (retcode == SQL_SUCCESS)
-    {
-      pdbc->state = en_dbc_allocated;
-    }
-
-  return retcode;
+  return _iodbcdm_finish_disconnect (pdbc, TRUE);
 }
 
 
@@ -2220,6 +3853,8 @@ SQLNativeSql_Internal (SQLHDBC hdbc,
   void * _SqlStrIn = NULL;
   void * _SqlStr = NULL;
   void * sqlStr = szSqlStr;
+  CONV_DIRECT conv_direct = CD_NONE;
+  DM_CONV *conv = &pdbc->conv;
 
   /* check argument */
   if (szSqlStrIn == NULL)
@@ -2244,31 +3879,22 @@ SQLNativeSql_Internal (SQLHDBC hdbc,
       return SQL_ERROR;
     }
 
-  if ((penv->unicode_driver && waMode != 'W')
-      || (!penv->unicode_driver && waMode == 'W'))
+  if (penv->unicode_driver && waMode != 'W')
+    conv_direct = CD_A2W;
+  else if (!penv->unicode_driver && waMode == 'W')
+    conv_direct = CD_W2A;
+  else if (waMode == 'W' && conv->dm_cp!=conv->drv_cp)
+    conv_direct = CD_W2W;
+
+  if (conv_direct != CD_NONE)
     {
-      if (waMode != 'W')
+      if ((_SqlStr = malloc((cbSqlStrMax + 1) * WCHAR_MAXSIZE)) == NULL)
         {
-        /* ansi=>unicode*/
-          if ((_SqlStr = malloc(cbSqlStrMax * sizeof(SQLWCHAR) + 1)) == NULL)
-	    {
-              PUSHSQLERR (pdbc->herr, en_HY001);
-
-	      return SQL_ERROR;
-            }
-          _SqlStrIn = dm_SQL_A2W((SQLCHAR *)szSqlStrIn, SQL_NTS);
+          PUSHSQLERR (pdbc->herr, en_HY001);
+	  return SQL_ERROR;
         }
-      else
-        {
-        /* unicode=>ansi*/
-          if ((_SqlStr = malloc(cbSqlStrMax + 1)) == NULL)
-	    {
-              PUSHSQLERR (pdbc->herr, en_HY001);
+      _SqlStrIn = conv_text_m2d (conv, szSqlStrIn, SQL_NTS, conv_direct);
 
-	      return SQL_ERROR;
-            }
-          _SqlStrIn = dm_SQL_W2A((SQLWCHAR *)szSqlStrIn, SQL_NTS);
-        }
       szSqlStrIn = _SqlStrIn;
       cbSqlStrIn = SQL_NTS;
       sqlStr = _SqlStr;
@@ -2294,20 +3920,26 @@ SQLNativeSql_Internal (SQLHDBC hdbc,
       return SQL_ERROR;
     }
 
-  if (szSqlStr
-      && (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO)
-      &&  ((penv->unicode_driver && waMode != 'W')
-          || (!penv->unicode_driver && waMode == 'W')))
+  if (szSqlStr && conv_direct != CD_NONE
+      && SQL_SUCCEEDED (retcode))
     {
-      if (waMode != 'W')
+      if (conv_direct == CD_A2W)
         {
         /* ansi<=unicode*/
-          dm_StrCopyOut2_W2A ((SQLWCHAR *) sqlStr, (SQLCHAR *) szSqlStr, cbSqlStrMax, NULL);
+          dm_StrCopyOut2_W2A_d2m (conv, sqlStr, (SQLCHAR *) szSqlStr,
+		cbSqlStrMax, NULL, NULL);
         }
-      else
+      else if (conv_direct == CD_W2A)
         {
         /* unicode<=ansi*/
-          dm_StrCopyOut2_A2W ((SQLCHAR *) sqlStr, (SQLWCHAR *) szSqlStr, cbSqlStrMax, NULL);
+          dm_StrCopyOut2_A2W_d2m (conv, (SQLCHAR *) sqlStr, szSqlStr,
+		cbSqlStrMax * DM_WCHARSIZE(conv), NULL, NULL);
+        }
+      else if (conv_direct == CD_W2W)
+        {
+        /* unicode<=unicode*/
+          dm_StrCopyOut2_W2W_d2m (conv, sqlStr, szSqlStr,
+		cbSqlStrMax * DM_WCHARSIZE(conv), NULL, NULL);
         }
     }
 
@@ -2346,7 +3978,6 @@ SQLNativeSql (
 }
 
 
-#if ODBCVER >= 0x0300
 SQLRETURN SQL_API
 SQLNativeSqlA (
     SQLHDBC hdbc,
@@ -2403,4 +4034,3 @@ SQLNativeSqlW (
 	szSqlStrIn, cbSqlStrIn,
 	szSqlStr, cbSqlStrMax, pcbSqlStr));
 }
-#endif

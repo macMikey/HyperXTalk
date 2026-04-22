@@ -1,14 +1,14 @@
 /*
  *  dlproc.c
  *
- *  $Id: dlproc.c,v 1.14 2006/01/20 15:58:34 source Exp $
+ *  $Id$
  *
  *  Load driver and resolve driver's function entry point
  *
  *  The iODBC driver manager.
  *
- *  Copyright (C) 1995 by Ke Jin <kejin@empress.com>
- *  Copyright (C) 1996-2006 by OpenLink Software <iodbc@openlinksw.com>
+ *  Copyright (C) 1995 Ke Jin <kejin@empress.com>
+ *  Copyright (C) 1996-2023 OpenLink Software <iodbc@openlinksw.com>
  *  All Rights Reserved.
  *
  *  This software is released under the terms of either of the following
@@ -81,13 +81,14 @@
 #include <sql.h>
 #include <sqlext.h>
 
-#include <dlproc.h>
+#include "dlproc.h"
 
-#include <herr.h>
-#include <henv.h>
-#include <hdbc.h>
+#include "unicode.h"
+#include "herr.h"
+#include "henv.h"
+#include "hdbc.h"
 
-#include <itrace.h>
+#include "itrace.h"
 
 char *odbcapi_symtab[] =
 {

@@ -1,14 +1,14 @@
 /*
  *  henv.h
  *
- *  $Id: henv.h,v 1.19 2006/01/24 00:09:25 source Exp $
+ *  $Id$
  *
  *  Environment object management functions
  *
  *  The iODBC driver manager.
  *
- *  Copyright (C) 1995 by Ke Jin <kejin@empress.com>
- *  Copyright (C) 1996-2006 by OpenLink Software <iodbc@openlinksw.com>
+ *  Copyright (C) 1995 Ke Jin <kejin@empress.com>
+ *  Copyright (C) 1996-2023 OpenLink Software <iodbc@openlinksw.com>
  *  All Rights Reserved.
  *
  *  This software is released under the terms of either of the following
@@ -79,11 +79,11 @@
 #define	_HENV_H
 
 #include <iodbc.h>
-#include <dlproc.h>
+#include "dlproc.h"
 
 #include <sql.h>
 #include <sqlext.h>
-#include <ithread.h>
+#include "ithread.h"
 
 
 enum odbcapi_t
@@ -94,6 +94,14 @@ enum odbcapi_t
 #undef FUNCDEF
     , __LAST_API_FUNCTION__
   } ;
+
+
+#if (ODBCVER >= 0x300)
+/*
+ * SQL_ATTR_CONNECTION_POOLING value
+ */
+extern SQLINTEGER _iodbcdm_attr_connection_pooling;
+#endif
 
 
 typedef struct
@@ -107,9 +115,15 @@ typedef struct
     int state;
 #if (ODBCVER >= 0x300)
     SQLUINTEGER odbc_ver;    /* ODBC version of the application */
-#endif    
+
+    SQLINTEGER connection_pooling; /* SQL_ATTR_CONNECTION_POOLING value at the
+				      time of env creation */
+    SQLINTEGER cp_match;	/* connection pool matching method */
+    struct DBC *pdbc_pool;	/* connection pool */
+#endif
 
     SQLSMALLINT err_rec;
+    DM_CONV conv;
   }
 GENV_t;
 
@@ -128,7 +142,8 @@ typedef struct
 
 #if (ODBCVER >= 0x300)
     SQLUINTEGER dodbc_ver;	/* driver's ODBC version */
-#endif    
+#endif
+    DM_CONV conv;
   }
 ENV_t;
 

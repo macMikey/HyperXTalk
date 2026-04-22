@@ -19,7 +19,7 @@
 #
 #  The iODBC driver manager.
 #
-#  Copyright (C) 1996-2021 OpenLink Software <iodbc@openlinksw.com>
+#  Copyright (C) 1996-2023 OpenLink Software <iodbc@openlinksw.com>
 #  All Rights Reserved.
 #
 #  This software is released under the terms of either of the following
@@ -229,8 +229,8 @@ am__installdirs = "$(DESTDIR)$(pkgconfigdir)"
 DATA = $(pkgconfig_DATA)
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
 am__DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/libiodbc.pc.in \
-	$(srcdir)/libiodbc.spec.in ar-lib compile config.guess \
-	config.sub install-sh ltmain.sh missing mkinstalldirs
+	$(srcdir)/libiodbc.spec.in compile config.guess config.sub \
+	install-sh ltmain.sh missing mkinstalldirs
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 AMTAR = @AMTAR@

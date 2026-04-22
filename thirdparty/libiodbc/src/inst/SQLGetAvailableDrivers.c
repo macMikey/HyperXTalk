@@ -1,13 +1,13 @@
 /*
  *  SQLGetAvailableDrivers.c
  *
- *  $Id: SQLGetAvailableDrivers.c,v 1.10 2006/01/20 15:58:35 source Exp $
+ *  $Id$
  *
  *  Get a list of all available drivers
  *
  *  The iODBC driver manager.
  *
- *  Copyright (C) 1996-2006 by OpenLink Software <iodbc@openlinksw.com>
+ *  Copyright (C) 1996-2023 OpenLink Software <iodbc@openlinksw.com>
  *  All Rights Reserved.
  *
  *  This software is released under the terms of either of the following
@@ -77,7 +77,7 @@
 
 #include <iodbc.h>
 #include <odbcinst.h>
-#include <unicode.h>
+#include "unicode.h"
 
 #include "misc.h"
 #include "inifile.h"
@@ -235,7 +235,7 @@ SQLGetAvailableDriversW (LPCWSTR lpszInfFile, LPWSTR lpszBuf, WORD cbBufMax,
     {
       length = 0;
 
-      for (ptr = _buffer_u8, ptrW = lpszBuf; *ptr;
+      for (ptr = (SQLCHAR *)_buffer_u8, ptrW = lpszBuf; *ptr;
 	  ptr += STRLEN (ptr) + 1, ptrW += WCSLEN (ptrW) + 1)
 	{
 	  dm_StrCopyOut2_U8toW (ptr, ptrW, cbBufMax - 1, &len);

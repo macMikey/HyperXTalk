@@ -125,7 +125,6 @@ Window MClastvideowindow = DNULL ;
 #endif
 
 Boolean MCuseXft = True;
-Boolean MCuselibgnome = False ;
 Boolean MCuseESD = False ;
 
 MCStringRef *MCstacknames = NULL;

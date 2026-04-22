@@ -1,13 +1,13 @@
 /*
  *  SQLWriteDSNToIni.c
  *
- *  $Id: SQLWriteDSNToIni.c,v 1.8 2006/01/20 15:58:35 source Exp $
+ *  $Id$
  *
  *  Write a DSN connect string to a file
  *
  *  The iODBC driver manager.
  *
- *  Copyright (C) 1996-2006 by OpenLink Software <iodbc@openlinksw.com>
+ *  Copyright (C) 1996-2023 OpenLink Software <iodbc@openlinksw.com>
  *  All Rights Reserved.
  *
  *  This software is released under the terms of either of the following
@@ -77,7 +77,7 @@
 
 #include <iodbc.h>
 #include <odbcinst.h>
-#include <unicode.h>
+#include "unicode.h"
 
 #include "inifile.h"
 #include "misc.h"
@@ -136,7 +136,7 @@ WriteDSNToIni (LPCSTR lpszDSN, LPCSTR lpszDriver)
       if (!GetPrivateProfileString ((LPSTR) lpszDriver, "Driver", "",
 	      szBuffer, sizeof (szBuffer) - 1, "odbcinst.ini"))
 	{
-	  PUSH_ERROR (ODBC_ERROR_REQUEST_FAILED);
+	  PUSH_ERROR (ODBC_ERROR_INVALID_NAME);
 	  goto done;
 	}
     }
@@ -198,7 +198,7 @@ SQLWriteDSNToIni_Internal (SQLPOINTER lpszDSN, SQLPOINTER lpszDriver,
 	}
     }
   else
-    _dsn_u8 = (SQLCHAR *) lpszDSN;
+    _dsn_u8 = (char *) lpszDSN;
 
   if (waMode == 'W')
     {
@@ -210,7 +210,7 @@ SQLWriteDSNToIni_Internal (SQLPOINTER lpszDSN, SQLPOINTER lpszDriver,
 	}
     }
   else
-    _driver_u8 = (SQLCHAR *) lpszDriver;
+    _driver_u8 = (char *) lpszDriver;
 
   if (!_driver_u8 || !STRLEN (_driver_u8))
     {

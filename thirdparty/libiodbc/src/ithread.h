@@ -1,14 +1,14 @@
 /*
  *  ithread.h
  *
- *  $Id: ithread.h,v 1.3 2006/01/20 15:58:35 source Exp $
+ *  $Id$
  *
- *  Macros for locking & multihreading
+ *  Macros for locking & multithreading
  *
  *  The iODBC driver manager.
  *
- *  Copyright (C) 1995 by Ke Jin <kejin@empress.com>
- *  Copyright (C) 1996-2006 by OpenLink Software <iodbc@openlinksw.com>
+ *  Copyright (C) 1995 Ke Jin <kejin@empress.com>
+ *  Copyright (C) 1996-2023 OpenLink Software <iodbc@openlinksw.com>
  *  All Rights Reserved.
  *
  *  This software is released under the terms of either of the following
@@ -122,7 +122,7 @@
 
 # define MUTEX_DECLARE(M)		pthread_mutex_t M
 # define MUTEX_INIT(M)			pthread_mutex_init (&M, NULL)
-# define MUTEX_DONE(M)			pthread_mutex_destroy (&M);
+# define MUTEX_DONE(M)			pthread_mutex_destroy (&M)
 # define MUTEX_LOCK(M)			pthread_mutex_lock(&M)
 # define MUTEX_UNLOCK(M)		pthread_mutex_unlock(&M)
 

@@ -1,13 +1,13 @@
 /*
  *  SQLWriteFileDSN.c
  *
- *  $Id: SQLWriteFileDSN.c,v 1.6 2006/01/20 15:58:35 source Exp $
+ *  $Id$
  *
  *  These functions intentionally left blank
  *
  *  The iODBC driver manager.
  *
- *  Copyright (C) 1996-2006 by OpenLink Software <iodbc@openlinksw.com>
+ *  Copyright (C) 1996-2023 OpenLink Software <iodbc@openlinksw.com>
  *  All Rights Reserved.
  *
  *  This software is released under the terms of either of the following
@@ -74,10 +74,9 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 #include <iodbc.h>
 #include <odbcinst.h>
-#include <unicode.h>
+#include "unicode.h"
 
 #include "inifile.h"
 #include "iodbc_error.h"
@@ -91,6 +90,7 @@ SQLWriteFileDSN (LPCSTR lpszFileName, LPCSTR lpszAppName, LPCSTR lpszKeyName,
     LPSTR lpszString)
 {
   BOOL retcode = FALSE;
+  char filename[1024];
 
   /* Check input parameters */
   CLEAR_ERROR ();
@@ -98,9 +98,10 @@ SQLWriteFileDSN (LPCSTR lpszFileName, LPCSTR lpszAppName, LPCSTR lpszKeyName,
   /* Is a file is specified */
   if (lpszFileName)
     {
+      _iodbcdm_getdsnfile (lpszFileName, filename, sizeof (filename));
       retcode =
 	  WritePrivateProfileString (lpszAppName, lpszKeyName, lpszString,
-	  lpszFileName);
+	  filename);
       goto quit;
     }
 

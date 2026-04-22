@@ -1,13 +1,13 @@
 /*
  *  Info.c
  *
- *  $Id: Info.c,v 1.7 2006/01/20 15:58:35 source Exp $
+ *  $Id$
  *
  *  Decode the SQLGetInfo responses and dump them to the trace log
  *
  *  The iODBC driver manager.
  *
- *  Copyright (C) 1996-2006 by OpenLink Software <iodbc@openlinksw.com>
+ *  Copyright (C) 1996-2023 OpenLink Software <iodbc@openlinksw.com>
  *  All Rights Reserved.
  *
  *  This software is released under the terms of either of the following
@@ -280,7 +280,7 @@ MASK (CONVERT) =
   "SQL_CVT_FLOAT",
   "SQL_CVT_REAL",
   "SQL_CVT_DOUBLE",
-  "SQL_CVT_VARCHAR"
+  "SQL_CVT_VARCHAR",
   "SQL_CVT_LONGVARCHAR",
   "SQL_CVT_BINARY",
   "SQL_CVT_VARBINARY",

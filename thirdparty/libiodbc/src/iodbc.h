@@ -2,14 +2,14 @@
  *
  *  iodbc.h
  *
- *  $Id: iodbc.h,v 1.10 2006/01/26 01:14:12 source Exp $
+ *  $Id$
  *
  *  Configuration
  *
  *  The iODBC driver manager.
  *
- *  Copyright (C) 1995 by Ke Jin <kejin@empress.com>
- *  Copyright (C) 1996-2006 by OpenLink Software <iodbc@openlinksw.com>
+ *  Copyright (C) 1995 Ke Jin <kejin@empress.com>
+ *  Copyright (C) 1996-2023 OpenLink Software <iodbc@openlinksw.com>
  *  All Rights Reserved.
  *
  *  This software is released under the terms of either of the following
@@ -81,16 +81,18 @@
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
+#elif defined (__APPLE__)
+#include "macos_config.h"
 #endif
 
 #ifndef VERSION
-#define VERSION		"3.52.4"
+#define VERSION		"3.52.16"
 #define MAJ_VERSION	"3"
 #define MIN_VERSION	"52"
 #endif
 
 #ifndef IODBC_BUILD
-#define IODBC_BUILD 4060126	/* 0001.0928 */
+#define IODBC_BUILD 16230502	/* 0001.0928 */
 #endif
 
 #if	!defined(WINDOWS) && !defined(WIN32_SYSTEM)

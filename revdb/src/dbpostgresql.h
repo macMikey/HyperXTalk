@@ -14,15 +14,14 @@ for more details.
 You should have received a copy of the GNU General Public License
 along with LiveCode.  If not see <http://www.gnu.org/licenses/>.  */
 
+#ifndef _dbPOSTGRESQL
+#define _dbPOSTGRESQL
+
 #ifdef WIN32
 #include <windows.h>
 #endif
 
 #include "database.h"
-
-#ifndef _dbPOSTGRESQL
-#define _dbPOSTGRESQL
-
 
 #include <libpq-fe.h>
 #include "dbdrivercommon.h"
