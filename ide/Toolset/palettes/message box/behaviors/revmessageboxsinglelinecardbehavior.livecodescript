@@ -13,12 +13,12 @@ on openCard
    then put line 1 of revIDEGetPreference("IDESingleLineMessageHistory") into field "message"
    else put empty into field "message"
    
-   dispatch "revSEColorizeField" to stack "revSEUtilities" with the long id of field "message" of me
+   --   dispatch "revSEColorizeField" to stack "revSEUtilities" with the long id of field "message" of me
    // HXT dark mode: colorizer bakes 0,0,0 per-char colors; clear them so
    // the field's foregroundColor (set by __UpdateMessageColors) shows instead.
-   if the systemAppearance is "dark" and the number of chars of field "message" of me > 0 then
-      set the foregroundColor of char 1 to -1 of field "message" of me to empty
-   end if
+   --   if the systemAppearance is "dark" and the number of chars of field "message" of me > 0 then
+   --      set the foregroundColor of char 1 to -1 of field "message" of me to empty
+   --   end if
    
    local tActiveStack
    put revIDEGetPreference("IDEActiveStack") into tActiveStack

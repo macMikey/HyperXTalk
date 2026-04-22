@@ -5,7 +5,7 @@ on returnInField
    ideMessageBoxExecuteScript(the text of me)
    if the result is not empty then
       put the result into me
-      dispatch "revSEColorizeField" to stack "revSEUtilities" with the long id of me
+      --      dispatch "revSEColorizeField" to stack "revSEUtilities" with the long id of me
       // HXT dark mode: clear per-char colors left by colorizer
       if the systemAppearance is "dark" and the number of chars of me > 0 then
          set the foregroundColor of char 1 to -1 of me to empty
@@ -29,19 +29,19 @@ end enterInField
 local sColorizeMsg
 
 on textChanged
-   cancel sColorizeMsg
+   --   cancel sColorizeMsg
    // HXT dark mode: use __msgBoxColorize which does colorize then clears the
    // light-mode per-char colors so the field's dark foregroundColor shows.
-   send "__msgBoxColorize" to me in 100 milliseconds
-   put the result into sColorizeMsg
+   --   send "__msgBoxColorize" to me in 100 milliseconds
+   --   put the result into sColorizeMsg
    revDisplayAutoComplete(the text of me)
 end textChanged
 
 on __msgBoxColorize
-   dispatch "revSEColorizeField" to stack "revSEUtilities" with the long id of me
-   if the systemAppearance is "dark" and the number of chars of me > 0 then
-      set the foregroundColor of char 1 to -1 of me to empty
-   end if
+   --   dispatch "revSEColorizeField" to stack "revSEUtilities" with the long id of me
+   --   if the systemAppearance is "dark" and the number of chars of me > 0 then
+   --      set the foregroundColor of char 1 to -1 of me to empty
+   --   end if
 end __msgBoxColorize
 
 on arrowKey pKey
@@ -124,7 +124,7 @@ command revDisplayAutoComplete pString
 end revDisplayAutoComplete
 
 on __ColorizeAutocomplete
-   dispatch "revSEColorizeField" to stack "revSEUtilities" with the long id of field "auto complete"
+   --   dispatch "revSEColorizeField" to stack "revSEUtilities" with the long id of field "auto complete"
    set the textColor of char 1 to -1 of field "auto complete" to "gray70"
 end __ColorizeAutocomplete
 
@@ -140,9 +140,9 @@ command revNextLine
       put field "message" & char (the number of chars of field "message" + 1) to (the number of chars of line lMatchingIndex of lMatchingHistory) of line lMatchingIndex of lMatchingHistory into field "auto complete"
    end if
    select after field "message"
-   if the systemAppearance is not "dark" then
-      _internal script colorize char 1 to (the number of chars of me) of me
-   end if
+   --   if the systemAppearance is not "dark" then
+   --      _internal script colorize char 1 to (the number of chars of me) of me
+   --   end if
    unlock messages
 end revNextLine
 
@@ -158,9 +158,9 @@ command revPrevLine
       put field "message" & char (the number of chars of field "message" + 1) to (the number of chars of line lMatchingIndex of lMatchingHistory) of line lMatchingIndex of lMatchingHistory into field "auto complete"
    end if
    select after field "message"
-   if the systemAppearance is not "dark" then
-      _internal script colorize char 1 to (the number of chars of me) of me
-   end if
+   --   if the systemAppearance is not "dark" then
+   --      _internal script colorize char 1 to (the number of chars of me) of me
+   --   end if
    unlock messages
 end revPrevLine
 

@@ -630,7 +630,7 @@ command revIDEAcceptAutoComplete
    put field "auto complete" into field "message" of card "Single Line" of me
    put empty into field "auto complete" of card "Single Line" of me
    select after field "message" of card "Single Line" of me
-   dispatch "revSEColorizeField" to stack "revSEUtilities" with the long id of field "message" of card "Single Line" of me
+   --   dispatch "revSEColorizeField" to stack "revSEUtilities" with the long id of field "message" of card "Single Line" of me
    unlock messages
    unlock screen
 end revIDEAcceptAutoComplete
