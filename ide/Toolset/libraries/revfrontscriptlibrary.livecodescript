@@ -814,4 +814,5 @@ on revHookScriptEditorContextMenuPick pWhich
          send "scriptUncomment" to the target
          break
    end switch
+   pass revHookScriptEditorContextMenuPick
 end revHookScriptEditorContextMenuPick
