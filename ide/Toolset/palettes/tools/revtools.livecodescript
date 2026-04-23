@@ -58,10 +58,6 @@ on openStack
    layoutpalette
    registerForMessages
    
-   // HXT dark mode
-   set the backColor of me to (the systemWindowColor)
-   set the foreColor of me to (the systemTextColor)
-   
    --   set the visible of me to true
    unlock screen
 end openStack
