@@ -1,1 +1,21 @@
-/* Localisation strings */
+/* Format string such as About %@" */
+"appMenu.about" = "Informazioni su %@";
+
+/* Format string such as Hide %@ */
+"appMenu.hide" = "Nascondi %@";
+
+/* Hide Others */
+"appMenu.hideOthers" = "Nascondi altre";
+
+/* Preferences */
+"appMenu.preferences" = "Preferenze…";
+
+/* Format string such as Quit %@ */
+"appMenu.quit" = "Esci da %@";
+
+/* Services */
+"appMenu.services" = "Servizi";
+
+/* Show All */
+"appMenu.showAll" = "Mostra tutte";
+
