@@ -390,11 +390,35 @@ static int MCA_do_file_dialog(MCStringRef p_title, MCStringRef p_prompt, MCStrin
 			}
 		}
         
-        MCAutoStringRef t_resolved_folder;
-        /* UNCHECKED */ MCS_resolvepath(*t_initial_folder != nil ? *t_initial_folder : kMCEmptyString, &t_resolved_folder);
-        /* UNCHECKED */ MCS_pathtonative(*t_resolved_folder, &t_initial_native_folder);
+        // Only resolve a folder if one was actually extracted from p_initial.
+        // Resolving kMCEmptyString returns the process working directory (the
+        // install folder), which is never the right starting point for user
+        // files.  Leave t_initial_native_folder nil here so the Documents
+        // folder fallback below can set it instead.
+        if (*t_initial_folder != nil)
+        {
+            MCAutoStringRef t_resolved_folder;
+            /* UNCHECKED */ MCS_resolvepath(*t_initial_folder, &t_resolved_folder);
+            /* UNCHECKED */ MCS_pathtonative(*t_resolved_folder, &t_initial_native_folder);
+        }
 	}
-    
+
+    // If no usable initial folder was found (p_initial was empty, nil, or
+    // pointed at a non-existent path), default to the user's Documents folder.
+    // Leaving it unset causes Windows to use the process working directory,
+    // which is typically the application install folder — never appropriate for
+    // user files.
+    if (*t_initial_native_folder == nil)
+    {
+        wchar_t t_docs_path[MAX_PATH];
+        if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_PERSONAL, NULL, SHGFP_TYPE_CURRENT, t_docs_path)))
+        {
+            MCStringRef t_docs_str;
+            if (MCStringCreateWithWString(t_docs_path, t_docs_str))
+                t_initial_native_folder = t_docs_str;
+        }
+    }
+
 	if (!MCModeMakeLocalWindows())
 	{
 		MCAutoStringRefArray t_filters;
