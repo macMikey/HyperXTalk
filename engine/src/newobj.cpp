@@ -588,6 +588,8 @@ MCExpression *MCN_new_function(int2 which)
 		return new MCMCISendString;
 	case F_MD5_DIGEST:
 		return new MCMD5Digest;
+	case F_MICROSECS:
+		return new MCMicrosecs;
 	case F_ME:
 		return new MCMe;
 	case F_MEDIAN:

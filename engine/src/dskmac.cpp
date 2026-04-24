@@ -2523,7 +2523,18 @@ struct MCMacDesktop: public MCSystemInterface, public MCMacSystemService
         
         return curtime;
     }
-    
+
+	virtual real64_t GetCurrentMicroseconds(void)
+	{
+		struct timezone tz;
+		struct timeval tv;
+
+		gettimeofday(&tv, &tz);
+		curtime = (tv.tv_sec * 1000000.0) + (real8)tv.tv_usec;
+
+		return curtime;
+	}
+
     virtual void ResetTime(void)
     {
         // Nothing

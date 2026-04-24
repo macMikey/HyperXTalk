@@ -638,6 +638,7 @@ Parse_stat MCProperty::parse(MCScriptPoint &sp, Boolean the)
 				break;
 			case F_TIME:
 			case F_DATE:
+			case F_MICROSECS:
 			case F_MILLISECS:
 			case F_SECONDS:
 			case F_TICKS:
@@ -1312,6 +1313,18 @@ void MCProperty::eval_function_ctxt(MCExecContext& ctxt, MCExecValue& r_value)
 				MCDateTimeGetLongMilliseconds(ctxt, r_value . double_value);
 			else
 				MCDateTimeGetMilliseconds(ctxt, r_value . double_value);
+            
+			if (!ctxt . HasError())
+                r_value . type = kMCExecValueTypeDouble;
+            
+            return;
+		}
+		case F_MICROSECS:
+		{
+			if (which == P_LONG)
+				MCDateTimeGetLongMicroseconds(ctxt, r_value . double_value);
+			else
+				MCDateTimeGetMicroseconds(ctxt, r_value . double_value);
             
 			if (!ctxt . HasError())
                 r_value . type = kMCExecValueTypeDouble;
