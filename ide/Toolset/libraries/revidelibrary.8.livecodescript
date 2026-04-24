@@ -8902,13 +8902,31 @@ on revIDEToggleToolbar pWhich
 end revIDEToggleToolbar
 
 on revIDEToggleShowIDEStacksInLists
-   global gREvShowStacks
+   global gREVShowStacks
+
+   -- Toggle the preference directly rather than routing through the
+   -- revPreferencesGUI button.  The old approach sent "revToggleShowStacks"
+   -- to a button in revPreferencesGUI, which only works if that stack is
+   -- already loaded.  On first use each session the stack isn't open, so
+   -- its preOpenStack init resets the button hilite before revToggleShowStacks
+   -- can read it, causing the toggle to be a no-op and requiring multiple
+   -- clicks before the state became consistent.
+   local tNewValue
+   put not revIDEGetPreference("cShowRevolutionStacks") into tNewValue
+   put tNewValue into gREVShowStacks
+
+   -- Persist and notify all subscribers (project browser, message box, etc.)
+   revIDESetPreference "cShowRevolutionStacks", tNewValue
+
+   -- If the Preferences dialog is open, keep its checkbox in sync
+   if the mode of stack "revPreferencesGUI" is not 0 then
+      set the hilite of button "show revolution stacks" of card "general" of stack "revPreferencesGUI" to tNewValue
+   end if
+
    lock screen
-   set the hilite of button "show revolution stacks" of card "general" of stack "revPreferencesGUI" to not gREVShowStacks
-   
    local tOpenStacks
    put the openStacks into tOpenStacks
-   
+
    local tFrontStack
    put empty into tFrontStack
    repeat for each line tStack in tOpenStacks
@@ -8924,9 +8942,8 @@ on revIDEToggleShowIDEStacksInLists
          put true into tBringToFront
       end if
    end if
-   send "revToggleShowStacks" to button "show revolution stacks" of card "general" of stack "revPreferencesGUI"
    unlock screen
-   
+
    if tBringToFront then
       lock messages
       switch the mode of stack tFrontStack
@@ -8938,7 +8955,7 @@ on revIDEToggleShowIDEStacksInLists
             modeless tFrontStack
             break
       end switch
-      unlock messages 
+      unlock messages
    end if
 end revIDEToggleShowIDEStacksInLists
 

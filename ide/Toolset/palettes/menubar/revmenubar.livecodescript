@@ -17,9 +17,9 @@ on preOpenStack
    layoutMenu
    revIDEPositionPalette the short name of me
    
-   // HXT
-   set the backColor of me to (the systemWindowColor)
-   set the foregroundColor of me to (the systemTextColor)
+   --   // HXT
+   --   set the backColor of me to (the systemWindowColor)
+   --   set the foregroundColor of me to (the systemTextColor)
    
    dispatch "revIDEPositionPaletteDefault" to stack "revIDElibrary" with "revMenubar"
    
@@ -321,7 +321,6 @@ on ideToggleChanged pToggle
       default
          break
    end switch
-   
 end ideToggleChanged
 
 on idePluginsChanged
@@ -2025,7 +2024,8 @@ private function revMenubarViewMenu pContext
    put toggleMenuItem("Rulers", the mode of stack "revRulersH" is not 0) & return after tView
    put toggleMenuItem("Grid", the grid) & return after tView
    put toggleMenuItem("Backdrop", the backdrop is not "none") & return after tView
-   put toggleMenuItem("Show IDE Stacks In Lists", gREVShowStacks) & return after tView
+   --   put toggleMenuItem("Show IDE Stacks In Lists", gREVShowStacks) & return after tView
+   put toggleMenuItem("Show IDE Stacks In Lists", the cShowRevolutionStacks of stack "revPreferences") & return after tView
    put "-" & return after tView
    put toggleMenuItem("Show &Invisible Objects" , the showInvisibles) & return after tView
    
@@ -3281,8 +3281,8 @@ end revMenubarHelpMenuPick
 
 // HXT
 on systemAppearanceChanged pMode, pWindowColor, pTextColor
-   set the backgroundColor of this stack to pWindowColor
-   set the foregroundColor of this stack to pTextColor
+   --   set the backgroundColor of this stack to pWindowColor
+   --   set the foregroundColor of this stack to pTextColor
    local tDividerCounter
    put 1 into tDividerCounter
    repeat for each item tItem in revMenubarItems()
