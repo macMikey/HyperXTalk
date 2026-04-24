@@ -2396,11 +2396,7 @@ static long post_connection_check(SSL *ssl, char *host)
 	STACK_OF(GENERAL_NAME) *t_alt_names = NULL;
 	int t_idx = -1;
 
-	#if OPENSSL_VERSION_NUMBER >= 0x30000000L
 	if (!(cert = SSL_get1_peer_certificate(ssl)) || !host)
-#else
-	if (!(cert = SSL_get_peer_certificate(ssl)) || !host)
-#endif
 		goto err_occurred;
 
 	while (NULL != (t_alt_names = (STACK_OF(GENERAL_NAME)*)X509_get_ext_d2i(cert, NID_subject_alt_name, NULL, &t_idx)))
