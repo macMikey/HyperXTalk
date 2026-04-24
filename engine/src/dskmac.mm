@@ -2531,13 +2531,20 @@ struct MCMacDesktop: public MCSystemInterface, public MCMacSystemService
     {
         struct timezone tz;
         struct timeval tv;
-        
+
         gettimeofday(&tv, &tz);
         curtime = tv.tv_sec + (real8)tv.tv_usec / 1000000.0;
-        
+
         return curtime;
     }
-    
+
+    virtual real64_t GetCurrentMicroseconds(void)
+    {
+        struct timeval tv;
+        gettimeofday(&tv, NULL);
+        return (real64_t)tv.tv_sec * 1000000.0 + (real64_t)tv.tv_usec;
+    }
+
     virtual void ResetTime(void)
     {
         // Nothing
@@ -3084,7 +3091,7 @@ struct MCMacDesktop: public MCSystemInterface, public MCMacSystemService
 		if (p_folder == nil)
 			MCS_getcurdir(&t_path);
 		else
-			&t_path = MCValueRetain (p_folder);
+			t_path = MCValueRetain (p_folder);
         // MW-2014-09-17: [[ Bug 13455 ]] First list in the usual path.
         t_success = MCS_getentries_for_folder(*t_path, p_callback, x_context);
         
@@ -3714,12 +3721,10 @@ struct MCMacDesktop: public MCSystemInterface, public MCMacSystemService
                 MCS_mac_nodelay(toparent[0]);
                 if (MCprocesses[index].pid == -1)
                 {
-                    if (MCprocesses[index].pid > 0)
-                        Kill(MCprocesses[index].pid, SIGKILL);
+                    // fork() returned -1: it failed, there is no child process to kill.
                     MCprocesses[index].pid = 0;
                     MCeerror->add(EE_SHELL_BADCOMMAND, 0, 0, p_command);
                     return false;
-
                 }
             }
             else
