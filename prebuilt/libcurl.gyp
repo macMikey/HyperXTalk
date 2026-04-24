@@ -67,6 +67,7 @@
 							'libraries':
 							[
 								'-lcurl',
+								'-lnghttp2',
 								'-lrt',
 							],
 						},
