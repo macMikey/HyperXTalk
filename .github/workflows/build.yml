@@ -1,0 +1,153 @@
+name: Build HyperXTalk
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_type:
+        description: 'Build configuration'
+        required: true
+        default: 'Release'
+        type: choice
+        options:
+          - Release
+          - Debug
+
+jobs:
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # macOS ARM64
+  # ─────────────────────────────────────────────────────────────────────────────
+  build-macos:
+    name: macOS ARM64
+    runs-on: macos-15        # macOS 15 Sequoia — Apple Silicon (ARM64)
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Accept Xcode licence
+        run: sudo xcodebuild -license accept
+
+      - name: Install Homebrew dependencies
+        run: |
+          brew install openssl@3 libpq mysql-client pixman meson ninja pkg-config
+
+      - name: Set up Java (Temurin — required by libfoundation JNI bindings)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Build prebuilt third-party libraries
+        run: make prebuilt-mac
+        env:
+          BUILDTYPE: ${{ github.event.inputs.build_type }}
+
+      - name: Configure (GYP → Xcode projects)
+        run: make config-mac
+
+      - name: Compile
+        run: make compile-mac CODESIGN_IDENTITY="-"
+        env:
+          BUILDTYPE: ${{ github.event.inputs.build_type }}
+
+      - name: Package (mac-bin)
+        run: make package-mac-bin CODESIGN_IDENTITY="-"
+        env:
+          BUILDTYPE: ${{ github.event.inputs.build_type }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: HyperXTalk-macOS-ARM64-${{ github.event.inputs.build_type }}
+          # Upload the whole mac-bin folder — contains HyperXTalk.app plus
+          # all externals, support files, and standalone engine.
+          path: mac-bin/
+          retention-days: 30
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Linux x86_64
+  # ─────────────────────────────────────────────────────────────────────────────
+  build-linux:
+    name: Linux x86_64
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential python3 python3-pip pkg-config \
+            libssl-dev libcurl4-openssl-dev \
+            libgtk2.0-dev libglib2.0-dev \
+            libpng-dev libjpeg-dev libfreetype6-dev libfontconfig1-dev \
+            libx11-dev libxext-dev libxrender-dev \
+            libxinerama-dev libxrandr-dev libxcb1-dev \
+            libgif-dev libpcre3-dev zlib1g-dev \
+            default-jdk
+
+      - name: Configure (GYP → Makefiles)
+        run: ./config.sh --platform linux-x86_64
+
+      - name: Compile
+        run: make compile-linux-x86_64
+        env:
+          BUILDTYPE: ${{ github.event.inputs.build_type }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: HyperXTalk-Linux-x86_64-${{ github.event.inputs.build_type }}
+          path: linux-x86_64-bin/
+          retention-days: 30
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Windows x86_64
+  # ─────────────────────────────────────────────────────────────────────────────
+  build-windows:
+    name: Windows x86_64
+    runs-on: windows-latest   # Windows Server 2022 + Visual Studio 2022
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install Scoop
+        shell: pwsh
+        run: |
+          Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
+          Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
+
+      - name: Install MySQL and PostgreSQL via Scoop
+        shell: pwsh
+        run: |
+          scoop install mysql postgresql
+
+      - name: Configure (GYP → Visual Studio projects)
+        shell: cmd
+        run: configure.bat
+
+      - name: Build thirdparty libraries
+        shell: cmd
+        run: build-thirdparty-x64.bat
+        continue-on-error: false
+
+      - name: Build engine
+        shell: cmd
+        run: build-engine-x64.bat
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: HyperXTalk-Windows-x86_64-${{ github.event.inputs.build_type }}
+          # Engine, standalone, externals, and DB drivers all land here
+          path: build-win-x86_64\livecode\Debug\
+          retention-days: 30
