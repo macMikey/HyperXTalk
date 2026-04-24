@@ -282,6 +282,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(IntDir)\src\ssl.win.stubs.cpp"/>
+    <ClCompile Include="..\..\..\..\thirdparty\libopenssl\src\ssl_legacy_aliases.cpp"/>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\..\..\..\util\weak_stub_maker.py">

@@ -48,6 +48,11 @@
 			'sources':
 			[
 				'<(INTERMEDIATE_DIR)/src/ssl.<(OS).stubs.cpp',
+				# Backward-compatible aliases for OpenSSL 1.x symbols removed in
+				# OpenSSL 3.x.  Required so that components linked against older
+				# libpq / libssl builds (e.g. dbpostgresql) can resolve these
+				# names at link time without needing a separate compat library.
+				'src/ssl_legacy_aliases.cpp',
 			],
 			
 			'actions':
