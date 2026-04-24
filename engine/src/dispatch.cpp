@@ -22,6 +22,10 @@ along with LiveCode.  If not see <http://www.gnu.org/licenses/>.  */
 #include "parsedef.h"
 #include "mcio.h"
 
+#if defined(TARGET_PLATFORM_MACOS_X)
+#  include "mac-qlpreview.h"
+#endif
+
 
 #include "dispatch.h"
 #include "stack.h"
@@ -1348,6 +1352,14 @@ IO_stat MCDispatch::dosavestack(MCStack *sptr, const MCStringRef p_fname, uint32
 
 	sptr->setfilename(*t_linkname);
 	MCS_unlink(*t_backup);
+
+#if defined(TARGET_PLATFORM_MACOS_X)
+	// Write a PNG snapshot of the stack's first card as the extended attribute
+	// "com.hyperxtalk.qlpreview" so the Quick Look plugin can display a preview
+	// without launching the engine.  Silent no-op when the stack has no window.
+	MCStackWriteQLPreview(sptr, *t_linkname);
+#endif
+
 	return IO_NORMAL;
 }
 

@@ -601,6 +601,36 @@ package-mac-bin:
 	@[ -d "ide/Documentation" ] && \
 	    cp -R "ide/Documentation" "$(MACBIN_TOOLS)/Documentation" || true
 	@# ----------------------------------------------------------------
+	@# Quick Look extension: build and embed
+	@# ----------------------------------------------------------------
+	@echo "Building HyperXTalkQL Quick Look extension..."
+	@QLOUT="_build/mac/$(BUILDTYPE)/ql" && \
+	  QLAPPEX="$$QLOUT/HyperXTalkQL.appex" && \
+	  SDKPATH=$$(xcrun --sdk macosx --show-sdk-path 2>/dev/null) && \
+	  mkdir -p "$$QLOUT" && \
+	  swiftc \
+	    -target arm64-apple-macos11.0 \
+	    -sdk "$$SDKPATH" \
+	    -module-name HyperXTalkQL \
+	    -framework Quartz \
+	    -Xfrontend -application-extension \
+	    -Xlinker -e -Xlinker _NSExtensionMain \
+	    ide/HyperXTalkQL/HyperXTalkQL/PreviewViewController.swift \
+	    -o "$$QLOUT/HyperXTalkQL" && \
+	  mkdir -p "$$QLAPPEX/Contents/MacOS" && \
+	  cp "$$QLOUT/HyperXTalkQL" "$$QLAPPEX/Contents/MacOS/" && \
+	  cp ide/HyperXTalkQL/HyperXTalkQL/Info.plist "$$QLAPPEX/Contents/" && \
+	  echo "Built HyperXTalkQL.appex." || \
+	  echo "Warning: HyperXTalkQL build failed; Quick Look preview will not be available."
+	@mkdir -p "$(MACBIN_BUNDLE)/Contents/PlugIns"
+	@if [ -d "_build/mac/$(BUILDTYPE)/ql/HyperXTalkQL.appex" ]; then \
+	    cp -R "_build/mac/$(BUILDTYPE)/ql/HyperXTalkQL.appex" \
+	        "$(MACBIN_BUNDLE)/Contents/PlugIns/"; \
+	    echo "Embedded HyperXTalkQL.appex."; \
+	else \
+	    echo "Warning: HyperXTalkQL.appex not found; skipping Quick Look extension."; \
+	fi
+	@# ----------------------------------------------------------------
 	@# Strip extended attributes (resource forks, Finder info, etc.)
 	@# xattr -cr must run before codesign or signing will be rejected.
 	@# ----------------------------------------------------------------
@@ -620,6 +650,11 @@ package-mac-bin:
 	  codesign --force --sign "$(CODESIGN_IDENTITY)" \
 	      --options runtime \
 	      --entitlements HyperXTalk.entitlements "$$F" 2>/dev/null || true; \
+	done
+	@find "$(MACBIN_BUNDLE)" -name "*.appex" | while read F; do \
+	  codesign --force --sign "$(CODESIGN_IDENTITY)" \
+	      --options runtime \
+	      --entitlements ide/HyperXTalkQL/HyperXTalkQL.entitlements "$$F" 2>/dev/null || true; \
 	done
 	@# Sign executables inside bundles and in MacOS folder
 	@find "$(MACBIN_BUNDLE)" -type f -name "lc-compile" | while read F; do \

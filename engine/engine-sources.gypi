@@ -720,6 +720,7 @@
 			'src/mac-qt-recorder.mm',
 			'src/mac-scripting.mm',
 			'src/mac-snapshot.mm',
+			'src/mac-qlpreview.mm',
 			'src/mac-sound.mm',
 			'src/mac-surface.mm',
 			'src/mac-window.mm',
