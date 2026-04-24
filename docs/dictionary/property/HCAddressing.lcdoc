@@ -5,8 +5,8 @@ Type: property
 Syntax: set the HCAddressing of <stack> to {true | false}
 
 Summary:
-Determines whether <grouped control|grouped fields> and 
-<card control|card buttons> are assumed if the <field> or 
+Determines whether <grouped control|grouped fields> and
+<card control|card buttons> are assumed if the <field> or
 <button|button's> <domain> is not specified.
 
 Associations: stack
@@ -22,18 +22,18 @@ set the HCAddressing of stack nextImport to true
 
 Value (bool):
 The <HCAddressing> of a <stack> is true or false.
-By default, the <HCAddressing> of <stacks> you create in LiveCode is set
+By default, the <HCAddressing> of <stacks> you create in OpenXTalk is set
 to false.
 
 Description:
 Use the <HCAddressing> <property> for compatibility with <HyperCard>.
 
-When you open a HyperCard stack and convert it to a LiveCode stack, the
+When you open a HyperCard stack and convert it to a OpenXTalk stack, the
 new stack's <HCAddressing> <property> is set to true.
 
 If the <HCAddressing> <property> is set to true,
-<expression|expressions> in the <stack|stack's> <script|scripts> that 
-refer to <field|fields> without specifying <card> or <background> are 
+<expression|expressions> in the <stack|stack's> <script|scripts> that
+refer to <field|fields> without specifying <card> or <background> are
 assumed to refer to <grouped control|grouped controls>, and
 <expression|expressions> that refer to other control types are assumed
 to refer to <card control|card controls>. For example, the number of
@@ -64,5 +64,4 @@ control (keyword), field (object), stack (object), button (object),
 style (property), properties (property), backgroundBehavior (property),
 name (property), ID (property)
 
-Tags: objects
-
+Tags: objects, hypercard
