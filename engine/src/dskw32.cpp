@@ -1605,6 +1605,17 @@ struct MCWindowsDesktop: public MCSystemInterface, public MCWindowsSystemService
 		return starttime;
     }
     
+	virtual real64_t GetCurrentMicroseconds()
+	{
+		LARGE_INTEGER CurrentTime, Frequency;
+
+		QueryPerformanceFrequency(&Frequency); 
+		QueryPerformanceCounter(&CurrentTime);
+		CurrentTime.QuadPart *= 1000000.0;
+		CurrentTime.QuadPart /= CurrentTime.QuadPart;
+		return (real64_t)CurrentTime;
+	}
+    
     virtual void ResetTime(void)
     {
         if (!MClowrestimers)
