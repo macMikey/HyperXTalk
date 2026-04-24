@@ -386,7 +386,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "exec perl ../util/encode_version.pl -a1b6197a936d7f3729e58a5cd3c92f011a207643 . \"${SHARED_INTERMEDIATE_DIR}\"\nexit 1\n";
+			shellScript = "exec perl ../util/encode_version.pl -55237467a143f7fc12b17a561f99ac0dc487e0e8 . \"${SHARED_INTERMEDIATE_DIR}\"\nexit 1\n";
 			showEnvVarsInLog = 0;
 		};
 		5979130A0D81773A45CFF55F /* Action "encode_version" */ = {
@@ -405,7 +405,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "exec perl ../util/encode_version.pl -a1b6197a936d7f3729e58a5cd3c92f011a207643 . \"${SHARED_INTERMEDIATE_DIR}\"\nexit 1\n";
+			shellScript = "exec perl ../util/encode_version.pl -55237467a143f7fc12b17a561f99ac0dc487e0e8 . \"${SHARED_INTERMEDIATE_DIR}\"\nexit 1\n";
 			showEnvVarsInLog = 0;
 		};
 		FB45D465600427BE1263DCF1 /* Action "quicktime_stubs" */ = {
