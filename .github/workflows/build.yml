@@ -136,7 +136,27 @@ jobs:
       - name: Restore NuGet packages (WebView2)
         shell: pwsh
         run: |
-          nuget install Microsoft.Web.WebView2 -Version 1.0.3912.50 -OutputDirectory packages
+          $target = "packages\Microsoft.Web.WebView2.1.0.3912.50"
+          $webview2h = "$target\build\native\include\WebView2.h"
+          if (-not (Test-Path $webview2h)) {
+            # Try installing via nuget first
+            nuget install Microsoft.Web.WebView2 -Version 1.0.3912.50 -OutputDirectory packages -NonInteractive
+          }
+          if (-not (Test-Path $webview2h)) {
+            # Fall back to the pre-installed SDK packages cache on this runner image
+            $sdkCache = "C:\Program Files (x86)\Microsoft SDKs\NuGetPackages\Microsoft.Web.WebView2.1.0.3912.50"
+            if (Test-Path $sdkCache) {
+              Copy-Item -Path $sdkCache -Destination $target -Recurse -Force
+            } else {
+              Write-Error "WebView2 package not found in nuget output or SDK cache"
+              exit 1
+            }
+          }
+          Write-Host "WebView2.h found at: $webview2h"
+
+      - name: Prepare libcairo config.h for Windows
+        shell: cmd
+        run: copy thirdparty\libcairo\src\config.h.win32 thirdparty\libcairo\src\config.h
 
       - name: Add MSBuild to PATH
         shell: pwsh

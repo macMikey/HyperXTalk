@@ -1,0 +1,43 @@
+/*
+ * Hand-crafted for Windows / MSVC x64 builds.
+ * Mirrors what meson would generate for this platform and configuration.
+ * Keep this in sync with libcairo.gyp and the vcxproj PreprocessorDefinitions.
+ */
+
+#pragma once
+
+/* pixman features available in the vendored pixman subproject */
+#define HAS_PIXMAN_GLYPHS 1
+#define HAS_PIXMAN_r8g8b8_sRGB 1
+
+/* Zlib is bundled */
+#define HAVE_ZLIB 1
+
+/* Standard headers available in MSVC 2013+ */
+#define HAVE_STDINT_H 1
+#define HAVE_INTTYPES_H 1
+#define HAVE_FENV_H 1
+#define HAVE_SETJMP_H 1
+#define HAVE_SIGNAL_H 1
+#define HAVE_TIME_H 1
+#define HAVE_UINT64_T 1
+
+/*
+ * Type sizes on Windows x64 (LLP64 model).
+ * Note: sizeof(long) == 4 on Windows, unlike Linux/macOS where it is 8.
+ */
+#define SIZEOF_INT 4
+#define SIZEOF_LONG 4
+#define SIZEOF_LONG_LONG 8
+#define SIZEOF_SIZE_T 8
+#define SIZEOF_VOID_P 8
+
+/*
+ * MSVC does not support C11 or GCC atomics.
+ * cairo-atomic-private.h activates its built-in Win32 Interlocked* path
+ * when HAS_ATOMIC_OPS is not yet defined and _WIN32 is defined — no extra
+ * defines are needed here.
+ */
+
+/* MSVC does not support __attribute__ */
+#define WARN_UNUSED_RESULT
