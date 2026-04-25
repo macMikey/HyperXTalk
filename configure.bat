@@ -58,13 +58,12 @@ IF EXIST "%programfiles(x86)%\Microsoft Speech SDK 5.1\*" (
   SET warnings=1
 )
 
-REM Pause so any warnings can be seen
-IF %warnings% NEQ 0 PAUSE
+REM Pause so any warnings can be seen (skipped in CI environments)
+IF %warnings% NEQ 0 IF NOT DEFINED CI PAUSE
 
 REM Run the configure step
 %python% config.py --platform win-%TARGET_ARCH% %extra_options% %gypfile%
-PAUSE
 
-REM Pause if there was an error so that the user gets a chance to see it
-IF %ERRORLEVEL% NEQ 0 PAUSE
+REM Pause if there was an error so that the user gets a chance to see it (skipped in CI)
+IF %ERRORLEVEL% NEQ 0 IF NOT DEFINED CI PAUSE
 EXIT /B %ERRORLEVEL%

@@ -125,6 +125,8 @@ jobs:
         run: |
           Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
           Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
+          # Make scoop shims available to all subsequent steps
+          echo "$env:USERPROFILE\scoop\shims" >> $env:GITHUB_PATH
 
       - name: Install MySQL and PostgreSQL via Scoop
         shell: pwsh
@@ -140,14 +142,18 @@ jobs:
         run: build-thirdparty-x64.bat
         continue-on-error: false
 
-      - name: Build engine
+      - name: Build engine (Debug — required by Release bootstrap)
         shell: cmd
         run: build-engine-x64.bat
+
+      - name: Build Release
+        shell: cmd
+        run: build-release-x64.bat
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: HyperXTalk-Windows-x86_64-${{ github.event.inputs.build_type }}
-          # Engine, standalone, externals, and DB drivers all land here
-          path: build-win-x86_64\livecode\Debug\
+          # Release output: HyperXTalk.exe, standalone-community.exe, externals, DB drivers
+          path: build-win-x86_64\livecode\Release\
           retention-days: 30
