@@ -1027,6 +1027,28 @@ IO_stat MCDispatch::doreadfile(MCStringRef p_openpath, MCStringRef p_name, IO_ha
             MCresult->sets("file is not a stack");
             return IO_ERROR;
         }
+        // hc_import() appends the new stack to the stacks list inside build() via
+        // clone(). Perform the same duplicate-name deduplication that processstack()
+        // does for binary stacks, so that re-opening an HC stack doesn't leave two
+        // stacks with the same name in the list (which causes a SIGSEGV).
+        if (stacks != NULL)
+        {
+            MCStack *tstk = stacks;
+            do
+            {
+                if (tstk != t_stack && t_stack->hasname(tstk->getname()))
+                {
+                    // A stack with this name already exists: discard the fresh
+                    // import and hand back the existing stack, matching the
+                    // behaviour of processstack() for binary stacks.
+                    delete t_stack;
+                    t_stack = tstk;
+                    break;
+                }
+                tstk = (MCStack *)tstk->next();
+            }
+            while (tstk != stacks);
+        }
         r_stack = t_stack;
 	}
     

@@ -407,7 +407,9 @@ static bool convert_hcbitmap_data(uint1 *sptr, uint2 width, uint2 height, uint8_
 
 static const char *convert_font(char *sptr)
 {
-	return sptr;  // pass font names directly through: will be ugly on Windows systems!
+	// Return an owned copy: fullbuffer is deleted after each block is parsed,
+	// so returning sptr directly would leave a dangling pointer in fonts[].name.
+	return strclone(sptr);
 }
 
 static uint2 convert_style(uint2 istyle)
@@ -646,12 +648,16 @@ IO_stat MCHctext::parse(char *sptr)
 			uint2 natts = swap_uint2(&uint2ptr[2]) & 0x7FFF;
 			tsize -= natts;
 			offset = natts + 4;
-			natts = (natts >> 1) - 1;
-			atts = new (nothrow) uint2[natts + 1];
-			uint2 i;
-			for (i = 0 ; i < natts ; i++)
-				atts[i] = swap_uint2(&uint2ptr[i + 3]);
-			atts[natts] = tsize;
+			if (natts >= 2)
+			{
+				natts = (natts >> 1) - 1;
+				atts = new (nothrow) uint2[natts + 1];
+				uint2 i;
+				for (i = 0 ; i < natts ; i++)
+					atts[i] = swap_uint2(&uint2ptr[i + 3]);
+				atts[natts] = tsize;
+			}
+			// natts < 2: no style runs; leave atts == NULL, buildf() takes plain-text path
 		}
 		else
 		{
@@ -811,7 +817,8 @@ MCControl *MCHcfield::build(MCHcstak *hcsptr, MCStack *sptr)
 {
 	MCField *fptr = (MCField *)MCtemplatefield->clone(False, OP_NONE, false);
 	fptr->parent = sptr;
-	fptr -> setname_cstring(name);
+	if (name != NULL)
+		fptr -> setname_cstring(name);
 	delete name;
 	fptr->altid = id;
 	fptr->obj_id = ++maxid;
@@ -989,7 +996,8 @@ MCControl *MCHcbutton::build(MCHcstak *hcsptr, MCStack *sptr)
 {
 	MCButton *bptr = (MCButton *)MCtemplatebutton->clone(False, OP_NONE, false);
 	bptr->parent = sptr;
-	bptr->setname_cstring(name);
+	if (name != NULL)
+		bptr->setname_cstring(name);
 	delete name;
 	bptr->altid = id;
 	bptr->obj_id = ++maxid;
@@ -1490,7 +1498,8 @@ MCCard *MCHccard::build(MCHcstak *hcsptr, MCStack *sptr)
 	MCObjptr *newoptr;
 	MCCard *cptr = MCtemplatecard->clone(False, False);
 	cptr->obj_id = id;
-	cptr->setname_cstring(name);
+	if (name != NULL)
+		cptr->setname_cstring(name);
 	delete name;
 	if (script != NULL)
 	{
@@ -1513,9 +1522,12 @@ MCCard *MCHccard::build(MCHcstak *hcsptr, MCStack *sptr)
 		newoptr->setid(bmapid);
 		newoptr->appendto(cptr->objptrs);
 		MCHcbmap *bmptr = hcsptr->getbmap(bmapid);
-		bmptr->setvisible((atts & HC_BC_HIDE_BMAP) == 0);
+		if (bmptr != NULL)
+			bmptr->setvisible((atts & HC_BC_HIDE_BMAP) == 0);
 	}
 	MCHcbkgd *bgptr = hcsptr->getbkgd(bkgdid);
+	if (bgptr == NULL)
+		return cptr;
 	while (hctexts != NULL)
 	{
 		MCHctext *tptr = hctexts->remove
@@ -1704,7 +1716,8 @@ MCGroup *MCHcbkgd::build(MCHcstak *hcsptr, MCStack *sptr)
 	// MW-2011-08-09: [[ Groups ]] HC backgrounds are shared.
 	gptr->flags = (gptr -> flags & ~F_GROUP_ONLY) | F_GROUP_SHARED;
 	gptr->obj_id = id;
-	gptr->setname_cstring(name);
+	if (name != NULL)
+		gptr->setname_cstring(name);
 	delete name;
 	gptr->rect = sptr->getrect();
 	gptr->rect.x = gptr->rect.y = 0;
@@ -1721,13 +1734,16 @@ MCGroup *MCHcbkgd::build(MCHcstak *hcsptr, MCStack *sptr)
 	if (bmapid != 0)
 	{
 		MCHcbmap *bmptr = hcsptr->removebmap(bmapid);
-		bmptr->setvisible((atts & HC_BC_HIDE_BMAP) == 0);
-		MCControl *iptr = bmptr->build();
-		delete bmptr;
-		if (iptr != NULL)
+		if (bmptr != NULL)
 		{
-			iptr->setparent(gptr);
-			iptr->appendto(gptr->controls);
+			bmptr->setvisible((atts & HC_BC_HIDE_BMAP) == 0);
+			MCControl *iptr = bmptr->build();
+			delete bmptr;
+			if (iptr != NULL)
+			{
+				iptr->setparent(gptr);
+				iptr->appendto(gptr->controls);
+			}
 		}
 	}
 	while (hctexts != NULL)
@@ -1803,15 +1819,20 @@ MCHcstak::MCHcstak(char *inname)
 MCHcstak::~MCHcstak()
 {
 	delete name;
-	delete script;
-	delete fullbuffer;
-	delete pages;
-	delete marks;
-	delete fonts;
-	delete atts;
+	delete[] script;
+	delete[] fullbuffer;
+	delete[] pages;
+	delete[] marks;
+	if (fonts != nullptr)
+	{
+		for (uint2 i = 0 ; i < nfonts ; i++)
+			delete[] fonts[i].name;
+	}
+	delete[] fonts;
+	delete[] atts;
 	uint4 i;
 	for (i = 0 ; i < npbuffers ; i++)
-		delete pbuffers[i];
+		delete[] pbuffers[i];
 	if (pbuffers != NULL)
 	{
 		delete pbuffers;
@@ -1879,6 +1900,8 @@ uint4 MCHcstak::geticon(uint2 iid)
 
 MCHcbmap *MCHcstak::getbmap(uint4 bid)
 {
+	if (hcbmaps == NULL)
+		return NULL;
 	MCHcbmap *bptr = hcbmaps;
 	do
 	{
@@ -1893,12 +1916,15 @@ MCHcbmap *MCHcstak::getbmap(uint4 bid)
 MCHcbmap *MCHcstak::removebmap(uint4 bid)
 {
 	MCHcbmap *bptr = getbmap(bid);
-	return bptr->remove
-	       (hcbmaps);
+	if (bptr == NULL)
+		return NULL;
+	return bptr->remove(hcbmaps);
 }
 
 MCHcbkgd *MCHcstak::getbkgd(uint4 bid)
 {
+	if (hcbkgds == NULL)
+		return NULL;
 	MCHcbkgd *bptr = hcbkgds;
 	do
 	{
@@ -2149,7 +2175,7 @@ IO_stat MCHcstak::read(IO_handle stream)
 			{
 				MCHcbkgd *newbkgd = new (nothrow) MCHcbkgd;
 				newbkgd->appendto(hcbkgds);
-				if (newbkgd->parse(buffer) != IO_NORMAL)
+				if (newbkgd->parse(t_buffer) != IO_NORMAL)
 					return IO_ERROR;
 			}
 			break;
@@ -2165,7 +2191,7 @@ IO_stat MCHcstak::read(IO_handle stream)
 			{
 				MCHcbmap *newbmap = new (nothrow) MCHcbmap;
 				newbmap->appendto(hcbmaps);
-				if (newbmap->parse(buffer) != IO_NORMAL)
+				if (newbmap->parse(t_buffer) != IO_NORMAL)
 					return IO_ERROR;
 			}
 			break;
@@ -2213,17 +2239,20 @@ IO_stat MCHcstak::read(IO_handle stream)
 		}
 		if (filetype != HC_BINHEX)
 		{
-			delete fullbuffer;
+			delete[] fullbuffer;
 			fullbuffer = NULL;
 		}
 	}
 	if (filetype == HC_RAW || rsize == 0)
 	{
 #ifdef _MAC_DESKTOP
-		return macreadresources();
-#else
-			return IO_NORMAL;
+		// Read icons/sounds/cursors from the resource fork (best-effort).
+		// A missing or unreadable resource fork is not fatal — the stack's
+		// data-fork content (cards, fields, buttons, bitmaps) was already
+		// loaded successfully above.
+		macreadresources();
 #endif
+		return IO_NORMAL;
 	}
 	if (filetype == HC_MACBIN)
 	{
@@ -2357,7 +2386,7 @@ MCStack *MCHcstak::build()
 		while (pages[npages++] != 0
 		        && (offset - 1) * pagesize + 28 < pbuffersizes[i]);
 		npages--;
-		delete pbuffers[i];
+		delete[] pbuffers[i];
 	}
 	if (pbuffers != NULL)
 	{
@@ -2381,6 +2410,8 @@ MCStack *MCHcstak::build()
 	{
 		for (i = 0 ; i < npages ; i++)
 		{
+			if (hccards == NULL)
+				break;
 			MCHccard *cptr = hccards;
 			do
 			{

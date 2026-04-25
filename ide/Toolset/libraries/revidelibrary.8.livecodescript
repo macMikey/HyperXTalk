@@ -9933,14 +9933,51 @@ constant kMoveBufferSize = 20
 # OK-2009-10-07 : This command does "go pMoveSpecifier" with a buffering effect to prevent it
 # getting carried out more frequently than every kMoveBufferSize milliseconds
 on revIDEGoCard pMoveSpecifier
-   if the milliseconds - sMoveBuffers[pMoveSpecifier] < kMoveBufferSize then
+   local tLog
+   put "/tmp/hypertalk-nav.log" into tLog
+
+   local tMs
+   put the milliseconds into tMs
+   local tDelta
+   put tMs - sMoveBuffers[pMoveSpecifier] into tDelta
+
+   if tDelta < kMoveBufferSize then
+      open file tLog for append
+      write "RATE-LIMITED pMoveSpecifier=" & pMoveSpecifier & " delta=" & tDelta & return to file tLog
+      close file tLog
       exit revIDEGoCard
    end if
-   
+
    set the defaultStack to the topStack
+   local tTopStack
+   put the short name of the topStack into tTopStack
+   local tCardBefore
+   put the short name of this card of stack tTopStack into tCardBefore
+   local tCardNum
+   put the number of this card of stack tTopStack into tCardNum
+
+   open file tLog for append
+   write "BEFORE go " & pMoveSpecifier & " topStack=" & tTopStack & " card=" & tCardBefore & "(" & tCardNum & ")" & return to file tLog
+   close file tLog
+
    local tCommand
    put "go " & pMoveSpecifier into tCommand
    do tCommand
+
+   local tErr
+   put the result into tErr
+   local tCardAfter
+   put the short name of this card of stack tTopStack into tCardAfter
+   local tCardNumAfter
+   put the number of this card of stack tTopStack into tCardNumAfter
+
+   local tMode, tCantMod
+   put the mode of stack tTopStack into tMode
+   put the cantModify of stack tTopStack into tCantMod
+   open file tLog for append
+   write "AFTER  go " & pMoveSpecifier & " card=" & tCardAfter & "(" & tCardNumAfter & ")" & " result=" & tErr & " mode=" & tMode & " cantModify=" & tCantMod & return to file tLog
+   close file tLog
+
    put the milliseconds into sMoveBuffers[pMoveSpecifier]
 end revIDEGoCard
 

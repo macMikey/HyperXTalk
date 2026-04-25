@@ -1759,6 +1759,9 @@ void MCStack::platform_openwindow(Boolean p_override)
 void MCStack::release_window_buffer() {}
 
 // ── HyperCard ───────────────────────────────────────────────────────────
-IO_stat MCHcstak::macreadresources(void) { return IO_ERROR; }
+// ARM64: Carbon Resource Manager APIs are not available. HC stacks imported on
+// Apple Silicon simply have no icons/sounds/cursors from the resource fork —
+// the data-fork content (cards, fields, buttons, bitmaps) still loads fine.
+IO_stat MCHcstak::macreadresources(void) { return IO_NORMAL; }
 
 #endif // __arm64__

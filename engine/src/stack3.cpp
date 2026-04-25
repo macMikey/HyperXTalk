@@ -1105,10 +1105,29 @@ Exec_stat MCStack::setcard(MCCard *card, Boolean recent, Boolean dynamic)
 
 		// MW-2008-10-31: [[ ParentScripts ]] Send closeControl appropriately
 		if (curcard -> closecontrols() == ES_ERROR
-				|| curcard != oldcard || !opened
-				|| curcard->message(MCM_close_card) == ES_ERROR
-		        || curcard != oldcard || !opened
-				|| curcard -> closebackgrounds(card) == ES_ERROR
+				|| curcard != oldcard || !opened)
+		{
+			// MW-2011-09-14: [[ Redraw ]] Unlock the screen.
+			MCRedrawUnlockScreen();
+
+			if (curcard != oldcard || !opened)
+				return ES_NORMAL;
+			else
+				return ES_ERROR;
+		}
+		// HyperCard compatibility: script errors in closeCard must not abort the
+		// navigation.  In HyperCard the card always closed even when its closeCard
+		// handler had a script error (e.g. a missing XCMD such as AddColor/RemoveColor).
+		MCerrorlock++;
+		curcard->message(MCM_close_card);
+		MCerrorlock--;
+		MCeerror->clear();
+		if (curcard != oldcard || !opened)
+		{
+			MCRedrawUnlockScreen();
+			return ES_NORMAL;
+		}
+		if (curcard -> closebackgrounds(card) == ES_ERROR
 		        || curcard != oldcard || !opened)
 		{
 			// MW-2011-09-14: [[ Redraw ]] Unlock the screen.
@@ -1225,12 +1244,27 @@ Exec_stat MCStack::setcard(MCCard *card, Boolean recent, Boolean dynamic)
  
 			// MW-2008-10-31: [[ ParentScripts ]] Send openControl appropriately
 			if (curcard -> openbackgrounds(false, oldcard) == ES_ERROR
-			        || curcard != card
-			        || curcard->message(MCM_open_card) == ES_ERROR
-					|| curcard != card
-					|| curcard -> opencontrols(false) == ES_ERROR)
+			        || curcard != card)
 			{
-
+				if (curcard != card)
+					return ES_NORMAL;
+				else
+					return ES_ERROR;
+			}
+			// HyperCard compatibility: script errors in openCard must not abort the
+			// navigation.  In HyperCard the card always opened even when its openCard
+			// handler had a script error (e.g. a missing XCMD such as AddColor).
+			// We lock errors so that a missing-handler error does not spawn an
+			// errorDialog for every card transition, then only bail if the handler
+			// explicitly navigated away.
+			MCerrorlock++;
+			curcard->message(MCM_open_card);
+			MCerrorlock--;
+			MCeerror->clear();
+			if (curcard != card)
+				return ES_NORMAL;
+			if (curcard -> opencontrols(false) == ES_ERROR || curcard != card)
+			{
 				if (curcard != card)
 					return ES_NORMAL;
 				else
@@ -1253,10 +1287,26 @@ Exec_stat MCStack::setcard(MCCard *card, Boolean recent, Boolean dynamic)
 		// MW-2008-10-31: [[ ParentScripts ]] Send openControl appropriately
 		if (abort
 				|| curcard -> openbackgrounds(false, oldcard) == ES_ERROR
-		        || curcard != card || !opened
-		        || curcard->message(MCM_open_card) == ES_ERROR
-		        || curcard != card || !opened
-				|| curcard -> opencontrols(false) == ES_ERROR
+		        || curcard != card || !opened)
+		{
+			if (curcard != card || !opened)
+				return ES_NORMAL;
+			else
+				return ES_ERROR;
+		}
+		// HyperCard compatibility: script errors in openCard must not abort the
+		// navigation.  In HyperCard the card always opened even when its openCard
+		// handler had a script error (e.g. a missing XCMD such as AddColor).
+		// We lock errors so that a missing-handler error does not spawn an
+		// errorDialog for every card transition, then only bail if the handler
+		// explicitly navigated away.
+		MCerrorlock++;
+		curcard->message(MCM_open_card);
+		MCerrorlock--;
+		MCeerror->clear();
+		if (curcard != card || !opened)
+			return ES_NORMAL;
+		if (curcard -> opencontrols(false) == ES_ERROR
 				|| curcard != card || !opened)
 		{
 			if (curcard != card || !opened)

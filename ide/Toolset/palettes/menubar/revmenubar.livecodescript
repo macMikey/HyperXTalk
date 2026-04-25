@@ -2010,11 +2010,11 @@ private function revMenubarViewMenu pContext
    global gREVPalettes, gREVShowStacks
    
    local tView
-   put enableMenuItem("Go &First/1", the mode of the topStack is 1) & return after tView
-   put enableMenuItem("Go Pre&v/2", the mode of the topStack is 1) & return after tView
-   put enableMenuItem("Go Ne&xt/3", the mode of the topStack is 1) & return after tView
-   put enableMenuItem("Go &Last/4", the mode of the topStack is 1) & return after tView
-   put enableMenuItem("Go Recent/5", the mode of the topStack is 1) & return after tView
+   put enableMenuItem("Go &First/1", the mode of the topStack <= 2 and not revIDEStackIsIDEStack(the topStack)) & return after tView
+   put enableMenuItem("Go Pre&v/2", the mode of the topStack <= 2 and not revIDEStackIsIDEStack(the topStack)) & return after tView
+   put enableMenuItem("Go Ne&xt/3", the mode of the topStack <= 2 and not revIDEStackIsIDEStack(the topStack)) & return after tView
+   put enableMenuItem("Go &Last/4", the mode of the topStack <= 2 and not revIDEStackIsIDEStack(the topStack)) & return after tView
+   put enableMenuItem("Go Recent/5", the mode of the topStack <= 2 and not revIDEStackIsIDEStack(the topStack)) & return after tView
    put "-" & return after tView
    put toggleMenuItem("Toolbar Text", the cToolbarText of stack "revPreferences") & return after tView
    put toggleMenuItem("Toolbar Icons", the cToolbarIcons of stack "revPreferences") & return after tView
