@@ -139,18 +139,16 @@ jobs:
           $target = "packages\Microsoft.Web.WebView2.1.0.3912.50"
           $webview2h = "$target\build\native\include\WebView2.h"
           if (-not (Test-Path $webview2h)) {
-            # Try installing via nuget first
-            nuget install Microsoft.Web.WebView2 -Version 1.0.3912.50 -OutputDirectory packages -NonInteractive
+            # Download .nupkg directly from nuget.org and extract it.
+            # The nuget CLI "Package already installed" behaviour does not reliably
+            # place files in the local output directory, so we bypass it entirely.
+            $nupkg = "$env:TEMP\webview2.nupkg"
+            Invoke-WebRequest "https://www.nuget.org/api/v2/package/Microsoft.Web.WebView2/1.0.3912.50" -OutFile $nupkg
+            Expand-Archive $nupkg -DestinationPath $target -Force
           }
           if (-not (Test-Path $webview2h)) {
-            # Fall back to the pre-installed SDK packages cache on this runner image
-            $sdkCache = "C:\Program Files (x86)\Microsoft SDKs\NuGetPackages\Microsoft.Web.WebView2.1.0.3912.50"
-            if (Test-Path $sdkCache) {
-              Copy-Item -Path $sdkCache -Destination $target -Recurse -Force
-            } else {
-              Write-Error "WebView2 package not found in nuget output or SDK cache"
-              exit 1
-            }
+            Write-Error "WebView2.h still not found at: $webview2h"
+            exit 1
           }
           Write-Host "WebView2.h found at: $webview2h"
 
