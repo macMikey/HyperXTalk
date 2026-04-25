@@ -350,6 +350,9 @@ static bool hfs_code_to_string(unsigned long p_code, char *r_string)
 
 - (BOOL)panel:(id)sender shouldShowFilename:(NSString *)filename;
 
+// macOS 12+: replaces shouldShowFilename: for controlling greyed-out state
+- (BOOL)panel:(id)sender shouldEnableURL:(NSURL *)url;
+
 @end
 
 @compatibility_alias MCFileDialogAccessoryView com_hyperxtalk_hyperxtalk_MCFileDialogAccessoryView;
@@ -579,6 +582,78 @@ static bool hfs_code_to_string(unsigned long p_code, char *r_string)
 	
 	[t_filename_resolved release];
 	return t_should_show;
+}
+
+// macOS 10.6+ / replacement for the deprecated shouldShowFilename: on macOS 12+.
+// Controls whether a file appears enabled (selectable) or greyed-out.
+// Uses only modern NSURLResourceKey APIs — no Carbon FSRef or deprecated
+// fileAttributesAtPath:traverseLink: that can return nil on macOS 15+.
+- (BOOL)panel:(id)sender shouldEnableURL:(NSURL *)url
+{
+    if (![url isFileURL])
+        return NO;
+
+    // No filters: allow everything
+    if (m_filters == nil || (m_filter->extension_count == 0 && m_filter->filetypes_count == 0))
+        return YES;
+
+    // If any filter is a wildcard, allow everything
+    for (uint32_t i = 0; i < m_filter->extension_count; i++)
+        if (MCStringIsEqualTo(MCSTR("*"), m_filter->extensions[i], kMCCompareExact))
+            return YES;
+    for (uint32_t i = 0; i < m_filter->filetypes_count; i++)
+        if (MCStringIsEqualTo(MCSTR("*"), m_filter->filetypes[i], kMCCompareExact))
+            return YES;
+
+    // Always allow navigation into plain folders (but not app bundles/packages)
+    NSNumber *t_is_dir = nil;
+    [url getResourceValue:&t_is_dir forKey:NSURLIsDirectoryKey error:nil];
+    if ([t_is_dir boolValue])
+    {
+        NSNumber *t_is_package = nil;
+        [url getResourceValue:&t_is_package forKey:NSURLIsPackageKey error:nil];
+        if (![t_is_package boolValue])
+            return YES;
+    }
+
+    // Check file extension against the filter list
+    if (m_filter->extension_count > 0)
+    {
+        NSString *t_ns_ext = [url pathExtension];
+        if (t_ns_ext != nil && [t_ns_ext length] > 0)
+        {
+            MCAutoStringRef t_ext;
+            if (MCStringCreateWithCFStringRef((CFStringRef)t_ns_ext, &t_ext) && *t_ext != nil)
+            {
+                for (uint32_t i = 0; i < m_filter->extension_count; i++)
+                    if (MCStringIsEqualTo(*t_ext, m_filter->extensions[i], kMCCompareCaseless))
+                        return YES;
+            }
+        }
+    }
+
+    // Check HFS four-char type/creator codes (legacy, but still checked for
+    // older .rev / .mc stacks that carry HFS metadata)
+    if (m_filter->filetypes_count > 0)
+    {
+        NSDictionary *t_attr = [[NSFileManager defaultManager]
+                                    attributesOfItemAtPath:[url path] error:nil];
+        if (t_attr != nil)
+        {
+            char t_type[5];
+            hfs_code_to_string([[t_attr objectForKey:NSFileHFSTypeCode] unsignedLongLongValue], t_type);
+            char t_creator[5];
+            hfs_code_to_string([[t_attr objectForKey:NSFileHFSCreatorCode] unsignedLongLongValue], t_creator);
+
+            for (uint32_t i = 0; i < m_filter->filetypes_count; i++)
+                if (!MCStringIsEmpty(m_filter->filetypes[i]) &&
+                    (MCStringIsEqualToCString(m_filter->filetypes[i], t_type, kMCCompareCaseless) ||
+                     MCStringIsEqualToCString(m_filter->filetypes[i], t_creator, kMCCompareCaseless)))
+                    return YES;
+        }
+    }
+
+    return NO;
 }
 
 @end

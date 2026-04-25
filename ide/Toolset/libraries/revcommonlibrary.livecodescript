@@ -1,4 +1,4 @@
-script "revcommonlibrary"
+﻿script "revcommonlibrary"
 
 on extensionInitialize
    if the target is me then
@@ -472,6 +472,8 @@ function revStackNameIsIDEStack pStackName
       return true
    else if pStackName begins with "oxt" then
       return true
+   else if (pStackName begins with "hxt") then
+      return TRUE
    else
       return pStackName begins with "rev"
    end if
@@ -1189,7 +1191,7 @@ function revAnswerFile pType, pPrompt
    -- any corrections can be made in one place
    switch pType
       case "stack"
-         answer file pPrompt with type "Stacks|hyperxtalk,hyperxtalkscript,livecode,rev,mc,livecodescript,oxtstack,oxtscript|RSTK,MSTK,STAK" or type "All Files|"
+         answer file pPrompt with type "Stacks|hyperxtalk,hyperxtalkscript,livecode,rev,mc,livecodescript,oxtstack,oxtstackscript|RSTK,MSTK,STAK" or type "All Files|"
          break
       case "image" -- add svg
          answer file pPrompt with type "All Picture Files|png,gif,jpg,jpeg,bmp,pct,xbm,xpm,xwd,pbm,ppm,pgm" or type "Portable Network Graphics|png" or type "Joint Photographics Experts Group|jpg,jpeg" or type "Graphics Interchange Format|gif" or type "Windows Bitmap|bmp" or type "Unix Formats|xbm,xpm,xwd,pbm,ppm,pgm" or type "Macintosh PICT - displays on MacOS only|pct" or type "All Files|"
@@ -1214,7 +1216,7 @@ end revAnswerFile
 function revAnswerFiles pType, pPrompt
    switch pType
       case "stack"
-         answer files pPrompt with type "Stacks|hyperxtalk,hyperxtalkscript,livecode,rev,mc,livecodescript,oxtstack,oxtscript|RSTK,MSTK,STAK" or type "All Files|"
+         answer files pPrompt with type "Stacks|hyperxtalk,hyperxtalkscript,livecode,rev,mc,livecodescript,oxtstack,oxtstackscript|RSTK,MSTK,STAK" or type "All Files|"
          break
       case "image"
          answer files pPrompt with type "All Picture Files|png,gif,jpg,jpeg,bmp,pct,xbm,xpm,xwd,pbm,ppm,pgm" or type "Portable Network Graphics|png" or type "Joint Photographics Experts Group|jpg,jpeg" or type "Graphics Interchange Format|gif" or type "Windows Bitmap|bmp" or type "Unix Formats|xbm,xpm,xwd,pbm,ppm,pgm" or type "Macintosh PICT - displays on MacOS only|pct" or type "All Files|"
@@ -1325,8 +1327,8 @@ function revFontGetSystemFont
    -- MacOS (El Capitan and newer) San Francisco
    -- MacOS (Yosemite) Helvetica Neue
    -- MacOS (older versions) Lucida Grande
-   -- Please note that — although for interface San Francisco is the default
-   -- sans-serif font — for web -apple-system will need to be used, as the
+   -- Please note that ‚Äî although for interface San Francisco is the default
+   -- sans-serif font ‚Äî for web -apple-system will need to be used, as the
    -- sans-serif fallback will display Helvetica instead of San Francisco.
    --(this is one of the quirks I mentioned earlier)
    
@@ -1341,7 +1343,7 @@ function revFontGetSystemFont
    -- Windows (95, NT, Millennium) MS Sans Serif
    -- Windows (older versions including Windows 3) Helv
    -- Default sans-serif font in Linux: Many Linux users re-configure defaults to other fonts like Inter UI or others.
-   -- So it’s almost impossible to accurately mention defaults, except for the Ubuntu distro
+   -- So it‚Äôs almost impossible to accurately mention defaults, except for the Ubuntu distro
    --  which has its own font as default.
    -- Red Hat also has commissioned its own fonts Red Hat Display and Red Hat Text.
    

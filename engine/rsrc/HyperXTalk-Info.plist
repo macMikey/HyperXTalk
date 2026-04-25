@@ -11,6 +11,8 @@
 			<array>
 				<string>hyperxtalk</string>
 				<string>hyperxtalkscript</string>
+				<string>oxtstack</string>
+				<string>oxtstackscript</string>
 				<string>rev</string>
 				<string>livecode</string>
 				<string>livecodescript</string>
@@ -108,6 +110,42 @@
 				<key>public.filename-extension</key>
 				<array>
 					<string>hyperxtalkscript</string>
+				</array>
+			</dict>
+		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>OxT Stack</string>
+			<key>UTTypeIdentifier</key>
+			<string>com.hyperxtalk.oxt.stack</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>com.apple.macos.ostype</key>
+				<string>RSTK</string>
+				<key>public.filename-extension</key>
+				<array>
+					<string>oxtstack</string>
+				</array>
+			</dict>
+		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>OxT Script Only Stack</string>
+			<key>UTTypeIdentifier</key>
+			<string>com.hyperxtalk.oxt.stack.script</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>oxtstackscript</string>
 				</array>
 			</dict>
 		</dict>

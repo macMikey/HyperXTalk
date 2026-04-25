@@ -7168,7 +7168,7 @@ function revIDEAcceptedTypes pType
       case "media"
          return revIDEAcceptedTypes("audio") & comma & revIDEAcceptedTypes("video")
       case "stack"
-         return "hyperxtalk,hyperxtalkscript,livecode,rev,lc,livecodescript,mc"
+         return "hyperxtalk,hyperxtalkscript,livecode,rev,lc,livecodescript,mc,oxtstack,oxtstackscript"
       case "text"
          return "txt"
       case "graph"
@@ -7428,7 +7428,7 @@ private function __answerGetTypeString pType
    local tTagString
    switch pType
       case "stack"
-         put revIDELocalise("LiveCode Stacks") into tTagString
+         put revIDELocalise("xTalk Stacks") into tTagString
          break
       case "image"
          put revIDELocalise("Images") into tTagString

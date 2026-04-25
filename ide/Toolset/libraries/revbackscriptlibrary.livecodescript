@@ -582,7 +582,7 @@ function revFixPath pPath
       -- put tolower(pPath) into tReturnPath
    end if
    if revExtensionShow() then
-      if not (tReturnPath ends with ".rev" or tReturnPath ends with ".livecode" or tReturnPath ends with ".livecodescript" or tReturnPath ends with ".hyperxtalk" or tReturnPath ends with ".hyperxtalkscript") then
+      if not (tReturnPath ends with ".rev" or tReturnPath ends with ".livecode" or tReturnPath ends with ".livecodescript" or tReturnPath ends with ".hyperxtalk" or tReturnPath ends with ".hyperxtalkscript" or tReturnPath ends with ".oxtstack" or tReturnPath ends with ".oxtstackscript") then
          put ".hyperxtalk" after tReturnPath
       end if
    end if
@@ -3180,7 +3180,7 @@ command revOpenStacks
    if the systemFileSelector then
       switch the platform
          case "Win32"
-            put "LiveCode Stacks" & cr & "*.rev" & cr & "MetaCard Stacks" & cr & "*.mc" & cr & "All Files" & cr & "*.*" into filterstring
+            put "LiveCode Stacks" & cr & "*.rev" & cr & "OxT Stacks" & cr & "*.oxtstack;*.oxtstackscript" & cr & "MetaCard Stacks" & cr & "*.mc" & cr & "All Files" & cr & "*.*" into filterstring
          break
          case "MacOS"
             put "MSTKSTAKTEXTRSTK" into filterstring
