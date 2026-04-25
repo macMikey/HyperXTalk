@@ -138,6 +138,14 @@ jobs:
         run: |
           nuget install Microsoft.Web.WebView2 -Version 1.0.3912.50 -OutputDirectory packages
 
+      - name: Add MSBuild to PATH
+        shell: pwsh
+        run: |
+          $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+          $msbuild = & $vswhere -latest -products * -requires Microsoft.Component.MSBuild -find 'MSBuild\**\Bin\MSBuild.exe' | Select-Object -First 1
+          $msbuildDir = Split-Path $msbuild -Parent
+          echo $msbuildDir >> $env:GITHUB_PATH
+
       - name: Build thirdparty libraries
         shell: cmd
         run: build-thirdparty-x64.bat
