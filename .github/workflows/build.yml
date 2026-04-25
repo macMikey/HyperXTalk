@@ -156,6 +156,10 @@ jobs:
         shell: cmd
         run: copy thirdparty\libcairo\src\config.h.win32 thirdparty\libcairo\src\config.h
 
+      - name: Prepare cairo-features.h for Windows
+        shell: cmd
+        run: copy thirdparty\libcairo\src\cairo-features.h.win32 thirdparty\libcairo\src\cairo-features.h
+
       - name: Prepare pixman-version.h for Windows
         shell: cmd
         run: copy thirdparty\libcairo\subprojects\pixman-0.43.4\pixman\pixman-version.h.win32 thirdparty\libcairo\subprojects\pixman-0.43.4\pixman\pixman-version.h
