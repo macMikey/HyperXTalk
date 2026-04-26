@@ -152,6 +152,36 @@ echo.
 :: in incremental builds, so foundation-handler.obj and foundation-typeinfo.obj
 :: would keep the stale FFI_DEFAULT_ABI=5 value (from include_win32) baked in.
 :: Rebuild guarantees they are compiled with include_win64 → FFI_DEFAULT_ABI=1.
+:: ----------------------------------------------------------
+:: Generate icudata-minimal.cpp (shared_intermediate/src/icudata-minimal.cpp).
+::
+:: dependency chain:
+::   minimal_icu_data.vcxproj
+::     → runs icupkg (from prebuilt ICU) on icudt58l.dat to produce
+::       shared_intermediate/data/icudata-minimal.dat
+::   encode_minimal_icu_data.vcxproj
+::     → runs util/encode_data.py on the .dat file to produce
+::       shared_intermediate/src/icudata-minimal.cpp
+::
+:: libFoundation.vcxproj compiles icudata-minimal.cpp, so this must run
+:: before the libFoundation build.
+:: ----------------------------------------------------------
+echo Generating icudata-minimal.cpp (encode_minimal_icu_data) ...
+echo Generating icudata-minimal.cpp ... >> "%LOGFILE%"
+set "VCXPROJ_ICU=build-win-x86_64\livecode\prebuilt\encode_minimal_icu_data.vcxproj"
+set "ICU_LOG=%~dp0build-encode-icu.log"
+"%MSBUILD%" %VCXPROJ_ICU% /p:Configuration=Debug /p:Platform=x64 /p:BuildProjectReferences=true /v:minimal /nologo > "%ICU_LOG%" 2>&1
+set ICU_ERR=%ERRORLEVEL%
+type "%ICU_LOG%"
+type "%ICU_LOG%" >> "%LOGFILE%"
+if %ICU_ERR% NEQ 0 (
+    echo.
+    echo ENCODE_MINIMAL_ICU_DATA FAILED. See %ICU_LOG% for details.
+    exit /b 1
+)
+echo encode_minimal_icu_data OK.
+
+echo.
 echo Building libFoundation (FFI closure fix: x64 now uses include_win64 headers) ...
 echo Building libFoundation ... >> "%LOGFILE%"
 set "FOUND_LOG=%~dp0build-libfoundation.log"
