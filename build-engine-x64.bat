@@ -83,6 +83,25 @@ echo Build started: %DATE% %TIME%
 echo Build started: %DATE% %TIME% > "%LOGFILE%"
 echo. >> "%LOGFILE%"
 
+:: ----------------------------------------------------------
+:: Build libExternal.lib — required by dbmysql and other DB drivers.
+:: On the developer's machine this is a leftover from a previous build;
+:: on a clean CI checkout it must be compiled first.
+:: ----------------------------------------------------------
+echo Building libExternal ...
+echo Building libExternal ... >> "%LOGFILE%"
+set "VCXPROJ_LIBEXTERNAL=build-win-x86_64\livecode\libexternal\libExternal.vcxproj"
+"%MSBUILD%" %VCXPROJ_LIBEXTERNAL% /p:Configuration=Debug /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
+if errorlevel 1 (
+    echo.
+    echo LIBEXTERNAL BUILD FAILED. Errors:
+    findstr /i " error " "%LOGFILE%"
+    echo Full log: %LOGFILE%
+    exit /b 1
+)
+echo libExternal OK.
+
+echo.
 echo Building libbrowser (WebView2 fix) ...
 echo Building libbrowser (WebView2 fix) ... >> "%LOGFILE%"
 "%MSBUILD%" %VCXPROJ_BROWSER% /p:Configuration=Debug /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo >> "%LOGFILE%" 2>&1
