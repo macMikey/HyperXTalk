@@ -648,7 +648,10 @@ if not exist "%OUTDIR%\revbrowser.dll" goto revbrowser_fallback
 echo revbrowser Release OK.
 goto revbrowser_done
 :revbrowser_fallback
-if not exist "%DBG_DIR%\revbrowser.dll" ( echo ERROR: revbrowser.dll missing from both Release build and Debug output. & exit /b 1 )
+if not exist "%DBG_DIR%\revbrowser.dll" (
+    echo WARNING: revbrowser.dll not available ^(CEF removed^) -- skipping.
+    goto revbrowser_done
+)
 copy /Y "%DBG_DIR%\revbrowser.dll" "%OUTDIR%\revbrowser.dll" > nul
 echo revbrowser: using Debug bootstrap.
 :revbrowser_done
