@@ -253,6 +253,24 @@ Source: "..\ide\Documentation\*"; \
     DestDir: "{app}\Documentation"; \
     Flags: ignoreversion recursesubdirs createallsubdirs
 
+; ---- Source documentation (.lcdoc files) ----
+; These are shipped alongside the app so that the runtime documentation builder
+; (revIDEGenerateDistributedAPI) can regenerate api.sqlite into the user doc
+; cache on first launch of an installed build, exactly as it does on macOS dev.
+;
+; IMPORTANT: the "touch" flag gives every installed .lcdoc file the current
+; install timestamp rather than preserving its original source/git timestamp.
+; Without "touch", Inno Setup preserves the source file's modification time,
+; which may pre-date the api.sqlite / *.js files written by a previous install's
+; first-launch doc-build, causing the staleness check to report "not stale" and
+; silently skip the rebuild even when the .lcdoc content has changed.
+; With "touch", reinstalling always produces .lcdoc timestamps newer than any
+; previously cached *.js files, so the per-API staleness checks reliably trigger
+; a fresh doc-build on the next launch.
+Source: "..\docs\*"; \
+    DestDir: "{app}\docs"; \
+    Flags: ignoreversion recursesubdirs createallsubdirs touch
+
 ; ---- IDE support libraries (deploy, revliburl, etc.) ----
 Source: "..\ide-support\*"; \
     DestDir: "{app}\ide-support"; \
