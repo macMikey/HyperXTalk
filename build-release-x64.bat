@@ -415,6 +415,7 @@ echo Lib bootstrap OK.
 :: Also mirror ICU and OpenSSL prebuilt lib dirs (same stub issue as Thirdparty)
 set "ICU_DBG=%~dp0prebuilt\unpacked\icu\x86_64-win32-v142_static_Debug\lib"
 set "ICU_REL=%~dp0prebuilt\unpacked\icu\x86_64-win32-v142_static_Release\lib"
+set "ICU_REL_BIN=%~dp0prebuilt\unpacked\icu\x86_64-win32-v142_static_Release\bin"
 set "SSL_DBG=%~dp0prebuilt\unpacked\openssl3\x86_64-win32-v142_static_Debug\lib"
 set "SSL_REL=%~dp0prebuilt\unpacked\openssl3\x86_64-win32-v142_static_Release\lib"
 if not exist "%ICU_REL%"  mkdir "%ICU_REL%"
@@ -435,12 +436,19 @@ if exist "%WV2_LIB%" (
     echo WARNING: WebView2Loader.dll.lib not found at %WV2_LIB%
 )
 
-echo Bootstrapping lc-compile.exe + ICU DLLs from Debug output ...
+echo Bootstrapping lc-compile.exe + ICU DLLs ...
 copy /Y "%LC_COMPILE_DBG%"          "%LC_COMPILE_REL%"            > nul
-copy /Y "%DBG_DIR%\icudt58.dll"     "%OUTDIR%\icudt58.dll"        > nul 2>nul
-copy /Y "%DBG_DIR%\icuin58.dll"     "%OUTDIR%\icuin58.dll"        > nul 2>nul
-copy /Y "%DBG_DIR%\icutu58.dll"     "%OUTDIR%\icutu58.dll"        > nul 2>nul
-copy /Y "%DBG_DIR%\icuuc58.dll"     "%OUTDIR%\icuuc58.dll"        > nul 2>nul
+:: ICU DLLs are not produced by the Debug engine build; copy directly from the
+:: prebuilt unpacked directory so server-community.exe can find them at runtime.
+copy /Y "%ICU_REL_BIN%\icudt58.dll" "%OUTDIR%\icudt58.dll"        > nul 2>nul
+copy /Y "%ICU_REL_BIN%\icuin58.dll" "%OUTDIR%\icuin58.dll"        > nul 2>nul
+copy /Y "%ICU_REL_BIN%\icutu58.dll" "%OUTDIR%\icutu58.dll"        > nul 2>nul
+copy /Y "%ICU_REL_BIN%\icuuc58.dll" "%OUTDIR%\icuuc58.dll"        > nul 2>nul
+if not exist "%OUTDIR%\icuuc58.dll" (
+    echo ERROR: ICU DLLs not found in prebuilt directory: %ICU_REL_BIN%
+    echo        These DLLs are required by server-community.exe for lcs-extensions packaging.
+    exit /b 1
+)
 copy /Y "%DBG_DIR%\libcrypto-3-x64.dll" "%OUTDIR%\libcrypto-3-x64.dll" > nul 2>nul
 copy /Y "%DBG_DIR%\libssl-3-x64.dll"    "%OUTDIR%\libssl-3-x64.dll"    > nul 2>nul
 :: libmysql.dll — runtime DLL required by dbmysql.dll (libmysql.lib is an import lib).
