@@ -575,6 +575,13 @@ if not exist "%LC_COMPILE%" (
     exit /b 1
 )
 
+:: Create the packaged extension directory and seed it with the manifest
+:: if it doesn't already exist (first CI run, clean checkout).
+if not exist "%BROWSER_PKG%" mkdir "%BROWSER_PKG%"
+if not exist "%BROWSER_PKG%\manifest.xml" (
+    copy /Y "extensions\widgets\browser\manifest.xml" "%BROWSER_PKG%\manifest.xml" > nul
+)
+
 :: Delete the old module to force a clean output.
 if exist "%BROWSER_PKG%\module.lcm" del /F /Q "%BROWSER_PKG%\module.lcm"
 
