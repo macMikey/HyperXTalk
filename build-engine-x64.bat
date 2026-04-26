@@ -168,6 +168,40 @@ echo LCB modules OK.
 
 echo.
 :: ----------------------------------------------------------
+:: Generate startupstack.cpp (shared_intermediate/src/startupstack.cpp).
+::
+:: dependency chain:
+::   descriptify_environment_stack.vcxproj
+::     → runs server-community.exe (committed bootstrap binary) to produce
+::       shared_intermediate/src/environment_descriptified.livecode
+::   encode_environment_stack.vcxproj
+::     → runs util/compress_data.py on the .livecode file to produce
+::       shared_intermediate/src/startupstack.cpp
+::
+:: development.vcxproj compiles startupstack.cpp, so this must run before
+:: the engine build.  On the developer's machine the file is a leftover from
+:: a previous build; on a clean CI checkout it does not exist.
+::
+:: We build encode_environment_stack with BuildProjectReferences=true so
+:: MSBuild automatically chains descriptify_environment_stack first.
+:: ----------------------------------------------------------
+echo Generating startupstack.cpp (encode_environment_stack) ...
+echo Generating startupstack.cpp ... >> "%LOGFILE%"
+set "VCXPROJ_ENCODE=build-win-x86_64\livecode\engine\encode_environment_stack.vcxproj"
+set "ENCODE_LOG=%~dp0build-encode-stack.log"
+"%MSBUILD%" %VCXPROJ_ENCODE% /p:Configuration=Debug /p:Platform=x64 /p:BuildProjectReferences=true /v:minimal /nologo > "%ENCODE_LOG%" 2>&1
+set ENCODE_ERR=%ERRORLEVEL%
+type "%ENCODE_LOG%"
+type "%ENCODE_LOG%" >> "%LOGFILE%"
+if %ENCODE_ERR% NEQ 0 (
+    echo.
+    echo ENCODE_ENVIRONMENT_STACK FAILED. See %ENCODE_LOG% for details.
+    exit /b 1
+)
+echo encode_environment_stack OK.
+
+echo.
+:: ----------------------------------------------------------
 :: Build security-community.lib (stacksecurity.cpp — sets
 :: license_class and deploy_targets for community builds).
 :: Must be explicit because development.vcxproj uses
