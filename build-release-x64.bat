@@ -841,6 +841,32 @@ if %LC_ERR% NEQ 0 ( echo BROWSER WIDGET BUILD FAILED. See %LCOMPILE_LOG% & exit 
 echo Browser widget OK.
 
 echo.
+:: ----------------------------------------------------------
+:: Diagnostic: smoke-test server-community.exe before the
+:: lcs-extensions step so we get clear failure output if the
+:: binary itself cannot run (missing DLL, bad environment, etc.)
+:: ----------------------------------------------------------
+echo Smoke-testing server-community.exe (Release) ...
+set "SCE_SMOKE_LOG=%~dp0build-server-smoke.log"
+set "SCE_SMOKE_SCRIPT=%OUTDIR%\__smoke_test__.lc"
+:: Write a minimal .lc script that just writes to stderr and quits 0.
+(echo #! & echo write "server-community smoke: ok" to stderr & echo quit 0) > "%SCE_SMOKE_SCRIPT%"
+cd /d "%OUTDIR%"
+"%OUTDIR%\server-community.exe" "%SCE_SMOKE_SCRIPT%" > "%SCE_SMOKE_LOG%" 2>&1
+set SCE_SMOKE_ERR=%ERRORLEVEL%
+cd /d "%~dp0"
+del "%SCE_SMOKE_SCRIPT%" > nul 2>&1
+type "%SCE_SMOKE_LOG%"
+type "%SCE_SMOKE_LOG%" >> "%LOGFILE%"
+if %SCE_SMOKE_ERR% NEQ 0 (
+    echo ERROR: server-community.exe smoke test failed with exit code %SCE_SMOKE_ERR%.
+    echo        DLLs present in Release\:
+    dir "%OUTDIR%\*.dll" /B
+) else (
+    echo server-community.exe smoke test OK.
+)
+
+echo.
 echo Building lcs-extensions (script libraries) (Release) ...
 echo Building lcs-extensions ... >> "%LOGFILE%"
 set "LCS_LOG=%~dp0build-lcs-extensions-release.log"
