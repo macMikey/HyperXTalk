@@ -269,11 +269,34 @@ echo.
 :: We build encode_environment_stack with BuildProjectReferences=true so
 :: MSBuild automatically chains descriptify_environment_stack first.
 :: ----------------------------------------------------------
+:: Step 1: descriptify_environment_stack — runs the committed server-community.exe
+:: to produce environment_descriptified.livecode.
+:: Built with BuildProjectReferences=false to avoid chaining into host-server →
+:: server → libicu → fetch → fetch-win, which aborts because prebuilt/lib/win32/
+:: icudt.lib is not in the repo.  server-community.exe is already committed.
+echo Generating environment_descriptified.livecode (descriptify_environment_stack) ...
+echo Generating environment_descriptified.livecode ... >> "%LOGFILE%"
+set "VCXPROJ_DESCRIPTIFY=build-win-x86_64\livecode\engine\descriptify_environment_stack.vcxproj"
+set "DESCRIPTIFY_LOG=%~dp0build-descriptify-stack.log"
+"%MSBUILD%" %VCXPROJ_DESCRIPTIFY% /p:Configuration=Debug /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo > "%DESCRIPTIFY_LOG%" 2>&1
+set DESCRIPTIFY_ERR=%ERRORLEVEL%
+type "%DESCRIPTIFY_LOG%"
+type "%DESCRIPTIFY_LOG%" >> "%LOGFILE%"
+if %DESCRIPTIFY_ERR% NEQ 0 (
+    echo.
+    echo DESCRIPTIFY_ENVIRONMENT_STACK FAILED. See %DESCRIPTIFY_LOG% for details.
+    exit /b 1
+)
+echo descriptify_environment_stack OK.
+
+echo.
+:: Step 2: encode_environment_stack — runs util/compress_data.py on the
+:: .livecode file to produce startupstack.cpp.
 echo Generating startupstack.cpp (encode_environment_stack) ...
 echo Generating startupstack.cpp ... >> "%LOGFILE%"
 set "VCXPROJ_ENCODE=build-win-x86_64\livecode\engine\encode_environment_stack.vcxproj"
 set "ENCODE_LOG=%~dp0build-encode-stack.log"
-"%MSBUILD%" %VCXPROJ_ENCODE% /p:Configuration=Debug /p:Platform=x64 /p:BuildProjectReferences=true /v:minimal /nologo > "%ENCODE_LOG%" 2>&1
+"%MSBUILD%" %VCXPROJ_ENCODE% /p:Configuration=Debug /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo > "%ENCODE_LOG%" 2>&1
 set ENCODE_ERR=%ERRORLEVEL%
 type "%ENCODE_LOG%"
 type "%ENCODE_LOG%" >> "%LOGFILE%"
