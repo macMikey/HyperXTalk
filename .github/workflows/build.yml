@@ -191,6 +191,39 @@ jobs:
           $msbuildDir = Split-Path $msbuild -Parent
           echo $msbuildDir >> $env:GITHUB_PATH
 
+      - name: Locate or install ATL headers (needed by kernel for w32-ds-player.cpp)
+        shell: pwsh
+        run: |
+          # kernel.vcxproj (v142 toolset) compiles w32-ds-player.cpp which includes
+          # atlbase.h.  ATL for the v142 toolset may not be present on the runner by
+          # default, so we search first and install if necessary.
+          $atl = Get-ChildItem -Path "C:\Program Files\Microsoft Visual Studio" `
+                 -Filter "atlbase.h" -Recurse -ErrorAction SilentlyContinue |
+                 Select-Object -First 1
+          if ($atl) {
+            Write-Host "ATL found at: $($atl.FullName)"
+            $atlDir = $atl.DirectoryName
+            echo "INCLUDE=$env:INCLUDE;$atlDir" >> $env:GITHUB_ENV
+          } else {
+            Write-Host "atlbase.h not found — installing Microsoft.VisualStudio.Component.VC.v142.ATL ..."
+            $vswhere  = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+            $vsPath   = & $vswhere -latest -products * -property installationPath
+            $installer = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vs_installer.exe"
+            & $installer modify --installPath $vsPath `
+                --add Microsoft.VisualStudio.Component.VC.v142.ATL `
+                --quiet --norestart --noUpdateInstaller
+            $atl = Get-ChildItem -Path "C:\Program Files\Microsoft Visual Studio" `
+                   -Filter "atlbase.h" -Recurse -ErrorAction SilentlyContinue |
+                   Select-Object -First 1
+            if (-not $atl) {
+              Write-Error "atlbase.h still not found after install attempt"
+              exit 1
+            }
+            $atlDir = $atl.DirectoryName
+            Write-Host "ATL installed at: $($atl.FullName)"
+            echo "INCLUDE=$env:INCLUDE;$atlDir" >> $env:GITHUB_ENV
+          }
+
       - name: Build thirdparty libraries
         shell: cmd
         run: build-thirdparty-x64.bat
