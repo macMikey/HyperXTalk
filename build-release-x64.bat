@@ -424,16 +424,16 @@ for %%F in ("%ICU_DBG%\*.lib")  do ( copy /Y "%%F" "%ICU_REL%\%%~nxF"  > nul )
 for %%F in ("%SSL_DBG%\*.lib")  do ( copy /Y "%%F" "%SSL_REL%\%%~nxF"  > nul )
 echo ICU + OpenSSL prebuilt lib bootstrap OK.
 
-:: WebView2 import lib — only in the Debug|x64 AdditionalLibraryDirectories of
-:: development.vcxproj; copy it into Release\lib so the Release linker finds it.
-set "WV2_LIB=%~dp0packages\Microsoft.Web.WebView2.1.0.3912.50\build\native\x64\WebView2Loader.dll.lib"
-set "WV2_DLL=%~dp0packages\Microsoft.Web.WebView2.1.0.3912.50\build\native\x64\WebView2Loader.dll"
+:: WebView2 static loader lib — copy into Release\lib so the Release linker finds
+:: it.  We use WebView2LoaderStatic.lib (not WebView2Loader.dll.lib) so that
+:: neither the IDE nor compiled standalones carry a hard load-time DLL dependency.
+:: WebView2Loader.dll is therefore NOT needed in the output directory.
+set "WV2_LIB=%~dp0packages\Microsoft.Web.WebView2.1.0.3912.50\build\native\x64\WebView2LoaderStatic.lib"
 if exist "%WV2_LIB%" (
-    copy /Y "%WV2_LIB%" "%RELEASE_LIB_DIR%\WebView2Loader.dll.lib" > nul
-    if exist "%WV2_DLL%" copy /Y "%WV2_DLL%" "%OUTDIR%\WebView2Loader.dll" > nul
+    copy /Y "%WV2_LIB%" "%RELEASE_LIB_DIR%\WebView2LoaderStatic.lib" > nul
     echo WebView2 bootstrap OK.
 ) else (
-    echo WARNING: WebView2Loader.dll.lib not found at %WV2_LIB%
+    echo WARNING: WebView2LoaderStatic.lib not found at %WV2_LIB%
 )
 
 echo Bootstrapping lc-compile.exe + ICU DLLs ...
@@ -644,20 +644,27 @@ echo Building standalone-community.exe (Release) ...
 echo Building standalone-community.exe ... >> "%LOGFILE%"
 set "STANDALONE_LOG=%~dp0build-standalone-release.log"
 set "STANDALONE_EXE=%OUTDIR%\standalone-community.exe"
-"%MSBUILD%" %VCXPROJ_STANDALONE% /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo > "%STANDALONE_LOG%" 2>&1
+"%MSBUILD%" %VCXPROJ_STANDALONE% /t:Rebuild /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false /v:minimal /nologo > "%STANDALONE_LOG%" 2>&1
 set STANDALONE_ERR=%ERRORLEVEL%
 type "%STANDALONE_LOG%"
 type "%STANDALONE_LOG%" >> "%LOGFILE%"
 if %STANDALONE_ERR% NEQ 0 goto standalone_failed_rel
+if not exist "%STANDALONE_EXE%" goto standalone_failed_rel
 echo standalone-community.exe OK.
+:: Keep the development-mode Runtime template in sync with the freshly linked binary.
+:: The IDE (run directly from Release\, not installed) reads the standalone template from
+:: ide\Runtime\Windows\x86-64\Standalone.  Without this copy, that file stays stale and
+:: any compiled standalone inherits the old binary's DLL import table.
+copy /Y "%STANDALONE_EXE%" "%~dp0ide\Runtime\Windows\x86-64\Standalone" > nul
+echo Runtime\Standalone template updated.
 goto standalone_done_rel
 :standalone_failed_rel
 set "STANDALONE_ERRORS=%~dp0build-standalone-errors-release.log"
 findstr /v /r "LNK4099\|LNK4075" "%STANDALONE_LOG%" > "%STANDALONE_ERRORS%"
-echo STANDALONE BUILD FAILED. Filtered errors:
+echo STANDALONE BUILD FAILED. Errors:
 type "%STANDALONE_ERRORS%"
-if not exist "%STANDALONE_EXE%" ( echo ERROR: standalone-community.exe missing. & exit /b 1 )
-echo WARNING: Using existing standalone-community.exe from a previous build.
+echo ERROR: standalone-community.exe missing or build failed.
+exit /b 1
 :standalone_done_rel
 
 echo.
@@ -810,83 +817,4 @@ if not exist "%LC_COMPILE%" (
 :: can resolve the 'use com.livecode.library.widgetutils' import.
 :: The .lcm bytecode is configuration-independent, so we bootstrap
 :: both from the Debug output / source tree.
-:: ----------------------------------------------------------
-if not exist "%BROWSER_PKG%" mkdir "%BROWSER_PKG%"
-copy /Y "extensions\widgets\browser\manifest.xml" "%BROWSER_PKG%\manifest.xml" > nul
-echo Browser widget package dir OK.
-
-set "WU_SRC=%~dp0extensions\modules\widget-utils"
-set "WU_PKG=%OUTDIR%\packaged_extensions\com.livecode.library.widgetutils"
-set "WU_LCI_SRC=%DBG_DIR%\modules\lci\com.livecode.library.widgetutils.lci"
-if not exist "%WU_PKG%" mkdir "%WU_PKG%"
-copy /Y "%WU_SRC%\module.lcm"  "%WU_PKG%\module.lcm"  > nul
-copy /Y "%WU_SRC%\manifest.xml" "%WU_PKG%\manifest.xml" > nul
-if exist "%WU_LCI_SRC%" (
-    copy /Y "%WU_LCI_SRC%" "%LCI_DIR%\com.livecode.library.widgetutils.lci" > nul
-) else (
-    echo ERROR: com.livecode.library.widgetutils.lci not found in Debug lci dir.
-    echo        Run the Debug build first to produce it.
-    exit /b 1
-)
-echo widgetutils bootstrap OK.
-
-if exist "%BROWSER_PKG%\module.lcm" del /F /Q "%BROWSER_PKG%\module.lcm"
-
-set "LCOMPILE_LOG=%~dp0build-browser-widget-release.log"
-"%LC_COMPILE%" --modulepath "%BROWSER_PKG%" --modulepath "%LCI_DIR%" --manifest "%BROWSER_PKG%\manifest.xml" --output "%BROWSER_PKG%\module.lcm" "%BROWSER_LCB%" > "%LCOMPILE_LOG%" 2>&1
-set LC_ERR=%ERRORLEVEL%
-type "%LCOMPILE_LOG%"
-type "%LCOMPILE_LOG%" >> "%LOGFILE%"
-if %LC_ERR% NEQ 0 ( echo BROWSER WIDGET BUILD FAILED. See %LCOMPILE_LOG% & exit /b 1 )
-echo Browser widget OK.
-
-echo.
-:: ----------------------------------------------------------
-:: Diagnostic: smoke-test server-community.exe before the
-:: lcs-extensions step so we get clear failure output if the
-:: binary itself cannot run (missing DLL, bad environment, etc.)
-:: ----------------------------------------------------------
-echo Smoke-testing server-community.exe (Release) ...
-set "SCE_SMOKE_LOG=%~dp0build-server-smoke.log"
-set "SCE_SMOKE_SCRIPT=%OUTDIR%\__smoke_test__.lc"
-:: Write a minimal .lc script that just writes to stderr and quits 0.
-(echo #! & echo write "server-community smoke: ok" to stderr & echo quit 0) > "%SCE_SMOKE_SCRIPT%"
-cd /d "%OUTDIR%"
-"%OUTDIR%\server-community.exe" "%SCE_SMOKE_SCRIPT%" > "%SCE_SMOKE_LOG%" 2>&1
-set SCE_SMOKE_ERR=%ERRORLEVEL%
-cd /d "%~dp0"
-del "%SCE_SMOKE_SCRIPT%" > nul 2>&1
-type "%SCE_SMOKE_LOG%"
-type "%SCE_SMOKE_LOG%" >> "%LOGFILE%"
-if %SCE_SMOKE_ERR% NEQ 0 (
-    echo ERROR: server-community.exe smoke test failed with exit code %SCE_SMOKE_ERR%.
-    echo        DLLs present in Release\:
-    dir "%OUTDIR%\*.dll" /B
-) else (
-    echo server-community.exe smoke test OK.
-)
-
-echo.
-echo Building lcs-extensions (script libraries) (Release) ...
-echo Building lcs-extensions ... >> "%LOGFILE%"
-set "LCS_LOG=%~dp0build-lcs-extensions-release.log"
-"%MSBUILD%" %VCXPROJ_LCS_EXTENSIONS% /p:Configuration=Release /p:Platform=x64 /p:BuildProjectReferences=false "/p:SolutionDir=%~dp0build-win-x86_64\livecode\\" /v:minimal /nologo > "%LCS_LOG%" 2>&1
-set LCS_ERR=%ERRORLEVEL%
-type "%LCS_LOG%"
-type "%LCS_LOG%" >> "%LOGFILE%"
-:: Always show per-extension server-community.exe output (captured to sce-*.log
-:: by the CommandLineTemplate; MSBuild /v:minimal suppresses task stdout so we
-:: must type them explicitly from the bat script).
-for %%F in ("%OUTDIR%\sce-*.log") do (
-    echo --- %%~nxF ---
-    type "%%F"
-    type "%%F" >> "%LOGFILE%"
-)
-if %LCS_ERR% NEQ 0 ( echo LCS-EXTENSIONS BUILD FAILED. See %LCS_LOG% & exit /b 1 )
-echo lcs-extensions OK.
-
-echo.
-echo ============================================================
-echo Release build complete.
-echo Output: %OUTDIR%
-echo ============================================================
+:: ---------------------------------------------------

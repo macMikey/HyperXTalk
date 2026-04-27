@@ -113,9 +113,9 @@ Source: "{#SourceDir}\icuuc58.dll";  DestDir: "{app}\Runtime\Windows\x86-64"; Fl
 Source: "{#SourceDir}\libcrypto-3-x64.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourceDir}\libssl-3-x64.dll";    DestDir: "{app}"; Flags: ignoreversion
 
-; WebView2 — needed in the engine folder so the builder can copy it into standalones
-Source: "{#SourceDir}\WebView2Loader.dll"; DestDir: "{app}";                       Flags: ignoreversion
-Source: "{#SourceDir}\WebView2Loader.dll"; DestDir: "{app}\Runtime\Windows\x86-64"; Flags: ignoreversion
+; WebView2 — no WebView2Loader.dll needed; the static loader (WebView2LoaderStatic.lib)
+; is compiled into HyperXTalk.exe and standalone-community.exe, so the DLL is not
+; required at runtime.
 
 ; Support DLLs — revpdfprinter and revsecurity sit in {app} root (not Externals).
 ; The standalone builder (revCopyExternals) copies them from the Support subfolder of
