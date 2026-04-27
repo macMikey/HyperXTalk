@@ -126,7 +126,21 @@ void MCStacklist::destroy()
 
 Boolean MCStacklist::isempty()
 {
-	return stacks == NULL;
+    if (stacks == NULL)
+        return True;
+    // HXT: Script-only stacks (workers, IDE tool palettes, etc.) have no real
+    // window and are never closed by the user. Treat a list that contains only
+    // script-only stacks as empty so the engine quit-detection in dskmain.cpp
+    // still fires when the last visible window is closed.
+    MCStacknode *tptr = stacks;
+    do
+    {
+        if (!tptr->getstack()->isscriptonly())
+            return False;
+        tptr = tptr->next();
+    }
+    while (tptr != stacks);
+    return True;
 }
 
 static int stack_real_mode(MCStack *p_stack)

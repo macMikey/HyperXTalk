@@ -26,6 +26,7 @@ along with LiveCode.  If not see <http://www.gnu.org/licenses/>.  */
 #include "sellst.h"
 #include "stacklst.h"
 #include "dispatch.h"
+#include "mcworker.h"
 #include "hndlrlst.h"
 #include "cardlst.h"
 
@@ -1349,6 +1350,12 @@ int X_close(void)
         gptr -> removereferences();
 		delete gptr;
 	}
+
+    // HXT: Destroy all worker backing stacks before the dispatcher is deleted.
+    // This properly removes them from the dispatcher's stack list (via dodel /
+    // removereferences) so the dispatcher destructor does not encounter dangling
+    // pointers when it iterates its own stacks list.
+    MCWorkerRegistryFinalize();
 
 	// MW-2012-02-14: [[ FontRefs ]] Close the dispatcher before deleting it.
 	// Note: the destructor calls while(opened) close(), so the explicit

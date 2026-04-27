@@ -65,6 +65,10 @@ void MCWorkerRegistryFinalize()
     while (t_worker != nullptr)
     {
         MCWorker *t_next = t_worker->next;
+        // Destroy the backing stack immediately (True) so file handles and
+        // other resources are released before the MCWorker object is deleted.
+        if (t_worker->GetStack() != nullptr)
+            MCdispatcher->destroystack(t_worker->GetStack(), True);
         delete t_worker;
         t_worker = t_next;
     }
@@ -270,10 +274,12 @@ void MCWorkerExecDestroy(MCExecContext &ctxt,
         return;
     }
 
-    // Remove the backing stack from the dispatcher.
+    // Remove the backing stack from the dispatcher immediately (True) so that
+    // any file handles or other resources held by the stack are released right
+    // away rather than deferred until the next idle cycle.
     MCStack *t_stack = t_worker->GetStack();
     if (t_stack != nullptr)
-        MCdispatcher->destroystack(t_stack, False);
+        MCdispatcher->destroystack(t_stack, True);
 
     MCWorkerRemove(p_name);
 }

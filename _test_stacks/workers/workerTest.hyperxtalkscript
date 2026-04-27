@@ -48,7 +48,9 @@ end onReverseWordsResult
 -- Cleanup
 -- -----------------------------------------------------------------------
 on closeStack
+   answer 1
    if (there is a worker "mathWorker") then
+      answer 2
       destroy worker "mathWorker"
    end if
 end closeStack
