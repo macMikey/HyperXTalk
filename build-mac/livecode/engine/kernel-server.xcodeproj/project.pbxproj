@@ -175,6 +175,7 @@
 		2B2FBA31F03834840293060A /* filepath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 53E2D2A6E8CD4D145303E4B5 /* filepath.cpp */; };
 		2CA166BE5346FE7BA3F9404B /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BF5C7DD88AE1D1B26272863 /* Carbon.framework */; };
 		2CF30998C462FE5985B30701 /* mcstring.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 74AF029019AAF8477A501AA9 /* mcstring.cpp */; };
+		91CEDC8824CE9CFBD4801E9C /* mcworker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B93659D44E4B3723D3300FB7 /* mcworker.cpp */; };
 		2D0968BADE2463A4550888C0 /* graphic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB198C656CCF835A7B8574AA /* graphic.cpp */; };
 		2F9723B9971EB54C9D732A51 /* operator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4F6A3D4D67132E01E36AD528 /* operator.cpp */; };
 		2FADCF850CC979E772DB564C /* clipboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A10B17AA5CDE2EAF0F3C3D05 /* clipboard.cpp */; };
@@ -591,6 +592,7 @@
 		F0643C5164F1C03030013F6E /* mctheme.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DC727C454CB165E096A71FFF /* mctheme.cpp */; };
 		F0AB9A0E6DA41637F551E17C /* image_rep.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EB35D516332CA26757B251F5 /* image_rep.cpp */; };
 		F0D501498A3280C0145D4DB2 /* mcstring.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 74AF029019AAF8477A501AA9 /* mcstring.cpp */; };
+		FBCC88CD599E9BB4EFE03F9E /* mcworker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B93659D44E4B3723D3300FB7 /* mcworker.cpp */; };
 		F1FC68DB1368F4BACE4A1626 /* exec-interface-control.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D175832F8792F277F4B65A83 /* exec-interface-control.cpp */; };
 		F24317D047A02C949A4A8969 /* igif.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7B5C736C82017D647BE48B4B /* igif.cpp */; };
 		F299A40F5410D63FF84E3A0C /* param.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2E85EFA247F1C3B13FC86113 /* param.cpp */; };
@@ -1818,6 +1820,8 @@
 		819A49EFC84A95672A310DA4 /* version */ = {isa = PBXFileReference; lastKnownFileType = text; path = version; sourceTree = "<group>"; };
 		82004258D84EA14F881B35F6 /* magnify.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = magnify.cpp; sourceTree = "<group>"; };
 		82BEC6FA9B7FDD7BDF5A7106 /* mcstring.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mcstring.h; sourceTree = "<group>"; };
+		B93659D44E4B3723D3300FB7 /* mcworker.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = mcworker.cpp; sourceTree = "<group>"; };
+		EE421A23F45CE00813B84DC8 /* mcworker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mcworker.h; sourceTree = "<group>"; };
 		8302920D48B2F98F031917FF /* stack3.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = stack3.cpp; sourceTree = "<group>"; };
 		83A67A2392289F8C3706C0B0 /* util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = util.h; sourceTree = "<group>"; };
 		83BDC293F705052C5F32B8F0 /* libgraphics.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libgraphics.xcodeproj; path = "../build-mac/livecode/libgraphics/libgraphics.xcodeproj"; sourceTree = SOURCE_ROOT; };
@@ -2748,6 +2752,8 @@
 				AC6A3E7B2BBD3D15F88D9730 /* mcssl.h */,
 				74AF029019AAF8477A501AA9 /* mcstring.cpp */,
 				82BEC6FA9B7FDD7BDF5A7106 /* mcstring.h */,
+				B93659D44E4B3723D3300FB7 /* mcworker.cpp */,
+				EE421A23F45CE00813B84DC8 /* mcworker.h */,
 				DC727C454CB165E096A71FFF /* mctheme.cpp */,
 				434CA3EA21294F766D97B2C6 /* mctheme.h */,
 				C5592CB8102CA43422413860 /* mctristate.h */,
@@ -3907,6 +3913,7 @@
 				794C433AF0AF04C17D97CC88 /* mcio.cpp in Sources */,
 				154D9FD6772056B15B5E4602 /* mcssl.cpp in Sources */,
 				2CF30998C462FE5985B30701 /* mcstring.cpp in Sources */,
+				91CEDC8824CE9CFBD4801E9C /* mcworker.cpp in Sources */,
 				3CC977F13908AF4601AAB7CE /* mcutility.cpp in Sources */,
 				E4D8A7A39DDBEDD02C773A45 /* md5.cpp in Sources */,
 				FD01FBEF93628B1C0BED5FC6 /* notify.cpp in Sources */,
@@ -4171,6 +4178,7 @@
 				C4AE97186F3CE76A80A55970 /* mcio.cpp in Sources */,
 				3FC7051671D5AEC45BFEC989 /* mcssl.cpp in Sources */,
 				F0D501498A3280C0145D4DB2 /* mcstring.cpp in Sources */,
+				FBCC88CD599E9BB4EFE03F9E /* mcworker.cpp in Sources */,
 				9FD0049D6D9B0D853384FFFC /* mcutility.cpp in Sources */,
 				A26D7CF92D4BD5CEAC55BBFD /* md5.cpp in Sources */,
 				F8C135060A907B08149294D7 /* notify.cpp in Sources */,

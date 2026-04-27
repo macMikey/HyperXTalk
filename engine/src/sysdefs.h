@@ -1378,7 +1378,10 @@ enum Chunk_term {
     // SN-2014-04-15 [[ ByteChunk ]] CT_ELEMENT should be put after the char chunks, as the value won't be evaluated as a string
 	CT_ELEMENT,
     CT_TYPES,
-	CT_KEY
+	CT_KEY,
+	CT_WORKER,
+	// The stack that most recently dispatched into the current worker.
+	CT_CALLER
 };
 
 struct MCObjectPtr

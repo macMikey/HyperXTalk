@@ -241,6 +241,9 @@ enum Parse_errors
 	
 	// {PE-0071} create: no object type
 	PE_CREATE_NOTYPE,
+
+	// create worker: no worker name supplied
+	PE_CREATE_NOWORKERNAME,
 	
 	// {PE-0072} crop: bad image expression
 	PE_CROP_BADIMAGE,
@@ -1468,6 +1471,9 @@ enum Parse_errors
 	
 	// {PE-0480} dispatch: bad target
 	PE_DISPATCH_BADTARGET,
+
+	// dispatch: bad worker name expression
+	PE_DISPATCH_BADWORKERNAME,
 	
 	// {PE-0481} do: unknown target environment
 	PE_DO_BADENV,
