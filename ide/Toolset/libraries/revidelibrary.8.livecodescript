@@ -11122,7 +11122,7 @@ on revIDERegenerateBuiltGuides
    revIDESetUTF8FileContents tDocsCache & slash & "built_guide.js", tData
 end revIDERegenerateBuiltGuides
 
-constant kAPIs = "LiveCode Script,livecode_script|LiveCode Builder,livecode_builder|LiveCode IDE,livecode_ide"
+constant kAPIs = "xTalk Script,livecode_script|xTalk Builder,livecode_builder|xTalk IDE,livecode_ide"
 on revIDERegenerateBuiltAPIs
    local tData, tAPIData
    set the lineDelimiter to "|"
