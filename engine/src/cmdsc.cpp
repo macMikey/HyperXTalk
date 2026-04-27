@@ -55,6 +55,7 @@ along with LiveCode.  If not see <http://www.gnu.org/licenses/>.  */
 #include "redraw.h"
 #include "exec.h"
 #include "objptr.h"
+#include "mcworker.h"
 #include "stacksecurity.h"
 
 #include "graphics_util.h"
@@ -355,6 +356,7 @@ MCCreate::~MCCreate()
     delete newname;
 	delete file;
 	delete container;
+    delete worker_file;
 }
 
 Parse_stat MCCreate::parse(MCScriptPoint &sp)
@@ -399,6 +401,29 @@ Parse_stat MCCreate::parse(MCScriptPoint &sp)
 		case CT_ALIAS:
 			alias = True;
 			break;
+        case CT_WORKER:
+        {
+            // 'create worker <name> [from <scriptfile>]'
+            worker = True;
+            MCerrorlock++;
+            if (sp.parseexp(False, True, &newname) != PS_NORMAL)
+            {
+                MCerrorlock--;
+                MCperror->add(PE_CREATE_NOWORKERNAME, sp);
+                return PS_ERROR;
+            }
+            MCerrorlock--;
+            // Optional 'from <scriptfile>'
+            if (sp.skip_token(SP_FACTOR, TT_FROM) == PS_NORMAL)
+            {
+                if (sp.parseexp(False, True, &worker_file) != PS_NORMAL)
+                {
+                    MCperror->add(PE_CREATE_BADFILENAME, sp);
+                    return PS_ERROR;
+                }
+            }
+            return PS_NORMAL;
+        }
 		default:
 			MCperror->add
 			(PE_CREATE_BADTYPE, sp);
@@ -493,7 +518,21 @@ Parse_stat MCCreate::parse(MCScriptPoint &sp)
 
 void MCCreate::exec_ctxt(MCExecContext& ctxt)
 {
-    if (directory)
+    if (worker)
+    {
+        MCAutoStringRef t_name;
+        if (!ctxt.EvalExprAsStringRef(newname, EE_CREATE_BADEXP, &t_name))
+            return;
+        MCAutoStringRef t_file;
+        if (worker_file != NULL)
+        {
+            if (!ctxt.EvalExprAsStringRef(worker_file, EE_CREATE_BADFILEEXP, &t_file))
+                return;
+        }
+        MCWorkerExecCreate(ctxt, *t_name, worker_file != NULL ? *t_file : nil);
+        return;
+    }
+    else if (directory)
 	{
         MCAutoStringRef t_filename;
         if (!ctxt . EvalExprAsStringRef(newname, EE_CREATE_BADEXP, &t_filename))
@@ -698,11 +737,25 @@ MCDelete::~MCDelete()
 	delete file;
 	deletetargets(&targets);
 	delete var;
+	delete worker_name;
 }
 
 Parse_stat MCDelete::parse(MCScriptPoint &sp)
 {
 	initpoint(sp);
+
+	// destroy/delete worker <name>
+	if (sp.skip_token(SP_FACTOR, TT_CHUNK, CT_WORKER) == PS_NORMAL)
+	{
+		if (sp.parseexp(False, True, &worker_name) != PS_NORMAL)
+		{
+			MCperror->add(PE_CREATE_NOWORKERNAME, sp);
+			return PS_ERROR;
+		}
+		worker = true;
+		return PS_NORMAL;
+	}
+
 	Boolean needfile = False;
 	if (sp.skip_token(SP_HANDLER, TT_VARIABLE) == PS_NORMAL)
 	{
@@ -762,6 +815,15 @@ Parse_stat MCDelete::parse(MCScriptPoint &sp)
 bool MCServerDeleteSession();
 void MCDelete::exec_ctxt(MCExecContext& ctxt)
 {
+	if (worker)
+	{
+		MCAutoStringRef t_name;
+		if (!ctxt.EvalExprAsStringRef(worker_name, EE_DELETE_BADFILEEXP, &t_name))
+			return;
+		MCWorkerExecDestroy(ctxt, *t_name);
+		return;
+	}
+
     if (var != NULL)
 		MCEngineExecDeleteVariable(ctxt, var);
 	else if (file != NULL)

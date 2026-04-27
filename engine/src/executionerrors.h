@@ -430,7 +430,7 @@ enum Exec_errors
 	
 	// {EE-0134} create: stack is locked (cantModify)
 	EE_CREATE_LOCKED,
-	
+
 	// {EE-0135} crop: error in image expression
 	EE_CROP_NOIMAGE,
 	
@@ -2056,7 +2056,7 @@ enum Exec_errors
 	
 	// {EE-0676} dispatch: bad target
 	EE_DISPATCH_BADTARGET,
-	
+
 	// {EE-0677} queryRegistry: bad destination
 	EE_QUERYREGISTRY_BADDEST,
 	

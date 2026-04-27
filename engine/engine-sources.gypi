@@ -110,6 +110,8 @@
 			'src/literal.cpp',
 			'src/keywords.cpp',
 			'src/mcmessagedigest.cpp',
+			'src/mcworker.h',
+			'src/mcworker.cpp',
 			'src/newobj.cpp',
 			'src/operator.cpp',
 			'src/param.cpp',
