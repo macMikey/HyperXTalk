@@ -22,7 +22,9 @@ end openStack
 on testWorkers
    --   -- Create the worker. If it already exists the engine sets the result
    --   -- to an error; we just ignore that here for simplicity.
-   create worker "mathWorker" from sWorkerScriptPath
+   if (there is not a worker "mathWorker") then
+      create worker "mathWorker" from sWorkerScriptPath
+   end if 
    
    -- Test 1: compute squares of 1..8
    dispatch "computeSquares" to worker "mathWorker" with 8
@@ -46,5 +48,7 @@ end onReverseWordsResult
 -- Cleanup
 -- -----------------------------------------------------------------------
 on closeStack
-   destroy worker "mathWorker"
+   if (there is a worker "mathWorker") then
+      destroy worker "mathWorker"
+   end if
 end closeStack
