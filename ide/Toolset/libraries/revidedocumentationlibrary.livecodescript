@@ -13,15 +13,16 @@ end extensionFinalize
 
 private on ideDocsEnsureDatabase pLocation
    if there is not a file (pLocation & slash & "api.sqlite") then
-      -- Only copy the distributed api.sqlite if it actually exists and is
-      -- non-empty.  On installed Windows builds there is no pre-built
-      -- api.sqlite in the distributed folder (it is gitignored and generated
-      -- at runtime).  Writing empty data here would produce a corrupt SQLite
-      -- file that makes revDocsOpenAPIDatabase fail and aborts the entire doc
-      -- update.  When the source is absent we leave the cache location alone
-      -- so that revDocsOpenAPIDatabase creates a fresh database itself.
+      -- Always read from the shipped (app bundle) location, not the cache.
+      -- revIDESpecialFolderPath("API") redirects to the cache on installed
+      -- builds, so using it as the source creates a circular lookup where
+      -- both paths point to the (empty) cache.  The shipped database lives
+      -- at <Tools>/Documentation/html_viewer/resources/data/api/api.sqlite
+      -- regardless of whether the app is installed or running from source.
       local tSource
-      put revIDESpecialFolderPath("API") & slash & "api.sqlite" into tSource
+      set the itemdel to "/"
+      put item 1 to -3 of the filename of stack "home" & \
+            "/Documentation/html_viewer/resources/data/api/api.sqlite" into tSource
       if there is a file tSource then
          local tSourceData
          put url ("binfile:" & tSource) into tSourceData
