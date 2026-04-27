@@ -31,8 +31,6 @@ private on ideDocsEnsureDatabase pLocation
    local tShouldCopy
    if there is not a file tDest then
       put true into tShouldCopy
-   else if the size of file tDest < the size of file tSource then
-      put true into tShouldCopy
    end if
 
    if tShouldCopy then
