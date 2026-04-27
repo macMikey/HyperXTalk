@@ -380,7 +380,7 @@
 		05E3C8AFA752C5626BCAD914 /* BUILT_PRODUCTS_DIR */ = {
 			isa = PBXGroup;
 			children = (
-				F1BEB5EEE16CA33B26D2C1C6 /* com.livecode.library.animationengine */,
+				F1BEB5EEE16CA33B26D2C1C6 /* com.hyperxtalk.library.animationengine */,
 				2E905DCC6106EB57BEF2A4A7 /* com.livecode.library.diff */,
 				8417B4B265FD71C4442C8753 /* com.livecode.library.drawing */,
 				9348B2A3537ADAEF1D954B02 /* com.livecode.library.dropbox */,
@@ -1014,12 +1014,12 @@
 			path = resources;
 			sourceTree = "<group>";
 		};
-		F1BEB5EEE16CA33B26D2C1C6 /* com.livecode.library.animationengine */ = {
+		F1BEB5EEE16CA33B26D2C1C6 /* com.hyperxtalk.library.animationengine */ = {
 			isa = PBXGroup;
 			children = (
 				3ACCF113D2D7C6D34A94CD9F /* animationengine.livecodescript */,
 			);
-			path = com.livecode.library.animationengine;
+			path = com.hyperxtalk.library.animationengine;
 			sourceTree = "<group>";
 		};
 		F3C692ED8067D603960C7DB9 /* iosbutton */ = {
@@ -1309,7 +1309,7 @@
 				"$(BUILT_PRODUCTS_DIR)/packaged_extensions/com.livecode.library.mime/mime.livecodescript",
 				"$(BUILT_PRODUCTS_DIR)/packaged_extensions/com.livecode.library.drawing/drawing.livecodescript",
 				"$(BUILT_PRODUCTS_DIR)/packaged_extensions/com.livecode.library.dropbox/dropbox.livecodescript",
-				"$(BUILT_PRODUCTS_DIR)/packaged_extensions/com.livecode.library.animationengine/animationengine.livecodescript",
+				"$(BUILT_PRODUCTS_DIR)/packaged_extensions/com.hyperxtalk.library.animationengine/animationengine.livecodescript",
 				"$(BUILT_PRODUCTS_DIR)/packaged_extensions/com.livecode.library.diff/diff.livecodescript",
 				"$(BUILT_PRODUCTS_DIR)/packaged_extensions/com.livecode.library.messageauthentication/messageauthentication.livecodescript",
 				"$(BUILT_PRODUCTS_DIR)/packaged_extensions/com.livecode.library.httpd/httpd.livecodescript",

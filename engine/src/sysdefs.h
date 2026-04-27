@@ -1379,7 +1379,9 @@ enum Chunk_term {
 	CT_ELEMENT,
     CT_TYPES,
 	CT_KEY,
-	CT_WORKER
+	CT_WORKER,
+	// The stack that most recently dispatched into the current worker.
+	CT_CALLER
 };
 
 struct MCObjectPtr

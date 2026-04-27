@@ -20,6 +20,7 @@ Software Foundation.  */
 #include "object.h"
 #include "param.h"
 #include "exec.h"
+#include "stacksecurity.h"
 #include "osspec.h"
 #include "securemode.h"
 #include "variable.h"
@@ -33,7 +34,7 @@ Software Foundation.  */
 // ---------------------------------------------------------------------------
 
 MCWorker::MCWorker(MCStringRef p_name)
-    : next(nullptr), m_stack(nullptr)
+    : next(nullptr), m_stack(nullptr), m_caller_stack(nullptr)
 {
     m_name = MCValueRetain(p_name);
 }
@@ -41,18 +42,21 @@ MCWorker::MCWorker(MCStringRef p_name)
 MCWorker::~MCWorker()
 {
     MCValueRelease(m_name);
-    // m_stack is owned by MCdispatcher — do not delete here.
+    // m_stack and m_caller_stack are not owned — do not delete here.
 }
 
 // ---------------------------------------------------------------------------
 // Registry
 // ---------------------------------------------------------------------------
 
-static MCWorker *s_worker_list = nullptr;
+static MCWorker *s_worker_list   = nullptr;
+// The worker whose handler is currently executing, if any.
+static MCWorker *s_current_worker = nullptr;
 
 void MCWorkerRegistryInitialize()
 {
-    s_worker_list = nullptr;
+    s_worker_list    = nullptr;
+    s_current_worker = nullptr;
 }
 
 void MCWorkerRegistryFinalize()
@@ -64,7 +68,8 @@ void MCWorkerRegistryFinalize()
         delete t_worker;
         t_worker = t_next;
     }
-    s_worker_list = nullptr;
+    s_worker_list    = nullptr;
+    s_current_worker = nullptr;
 }
 
 MCWorker *MCWorkerFind(MCStringRef p_name)
@@ -96,6 +101,51 @@ void MCWorkerRemove(MCStringRef p_name)
         }
         t_prev = &t_w->next;
     }
+}
+
+MCWorker *MCWorkerGetCurrent()
+{
+    return s_current_worker;
+}
+
+// ---------------------------------------------------------------------------
+// Shared dispatch helper
+// ---------------------------------------------------------------------------
+
+static void DoDispatch(MCExecContext &ctxt,
+                       MCObjectPtr   &p_target,
+                       MCNameRef      p_message,
+                       bool           p_is_function,
+                       MCParameter   *p_params)
+{
+    uint32_t t_container_count = 0;
+    if (p_params != nullptr)
+        t_container_count = p_params->count_containers();
+
+    MCAutoPointer<MCContainer[]> t_containers = new MCContainer[t_container_count];
+    if (!t_containers)
+    {
+        ctxt.LegacyThrow(EE_NO_MEMORY);
+        return;
+    }
+
+    if (MCKeywordsExecSetupCommandOrFunction(ctxt,
+                                             p_params,
+                                             *t_containers,
+                                             0, 0,
+                                             p_is_function))
+    {
+        if (!ctxt.HasError())
+        {
+            MCEngineExecDispatch(ctxt,
+                                 p_is_function ? HT_FUNCTION : HT_MESSAGE,
+                                 p_message,
+                                 &p_target,
+                                 p_params);
+        }
+    }
+
+    MCKeywordsExecTeardownCommandOrFunction(p_params);
 }
 
 // ---------------------------------------------------------------------------
@@ -143,8 +193,7 @@ void MCWorkerExecCreate(MCExecContext &ctxt,
         if (MCS_loadtextfile(p_script_file, &t_script))
             t_stack->setstringprop(ctxt, 0, P_SCRIPT, False, *t_script);
         // A missing / unreadable file is not fatal — the worker exists but
-        // its script will be empty.  The caller can set the scriptFile
-        // property later once the file is available.
+        // its script will be empty until the caller sets it explicitly.
     }
 
     // Register the worker.
@@ -175,42 +224,40 @@ void MCWorkerExecDispatch(MCExecContext &ctxt,
         return;
     }
 
-    // Build an MCObjectPtr targeting the worker's backing stack.
+    // Record the calling stack so the worker can use 'dispatch ... to caller'.
+    t_worker->SetCallerStack(MCdefaultstackptr);
+
+    // Track which worker is currently executing so CT_CALLER can find it.
+    MCWorker *t_prev_worker = s_current_worker;
+    s_current_worker = t_worker;
+
+    // Build an MCObjectPtr targeting the worker's backing stack and dispatch.
     MCObjectPtr t_target;
     t_target.object  = t_worker->GetStack();
     t_target.part_id = 0;
+    DoDispatch(ctxt, t_target, p_message, p_is_function, p_params);
 
-    // Evaluate parameters and dispatch via the standard engine pathway.
-    // container_count is not available here, so we let
-    // MCKeywordsExecSetupCommandOrFunction handle the param count itself.
-    uint32_t t_container_count = 0;
-    if (p_params != nullptr)
-        t_container_count = p_params->count_containers();
+    // Restore the previous worker context (supports nested worker calls).
+    s_current_worker = t_prev_worker;
+    t_worker->SetCallerStack(nullptr);
+}
 
-    MCAutoPointer<MCContainer[]> t_containers = new MCContainer[t_container_count];
-    if (!t_containers)
+void MCWorkerExecDispatchToCaller(MCExecContext &ctxt,
+                                  MCNameRef      p_message,
+                                  bool           p_is_function,
+                                  MCParameter   *p_params)
+{
+    // Must be called from within a worker handler.
+    if (s_current_worker == nullptr || s_current_worker->GetCallerStack() == nullptr)
     {
-        ctxt.LegacyThrow(EE_NO_MEMORY);
+        ctxt.LegacyThrow(EE_DISPATCH_WORKERNOTFOUND);
         return;
     }
 
-    if (MCKeywordsExecSetupCommandOrFunction(ctxt,
-                                             p_params,
-                                             *t_containers,
-                                             0, 0,
-                                             p_is_function))
-    {
-        if (!ctxt.HasError())
-        {
-            MCEngineExecDispatch(ctxt,
-                                 p_is_function ? HT_FUNCTION : HT_MESSAGE,
-                                 p_message,
-                                 &t_target,
-                                 p_params);
-        }
-    }
-
-    MCKeywordsExecTeardownCommandOrFunction(p_params);
+    MCObjectPtr t_target;
+    t_target.object  = s_current_worker->GetCallerStack();
+    t_target.part_id = 0;
+    DoDispatch(ctxt, t_target, p_message, p_is_function, p_params);
 }
 
 void MCWorkerExecDestroy(MCExecContext &ctxt,

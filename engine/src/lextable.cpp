@@ -308,6 +308,7 @@ const LT command_table[] =
         {"break", TT_STATEMENT, S_BREAK},
         {"breakpoint", TT_STATEMENT, S_BREAKPOINT},
         {"call", TT_STATEMENT, S_CALL},
+        {"caller", TT_CHUNK, CT_CALLER},
         {"cancel", TT_STATEMENT, S_CANCEL},
         {"case", TT_CASE, S_UNDEFINED},
         {"catch", TT_CATCH, S_UNDEFINED},
@@ -331,6 +332,7 @@ const LT command_table[] =
         {"define", TT_STATEMENT, S_DEFINE},
         {"dehilite", TT_STATEMENT, S_UNHILITE},
         {"delete", TT_STATEMENT, S_DELETE},
+        {"destroy", TT_STATEMENT, S_DELETE},
         {"difference", TT_STATEMENT, S_DIFFERENCE},
 		// MW-2008-11-05: [[ Dispatch Command ]] 'dispatch' is a statement keyword
         {"disable", TT_STATEMENT, S_DISABLE},

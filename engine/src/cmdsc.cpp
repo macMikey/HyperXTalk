@@ -737,11 +737,25 @@ MCDelete::~MCDelete()
 	delete file;
 	deletetargets(&targets);
 	delete var;
+	delete worker_name;
 }
 
 Parse_stat MCDelete::parse(MCScriptPoint &sp)
 {
 	initpoint(sp);
+
+	// destroy/delete worker <name>
+	if (sp.skip_token(SP_FACTOR, TT_CHUNK, CT_WORKER) == PS_NORMAL)
+	{
+		if (sp.parseexp(False, True, &worker_name) != PS_NORMAL)
+		{
+			MCperror->add(PE_CREATE_NOWORKERNAME, sp);
+			return PS_ERROR;
+		}
+		worker = true;
+		return PS_NORMAL;
+	}
+
 	Boolean needfile = False;
 	if (sp.skip_token(SP_HANDLER, TT_VARIABLE) == PS_NORMAL)
 	{
@@ -801,6 +815,15 @@ Parse_stat MCDelete::parse(MCScriptPoint &sp)
 bool MCServerDeleteSession();
 void MCDelete::exec_ctxt(MCExecContext& ctxt)
 {
+	if (worker)
+	{
+		MCAutoStringRef t_name;
+		if (!ctxt.EvalExprAsStringRef(worker_name, EE_DISPATCH_WORKERNOTFOUND, &t_name))
+			return;
+		MCWorkerExecDestroy(ctxt, *t_name);
+		return;
+	}
+
     if (var != NULL)
 		MCEngineExecDeleteVariable(ctxt, var);
 	else if (file != NULL)

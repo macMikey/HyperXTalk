@@ -460,6 +460,12 @@ Parse_stat MCDispatchCmd::parse(MCScriptPoint& sp)
                 return PS_ERROR;
             }
         }
+        else if (sp.skip_token(SP_FACTOR, TT_CHUNK, CT_CALLER) == PS_NORMAL)
+        {
+            // 'dispatch <msg> to caller [with <params>]'
+            // Targets the stack that dispatched into the current worker.
+            to_caller = true;
+        }
         else
         {
             target = new (nothrow) MCChunk(False);
@@ -504,6 +510,13 @@ void MCDispatchCmd::exec_ctxt(MCExecContext &ctxt)
         if (!ctxt.EvalExprAsStringRef(worker_name, EE_DISPATCH_BADMESSAGEEXP, &t_worker_name))
             return;
         MCWorkerExecDispatch(ctxt, *t_worker_name, *t_message, is_function, params);
+        return;
+    }
+
+    // Caller dispatch path: 'dispatch <msg> to caller [with <params>]'
+    if (to_caller)
+    {
+        MCWorkerExecDispatchToCaller(ctxt, *t_message, is_function, params);
         return;
     }
 

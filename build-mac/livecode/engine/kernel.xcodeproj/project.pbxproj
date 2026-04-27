@@ -262,6 +262,7 @@
 		C7C72380A1DCF460951E14C4 /* scriptpt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4E0C63E3CCDE7C24C594261 /* scriptpt.cpp */; };
 		C80C8FFC5830FC7F9AB036E5 /* stackfileformat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0365264207C147C45175832 /* stackfileformat.cpp */; };
 		C90E09143027988E7C0920DB /* cmdsc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BC9CC015DD5A01DF8A3B81A9 /* cmdsc.cpp */; };
+		F5BEAD920773E9C6DF249912 /* mcworker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B93659D44E4B3723D3300FB7 /* mcworker.cpp */; };
 		CA85F204DE22E085464D5FD1 /* exec-dialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 71314D1D6E09D4C6AB7407C3 /* exec-dialog.cpp */; };
 		CC3AF40A0ECFDFE2AA8AC50C /* platform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD60F7DB8FFAC80D8CF9463E /* platform.cpp */; };
 		CC83E43BEA6108DC2A1611B5 /* externalv1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F19BE3E65DD7EA80177A145B /* externalv1.cpp */; };
@@ -856,6 +857,8 @@
 		9DD0476901F23E1FEC4F24D5 /* osxtheme.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = osxtheme.h; sourceTree = "<group>"; };
 		9DE250AFCF4F05D60D396357 /* mbliphonecontrol.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = mbliphonecontrol.mm; sourceTree = "<group>"; };
 		9DF3EB880CB2312705EB82FE /* mcstring.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = mcstring.cpp; sourceTree = "<group>"; };
+		B93659D44E4B3723D3300FB7 /* mcworker.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = mcworker.cpp; sourceTree = "<group>"; };
+		EE421A23F45CE00813B84DC8 /* mcworker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mcworker.h; sourceTree = "<group>"; };
 		9E7232AE62D62E553CB639B6 /* osxflst.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = osxflst.h; sourceTree = "<group>"; };
 		9E884BA245735608F3D233EF /* player.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = player.cpp; sourceTree = "<group>"; };
 		9F39428C45957D9D4AD763E0 /* mblcontact.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = mblcontact.cpp; sourceTree = "<group>"; };
@@ -1816,6 +1819,8 @@
 				5BBFD9A9E9BB0B8022D2EDC7 /* mcssl.h */,
 				9DF3EB880CB2312705EB82FE /* mcstring.cpp */,
 				1B0857ADA72583A6F8A16CBD /* mcstring.h */,
+				B93659D44E4B3723D3300FB7 /* mcworker.cpp */,
+				EE421A23F45CE00813B84DC8 /* mcworker.h */,
 				3B813193439629DC24E9E067 /* mctheme.cpp */,
 				C616C151541C479571D0B4E0 /* mctheme.h */,
 				4DABE0E7DE96B718EDE15BED /* mctristate.h */,
@@ -2289,6 +2294,7 @@
 				8FE884A9CA0082894148B32D /* mcio.cpp in Sources */,
 				F7A3B65265E8B0CDAEC108C8 /* mcssl.cpp in Sources */,
 				C2E219A8D3B5E6555277A85D /* mcstring.cpp in Sources */,
+				F5BEAD920773E9C6DF249912 /* mcworker.cpp in Sources */,
 				48B9E25887ADCC88468C9136 /* mcutility.cpp in Sources */,
 				4F6CFD20B3BF4392954F9788 /* md5.cpp in Sources */,
 				A891BC4D44C0EDDB2AF5FDC3 /* notify.cpp in Sources */,

@@ -554,6 +554,8 @@ class MCDelete : public MCStatement
 	Boolean url;
 	MCVarref *var;
 	bool session;
+	MCExpression *worker_name;
+	bool worker;
 public:
 	MCDelete()
 	{
@@ -562,6 +564,8 @@ public:
 		directory = url = False;
 		var = NULL;
 		session = false;
+		worker_name = NULL;
+		worker = false;
 	}
 	virtual ~MCDelete();
 	virtual Parse_stat parse(MCScriptPoint &);
@@ -998,6 +1002,7 @@ public:
 // MW-2008-11-05: [[ Dispatch Command ]] The statement class for the 'dispatch' command.
 //   'dispatch' [ command | function ] <message> [ 'to' <target> ] [ 'with' <arguments> ]
 //   Extended: 'dispatch' <message> 'to' 'worker' <name> [ 'with' <arguments> ]
+//   Extended: 'dispatch' <message> 'to' 'caller' [ 'with' <arguments> ]
 class MCDispatchCmd: public MCStatement
 {
 	MCExpression *message;
@@ -1012,6 +1017,9 @@ class MCDispatchCmd: public MCStatement
         unsigned container_count : 16;
         bool is_function : 1;
         bool to_worker : 1;
+        // Caller dispatch: 'dispatch <msg> to caller [with <params>]'
+        // Resolves to the stack that dispatched into the current worker.
+        bool to_caller : 1;
     };
 
 public:
@@ -1024,6 +1032,7 @@ public:
 		is_function = false;
         container_count = 0;
         to_worker = false;
+        to_caller = false;
 	}
 	~MCDispatchCmd(void);
 
