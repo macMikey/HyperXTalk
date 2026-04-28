@@ -1,4 +1,4 @@
-﻿script "revExtensionBuilderBehavior"
+script "revExtensionBuilderBehavior" with behavior "revPaletteBehavior"
 local sLoadedExtension
 
 on preOpenStack
@@ -149,8 +149,7 @@ end headerActionEditSource
 
 on headerActionOpenExtension
    answer file "Please select a valid extension file" \ 
-         with type "LiveCode Builder|lcb" \
-         or type "LiveCode Script|livecode,livecodescript"
+         with type "Extension Builder|lcb" or type "xTalk Script|livecodescript,oxtscript,hyperxtalkscript"
    
    if the result is "cancel" then exit headerActionOpenExtension
    if there is not a file it then exit headerActionOpenExtension
@@ -339,6 +338,11 @@ private on displayExtensionData pData
    if tHaveSvgIcon then
       set the iconPath of widget "svgicon" of me to pData["svgicon"]
       set the iconPath of widget "svgicon_retina" of me to pData["svgicon"]
+      hide image "icon" ---------------------------------------- FIX: toggle no-icon display -- Paul McClernan 1/12/22
+      hide image "icon_retina"
+   else 
+      show image "icon"
+      show image "icon_retina"
    end if
    
    # Load resources
@@ -395,7 +399,6 @@ on resizeStack
    lock messages
    lock screen
    
-   
    local tLeft, tTop, tRight, tBottom
    put item 4 of tRect - tMargin into tBottom
    put item 3 of tRect - tMargin into tRight
@@ -418,8 +421,15 @@ on resizeStack
    set the topleft of field "label_icons" of me to tLeft,tTop
    put the right of field "label_icons" of me + tPadding into tLeft
    set the topleft of image "icon_retina" of me to tLeft,tTop
+   set the topleft of widget "svgicon_retina" of me to tLeft,tTop -- FIX: adgust SVGIcon Widget position too! -- Paul McClernan 1/12/22
    put the right of image "icon_retina" of me + tPadding into tLeft
    set the topleft of image "icon" of me to tLeft,tTop
+   set the topleft of widget "svgicon" of me to tLeft,tTop -- FIX: adgust SVGIcon Widget position too! -- Paul McClernan 1/12/22
+   put the right of image "icon" of me + tPadding into tLeft
+   set the topleft of field "label_svgicon_absent" of me to tLeft,tTop --FIX: adgust label position too! -- Paul McClernan 1/12/22
+   put the right of image "icon" of me + tPadding into tLeft
+   
+   
    
    # Resources
    put item 1 of tRect + tMargin into tLeft
@@ -494,9 +504,7 @@ end ideExtensionsChanged
 
 on ideExtensionStatusChanged
    local tExtensionDataA
-   put revIDEDeveloperExtensionNoCompile(loadedExtensionGet()) \
-         into tExtensionDataA
-   
+   put revIDEDeveloperExtensionNoCompile(loadedExtensionGet()) into tExtensionDataA
    local tStatus
    put revIDEExtensionProperty(tExtensionDataA["name"], "status") into tStatus
    
