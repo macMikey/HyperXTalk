@@ -1175,6 +1175,50 @@ void MCField::drawrect(MCDC *dc, const MCRectangle &dirty)
 			setforeground(dc, DI_FORE, False);
 		}
 
+        // Draw the password-toggle eye icon when passwordToggle is true.
+        // Eye-open  (●) = passwordField is true  (content is hidden as bullets)
+        // Eye-slash (⊘) = passwordField is false (content is visible)
+        if (m_password_toggle)
+        {
+            MCRectangle t_icon = _passwordToggleIconRect();
+
+            // Use a medium-gray so the icon is visible on light and dark fields.
+            MCColor t_icon_color = {0x7777, 0x7777, 0x7777};
+            dc->setforeground(t_icon_color);
+            dc->setfillstyle(FillSolid, nil, 0, 0);
+
+            // Outer eye shape: horizontally stretched ellipse.
+            int16_t t_cx = t_icon.x + t_icon.width  / 2;
+            int16_t t_cy = t_icon.y + t_icon.height / 2;
+            const int16_t kEyeW = 16, kEyeH = 8;
+            MCRectangle t_eye;
+            t_eye.x      = t_cx - kEyeW / 2;
+            t_eye.y      = t_cy - kEyeH / 2;
+            t_eye.width  = kEyeW;
+            t_eye.height = kEyeH;
+            dc->drawarc(t_eye, 0, 360);
+
+            // Pupil: small filled circle.
+            const int16_t kPupil = 6;
+            MCRectangle t_pupil;
+            t_pupil.x      = t_cx - kPupil / 2;
+            t_pupil.y      = t_cy - kPupil / 2;
+            t_pupil.width  = kPupil;
+            t_pupil.height = kPupil;
+            dc->fillarc(t_pupil, 0, 360);
+
+            // When password is currently visible, draw a diagonal slash through
+            // the eye to indicate "content is showing".
+            if (!m_password_field)
+            {
+                dc->drawline(t_cx - kEyeW / 2 - 1, t_cy + kEyeH / 2 + 3,
+                             t_cx + kEyeW / 2 + 1, t_cy - kEyeH / 2 - 3);
+            }
+
+            // Restore foreground to the normal field text colour.
+            setforeground(dc, DI_FORE, False);
+        }
+
 		// MW-2012-03-15: [[ Bug 10069 ]] If we have hGrid set on the field, then render grid lines
 		//   to fill the rest of the field using the last pgheight we had.
 		if (getflag(F_HGRID))

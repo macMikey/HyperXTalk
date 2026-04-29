@@ -1281,6 +1281,7 @@ enum Properties {
     P_ALWAYS_BUFFER,
     P_PASSWORD,
     P_PASSWORD_FIELD,
+    P_PASSWORD_TOGGLE,
     P_KEY,
     P_MODE,
     P_WM_PLACE,

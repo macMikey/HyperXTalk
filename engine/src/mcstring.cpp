@@ -460,6 +460,7 @@ MCNameRef MCM_open_control;
 MCNameRef MCM_open_field;
 MCNameRef MCM_open_stack;
 MCNameRef MCM_option_key_down;
+MCNameRef MCM_password_toggle_clicked;
 MCNameRef MCM_paste_key;
 MCNameRef MCM_play_paused;
 MCNameRef MCM_play_rate_changed;
@@ -901,6 +902,7 @@ const struct { const char *cstring; MCNameRef *name_var; } kInitialNames[] =
 	{ "openField", &MCM_open_field },
 	{ "openStack", &MCM_open_stack },
 	{ "optionKeyDown", &MCM_option_key_down },
+	{ "passwordToggleClicked", &MCM_password_toggle_clicked },
 	{ "pasteKey", &MCM_paste_key },
 	{ "playPaused", &MCM_play_paused },
     { "playRateChanged", &MCM_play_rate_changed },

@@ -121,6 +121,7 @@ MCPropertyInfo MCField::kProperties[] =
 	DEFINE_RW_OBJ_PART_PROPERTY(P_UNICODE_FORMATTED_TEXT, BinaryString, MCField, UnicodeFormattedText)
 	DEFINE_RW_OBJ_PROPERTY(P_LABEL, String, MCField, Label)
 	DEFINE_RW_OBJ_PROPERTY(P_PASSWORD_FIELD, Bool, MCField, PasswordField)
+	DEFINE_RW_OBJ_PROPERTY(P_PASSWORD_TOGGLE, Bool, MCField, PasswordToggle)
 	DEFINE_RW_OBJ_PROPERTY(P_HINT_TEXT, String, MCField, HintText)
 	DEFINE_RW_OBJ_PROPERTY(P_TOGGLE_HILITE, Bool, MCField, ToggleHilite)
 	DEFINE_RW_OBJ_PROPERTY(P_3D_HILITE, Bool, MCField, ThreeDHilite)
@@ -260,6 +261,7 @@ MCField::MCField()
     text_direction = kMCTextDirectionAuto;
 	label = MCValueRetain(kMCEmptyString);
     m_password_field = false;
+    m_password_toggle = false;
     m_hint_text = MCValueRetain(kMCEmptyString);
 
     // MM-2014-08-11: [[ Bug 13149 ]] Used to flag if a recompute is required during the next draw.
@@ -346,6 +348,7 @@ MCField::MCField(const MCField &fref) : MCControl(fref)
 	MCValueRetain(fref.label);
 	label = fref.label;
 	m_password_field = fref.m_password_field;
+    m_password_toggle = fref.m_password_toggle;
 	MCValueRetain(fref.m_hint_text);
 	m_hint_text = fref.m_hint_text;
 	state &= ~CS_KFOCUSED;
@@ -1047,11 +1050,21 @@ Boolean MCField::mdown(uint2 which)
 		{
 		case T_BROWSE:
 		{
+            // Password-toggle eye icon hit test: check before any other
+            // selection or link handling so the click is fully consumed.
+            if (m_password_toggle && MCU_point_in_rect(_passwordToggleIconRect(), mx, my))
+            {
+                m_password_field = !m_password_field;
+                message(MCM_password_toggle_clicked);
+                layer_redrawrect(getfrect());
+                return True;
+            }
+
 			// MW-2011-02-26: [[ Bug 9417 ]] When clicking on a link in a list we
 			//   still do any autoHilite behavior.
 			bool t_is_link_in_list;
 			t_is_link_in_list = false;
-			
+
 			MCclickfield = this;
 			clickx = mx;
 			clicky = my;
@@ -2569,6 +2582,27 @@ void MCField::draw(MCDC *dc, const MCRectangle& p_dirty, bool p_isolated, bool p
 //  Redraw Management
 //-----------------------------------------------------------------------------
 
+////////////////////////////////////////////////////////////////////////////////
+// Password-toggle icon geometry
+//
+// The eye icon occupies a fixed-size square in the right margin of the field,
+// vertically centred.  Both the drawing code (fieldf.cpp) and the click
+// hit-test (mdown) use this single source of truth.
+
+static const int16_t kPasswordToggleIconSize = 20;  // px, square
+static const int16_t kPasswordToggleIconPad  =  4;  // px from right edge
+
+MCRectangle MCField::_passwordToggleIconRect() const
+{
+    MCRectangle frect = getfrect();
+    MCRectangle r;
+    r.width  = kPasswordToggleIconSize;
+    r.height = kPasswordToggleIconSize;
+    r.x      = frect.x + frect.width  - kPasswordToggleIconSize - kPasswordToggleIconPad;
+    r.y      = frect.y + (frect.height - kPasswordToggleIconSize) / 2;
+    return r;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 //
 //  SAVING AND LOADING
@@ -2581,6 +2615,7 @@ void MCField::draw(MCDC *dc, const MCRectangle& p_dirty, bool p_isolated, bool p
 #define FIELD_EXTRA_RETURNKEYTYPE   (1 << 3)
 #define FIELD_EXTRA_PASSWORDFIELD   (1 << 4)
 #define FIELD_EXTRA_HINTTEXT        (1 << 5)
+#define FIELD_EXTRA_PASSWORDTOGGLE  (1 << 6)
 
 IO_stat MCField::extendedsave(MCObjectOutputStream& p_stream, uint4 p_part, uint32_t p_version)
 {
@@ -2628,6 +2663,12 @@ IO_stat MCField::extendedsave(MCObjectOutputStream& p_stream, uint4 p_part, uint
         t_size += p_stream . MeasureStringRefNew(m_hint_text, p_version >= kMCStackFileFormatVersion_7_0);
     }
 
+    if (m_password_toggle)
+    {
+        t_flags |= FIELD_EXTRA_PASSWORDTOGGLE;
+        t_size += sizeof(uint8_t);
+    }
+
 	IO_stat t_stat;
 	t_stat = p_stream . WriteTag(t_flags, t_size);
 
@@ -2660,6 +2701,11 @@ IO_stat MCField::extendedsave(MCObjectOutputStream& p_stream, uint4 p_part, uint
     if (t_stat == IO_NORMAL && (t_flags & FIELD_EXTRA_HINTTEXT))
     {
         t_stat = p_stream . WriteStringRefNew(m_hint_text, p_version >= kMCStackFileFormatVersion_7_0);
+    }
+
+    if (t_stat == IO_NORMAL && (t_flags & FIELD_EXTRA_PASSWORDTOGGLE))
+    {
+        t_stat = p_stream . WriteU8(m_password_toggle ? 1 : 0);
     }
 
     if (t_stat == IO_NORMAL)
@@ -2758,6 +2804,14 @@ IO_stat MCField::extendedload(MCObjectInputStream& p_stream, uint32_t p_version,
                 MCValueAssign(m_hint_text, t_hint_text);
                 MCValueRelease(t_hint_text);
             }
+        }
+
+        if (t_stat == IO_NORMAL && (t_flags & FIELD_EXTRA_PASSWORDTOGGLE) != 0)
+        {
+            uint8_t t_value;
+            t_stat = checkloadstat(p_stream . ReadU8(t_value));
+            if (t_stat == IO_NORMAL)
+                m_password_toggle = (t_value != 0);
         }
 
         if (t_stat == IO_NORMAL)
