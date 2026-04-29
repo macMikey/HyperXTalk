@@ -121,6 +121,7 @@ MCPropertyInfo MCField::kProperties[] =
 	DEFINE_RW_OBJ_PART_PROPERTY(P_UNICODE_FORMATTED_TEXT, BinaryString, MCField, UnicodeFormattedText)
 	DEFINE_RW_OBJ_PROPERTY(P_LABEL, String, MCField, Label)
 	DEFINE_RW_OBJ_PROPERTY(P_PASSWORD_FIELD, Bool, MCField, PasswordField)
+	DEFINE_RW_OBJ_PROPERTY(P_HINT_TEXT, String, MCField, HintText)
 	DEFINE_RW_OBJ_PROPERTY(P_TOGGLE_HILITE, Bool, MCField, ToggleHilite)
 	DEFINE_RW_OBJ_PROPERTY(P_3D_HILITE, Bool, MCField, ThreeDHilite)
 	DEFINE_RO_OBJ_PART_ENUM_PROPERTY(P_ENCODING, InterfaceEncoding, MCField, Encoding)
@@ -259,6 +260,7 @@ MCField::MCField()
     text_direction = kMCTextDirectionAuto;
 	label = MCValueRetain(kMCEmptyString);
     m_password_field = false;
+    m_hint_text = MCValueRetain(kMCEmptyString);
 
     // MM-2014-08-11: [[ Bug 13149 ]] Used to flag if a recompute is required during the next draw.
     m_recompute = false;
@@ -344,6 +346,8 @@ MCField::MCField(const MCField &fref) : MCControl(fref)
 	MCValueRetain(fref.label);
 	label = fref.label;
 	m_password_field = fref.m_password_field;
+	MCValueRetain(fref.m_hint_text);
+	m_hint_text = fref.m_hint_text;
 	state &= ~CS_KFOCUSED;
 
     // MM-2014-08-11: [[ Bug 13149 ]] Used to flag if a recompute is required during the next draw.
@@ -391,6 +395,7 @@ MCField::~MCField()
     MCMemoryDeallocate(alignments);
 
 	MCValueRelease(label);
+	MCValueRelease(m_hint_text);
 }
 
 Chunk_term MCField::gettype() const
@@ -2575,6 +2580,8 @@ void MCField::draw(MCDC *dc, const MCRectangle& p_dirty, bool p_isolated, bool p
 #define FIELD_EXTRA_KEYBOARDTYPE    (1 << 2)
 #define FIELD_EXTRA_RETURNKEYTYPE   (1 << 3)
 #define FIELD_EXTRA_PASSWORDFIELD   (1 << 4)
+#define FIELD_EXTRA_RETURNKEYTYPE    (1 << 3)
+#define FIELD_EXTRA_HINTTEXT        (1 << 4)
 
 IO_stat MCField::extendedsave(MCObjectOutputStream& p_stream, uint4 p_part, uint32_t p_version)
 {
@@ -2614,6 +2621,10 @@ IO_stat MCField::extendedsave(MCObjectOutputStream& p_stream, uint4 p_part, uint
     {
         t_flags |= FIELD_EXTRA_PASSWORDFIELD;
         t_size += sizeof(uint8_t);
+    if (!MCStringIsEmpty(m_hint_text))
+    {
+        t_flags |= FIELD_EXTRA_HINTTEXT;
+        t_size += p_stream . MeasureStringRefNew(m_hint_text, p_version >= kMCStackFileFormatVersion_7_0);
     }
 
 	IO_stat t_stat;
@@ -2643,6 +2654,9 @@ IO_stat MCField::extendedsave(MCObjectOutputStream& p_stream, uint4 p_part, uint
     if (t_stat == IO_NORMAL && (t_flags & FIELD_EXTRA_PASSWORDFIELD))
     {
         t_stat = p_stream . WriteU8(m_password_field ? 1 : 0);
+    if (t_stat == IO_NORMAL && (t_flags & FIELD_EXTRA_HINTTEXT))
+    {
+        t_stat = p_stream . WriteStringRefNew(m_hint_text, p_version >= kMCStackFileFormatVersion_7_0);
     }
 
     if (t_stat == IO_NORMAL)
@@ -2730,6 +2744,15 @@ IO_stat MCField::extendedload(MCObjectInputStream& p_stream, uint32_t p_version,
             t_stat = checkloadstat(p_stream . ReadU8(t_value));
             if (t_stat == IO_NORMAL)
                 m_password_field = (t_value != 0);
+        if (t_stat == IO_NORMAL && (t_flags & FIELD_EXTRA_HINTTEXT) != 0)
+        {
+            MCStringRef t_hint_text;
+            t_stat = checkloadstat(p_stream . ReadStringRefNew(t_hint_text, p_version >= kMCStackFileFormatVersion_7_0));
+            if (t_stat == IO_NORMAL)
+            {
+                MCValueAssign(m_hint_text, t_hint_text);
+                MCValueRelease(t_hint_text);
+            }
         }
 
         if (t_stat == IO_NORMAL)
@@ -2762,6 +2785,7 @@ IO_stat MCField::save(IO_handle stream, uint4 p_part, bool p_force_ext, uint32_t
                       keyboard_type != kMCInterfaceKeyboardTypeNone ||
                       return_key_type != kMCInterfaceReturnKeyTypeNone ||
                       m_password_field;
+                      !MCStringIsEmpty(m_hint_text);
     
     if ((stat = MCObject::save(stream, p_part, t_has_extension || p_force_ext, p_version)) != IO_NORMAL)
 		return stat;

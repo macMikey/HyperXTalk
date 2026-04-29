@@ -238,6 +238,7 @@ private:
 	MCScrollbar *vscrollbar;
 	MCScrollbar *hscrollbar;
 	MCStringRef label;
+    MCStringRef m_hint_text;
     MCTextDirection text_direction;
     MCInterfaceFieldCursorMovement cursor_movement;
     MCInterfaceKeyboardType keyboard_type : 4;
@@ -704,6 +705,8 @@ public:
 	void SetLabel(MCExecContext& ctxt, MCStringRef p_string);
 	void GetPasswordField(MCExecContext& ctxt, bool& r_setting);
 	void SetPasswordField(MCExecContext& ctxt, bool setting);
+	void GetHintText(MCExecContext& ctxt, MCStringRef& r_string);
+	void SetHintText(MCExecContext& ctxt, MCStringRef p_string);
 	void GetToggleHilite(MCExecContext& ctxt, bool& r_setting);
 	void SetToggleHilite(MCExecContext& ctxt, bool setting);
 	void GetThreeDHilite(MCExecContext& ctxt, bool& r_setting);

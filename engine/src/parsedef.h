@@ -1439,6 +1439,7 @@ enum Properties {
     P_DEFAULT,
     P_LABEL,
     P_LABEL_WIDTH,
+    P_HINT_TEXT,
     P_FAMILY,
     P_VISITED,
     // button menu item properties

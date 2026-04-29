@@ -1051,6 +1051,7 @@ void MCField::drawrect(MCDC *dc, const MCRectangle &dirty)
 		pgptr = curparagraph;
 		x = getcontentx();
 		y = cury + getcontenty();
+		int32_t t_content_start_y = y;
 
 		// MW-2012-01-25: [[ FieldMetrics ]] Compute the layout width.
 		int32_t t_layout_width;
@@ -1159,6 +1160,20 @@ void MCField::drawrect(MCDC *dc, const MCRectangle &dirty)
 			pgptr = pgptr->next();
 		}
 		while (y < trect.y + trect.height && pgptr != paragraphs);
+
+		// Draw hint text when the field is empty and a hint text string is set.
+		if (!MCStringIsEmpty(m_hint_text) &&
+		    paragraphs->next() == paragraphs && paragraphs->IsEmpty())
+		{
+			MCFontRef t_font = getfontref();
+			int32_t t_hint_y = t_content_start_y + (int32_t)MCFontGetAscent(t_font);
+			MCColor t_hint_color = {0x8888, 0x8888, 0x8888};
+			dc->setforeground(t_hint_color);
+			dc->setfillstyle(FillSolid, nil, 0, 0);
+			dc->drawtext(x, t_hint_y, m_hint_text, t_font, False);
+			// Restore the foreground colour to the normal field text colour.
+			setforeground(dc, DI_FORE, False);
+		}
 
 		// MW-2012-03-15: [[ Bug 10069 ]] If we have hGrid set on the field, then render grid lines
 		//   to fill the rest of the field using the last pgheight we had.
