@@ -743,15 +743,20 @@ static const PropList audioclipprops[] =
 
 static const PropList toolbarprops[] =
     {
-        {"displayMode", P_TOOLBAR_DISPLAY_MODE},
-        {"id", P_ID},
-        {"itemNames", P_TOOLBAR_ITEM_NAMES},
-        {"layer", P_LAYER},
-        {"lockLoc", P_LOCK_LOCATION},
-        {"name", P_SHORT_NAME},
-        {"rect", P_RECTANGLE},
-        {"toolbarVisible", P_TOOLBAR_VISIBLE},
-        {"visible", P_VISIBLE}
+        {"displayMode",      P_TOOLBAR_DISPLAY_MODE},
+        {"id",               P_ID},
+        {"itemEnabled",      P_TOOLBAR_ITEM_ENABLED},
+        {"itemIcon",         P_TOOLBAR_ITEM_ICON},
+        {"itemLabel",        P_TOOLBAR_ITEM_LABEL},
+        {"itemNames",        P_TOOLBAR_ITEM_NAMES},
+        {"itemStyle",        P_TOOLBAR_ITEM_STYLE},
+        {"itemTooltip",      P_TOOLBAR_ITEM_TOOLTIP},
+        {"layer",            P_LAYER},
+        {"lockLoc",          P_LOCK_LOCATION},
+        {"name",             P_SHORT_NAME},
+        {"rect",             P_RECTANGLE},
+        {"toolbarVisible",   P_TOOLBAR_VISIBLE},
+        {"visible",          P_VISIBLE}
     };
 
 static const PropList videoclipprops[] =

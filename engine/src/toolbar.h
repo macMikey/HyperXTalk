@@ -63,9 +63,17 @@ public:
     MCStringRef       GetTooltip() const { return m_tooltip; }
     void              SetTooltip(MCStringRef p_tooltip);
 
-    // The icon is stored as a reference to an engine image object by name.
-    MCStringRef       GetIcon()    const { return m_icon; }
+    // The icon name.  When the name matches a stack image object the raw image
+    // data (PNG bytes from the image's "text" property) is also cached in
+    // m_image_data so the platform backend can create a native image without
+    // needing to reach back into the engine object hierarchy.
+    MCStringRef       GetIcon()      const { return m_icon; }
     void              SetIcon(MCStringRef p_icon);
+
+    // Pre-resolved PNG bytes for stack images; nil when the icon is an SF
+    // Symbol, bundle image, or file path.
+    MCDataRef         GetImageData() const { return m_image_data; }
+    void              SetImageData(MCDataRef p_data);
 
     // State
     bool              GetEnabled() const { return m_enabled; }
@@ -83,6 +91,7 @@ private:
     MCStringRef        m_label;
     MCStringRef        m_tooltip;
     MCStringRef        m_icon;
+    MCDataRef          m_image_data;  // cached PNG bytes from a stack MCImage, or nil
     bool               m_enabled;
     MCToolbarItemStyle m_style;
 };
@@ -211,6 +220,9 @@ public:
     void SetToolbarVisible(MCExecContext& ctxt, bool p_visible);
 
     void GetItemNames(MCExecContext& ctxt, MCStringRef& r_names);
+    // Setting itemNames reorders/prunes the item list:
+    // items not in the new list are removed; order is updated to match.
+    void SetItemNames(MCExecContext& ctxt, MCStringRef p_names);
 
     // Per-item property accessors
     void GetItemLabel(MCExecContext& ctxt, MCNameRef p_item,
@@ -233,6 +245,11 @@ public:
     void SetItemIcon(MCExecContext& ctxt, MCNameRef p_item,
                      MCStringRef p_icon);
 
+    void GetItemStyle(MCExecContext& ctxt, MCNameRef p_item,
+                      MCStringRef& r_style);
+    void SetItemStyle(MCExecContext& ctxt, MCNameRef p_item,
+                      MCStringRef p_style);
+
     //--------------------------------------------------------------------------
     // Called by the platform backend when an item is clicked
 
@@ -241,6 +258,10 @@ public:
 private:
     void _destroyItems();
     void _syncBackendItems();
+    // Re-resolves each item's icon name against the stack's MCImage objects and
+    // caches the PNG bytes in MCToolbarItem::m_image_data.  Called from open()
+    // so that image data is available when the stack is reopened from disk.
+    void _resolveItemImageData();
     MCToolbarBackend *_createBackend();
 };
 

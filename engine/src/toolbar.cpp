@@ -38,6 +38,7 @@ along with LiveCode.  If not see <http://www.gnu.org/licenses/>.  */
 
 #include "stackfileformat.h"
 #include "toolbar.h"
+#include "image.h"
 #include "mcstring.h"
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -47,7 +48,15 @@ MCPropertyInfo MCToolbar::kProperties[] =
 {
     DEFINE_RW_OBJ_ENUM_PROPERTY(P_TOOLBAR_DISPLAY_MODE, InterfaceToolbarDisplayMode, MCToolbar, DisplayMode)
     DEFINE_RW_OBJ_PROPERTY(P_TOOLBAR_VISIBLE, Bool, MCToolbar, ToolbarVisible)
-    DEFINE_RO_OBJ_PROPERTY(P_TOOLBAR_ITEM_NAMES, String, MCToolbar, ItemNames)
+    // itemNames is now read-write: setting it reorders/removes items.
+    DEFINE_RW_OBJ_PROPERTY(P_TOOLBAR_ITEM_NAMES, String, MCToolbar, ItemNames)
+    // Per-item array properties: indexed by item name.
+    // Setting a label for a new name auto-creates that item.
+    DEFINE_RW_OBJ_ARRAY_PROPERTY(P_TOOLBAR_ITEM_LABEL,   String, MCToolbar, ItemLabel)
+    DEFINE_RW_OBJ_ARRAY_PROPERTY(P_TOOLBAR_ITEM_TOOLTIP, String, MCToolbar, ItemTooltip)
+    DEFINE_RW_OBJ_ARRAY_PROPERTY(P_TOOLBAR_ITEM_ENABLED, Bool,   MCToolbar, ItemEnabled)
+    DEFINE_RW_OBJ_ARRAY_PROPERTY(P_TOOLBAR_ITEM_ICON,    String, MCToolbar, ItemIcon)
+    DEFINE_RW_OBJ_ARRAY_PROPERTY(P_TOOLBAR_ITEM_STYLE,   String, MCToolbar, ItemStyle)
 };
 
 MCObjectPropertyTable MCToolbar::kPropertyTable =
@@ -62,26 +71,28 @@ MCObjectPropertyTable MCToolbar::kPropertyTable =
 
 MCToolbarItem::MCToolbarItem()
     : m_name(nil), m_label(nil), m_tooltip(nil), m_icon(nil),
-      m_enabled(true), m_style(kMCToolbarItemStyleButton)
+      m_image_data(nil), m_enabled(true), m_style(kMCToolbarItemStyleButton)
 {
 }
 
 MCToolbarItem::MCToolbarItem(const MCToolbarItem &p_ref)
     : m_name(nil), m_label(nil), m_tooltip(nil), m_icon(nil),
-      m_enabled(p_ref.m_enabled), m_style(p_ref.m_style)
+      m_image_data(nil), m_enabled(p_ref.m_enabled), m_style(p_ref.m_style)
 {
-    if (p_ref.m_name    != nil) m_name    = MCValueRetain(p_ref.m_name);
-    if (p_ref.m_label   != nil) m_label   = MCValueRetain(p_ref.m_label);
-    if (p_ref.m_tooltip != nil) m_tooltip = MCValueRetain(p_ref.m_tooltip);
-    if (p_ref.m_icon    != nil) m_icon    = MCValueRetain(p_ref.m_icon);
+    if (p_ref.m_name       != nil) m_name       = MCValueRetain(p_ref.m_name);
+    if (p_ref.m_label      != nil) m_label      = MCValueRetain(p_ref.m_label);
+    if (p_ref.m_tooltip    != nil) m_tooltip    = MCValueRetain(p_ref.m_tooltip);
+    if (p_ref.m_icon       != nil) m_icon       = MCValueRetain(p_ref.m_icon);
+    if (p_ref.m_image_data != nil) m_image_data = MCValueRetain(p_ref.m_image_data);
 }
 
 MCToolbarItem::~MCToolbarItem()
 {
-    if (m_name    != nil) MCValueRelease(m_name);
-    if (m_label   != nil) MCValueRelease(m_label);
-    if (m_tooltip != nil) MCValueRelease(m_tooltip);
-    if (m_icon    != nil) MCValueRelease(m_icon);
+    if (m_name       != nil) MCValueRelease(m_name);
+    if (m_label      != nil) MCValueRelease(m_label);
+    if (m_tooltip    != nil) MCValueRelease(m_tooltip);
+    if (m_icon       != nil) MCValueRelease(m_icon);
+    if (m_image_data != nil) MCValueRelease(m_image_data);
 }
 
 void MCToolbarItem::SetName(MCNameRef p_name)
@@ -102,6 +113,18 @@ void MCToolbarItem::SetTooltip(MCStringRef p_tooltip)
 void MCToolbarItem::SetIcon(MCStringRef p_icon)
 {
     MCValueAssign(m_icon, p_icon);
+    // Clear any previously cached image data; it will be re-populated by
+    // SetImageData() when the caller resolves the new name as an engine image.
+    if (m_image_data != nil)
+    {
+        MCValueRelease(m_image_data);
+        m_image_data = nil;
+    }
+}
+
+void MCToolbarItem::SetImageData(MCDataRef p_data)
+{
+    MCValueAssign(m_image_data, p_data);
 }
 
 IO_stat MCToolbarItem::save(IO_handle p_stream, uint32_t p_version)
@@ -202,9 +225,11 @@ MCToolbar::MCToolbar(const MCToolbar &p_ref)
     m_items = nil;
     if (m_item_count > 0)
     {
+        // Allocate raw memory (zeroed); construct each item in-place using the
+        // copy constructor so that MCValueRef strings are properly retained.
         /* UNCHECKED */ MCMemoryNewArray(m_item_count, m_items);
         for (uindex_t i = 0; i < m_item_count; i++)
-            m_items[i] = MCToolbarItem(p_ref.m_items[i]);
+            new (&m_items[i]) MCToolbarItem(p_ref.m_items[i]);
     }
 }
 
@@ -242,7 +267,9 @@ bool MCToolbar::visit_self(MCObjectVisitor *p_visitor)
 
 void MCToolbar::open()
 {
+    fprintf(stderr, "[MCToolbar::open] enter\n"); fflush(stderr);
     MCControl::open();
+    fprintf(stderr, "[MCToolbar::open] after MCControl::open\n"); fflush(stderr);
 
     if (m_backend == nil)
         m_backend = _createBackend();
@@ -256,9 +283,17 @@ void MCToolbar::open()
             t_window = t_stack->getwindow();
 
         m_backend->Create(t_window);
+        fprintf(stderr, "[MCToolbar::open] after Create\n"); fflush(stderr);
         m_backend->SetDisplayMode(m_display_mode);
+        fprintf(stderr, "[MCToolbar::open] after SetDisplayMode\n"); fflush(stderr);
         m_backend->SetVisible(m_toolbar_visible);
+        fprintf(stderr, "[MCToolbar::open] after SetVisible\n"); fflush(stderr);
+        // Re-resolve stack image data before syncing — m_image_data is not
+        // saved to disk, so it must be rebuilt each time the stack is opened.
+        _resolveItemImageData();
+        fprintf(stderr, "[MCToolbar::open] calling _syncBackendItems m_item_count=%u\n", (unsigned)m_item_count); fflush(stderr);
         _syncBackendItems();
+        fprintf(stderr, "[MCToolbar::open] after _syncBackendItems\n"); fflush(stderr);
     }
 }
 
@@ -316,9 +351,11 @@ void MCToolbar::draw(MCDC *dc, const MCRectangle &dirty,
 
 MCControl *MCToolbar::clone(Boolean attach, Object_pos p, bool invisible)
 {
+    fprintf(stderr, "[MCToolbar::clone] enter attach=%d\n", (int)attach); fflush(stderr);
     MCToolbar *t_new = new (nothrow) MCToolbar(*this);
     if (attach)
         t_new->attach(p, invisible);
+    fprintf(stderr, "[MCToolbar::clone] done\n"); fflush(stderr);
     return t_new;
 }
 
@@ -329,6 +366,10 @@ bool MCToolbar::AddItem(MCNameRef p_name, MCStringRef p_label,
                         MCStringRef p_tooltip, MCStringRef p_icon,
                         MCToolbarItemStyle p_style)
 {
+    fprintf(stderr, "[MCToolbar::AddItem] name=%p backend=%p\n",
+            (void*)p_name, (void*)m_backend);
+    fflush(stderr);
+
     if (!MCMemoryResizeArray(m_item_count + 1, m_items, m_item_count))
         return false;
 
@@ -342,6 +383,9 @@ bool MCToolbar::AddItem(MCNameRef p_name, MCStringRef p_label,
 
     if (m_backend != nil)
         m_backend->AddItem(t_item);
+    else
+        fprintf(stderr, "[MCToolbar::AddItem] backend is nil — item NOT pushed to NSToolbar\n");
+    fflush(stderr);
 
     return true;
 }
@@ -356,9 +400,16 @@ bool MCToolbar::RemoveItem(MCNameRef p_name)
             if (m_backend != nil)
                 m_backend->RemoveItem(p_name);
 
-            // Shift remaining items down
+            // Destroy the item at position i (releases its MCValueRef members).
+            m_items[i].~MCToolbarItem();
+
+            // Shift remaining items down, transferring ownership correctly:
+            // copy-construct at [j] from [j+1], then destroy [j+1].
             for (uindex_t j = i; j < m_item_count - 1; j++)
-                m_items[j] = m_items[j + 1];
+            {
+                new (&m_items[j]) MCToolbarItem(m_items[j + 1]);
+                m_items[j + 1].~MCToolbarItem();
+            }
 
             MCMemoryResizeArray(m_item_count - 1, m_items, m_item_count);
             return true;
@@ -639,13 +690,54 @@ void MCToolbar::_destroyItems()
     }
 }
 
+void MCToolbar::_resolveItemImageData()
+{
+    // Walk every item and (re-)populate m_image_data by looking up the icon
+    // name as a stack MCImage object.  This is called from open() so that
+    // image data that was cached at script time is restored after the stack
+    // is reloaded from disk (the PNG bytes are not written to the stack file —
+    // only the icon name is saved; the MCImage object already holds the data).
+    //
+    // Uses a default MCExecContext (no associated handler/object) which is
+    // sufficient for MCImage::GetText — that method only uses the context for
+    // error reporting, not for data retrieval.
+    MCExecContext t_ctxt;
+
+    for (uindex_t i = 0; i < m_item_count; i++)
+    {
+        MCToolbarItem *t_item = &m_items[i];
+        MCStringRef t_icon = t_item->GetIcon();
+        if (MCStringIsEmpty(t_icon))
+            continue;
+
+        MCImage *t_image = resolveimagename(t_icon);
+        if (t_image == nil)
+            continue;
+
+        MCAutoDataRef t_data;
+        t_image->GetText(t_ctxt, &t_data);
+        if (*t_data != nil && !MCDataIsEmpty(*t_data))
+            t_item->SetImageData(*t_data);
+        else
+            t_item->SetImageData(nil);  // clear stale cache if image is now empty
+    }
+}
+
 void MCToolbar::_syncBackendItems()
 {
+    fprintf(stderr, "[MCToolbar::_syncBackendItems] enter backend=%p item_count=%u\n",
+            (void*)m_backend, (unsigned)m_item_count); fflush(stderr);
     if (m_backend == nil)
         return;
+    fprintf(stderr, "[MCToolbar::_syncBackendItems] calling ClearItems\n"); fflush(stderr);
     m_backend->ClearItems();
+    fprintf(stderr, "[MCToolbar::_syncBackendItems] ClearItems done\n"); fflush(stderr);
     for (uindex_t i = 0; i < m_item_count; i++)
+    {
+        fprintf(stderr, "[MCToolbar::_syncBackendItems] AddItem %u\n", (unsigned)i); fflush(stderr);
         m_backend->AddItem(&m_items[i]);
+    }
+    fprintf(stderr, "[MCToolbar::_syncBackendItems] done\n"); fflush(stderr);
 }
 
 MCToolbarBackend *MCToolbar::_createBackend()
