@@ -244,6 +244,8 @@ private:
     MCInterfaceKeyboardType keyboard_type : 4;
     MCInterfaceReturnKeyType return_key_type : 4;
 
+    bool m_password_field : 1;
+
     // MM-2014-08-11: [[ Bug 13149 ]] Used to flag if a recompute is required during the next draw.
     bool m_recompute : 1;
 	
@@ -701,6 +703,8 @@ public:
 	void SetUnicodeFormattedText(MCExecContext& ctxt, uint32_t part, MCDataRef p_string);
 	void GetLabel(MCExecContext& ctxt, MCStringRef& r_string);
 	void SetLabel(MCExecContext& ctxt, MCStringRef p_string);
+	void GetPasswordField(MCExecContext& ctxt, bool& r_setting);
+	void SetPasswordField(MCExecContext& ctxt, bool setting);
 	void GetHintText(MCExecContext& ctxt, MCStringRef& r_string);
 	void SetHintText(MCExecContext& ctxt, MCStringRef p_string);
 	void GetToggleHilite(MCExecContext& ctxt, bool& r_setting);

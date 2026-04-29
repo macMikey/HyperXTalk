@@ -1280,6 +1280,7 @@ enum Properties {
     P_DESTROY_WINDOW,
     P_ALWAYS_BUFFER,
     P_PASSWORD,
+    P_PASSWORD_FIELD,
     P_KEY,
     P_MODE,
     P_WM_PLACE,

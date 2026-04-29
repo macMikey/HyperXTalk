@@ -379,6 +379,7 @@ static const PropList fieldprops[] =
         {"noncontiguousHilites", P_NONCONTIGUOUS_HILITES},
         {"outerGlow", P_BITMAP_EFFECT_OUTER_GLOW},
         {"opaque", P_OPAQUE},
+        {"passwordField", P_PASSWORD_FIELD},
         {"rect", P_RECTANGLE},
         {"scrollbarWidth", P_SCROLLBAR_WIDTH},
         {"shadow", P_SHADOW},

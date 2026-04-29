@@ -1112,11 +1112,34 @@ void MCField::drawrect(MCDC *dc, const MCRectangle &dirty)
 		do
 		{
             pgheight = pgptr->getheight(fixedheight);
-			
+
 			// MW-2012-03-15: [[ Bug 10069 ]] A paragraph might render a grid line above or below
 			//   so make sure we render paragraphs above and below the apparant limits.
 			if (y + pgheight >= trect.y  && y <= trect.y + trect.height)
 			{
+				// If password mode is active, substitute each paragraph's text with
+				// bullet characters (U+2022) for display only. The real text is
+				// unaffected — only GetInternalStringRef() is overridden during draw.
+				MCStringRef t_bullet_str = nil;
+				if (m_password_field)
+				{
+					uint32_t t_len = pgptr->gettextlength();
+					if (t_len > 0)
+					{
+						unichar_t *t_chars;
+						if (MCMemoryAllocate(t_len * sizeof(unichar_t), t_chars))
+						{
+							for (uint32_t i = 0; i < t_len; i++)
+								t_chars[i] = 0x2022; // U+2022 BULLET •
+							/* UNCHECKED */ MCStringCreateWithChars(t_chars, t_len, t_bullet_str);
+							MCMemoryDeallocate(t_chars);
+						}
+					}
+					if (t_bullet_str == nil)
+						t_bullet_str = MCValueRetain(kMCEmptyString);
+					pgptr->SetPasswordDisplay(t_bullet_str);
+				}
+
 				pgptr->draw(dc, x, y, a, d,
 				            pgptr == foundpgptr ? fstart : 0,
 				            pgptr == foundpgptr ? fend : 0,
@@ -1126,6 +1149,12 @@ void MCField::drawrect(MCDC *dc, const MCRectangle &dirty)
 				            pgptr == comppgptr ? composeconvertingei : 0,
 				            t_layout_width, pgheight, sx, swidth,
 							fontstyle);
+
+				if (m_password_field)
+				{
+					pgptr->ClearPasswordDisplay();
+					MCValueRelease(t_bullet_str);
+				}
 			}
 			y += pgheight;
 			pgptr = pgptr->next();
