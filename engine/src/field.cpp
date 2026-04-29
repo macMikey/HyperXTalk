@@ -120,6 +120,7 @@ MCPropertyInfo MCField::kProperties[] =
 	DEFINE_RW_OBJ_PART_PROPERTY(P_FORMATTED_TEXT, String, MCField, FormattedText)
 	DEFINE_RW_OBJ_PART_PROPERTY(P_UNICODE_FORMATTED_TEXT, BinaryString, MCField, UnicodeFormattedText)
 	DEFINE_RW_OBJ_PROPERTY(P_LABEL, String, MCField, Label)
+	DEFINE_RW_OBJ_PROPERTY(P_HINT_TEXT, String, MCField, HintText)
 	DEFINE_RW_OBJ_PROPERTY(P_TOGGLE_HILITE, Bool, MCField, ToggleHilite)
 	DEFINE_RW_OBJ_PROPERTY(P_3D_HILITE, Bool, MCField, ThreeDHilite)
 	DEFINE_RO_OBJ_PART_ENUM_PROPERTY(P_ENCODING, InterfaceEncoding, MCField, Encoding)
@@ -257,7 +258,8 @@ MCField::MCField()
     cursor_movement = kMCFieldCursorMovementDefault;
     text_direction = kMCTextDirectionAuto;
 	label = MCValueRetain(kMCEmptyString);
-    
+    m_hint_text = MCValueRetain(kMCEmptyString);
+
     // MM-2014-08-11: [[ Bug 13149 ]] Used to flag if a recompute is required during the next draw.
     m_recompute = false;
     
@@ -341,6 +343,8 @@ MCField::MCField(const MCField &fref) : MCControl(fref)
 	}
 	MCValueRetain(fref.label);
 	label = fref.label;
+	MCValueRetain(fref.m_hint_text);
+	m_hint_text = fref.m_hint_text;
 	state &= ~CS_KFOCUSED;
     
     // MM-2014-08-11: [[ Bug 13149 ]] Used to flag if a recompute is required during the next draw.
@@ -388,6 +392,7 @@ MCField::~MCField()
     MCMemoryDeallocate(alignments);
 
 	MCValueRelease(label);
+	MCValueRelease(m_hint_text);
 }
 
 Chunk_term MCField::gettype() const
@@ -2571,6 +2576,7 @@ void MCField::draw(MCDC *dc, const MCRectangle& p_dirty, bool p_isolated, bool p
 #define FIELD_EXTRA_TABALIGN        (1 << 1)
 #define FIELD_EXTRA_KEYBOARDTYPE    (1 << 2)
 #define FIELD_EXTRA_RETURNKEYTYPE    (1 << 3)
+#define FIELD_EXTRA_HINTTEXT        (1 << 4)
 
 IO_stat MCField::extendedsave(MCObjectOutputStream& p_stream, uint4 p_part, uint32_t p_version)
 {
@@ -2606,6 +2612,12 @@ IO_stat MCField::extendedsave(MCObjectOutputStream& p_stream, uint4 p_part, uint
         t_size += sizeof(int8_t);
     }
 
+    if (!MCStringIsEmpty(m_hint_text))
+    {
+        t_flags |= FIELD_EXTRA_HINTTEXT;
+        t_size += p_stream . MeasureStringRefNew(m_hint_text, p_version >= kMCStackFileFormatVersion_7_0);
+    }
+
 	IO_stat t_stat;
 	t_stat = p_stream . WriteTag(t_flags, t_size);
 
@@ -2629,7 +2641,12 @@ IO_stat MCField::extendedsave(MCObjectOutputStream& p_stream, uint4 p_part, uint
     {
         t_stat = p_stream . WriteS8((int8_t)return_key_type);
     }
-    
+
+    if (t_stat == IO_NORMAL && (t_flags & FIELD_EXTRA_HINTTEXT))
+    {
+        t_stat = p_stream . WriteStringRefNew(m_hint_text, p_version >= kMCStackFileFormatVersion_7_0);
+    }
+
     if (t_stat == IO_NORMAL)
 		t_stat = MCObject::extendedsave(p_stream, p_part, p_version);
     
@@ -2708,7 +2725,18 @@ IO_stat MCField::extendedload(MCObjectInputStream& p_stream, uint32_t p_version,
                 return_key_type =  static_cast<MCInterfaceReturnKeyType>(t_value);
             }
         }
-        
+
+        if (t_stat == IO_NORMAL && (t_flags & FIELD_EXTRA_HINTTEXT) != 0)
+        {
+            MCStringRef t_hint_text;
+            t_stat = checkloadstat(p_stream . ReadStringRefNew(t_hint_text, p_version >= kMCStackFileFormatVersion_7_0));
+            if (t_stat == IO_NORMAL)
+            {
+                MCValueAssign(m_hint_text, t_hint_text);
+                MCValueRelease(t_hint_text);
+            }
+        }
+
         if (t_stat == IO_NORMAL)
             t_stat = checkloadstat(p_stream . Skip(t_length));
         

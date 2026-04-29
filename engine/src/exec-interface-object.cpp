@@ -362,6 +362,7 @@ static const PropList fieldprops[] =
         {"hilitePattern", P_HILITE_PATTERN},
         {"hScroll", P_HSCROLL},
         {"hScrollbar", P_HSCROLLBAR},
+        {"hintText", P_HINT_TEXT},
         {"htmlText", P_HTML_TEXT},
         {"id", P_ID},
         {"ink", P_INK},

@@ -955,6 +955,18 @@ void MCField::SetLabel(MCExecContext& ctxt, MCStringRef p_string)
 	MCValueAssign(label, p_string);
 }
 
+void MCField::GetHintText(MCExecContext& ctxt, MCStringRef& r_string)
+{
+	r_string = MCValueRetain(m_hint_text);
+}
+
+void MCField::SetHintText(MCExecContext& ctxt, MCStringRef p_string)
+{
+	MCValueAssign(m_hint_text, p_string);
+	// Redraw the field so the hint text appears/disappears immediately
+	Redraw();
+}
+
 void MCField::GetToggleHilite(MCExecContext& ctxt, bool& r_setting)
 {
 	r_setting = getflag(F_TOGGLE_HILITE);

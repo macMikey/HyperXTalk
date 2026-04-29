@@ -1122,6 +1122,7 @@ const LT factor_table[] =
         {"keys", TT_FUNCTION, F_KEYS},
         {"keysdown", TT_FUNCTION, F_KEYS_DOWN},
         {"kind", TT_PROPERTY, P_KIND},
+        {"hinttext", TT_PROPERTY, P_HINT_TEXT},
         {"label", TT_PROPERTY, P_LABEL},
         {"labelwidth", TT_PROPERTY, P_LABEL_WIDTH},
         {"last", TT_CHUNK, CT_LAST},
