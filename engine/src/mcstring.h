@@ -106,6 +106,7 @@ extern const char * const MCfieldstring;
 extern const char * const MCcolorstring;
 extern const char * const MCmagnifierstring;
 extern const char * const MCwidgetstring;
+extern const char * const MCtoolbarstring;
 
 extern const char * const MCnotfoundstring;
 extern const char * const MCplatformstring;
@@ -483,6 +484,7 @@ extern MCNameRef MCM_start_up;
 extern MCNameRef MCM_suspend;
 extern MCNameRef MCM_suspend_stack;
 extern MCNameRef MCM_tab_key;
+extern MCNameRef MCM_toolbar_item_clicked;
 extern MCNameRef MCM_text_changed;
 extern MCNameRef MCM_trace;
 extern MCNameRef MCM_trace_break;

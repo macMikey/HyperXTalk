@@ -239,6 +239,7 @@
 			'src/tooltip.h',
 			'src/undolst.h',
 			'src/vclip.h',
+			'src/toolbar.h',
 			'src/widget.h',
 			'src/widget-events.h',
             'src/widget-ref.h',
@@ -323,6 +324,8 @@
 			'src/tooltip.cpp',
 			'src/undolst.cpp',
 			'src/vclip.cpp',
+			'src/toolbar.cpp',
+			'src/exec-interface-toolbar.cpp',
 			'src/widget.cpp',
 			'src/widget-events.cpp',
             'src/widget-ref.cpp',
@@ -699,6 +702,7 @@
 			'src/lnxspec.cpp',
 			'src/lnxstack.cpp',
 			'src/lnxtextlayout.cpp',
+			'src/lnx-toolbar.cpp',
 			
 			# Group "Desktop - Mac"
 			'src/mac-internal.h',
@@ -723,6 +727,7 @@
 			'src/mac-scripting.mm',
 			'src/mac-snapshot.mm',
 			'src/mac-qlpreview.mm',
+			'src/mac-toolbar.mm',
 			'src/mac-sound.mm',
 			'src/mac-surface.mm',
 			'src/mac-window.mm',
@@ -770,6 +775,7 @@
 			'src/w32text.cpp',
 			'src/w32textlayout.cpp',
 			'src/w32theme.cpp',
+			'src/w32-toolbar.cpp',
 			'src/w32-core-compat.cpp',
 
 			# Group "Desktop - Emscripten"
@@ -994,6 +1000,8 @@
 			'src/player-platform.cpp',
 			'src/player-legacy.cpp',
 			'src/stacke.cpp',
+			'src/toolbar.cpp',
+			'src/exec-interface-toolbar.cpp',
 		],
 		
 		# Sources used to implement LCB modules in the engine

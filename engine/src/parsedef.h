@@ -1440,6 +1440,16 @@ enum Properties {
     P_LABEL,
     P_LABEL_WIDTH,
     P_HINT_TEXT,
+    // toolbar properties
+    P_TOOLBAR_DISPLAY_MODE,
+    P_TOOLBAR_VISIBLE,
+    P_TOOLBAR_ITEM_NAMES,
+    // toolbar item properties
+    P_TOOLBAR_ITEM_LABEL,
+    P_TOOLBAR_ITEM_TOOLTIP,
+    P_TOOLBAR_ITEM_ENABLED,
+    P_TOOLBAR_ITEM_ICON,
+    P_TOOLBAR_ITEM_STYLE,
     P_FAMILY,
     P_VISITED,
     // button menu item properties

@@ -156,6 +156,7 @@ const char * const MCfieldstring = "field";
 const char * const MCcolorstring = "colorPalette";
 const char * const MCmagnifierstring = "magnifier";
 const char * const MCwidgetstring = "widget";
+const char * const MCtoolbarstring = "toolbar";
 
 const char * const MCnotfoundstring = "not found";
 const char * const MCplatformstring = PLATFORM_STRING;
@@ -509,6 +510,7 @@ MCNameRef MCM_start_up;
 MCNameRef MCM_suspend;
 MCNameRef MCM_suspend_stack;
 MCNameRef MCM_tab_key;
+MCNameRef MCM_toolbar_item_clicked;
 MCNameRef MCM_text_changed;
 MCNameRef MCM_trace;
 MCNameRef MCM_trace_break;
@@ -950,6 +952,7 @@ const struct { const char *cstring; MCNameRef *name_var; } kInitialNames[] =
 	{ "suspendStack", &MCM_suspend_stack },
 	{ "tabKey", &MCM_tab_key },
 	{ "textChanged", &MCM_text_changed },
+	{ "toolbarItemClicked", &MCM_toolbar_item_clicked },
 	{ "trace", &MCM_trace },
 	{ "traceBreak", &MCM_trace_break },
 	{ "traceDone", &MCM_trace_done },

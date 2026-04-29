@@ -1774,6 +1774,8 @@ const LT factor_table[] =
         {"tokens", TT_CLASS, CT_TOKEN},
         {"tolower", TT_FUNCTION, F_TO_LOWER},
         {"tool", TT_PROPERTY, P_TOOL},
+        {"toolbar", TT_CHUNK, CT_TOOLBAR},
+        {"toolbars", TT_CLASS, CT_TOOLBAR},
         {"tooltip", TT_PROPERTY, P_TOOL_TIP},
         {"tooltipdelay", TT_PROPERTY, P_TOOL_TIP_DELAY},
         {"top", TT_PROPERTY, P_TOP},
