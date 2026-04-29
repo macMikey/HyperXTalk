@@ -2765,7 +2765,8 @@ IO_stat MCField::save(IO_handle stream, uint4 p_part, bool p_force_ext, uint32_t
     t_has_extension = text_direction != kMCTextDirectionAuto ||
                       nalignments != 0 ||
                       keyboard_type != kMCInterfaceKeyboardTypeNone ||
-                      return_key_type != kMCInterfaceReturnKeyTypeNone;
+                      return_key_type != kMCInterfaceReturnKeyTypeNone ||
+                      !MCStringIsEmpty(m_hint_text);
     
     if ((stat = MCObject::save(stream, p_part, t_has_extension || p_force_ext, p_version)) != IO_NORMAL)
 		return stat;
