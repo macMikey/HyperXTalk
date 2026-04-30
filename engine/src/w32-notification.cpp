@@ -47,6 +47,9 @@ along with LiveCode.  If not see <http://www.gnu.org/licenses/>.  */
 #include <shellapi.h>
 #include <shlobj.h>
 
+// Link WinRT bootstrap library (RoInitialize, RoGetActivationFactory, etc.)
+#pragma comment(lib, "runtimeobject.lib")
+
 #include <string>
 #include <mutex>
 #include <unordered_map>
@@ -64,12 +67,12 @@ static std::wstring _mcstr_to_wstr(MCStringRef p_str)
 {
     if (p_str == nil || MCStringIsEmpty(p_str))
         return L"";
-    // MCStringConvertToWString allocates; caller must MCMemoryDeallocate.
+    // MCStringConvertToWString allocates a NUL-terminated unichar_t buffer;
+    // on Windows unichar_t is uint16_t which is the same width as wchar_t.
     unichar_t *t_buf = nil;
-    uindex_t t_len   = 0;
-    if (!MCStringConvertToChars(p_str, t_buf, t_len))
+    if (!MCStringConvertToWString(p_str, t_buf))
         return L"";
-    std::wstring t_result(reinterpret_cast<wchar_t*>(t_buf), t_len);
+    std::wstring t_result(reinterpret_cast<wchar_t*>(t_buf));
     MCMemoryDeallocate(t_buf);
     return t_result;
 }
@@ -243,7 +246,7 @@ static bool _try_show_toast(const std::wstring& p_title,
         [p_tag](IToastNotification*, IInspectable*) -> HRESULT
         {
             MCStringRef t_mcstr;
-            /* UNCHECKED */ MCStringCreateWithWString(p_tag.c_str(), t_mcstr);
+            /* UNCHECKED */ MCStringCreateWithWString(reinterpret_cast<const unichar_t*>(p_tag.c_str()), t_mcstr);
             MCNotificationDispatchClicked(t_mcstr);
             MCValueRelease(t_mcstr);
             return S_OK;
