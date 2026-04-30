@@ -46,7 +46,6 @@ along with LiveCode.  If not see <http://www.gnu.org/licenses/>.  */
 #include <windows.ui.notifications.h>
 #include <shellapi.h>
 #include <shlobj.h>
-
 // Link WinRT bootstrap library (RoInitialize, RoGetActivationFactory, etc.)
 #pragma comment(lib, "runtimeobject.lib")
 
@@ -93,6 +92,38 @@ static HString _make_hstring(const std::wstring& p_str)
 // Toast group / app ID constants
 
 static const wchar_t * const kToastGroup = L"HyperXTalk";
+
+////////////////////////////////////////////////////////////////////////////////
+// AUMID registration
+//
+// Windows requires the AUMID to be registered under
+//   HKCU\SOFTWARE\Classes\AppUserModelId\<AUMID>
+// before it will deliver toast notifications to an unpackaged desktop app.
+// We create this key on first use; it persists across sessions.
+
+static void _ensure_aumid_registered(const std::wstring& p_aumid)
+{
+    // Build the registry key path.
+    std::wstring t_key_path = L"SOFTWARE\\Classes\\AppUserModelId\\" + p_aumid;
+
+    HKEY t_key;
+    DWORD t_disposition;
+    if (RegCreateKeyExW(HKEY_CURRENT_USER, t_key_path.c_str(),
+                        0, nullptr, 0, KEY_WRITE, nullptr,
+                        &t_key, &t_disposition) != ERROR_SUCCESS)
+        return;
+
+    // Only write values on first creation to avoid overwriting user settings.
+    if (t_disposition == REG_CREATED_NEW_KEY)
+    {
+        const wchar_t *t_name = L"HyperXTalk";
+        RegSetValueExW(t_key, L"DisplayName", 0, REG_SZ,
+                       reinterpret_cast<const BYTE *>(t_name),
+                       static_cast<DWORD>((wcslen(t_name) + 1) * sizeof(wchar_t)));
+    }
+
+    RegCloseKey(t_key);
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // Token-to-notification map
@@ -179,44 +210,74 @@ static std::wstring _build_toast_xml(const std::wstring& p_title,
 ////////////////////////////////////////////////////////////////////////////////
 // Attempt to show a WinRT toast.  Returns true on success.
 
+// Emit a one-line diagnostic via OutputDebugStringW (capture with DebugView).
+static void _toast_dbg(const wchar_t *p_step, HRESULT hr)
+{
+    wchar_t buf[256];
+    swprintf_s(buf, L"[HyperXTalk toast] %s hr=0x%08X\n", p_step, (unsigned)hr);
+    OutputDebugStringW(buf);
+}
+
 static bool _try_show_toast(const std::wstring& p_title,
                              const std::wstring& p_body,
                              const std::wstring& p_tag)
 {
     // Initialise Windows Runtime for this thread if needed.
-    RoInitialize(RO_INIT_SINGLETHREADED);
+    HRESULT hr_init = RoInitialize(RO_INIT_SINGLETHREADED);
+    _toast_dbg(L"RoInitialize", hr_init);
+    // RPC_E_CHANGED_MODE is fine — COM was already initialised on this thread.
 
     // Obtain IToastNotificationManagerStatics.
     ComPtr<IToastNotificationManagerStatics> t_mgr;
     HRESULT hr = GetActivationFactory(
         HStringReference(RuntimeClass_Windows_UI_Notifications_ToastNotificationManager).Get(),
         &t_mgr);
+    _toast_dbg(L"GetActivationFactory(Manager)", hr);
     if (FAILED(hr))
         return false;
 
-    // Obtain the notifier for our AUMID.
+    // Obtain the notifier for our AUMID, ensuring it is registered first.
     std::wstring t_aumid = _get_aumid();
+    _ensure_aumid_registered(t_aumid);
+    {
+        std::wstring t_msg = L"AUMID=" + t_aumid;
+        OutputDebugStringW((L"[HyperXTalk toast] " + t_msg + L"\n").c_str());
+    }
     ComPtr<IToastNotifier> t_notifier;
     hr = t_mgr->CreateToastNotifierWithId(
         HStringReference(t_aumid.c_str()).Get(), &t_notifier);
+    _toast_dbg(L"CreateToastNotifierWithId", hr);
     if (FAILED(hr))
         return false;
 
     // Build the XML document.
     std::wstring t_xml = _build_toast_xml(p_title, p_body, p_tag);
-    ComPtr<IXmlDocumentIO> t_xml_io;
-    hr = GetActivationFactory(
+    OutputDebugStringW((L"[HyperXTalk toast] XML=" + t_xml + L"\n").c_str());
+
+    // Activate a XmlDocument instance (IXmlDocumentIO is an instance interface,
+    // not a factory/statics interface, so GetActivationFactory cannot supply it).
+    ComPtr<IInspectable> t_xml_inspectable;
+    hr = RoActivateInstance(
         HStringReference(RuntimeClass_Windows_Data_Xml_Dom_XmlDocument).Get(),
-        &t_xml_io);
+        &t_xml_inspectable);
+    _toast_dbg(L"RoActivateInstance(XmlDocument)", hr);
+    if (FAILED(hr))
+        return false;
+
+    ComPtr<IXmlDocumentIO> t_xml_io;
+    hr = t_xml_inspectable.As(&t_xml_io);
+    _toast_dbg(L"As(IXmlDocumentIO)", hr);
     if (FAILED(hr))
         return false;
 
     hr = t_xml_io->LoadXml(HStringReference(t_xml.c_str()).Get());
+    _toast_dbg(L"LoadXml", hr);
     if (FAILED(hr))
         return false;
 
     ComPtr<IXmlDocument> t_xml_doc;
-    hr = t_xml_io.As(&t_xml_doc);
+    hr = t_xml_inspectable.As(&t_xml_doc);
+    _toast_dbg(L"As(IXmlDocument)", hr);
     if (FAILED(hr))
         return false;
 
@@ -225,11 +286,13 @@ static bool _try_show_toast(const std::wstring& p_title,
     hr = GetActivationFactory(
         HStringReference(RuntimeClass_Windows_UI_Notifications_ToastNotification).Get(),
         &t_factory);
+    _toast_dbg(L"GetActivationFactory(ToastNotification)", hr);
     if (FAILED(hr))
         return false;
 
     ComPtr<IToastNotification> t_toast;
     hr = t_factory->CreateToastNotification(t_xml_doc.Get(), &t_toast);
+    _toast_dbg(L"CreateToastNotification", hr);
     if (FAILED(hr))
         return false;
 
@@ -257,6 +320,7 @@ static bool _try_show_toast(const std::wstring& p_title,
 
     // Show the toast.
     hr = t_notifier->Show(t_toast.Get());
+    _toast_dbg(L"IToastNotifier::Show", hr);
     if (FAILED(hr))
         return false;
 
@@ -290,7 +354,7 @@ static LRESULT CALLBACK _BalloonWndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM l
     {
         // User clicked the balloon.
         MCStringRef t_mcstr;
-        /* UNCHECKED */ MCStringCreateWithWString(s_balloon_tag.c_str(), t_mcstr);
+        /* UNCHECKED */ MCStringCreateWithWString(reinterpret_cast<const unichar_t*>(s_balloon_tag.c_str()), t_mcstr);
         MCNotificationDispatchClicked(t_mcstr);
         MCValueRelease(t_mcstr);
         return 0;
@@ -334,7 +398,7 @@ static void _show_balloon(const std::wstring& p_title,
     nid.uID              = 1;
     nid.uFlags           = NIF_ICON | NIF_TIP | NIF_MESSAGE | NIF_INFO;
     nid.uCallbackMessage = WM_USER;
-    nid.hIcon            = LoadIconW(nullptr, IDI_APPLICATION);
+    nid.hIcon            = LoadIconW(nullptr, MAKEINTRESOURCEW(32512)); // IDI_APPLICATION
     nid.dwInfoFlags      = NIIF_INFO | NIIF_NOSOUND;
 
     wcsncpy_s(nid.szTip,  L"HyperXTalk", _TRUNCATE);
@@ -363,6 +427,8 @@ void MCPlatformRequestNotificationPermission()
 
 void MCPlatformShowNotification(MCStringRef p_title, MCStringRef p_body, MCStringRef p_tag)
 {
+    OutputDebugStringW(L"[HyperXTalk toast] MCPlatformShowNotification called\n");
+
     std::wstring t_title = _mcstr_to_wstr(p_title);
     std::wstring t_body  = _mcstr_to_wstr(p_body);
 
@@ -392,7 +458,7 @@ void MCPlatformCancelNotification(MCStringRef p_tag)
         }
     }
 
-    // Ask the history manager to remove it.
+    // Ask the history manager to remove it by tag.
     ComPtr<IToastNotificationManagerStatics2> t_mgr2;
     if (SUCCEEDED(GetActivationFactory(
             HStringReference(RuntimeClass_Windows_UI_Notifications_ToastNotificationManager).Get(),
@@ -400,21 +466,7 @@ void MCPlatformCancelNotification(MCStringRef p_tag)
     {
         ComPtr<IToastNotificationHistory> t_history;
         if (SUCCEEDED(t_mgr2->get_History(&t_history)))
-        {
-            std::wstring t_aumid = _get_aumid();
-            ComPtr<IToastNotificationHistory2> t_history2;
-            if (SUCCEEDED(t_history.As(&t_history2)))
-            {
-                t_history2->RemoveGroupedTagWithId(
-                    HStringReference(t_tag.c_str()).Get(),
-                    HStringReference(kToastGroup).Get(),
-                    HStringReference(t_aumid.c_str()).Get());
-            }
-            else
-            {
-                t_history->Remove(HStringReference(t_tag.c_str()).Get());
-            }
-        }
+            t_history->Remove(HStringReference(t_tag.c_str()).Get());
     }
 }
 

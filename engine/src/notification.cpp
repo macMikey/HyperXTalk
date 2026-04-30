@@ -105,22 +105,36 @@ MCShowNotification::~MCShowNotification()
     delete m_tag;
 }
 
+// Helper: consume the next token if it is a comma (ST_SEP), otherwise put it back.
+static void _skip_optional_comma(MCScriptPoint& sp)
+{
+    Symbol_type t_type;
+    if (sp.next(t_type) != PS_NORMAL || t_type != ST_SEP)
+        sp.backup();
+}
+
 Parse_stat MCShowNotification::parse(MCScriptPoint& sp)
 {
     initpoint(sp);
 
-    // Required: title
-    if (sp.parseexp(False, True, &m_title) != PS_NORMAL)
+    // Required: title.
+    // items=False so the expression parser stops at a comma rather than
+    // consuming it as a list separator (which would collapse "a","b","c"
+    // into a single "a,b,c" value).
+    if (sp.parseexp(False, False, &m_title) != PS_NORMAL)
     {
         MCperror->add(PE_SHOWNOTIFICATION_BADTITLE, sp);
         return PS_ERROR;
     }
 
+    // Allow an optional comma between title and body.
+    _skip_optional_comma(sp);
+
     // Optional: body (try, roll back on failure)
     {
         MCScriptPoint t_saved(sp);
         MCerrorlock++;
-        if (sp.parseexp(False, True, &m_body) != PS_NORMAL)
+        if (sp.parseexp(False, False, &m_body) != PS_NORMAL)
         {
             sp = t_saved;
             delete m_body;
@@ -132,9 +146,12 @@ Parse_stat MCShowNotification::parse(MCScriptPoint& sp)
     // Optional: tag (only if body was parsed)
     if (m_body != nil)
     {
+        // Allow an optional comma between body and tag.
+        _skip_optional_comma(sp);
+
         MCScriptPoint t_saved(sp);
         MCerrorlock++;
-        if (sp.parseexp(False, True, &m_tag) != PS_NORMAL)
+        if (sp.parseexp(False, False, &m_tag) != PS_NORMAL)
         {
             sp = t_saved;
             delete m_tag;
