@@ -478,6 +478,7 @@ enum Functions {
     F_PARAM,
     F_PARAMS,
     F_PARAM_COUNT,
+    F_NOTIFICATION_PERMISSION,
     F_PENDING_MESSAGES,
     F_PLATFORM,
 	// JS-2013-06-19: [[ StatsFunctions ]] Tag for 'populationStdDev'
@@ -2028,6 +2029,8 @@ enum Statements {
     S_BREAKPOINT,
     S_CALL,
     S_CANCEL,
+    S_CANCEL_ALL_NOTIFICATIONS,
+    S_CANCEL_NOTIFICATION,
     S_CHOOSE,
     S_CLICK,
     S_CLONE,
@@ -2116,6 +2119,7 @@ enum Statements {
     S_REPLACE,
     S_REPLY,
     S_REQUEST,
+    S_REQUEST_NOTIFICATION_PERMISSION,
 	S_REQUIRE,
     S_RESET,
     // MERG-2013-09-23: [[ ResolveImage ]] resolve image [id] relative to <object>
@@ -2134,6 +2138,7 @@ enum Statements {
     S_SET,
     S_SHEET,
     S_SHOW,
+    S_SHOW_NOTIFICATION,
     S_SORT,
     S_SPLIT,
     S_START,

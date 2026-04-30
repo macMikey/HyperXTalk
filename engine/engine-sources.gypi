@@ -625,7 +625,14 @@
 			'src/w32-clipboard.cpp',
 
 			'src/mixin-refcounted.h',
-			
+
+			# Notifications
+			'src/notification.h',
+			'src/notification.cpp',
+			'src/lnx-notification.cpp',
+			'src/mac-notification.mm',
+			'src/w32-notification.cpp',
+
 			# Native layers
 			'src/native-layer.h',
 			'src/native-layer.cpp',
@@ -1108,10 +1115,11 @@
 						['exclude', '(^|/)linux-'],
 						['exclude', '-x11\\.cpp$'],
 					],
-					
+
 					'sources!':
 					[
 						'src/native-layer-x11.cpp',
+						'src/lnx-notification.cpp',
 					],
 				},
 			],
@@ -1125,11 +1133,12 @@
 						['exclude', '(^|/)win(dows|32)?-'],
 						['exclude', '-win32\\.cpp$'],
 					],
-					
+
 					'sources!':
 					[
 						'src/srvwindows.cpp',
 						'src/native-layer-win32.cpp',
+						'src/w32-notification.cpp',
 					],
 				},
 			],

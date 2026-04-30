@@ -461,6 +461,9 @@ MCNameRef MCM_open_field;
 MCNameRef MCM_open_stack;
 MCNameRef MCM_option_key_down;
 MCNameRef MCM_cancel_button_clicked;
+MCNameRef MCM_notification_clicked;
+MCNameRef MCM_notification_permission_denied;
+MCNameRef MCM_notification_permission_granted;
 MCNameRef MCM_password_toggle_clicked;
 MCNameRef MCM_paste_key;
 MCNameRef MCM_play_paused;
@@ -896,6 +899,9 @@ const struct { const char *cstring; MCNameRef *name_var; } kInitialNames[] =
 	{ "newStack", &MCM_new_stack },
 	{ "newTool", &MCM_new_tool },
 	{ "nodeChanged", &MCM_node_changed },
+	{ "notificationClicked", &MCM_notification_clicked },
+	{ "notificationPermissionDenied", &MCM_notification_permission_denied },
+	{ "notificationPermissionGranted", &MCM_notification_permission_granted },
 	{ "objectSelectionEnded", &MCM_object_selection_ended },
 	{ "objectSelectionStarted", &MCM_object_selection_started },
 	{ "openBackground", &MCM_open_background },

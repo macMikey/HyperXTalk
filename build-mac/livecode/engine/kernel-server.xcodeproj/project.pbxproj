@@ -361,6 +361,8 @@
 		80B7442F6AD4534EFF4F0C0C /* exec-interface-scrollbar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C5F6F6D3B71C587B56FF16BB /* exec-interface-scrollbar.cpp */; };
 		810CA1083924BDD66B0587FC /* libcurl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 49283402DF806CE41E4BF6D3 /* libcurl.dylib */; };
 		8123A5C2E1716A3613F41D4F /* exec-notification.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19D45BCC0AD1E5755910CA5A /* exec-notification.cpp */; };
+		FF22AA33BB44CC55DD66EE11 /* notification.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE11FF22AA33BB44CC55DD66 /* notification.cpp */; };
+		CC55DD66EE11FF22AA33BB44 /* mac-notification.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB44CC55DD66EE11FF22AA33 /* mac-notification.mm */; };
 		8151FB667EEF8FED434F7EC4 /* mcio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 111B3B2B53AEEFCD7FC79994 /* mcio.cpp */; };
 		818778AAC6B4BF8E58CBBF23 /* quicktime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2AFBF25970FCFCABF73C003 /* quicktime.cpp */; };
 		81BB93FDF4033D2848BD74C2 /* exec-interface-stack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9145B4B35A4C4396E5A8CAC1 /* exec-interface-stack.cpp */; };
@@ -571,6 +573,8 @@
 		E33B2EFDD575CE6F52E90338 /* mcworker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E41557A4FDE64912509E861 /* mcworker.cpp */; };
 		E34E37D92BFBF98EA169BB6A /* image_rep_resampled.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FAB24A3C7476195D8C5D8B14 /* image_rep_resampled.cpp */; };
 		E3D3E9B039BC52545B05E00B /* exec-notification.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19D45BCC0AD1E5755910CA5A /* exec-notification.cpp */; };
+		AA33BB44CC55DD66EE11FF22 /* notification.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE11FF22AA33BB44CC55DD66 /* notification.cpp */; };
+		DD66EE11FF22AA33BB44CC55 /* mac-notification.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB44CC55DD66EE11FF22AA33 /* mac-notification.mm */; };
 		E4734F3AD84994A0838779EB /* libffi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E34EF139C4F28C7D6F5B6980 /* libffi.a */; };
 		E4AA9946DF0B5AF4AD728F17 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4A824CABC23BE168740AB67 /* WebKit.framework */; };
 		E62E03F7A012A932953A1A4C /* libskia_opt_sse2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA921D9AE8ADC0229800B5BE /* libskia_opt_sse2.a */; };
@@ -1561,6 +1565,8 @@
 		19CA2E0139C1EF3F835CCD13 /* sysw32network.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sysw32network.cpp; sourceTree = "<group>"; };
 		19CCE9E8065A8BFE77B99E8F /* sysspec-url.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "sysspec-url.cpp"; sourceTree = "<group>"; };
 		19D45BCC0AD1E5755910CA5A /* exec-notification.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "exec-notification.cpp"; sourceTree = "<group>"; };
+		EE11FF22AA33BB44CC55DD66 /* notification.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = notification.cpp; sourceTree = "<group>"; };
+		BB44CC55DD66EE11FF22AA33 /* mac-notification.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "mac-notification.mm"; sourceTree = "<group>"; };
 		1A53078446E178681B84CB48 /* thirdparty.gypi */ = {isa = PBXFileReference; explicitFileType = sourcecode; name = thirdparty.gypi; path = ../config/thirdparty.gypi; sourceTree = "<group>"; };
 		1A714228DCB9F88B61C7C024 /* exec-ide.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "exec-ide.cpp"; sourceTree = "<group>"; };
 		1ADE9414404C53E95B3C3364 /* mcerror.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mcerror.h; sourceTree = "<group>"; };
@@ -2669,6 +2675,8 @@
 				51B8F121BD69512344EA9694 /* exec-network.cpp */,
 				C6B1558979AAD3ECE903B4EA /* exec-nfc.cpp */,
 				19D45BCC0AD1E5755910CA5A /* exec-notification.cpp */,
+					EE11FF22AA33BB44CC55DD66 /* notification.cpp */,
+					BB44CC55DD66EE11FF22AA33 /* mac-notification.mm */,
 				02DD21FCF0D642FA42153966 /* exec-orientation.cpp */,
 				F16B57641ED29AC3BB6657E2 /* exec-pasteboard.cpp */,
 				0260C7F3A363EE3A203111A9 /* exec-pick.cpp */,
@@ -4060,6 +4068,8 @@
 				7BAB601ECA1B6D5356081341 /* exec-network.cpp in Sources */,
 				CD2DED2268268AD250B75EC4 /* exec-nfc.cpp in Sources */,
 				8123A5C2E1716A3613F41D4F /* exec-notification.cpp in Sources */,
+					FF22AA33BB44CC55DD66EE11 /* notification.cpp in Sources */,
+					CC55DD66EE11FF22AA33BB44 /* mac-notification.mm in Sources */,
 				A2B08A0E397830C540E84C0E /* exec-orientation.cpp in Sources */,
 				B0676F00369039D7F293BB25 /* exec-pasteboard.cpp in Sources */,
 				95706344AFD805512F75449F /* exec-pick.cpp in Sources */,
@@ -4325,6 +4335,8 @@
 				B21FF86937ED49AFB7FE0D3F /* exec-network.cpp in Sources */,
 				9AC040439BFFD0F6952401C8 /* exec-nfc.cpp in Sources */,
 				E3D3E9B039BC52545B05E00B /* exec-notification.cpp in Sources */,
+					AA33BB44CC55DD66EE11FF22 /* notification.cpp in Sources */,
+					DD66EE11FF22AA33BB44CC55 /* mac-notification.mm in Sources */,
 				5DAAABE2803D47784A918B49 /* exec-orientation.cpp in Sources */,
 				2559E1AE315408EC9B701AE0 /* exec-pasteboard.cpp in Sources */,
 				B5E28344BC37193C86BC22CC /* exec-pick.cpp in Sources */,

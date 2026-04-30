@@ -93,6 +93,8 @@
 		3841DE03790B5AA07AB15879 /* osxprinter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF441B1E35BDD61C7586C80F /* osxprinter.cpp */; };
 		38B03184E4A335F53E804391 /* undolst.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EB7DCBEFFEB8E13D45ED1145 /* undolst.cpp */; };
 		3939ECCF26C718A2E794B209 /* exec-notification.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4BFF27B3C400E3065023CD18 /* exec-notification.cpp */; };
+		BB22CC33DD44EE55FF66AA11 /* notification.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA11BB22CC33DD44EE55FF66 /* notification.cpp */; };
+		DD44EE55FF66AA11BB22CC33 /* mac-notification.mm in Sources */ = {isa = PBXBuildFile; fileRef = CC33DD44EE55FF66AA11BB22 /* mac-notification.mm */; };
 		3A1345E972AD1EE1C70F16D4 /* mac-av-player.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4EB2E3F0C91479A6B31C806 /* mac-av-player.mm */; };
 		3AC0ECA238ABAD0BEAA404A2 /* exec-array.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DF3286A228501E469E44880A /* exec-array.cpp */; };
 		3DDB2C19AA8AB16A58156A9C /* dskmac.mm in Sources */ = {isa = PBXBuildFile; fileRef = D81E4F5E5D07A86E3F894A24 /* dskmac.mm */; };
@@ -599,6 +601,8 @@
 		4BC9CA5731600877EB4AC711 /* sha3.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sha3.cpp; sourceTree = "<group>"; };
 		4BECD40D643B143A7D24F979 /* mblflst.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = mblflst.cpp; sourceTree = "<group>"; };
 		4BFF27B3C400E3065023CD18 /* exec-notification.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "exec-notification.cpp"; sourceTree = "<group>"; };
+		AA11BB22CC33DD44EE55FF66 /* notification.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = notification.cpp; sourceTree = "<group>"; };
+		CC33DD44EE55FF66AA11BB22 /* mac-notification.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "mac-notification.mm"; sourceTree = "<group>"; };
 		4C1379566496D5AC8C30A7F3 /* uidc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = uidc.h; sourceTree = "<group>"; };
 		4C2BD2DBAA89996FB383D259 /* ExtVideoView.java */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.java; path = ExtVideoView.java; sourceTree = "<group>"; };
 		4D7E0FEE098B4EE5F137A48C /* variable.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = variable.cpp; sourceTree = "<group>"; };
@@ -1589,6 +1593,8 @@
 				C9908CF8F6EA3ECD4C489952 /* exec-network.cpp */,
 				4AE38DE2AA8954A536D37A27 /* exec-nfc.cpp */,
 				4BFF27B3C400E3065023CD18 /* exec-notification.cpp */,
+					AA11BB22CC33DD44EE55FF66 /* notification.cpp */,
+					CC33DD44EE55FF66AA11BB22 /* mac-notification.mm */,
 				0903859D53DC8E62DD729023 /* exec-orientation.cpp */,
 				F3B601C5D850FFA75873C60D /* exec-pasteboard.cpp */,
 				0B6AEA171226BBA145435423 /* exec-pick.cpp */,
@@ -2454,6 +2460,8 @@
 				5F8211860285BFFDB1C6947C /* exec-network.cpp in Sources */,
 				293A1D0D04B32B57537C8F4F /* exec-nfc.cpp in Sources */,
 				3939ECCF26C718A2E794B209 /* exec-notification.cpp in Sources */,
+					BB22CC33DD44EE55FF66AA11 /* notification.cpp in Sources */,
+					DD44EE55FF66AA11BB22CC33 /* mac-notification.mm in Sources */,
 				D8B7A35B27B87D0649D22EE1 /* exec-orientation.cpp in Sources */,
 				9198872E298703149CC447CD /* exec-pasteboard.cpp in Sources */,
 				E0D93D50962CCC116FBA6BDA /* exec-pick.cpp in Sources */,
