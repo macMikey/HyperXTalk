@@ -122,6 +122,7 @@ MCPropertyInfo MCField::kProperties[] =
 	DEFINE_RW_OBJ_PROPERTY(P_LABEL, String, MCField, Label)
 	DEFINE_RW_OBJ_PROPERTY(P_PASSWORD_FIELD, Bool, MCField, PasswordField)
 	DEFINE_RW_OBJ_PROPERTY(P_PASSWORD_TOGGLE, Bool, MCField, PasswordToggle)
+	DEFINE_RW_OBJ_PROPERTY(P_CANCEL_BUTTON, Bool, MCField, CancelButton)
 	DEFINE_RW_OBJ_PROPERTY(P_HINT_TEXT, String, MCField, HintText)
 	DEFINE_RW_OBJ_PROPERTY(P_TOGGLE_HILITE, Bool, MCField, ToggleHilite)
 	DEFINE_RW_OBJ_PROPERTY(P_3D_HILITE, Bool, MCField, ThreeDHilite)
@@ -262,6 +263,7 @@ MCField::MCField()
 	label = MCValueRetain(kMCEmptyString);
     m_password_field = false;
     m_password_toggle = false;
+    m_cancel_button = false;
     m_hint_text = MCValueRetain(kMCEmptyString);
 
     // MM-2014-08-11: [[ Bug 13149 ]] Used to flag if a recompute is required during the next draw.
@@ -349,6 +351,7 @@ MCField::MCField(const MCField &fref) : MCControl(fref)
 	label = fref.label;
 	m_password_field = fref.m_password_field;
     m_password_toggle = fref.m_password_toggle;
+    m_cancel_button = fref.m_cancel_button;
 	MCValueRetain(fref.m_hint_text);
 	m_hint_text = fref.m_hint_text;
 	state &= ~CS_KFOCUSED;
@@ -1056,6 +1059,16 @@ Boolean MCField::mdown(uint2 which)
             {
                 m_password_field = !m_password_field;
                 message(MCM_password_toggle_clicked);
+                layer_redrawrect(getfrect());
+                return True;
+            }
+
+            // Cancel-button × icon hit test: only active when the field has content.
+            bool t_field_has_content = !(paragraphs->next() == paragraphs && paragraphs->IsEmpty());
+            if (m_cancel_button && t_field_has_content && MCU_point_in_rect(_cancelButtonIconRect(), mx, my))
+            {
+                settext(0, kMCEmptyString, False);
+                message(MCM_cancel_button_clicked);
                 layer_redrawrect(getfrect());
                 return True;
             }
@@ -2603,6 +2616,27 @@ MCRectangle MCField::_passwordToggleIconRect() const
     return r;
 }
 
+// Cancel-button × icon: slightly smaller than the eye so it clears the field
+// border, positioned to the left of the eye when both are showing.
+static const int16_t kCancelButtonIconSize = 14;  // px, square — smaller than eye to clear border
+static const int16_t kCancelButtonIconPad  =  7;  // px from right edge — more room than eye
+
+MCRectangle MCField::_cancelButtonIconRect() const
+{
+    MCRectangle frect = getfrect();
+    MCRectangle r;
+    r.width  = kCancelButtonIconSize;
+    r.height = kCancelButtonIconSize;
+    // Start from the right edge with the cancel pad, then shift further left
+    // by one eye-icon slot if passwordToggle is also active.
+    int16_t t_right_offset = kCancelButtonIconPad + kCancelButtonIconSize;
+    if (m_password_toggle)
+        t_right_offset += kPasswordToggleIconSize + kPasswordToggleIconPad;
+    r.x = frect.x + frect.width - t_right_offset;
+    r.y = frect.y + (frect.height - kCancelButtonIconSize) / 2;
+    return r;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 //
 //  SAVING AND LOADING
@@ -2616,6 +2650,7 @@ MCRectangle MCField::_passwordToggleIconRect() const
 #define FIELD_EXTRA_PASSWORDFIELD   (1 << 4)
 #define FIELD_EXTRA_HINTTEXT        (1 << 5)
 #define FIELD_EXTRA_PASSWORDTOGGLE  (1 << 6)
+#define FIELD_EXTRA_CANCELBUTTON    (1 << 7)
 
 IO_stat MCField::extendedsave(MCObjectOutputStream& p_stream, uint4 p_part, uint32_t p_version)
 {
@@ -2669,6 +2704,12 @@ IO_stat MCField::extendedsave(MCObjectOutputStream& p_stream, uint4 p_part, uint
         t_size += sizeof(uint8_t);
     }
 
+    if (m_cancel_button)
+    {
+        t_flags |= FIELD_EXTRA_CANCELBUTTON;
+        t_size += sizeof(uint8_t);
+    }
+
 	IO_stat t_stat;
 	t_stat = p_stream . WriteTag(t_flags, t_size);
 
@@ -2706,6 +2747,11 @@ IO_stat MCField::extendedsave(MCObjectOutputStream& p_stream, uint4 p_part, uint
     if (t_stat == IO_NORMAL && (t_flags & FIELD_EXTRA_PASSWORDTOGGLE))
     {
         t_stat = p_stream . WriteU8(m_password_toggle ? 1 : 0);
+    }
+
+    if (t_stat == IO_NORMAL && (t_flags & FIELD_EXTRA_CANCELBUTTON))
+    {
+        t_stat = p_stream . WriteU8(m_cancel_button ? 1 : 0);
     }
 
     if (t_stat == IO_NORMAL)
@@ -2812,6 +2858,14 @@ IO_stat MCField::extendedload(MCObjectInputStream& p_stream, uint32_t p_version,
             t_stat = checkloadstat(p_stream . ReadU8(t_value));
             if (t_stat == IO_NORMAL)
                 m_password_toggle = (t_value != 0);
+        }
+
+        if (t_stat == IO_NORMAL && (t_flags & FIELD_EXTRA_CANCELBUTTON) != 0)
+        {
+            uint8_t t_value;
+            t_stat = checkloadstat(p_stream . ReadU8(t_value));
+            if (t_stat == IO_NORMAL)
+                m_cancel_button = (t_value != 0);
         }
 
         if (t_stat == IO_NORMAL)

@@ -379,6 +379,7 @@ static const PropList fieldprops[] =
         {"noncontiguousHilites", P_NONCONTIGUOUS_HILITES},
         {"outerGlow", P_BITMAP_EFFECT_OUTER_GLOW},
         {"opaque", P_OPAQUE},
+        {"cancelButton", P_CANCEL_BUTTON},
         {"passwordField", P_PASSWORD_FIELD},
         {"passwordToggle", P_PASSWORD_TOGGLE},
         {"rect", P_RECTANGLE},

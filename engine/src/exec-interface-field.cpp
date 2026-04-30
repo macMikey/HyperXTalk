@@ -977,6 +977,17 @@ void MCField::SetPasswordToggle(MCExecContext& ctxt, bool p_setting)
     Redraw();
 }
 
+void MCField::GetCancelButton(MCExecContext& ctxt, bool& r_setting)
+{
+    r_setting = m_cancel_button;
+}
+
+void MCField::SetCancelButton(MCExecContext& ctxt, bool p_setting)
+{
+    m_cancel_button = p_setting;
+    Redraw();
+}
+
 void MCField::GetHintText(MCExecContext& ctxt, MCStringRef& r_string)
 {
 	r_string = MCValueRetain(m_hint_text);

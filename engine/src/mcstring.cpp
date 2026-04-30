@@ -460,6 +460,7 @@ MCNameRef MCM_open_control;
 MCNameRef MCM_open_field;
 MCNameRef MCM_open_stack;
 MCNameRef MCM_option_key_down;
+MCNameRef MCM_cancel_button_clicked;
 MCNameRef MCM_password_toggle_clicked;
 MCNameRef MCM_paste_key;
 MCNameRef MCM_play_paused;
@@ -796,6 +797,7 @@ const struct { const char *cstring; MCNameRef *name_var; } kInitialNames[] =
 	{ "arrowKey", &MCM_arrow_key },
 	{ "assertError", &MCM_assert_error },
 	{ "backspaceKey", &MCM_backspace_key },
+	{ "cancelButtonClicked", &MCM_cancel_button_clicked },
 	{ "closeBackground", &MCM_close_background },
 	{ "closeCard", &MCM_close_card },
 	{ "closeControl", &MCM_close_control },

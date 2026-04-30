@@ -705,6 +705,7 @@ const LT factor_table[] =
         {"cachedurls", TT_FUNCTION, F_CACHED_URLS},
         {"callbacks", TT_PROPERTY, P_CALLBACKS},
         {"caller", TT_CHUNK, CT_CALLER},
+        {"cancelbutton", TT_PROPERTY, P_CANCEL_BUTTON},
         {"cantabort", TT_PROPERTY, P_CANT_ABORT},
         {"cantdelete", TT_PROPERTY, P_CANT_DELETE},
         {"cantmodify", TT_PROPERTY, P_CANT_MODIFY},

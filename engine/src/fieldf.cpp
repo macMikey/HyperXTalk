@@ -1219,6 +1219,38 @@ void MCField::drawrect(MCDC *dc, const MCRectangle &dirty)
             setforeground(dc, DI_FORE, False);
         }
 
+        // Draw the cancel-button × icon when cancelButton is true and the
+        // field contains text.  Only draws when there is something to clear.
+        bool t_field_has_content = !(paragraphs->next() == paragraphs && paragraphs->IsEmpty());
+        if (m_cancel_button && t_field_has_content)
+        {
+            MCRectangle t_icon = _cancelButtonIconRect();
+
+            // Filled gray circle background.
+            MCColor t_circle_color = {0xAAAA, 0xAAAA, 0xAAAA};
+            dc->setforeground(t_circle_color);
+            dc->setfillstyle(FillSolid, nil, 0, 0);
+            dc->fillarc(t_icon, 0, 360);
+
+            // Bold white × drawn over the filled circle.
+            // Each diagonal stroke is drawn twice (1 px apart) to simulate thickness.
+            MCColor t_x_color = {0xFFFF, 0xFFFF, 0xFFFF};
+            dc->setforeground(t_x_color);
+            const int16_t kPad = 3;
+            int16_t x0 = t_icon.x + kPad;
+            int16_t y0 = t_icon.y + kPad;
+            int16_t x1 = t_icon.x + t_icon.width  - kPad;
+            int16_t y1 = t_icon.y + t_icon.height - kPad;
+            // Top-left → bottom-right (two parallel strokes)
+            dc->drawline(x0,     y0,     x1,     y1);
+            dc->drawline(x0 + 1, y0,     x1 + 1, y1);
+            // Top-right → bottom-left (two parallel strokes)
+            dc->drawline(x1,     y0,     x0,     y1);
+            dc->drawline(x1 - 1, y0,     x0 - 1, y1);
+
+            setforeground(dc, DI_FORE, False);
+        }
+
 		// MW-2012-03-15: [[ Bug 10069 ]] If we have hGrid set on the field, then render grid lines
 		//   to fill the rest of the field using the last pgheight we had.
 		if (getflag(F_HGRID))

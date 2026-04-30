@@ -1282,6 +1282,7 @@ enum Properties {
     P_PASSWORD,
     P_PASSWORD_FIELD,
     P_PASSWORD_TOGGLE,
+    P_CANCEL_BUTTON,
     P_KEY,
     P_MODE,
     P_WM_PLACE,
